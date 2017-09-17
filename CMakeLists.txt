@@ -1,20 +1,11 @@
-cmake_minimum_required(VERSION 2.8)
-project(fltk_test)
+cmake_minimum_required(VERSION 3.2)
+set(CMAKE_CONFIGURATION_TYPES Debug Release CACHE TYPE INTERNAL FORCE)
+project(GraphCpp.project)
 
-include(ExternalProject)
-ExternalProject_Add(GTEST
-  GIT_REPOSITORY https://github.com/google/googletest.git
-  UPDATE_COMMAND ""
-  SOURCE_DIR GTEST
-  BINARY_DIR GTEST_BUILD
-  CMAKE_ARGS
-    -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR}/GTEST_INSTALL
-)
-set(GTEST_DIR ${CMAKE_BINARY_DIR}/GTEST_INSTALL)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/build)
+set(SOLUTION_OUTPUT_BIN_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/bin)
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
-add_executable(fltk_test WIN32 main.cpp)
-add_dependencies(fltk_test GTEST)
-
-# Use appropriate SuperBuild instead
-include_directories(${GTEST_DIR}/include)
-#target_link_libraries(fltk_test ${FLTK_DIR}/lib/fltkd.lib)
+add_subdirectory("${CMAKE_SOURCE_DIR}/core")
+add_subdirectory("${CMAKE_SOURCE_DIR}/deps/googletest")
+add_subdirectory("${CMAKE_SOURCE_DIR}/unit.tests")
