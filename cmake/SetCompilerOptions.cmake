@@ -8,7 +8,7 @@ macro(set_named_compiler_options PROJECT)
       )
     else()
       target_compile_options(${PROJECT} 
-        PRIVATE "-std=c++17" 
+        PRIVATE "-std=gnu++1z"
         PRIVATE "-Wall"
         PRIVATE "-fopenmp"
       )

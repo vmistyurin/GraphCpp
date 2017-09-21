@@ -11,6 +11,7 @@ get_project_files(TESTS_FILES)
 add_executable(${PROJECT_NAME} ${TESTS_FILES})
 
 set_compiler_options()
+
 target_compile_definitions(${PROJECT_NAME} PUBLIC GTEST_LANG_CXX11)
 
 set_property(TARGET ${PROJECT_NAME} APPEND PROPERTY INCLUDE_DIRECTORIES
