@@ -8,17 +8,15 @@ using namespace graphcpp;
 class SymmetricMatrixTests : public ::testing::Test
 {
 protected:
-	virtual void SetUp()
+	virtual void SetUp() override
 	{
-		std::array<std::array<bool, 5>, 5> arr{ std::array<bool,5> { 1, 0, 0, 0, 0 },
-																   { 1, 1, 0, 0, 0 },
-																   { 0, 0, 1, 0, 0 },
-																   { 1, 1, 0, 1, 0 },
-																   { 0, 0, 0, 1, 1 } };
+		std::vector<std::vector<bool>> arr{ { 1, 0, 0, 0, 0 },
+											{ 1, 1, 0, 0, 0 },
+											{ 0, 0, 1, 0, 0 },
+											{ 1, 1, 0, 1, 0 },
+											{ 0, 0, 0, 1, 1 } };
 		matrix = std::make_shared<SymmetricMatrix>(arr);
 	}
-
-	virtual void TearDown() {}
 
 	std::shared_ptr<SymmetricMatrix> matrix;
 };

@@ -9,8 +9,8 @@ namespace graphcpp
 	{
 		virtual std::vector<std::vector<bool>> GetMatrix() const noexcept = 0;
 		virtual std::vector<Edge> GetEdges() const noexcept = 0;
-		virtual unsigned int Dimension() const noexcept = 0;
-		virtual std::vector<int> GetLinkedVertexes(unsigned int vertex) const noexcept  = 0;
+		virtual ushort Dimension() const noexcept = 0;
+		virtual std::vector<ushort> GetLinkedVertexes(ushort vertex) const noexcept  = 0;
 	};
 }
 #endif

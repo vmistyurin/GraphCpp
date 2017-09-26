@@ -6,9 +6,6 @@ using namespace graphcpp;
 class EdgeTests : public ::testing::Test 
 {
 protected:
-	// Per-test-case set-up.
-	// Called before the first test in this test case.
-	// Can be omitted if not needed.
 	static void SetUpTestCase() 
 	{
 	}
