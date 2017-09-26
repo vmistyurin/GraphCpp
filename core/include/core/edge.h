@@ -1,14 +1,17 @@
 #ifndef GRAPH_CORE_EDGE_H
 #define GRAPH_CORE_EDGE_H
+
+#include "macroses.h"
+
 namespace graphcpp
 {
 	class Edge
 	{
 	private:
-		unsigned int _v1, _v2;
+		ushort _v1, _v2;
 
 	public:
-		Edge(unsigned int v1, unsigned int v2) noexcept;
+		Edge(ushort v1, ushort v2) noexcept;
 
 		Edge(const Edge&) = delete;
 		Edge operator=(const Edge&) = delete;
@@ -16,8 +19,8 @@ namespace graphcpp
 		bool operator==(const Edge& right) const noexcept;
 		bool operator!=(const Edge& right) const noexcept;
 
-		unsigned int v1() const noexcept;
-		unsigned int v2() const noexcept;
+		ushort v1() const noexcept;
+		ushort v2() const noexcept;
 	};
 }
 #endif
