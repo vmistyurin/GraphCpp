@@ -8,19 +8,20 @@ namespace graphcpp
 	class Edge
 	{
 	private:
-		ushort _v1, _v2;
-
+		msize _v1, _v2;
+        mcontent _weight;
 	public:
-		Edge(ushort v1, ushort v2) noexcept;
+		Edge(msize v1, msize v2, mcontent weight);
 
-		Edge(const Edge&) = delete;
-		Edge operator=(const Edge&) = delete;
+		//Edge(const Edge&) = delete;
+		//Edge operator=(const Edge&) = delete;
 
-		bool operator==(const Edge& right) const noexcept;
-		bool operator!=(const Edge& right) const noexcept;
+		bool operator==(const Edge& right) const;
+		bool operator!=(const Edge& right) const;
 
-		ushort v1() const noexcept;
-		ushort v2() const noexcept;
+		msize v1() const;
+		msize v2() const;
+        mcontent weight() const;
 	};
 }
 #endif

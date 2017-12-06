@@ -4,28 +4,37 @@
 
 using namespace graphcpp;
 
-Edge::Edge(ushort v1, ushort v2) noexcept:
-	_v1(std::min(v1, v2)), _v2(std::max(v1, v2)) 
+Edge::Edge(msize v1, msize v2, mcontent weight):
+	_v1(std::min(v1, v2)), _v2(std::max(v1, v2)), _weight(weight)
 {
 	assert(v1 != v2);
 }
 
-bool Edge::operator==(const Edge& right) const noexcept
+bool Edge::operator==(const Edge& right) const
 {
-	assert(this->_v1 < this->_v2);
-	return (this->_v1 == right._v1) && (this->_v2 == right._v2);
+	if(this == &right)
+    {
+        return true;
+    }
+	return (this->_v1 == right._v1) && (this->_v2 == right._v2) && (this->_weight == right._weight);
 }
 
-bool Edge::operator!=(const Edge& right) const noexcept
+bool Edge::operator!=(const Edge& right) const
 {
 	return !(*this == right);
 }
 
-ushort Edge::v1() const noexcept
+msize Edge::v1() const
 {
 	return _v1;
 }
-ushort Edge::v2() const noexcept
+msize Edge::v2() const
 {
 	return _v2;
 }
+
+mcontent Edge::weight() const
+{
+    return _weight;
+}
+
