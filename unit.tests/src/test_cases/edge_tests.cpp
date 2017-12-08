@@ -11,11 +11,6 @@ protected:
 	}
 };
 
-TEST_F(EdgeTests, CreatingBadEdge)
-{
-	ASSERT_DEATH({Edge edge(2, 2, 1);}, "");
-}
-
 TEST_F(EdgeTests, GettersTest)
 {
 	Edge edge(1, 10, 3);
