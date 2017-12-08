@@ -2,10 +2,6 @@ version: '1.0.{build}'
 
 image: Visual Studio 2017
 
-branches:
-  only:
-    -develop
-
 platform:
   - x86
   - x64
