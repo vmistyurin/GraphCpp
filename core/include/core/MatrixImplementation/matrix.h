@@ -100,6 +100,8 @@ namespace graphcpp
 
 		mcontent at(msize index1, msize index2) const override
 		{
+			assert(std::max(index1, index2) < dimension());
+
 			return _matrix[index1][index2];
 		}
 
@@ -115,6 +117,7 @@ namespace graphcpp
 		msize dimension() const override
 		{
 			assert(_matrix.size() < std::numeric_limits<msize>::max());
+
 			return _matrix.size();
 		}
 
@@ -129,7 +132,7 @@ namespace graphcpp
 	private:
 		void fill_diagonal(mcontent value = 0)
 		{
-			for(int i = 0; i < dimension(); i++)
+			for(msize i = 0; i < dimension(); i++)
 			{
 				_matrix[i][i] = value;
 			}

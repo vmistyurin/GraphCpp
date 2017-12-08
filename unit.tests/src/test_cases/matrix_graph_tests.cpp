@@ -11,23 +11,16 @@ class MatrixGraphTests : public ::testing::Test
 protected:
 	virtual void SetUp() override
 	{
-		try
-		{
-			edges = std::vector<Edge>
-			{ Edge(0,6,2),
-			  Edge(3,6,1),
-			  Edge(4,6,2),
-			  Edge(1,5,7),
-			  Edge(3,4,10) };
+		edges = std::vector<Edge>
+		{ Edge(0,6,2),
+			Edge(3,6,1),
+			Edge(4,6,2),
+			Edge(1,5,7),
+			Edge(3,4,10) };
 
-			tested_graph = MatrixGraph<Matrix>(edges, 7);
-			linked_with_third = { 4,6 };
-			degrees = { 1,1,0,2,2,1,3 };
-		}
-		catch(std::exception& e)
-		{
-			std::cout << e.what();
-		}
+		tested_graph = MatrixGraph<Matrix>(edges, 7);
+		linked_with_third = { 4,6 };
+		degrees = { 1,1,0,2,2,1,3 };
     }
 	MatrixGraph<Matrix> tested_graph;
     std::vector<Edge> edges;
@@ -116,16 +109,16 @@ TEST_F(MatrixGraphTests, EqualityTest)
 	EXPECT_FALSE(tested_graph.equal(different_degrees_non_equal_graph));
     EXPECT_FALSE(tested_graph.equal(different_edges_non_equal_graph));
 }
-TEST_F(MatrixGraphTests, DeleteVertexesTest)
-{
-    std::vector<Edge> expected_edges = std::vector<Edge>
-    { Edge(0,4,2),
-      Edge(3,4,1) };
-    msize expected_dimension = 5;
-
-    std::vector<msize> deleted_vertexes{3,4};
-    tested_graph.delete_vertexes(deleted_vertexes);
-
-    EXPECT_EQ(tested_graph.dimension(), expected_dimension);
-    EXPECT_TRUE(IsVectorOfEdgesAreEqual(tested_graph.get_edges(), expected_edges));
-}
+//TEST_F(MatrixGraphTests, DeleteVertexesTest)
+//{
+//    std::vector<Edge> expected_edges = std::vector<Edge>
+//    { Edge(0,4,2),
+//      Edge(3,4,1) };
+//    msize expected_dimension = 5;
+//
+//    std::vector<msize> deleted_vertexes{3,4};
+//    tested_graph.delete_vertexes(deleted_vertexes);
+//
+//    EXPECT_EQ(tested_graph.dimension(), expected_dimension);
+//    EXPECT_TRUE(IsVectorOfEdgesAreEqual(tested_graph.get_edges(), expected_edges));
+//}

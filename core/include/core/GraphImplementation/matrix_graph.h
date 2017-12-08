@@ -12,16 +12,25 @@
 
 namespace graphcpp
 {
-	template<class SymmetricMatrixType = Matrix> class MatrixGraph final: public GraphBase
+	template<class SymmetricMatrixType = Matrix> class MatrixGraph final : public GraphBase
 	{
 	private:
 		SymmetricMatrixType _matrix;
-		std::function<bool(msize)> less_than_dimension = [this](msize value)
-		{
-			auto c = this->dimension();
-			return value < this->dimension();
-		};
+		std::function<bool(msize)> less_than_dimension = [this](msize value){return value < dimension();};
 	public:
+		MatrixGraph<SymmetricMatrixType>(MatrixGraph<SymmetricMatrixType>&& other) noexcept :
+			_matrix(std::move(other._matrix))
+		{
+			other.less_than_dimension = nullptr;
+		}
+
+		MatrixGraph<SymmetricMatrixType>& operator=(MatrixGraph<SymmetricMatrixType>&& other) noexcept
+		{
+			_matrix = std::move(other._matrix);
+			other.less_than_dimension = nullptr;
+			return *this;
+		}
+
 		MatrixGraph() :
 			_matrix(0)
 		{}
@@ -31,15 +40,17 @@ namespace graphcpp
 		{
 			for (const auto& edge : edges)
 			{
+				assert(std::max(edge.v1(), edge.v2()) < dimension);
 				_matrix.set(edge.v1(), edge.v2(), edge.weight());
 			}
 		}
+
 		explicit MatrixGraph(const SymmetricMatrixType& matrix) :
                 _matrix(matrix)
 		{}
 
-		explicit MatrixGraph(const GraphBase& other)
-			:_matrix(other.get_matrix())
+		explicit MatrixGraph(const GraphBase& other) :
+			_matrix(other.get_matrix())
 		{}
 
 		explicit MatrixGraph(const MatrixGraph& other) : 
@@ -58,8 +69,7 @@ namespace graphcpp
 
         std::vector<msize> get_degrees() const override
         {
-			std::vector<msize> result;
-			result.reserve(dimension());
+			std::vector<msize> result; result.reserve(dimension());
             for(const auto& str : _matrix)
             {
                 msize current_degree = 0;
@@ -77,6 +87,7 @@ namespace graphcpp
 		msize get_degree(msize vertex) const override
 		{
 			assert(less_than_dimension(vertex));
+
 			msize result = 0;
 			for(auto value : _matrix.get_string(vertex))
 			{
@@ -90,9 +101,9 @@ namespace graphcpp
         std::vector<Edge> get_edges() const override
 		{
 			std::vector<Edge> result;
-			for(ushort i = 0; i < dimension(); i++)
+			for(msize i = 0; i < dimension(); i++)
 			{
-				for(ushort j = 0; j < i; j++)
+				for(msize j = 0; j < i; j++)
 				{
 					if (_matrix.at(i,j) != 0)
                     {
@@ -105,6 +116,7 @@ namespace graphcpp
 		std::vector<msize> get_linked_vertexes(msize vertex) const override
 		{
 			assert(less_than_dimension(vertex));
+
 			std::vector<msize> result;
 			auto string = _matrix.get_string(vertex);
 			for(msize i = 0; i < dimension(); i++)
@@ -141,7 +153,7 @@ namespace graphcpp
             auto other_degrees = other.get_degrees();
             RETURN_IF(!std::is_permutation(this_degrees.cbegin(), this_degrees.cend(), other_degrees.cbegin()), false);
 
-            std::vector<msize> permutation(dimension()); //permutation.resize(dimension());
+            std::vector<msize> permutation(dimension());
             std::iota(permutation.begin(), permutation.end(), 0);
 
 			MatrixGraph other_copy(other);
