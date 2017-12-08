@@ -4,7 +4,7 @@ image: Visual Studio 2017
 
 platform:
   - x64
-  - x86
+  - Win32
 configuration:
   - Release
   - Debug
@@ -12,12 +12,10 @@ configuration:
 install:
   - git submodule update --init --recursive
 
-
 before_build:
   - mkdir build
   - cd build
-  - ps: $env:PLATFORM
-  - ps: if($env:PLATFORM -eq 'x86') {'x86'; cmake .. -G "Visual Studio 15 2017"} else {'x64'; cmake .. -G "Visual Studio 15 2017 Win64"}
+  - ps: if($env:PLATFORM -eq 'x64') {'x64'; cmake .. -G "Visual Studio 15 2017 Win64"} else {'x86'; cmake .. -G "Visual Studio 15 2017"} 
 
 build:
   project: $(APPVEYOR_BUILD_FOLDER)\build\$(APPVEYOR_PROJECT_NAME).project.sln
