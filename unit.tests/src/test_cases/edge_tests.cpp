@@ -25,18 +25,20 @@ TEST_F(EdgeTests, InvertEdge)
 
 	EXPECT_EQ(edge.v1(), 3);
 	EXPECT_EQ(edge.v2(), 10);
+	EXPECT_EQ(edge.weight(), 1);
 }
 
 TEST_F(EdgeTests, EqualityEdges)
 {
-	Edge e1(3, 10, 1);
-	Edge e2(3, 10, 1);
-	Edge e3(3, 9, 1);
-	Edge e4(4, 10, 1);
-	Edge e5(3, 10, 2);
+	Edge edge(3, 10, 1);
+	Edge equal_edge(3, 10, 1);
+	Edge first_vertex_different(4, 10, 1);
+	Edge second_vertex_different(3, 9, 1);
+	Edge weight_different(3, 10, 2);
 
-	EXPECT_EQ(e1, e2);
-	EXPECT_NE(e1, e3);
-	EXPECT_NE(e1, e4);
-	EXPECT_NE(e1, e5);
+	EXPECT_EQ(edge, edge);
+	EXPECT_EQ(edge, equal_edge);
+	EXPECT_NE(edge, first_vertex_different);
+	EXPECT_NE(edge, second_vertex_different);
+	EXPECT_NE(edge, weight_different);
 }
