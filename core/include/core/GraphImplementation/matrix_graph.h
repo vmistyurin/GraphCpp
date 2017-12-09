@@ -16,21 +16,7 @@ namespace graphcpp
 	{
 	private:
 		SymmetricMatrixType _matrix;
-		std::function<bool(msize)> less_than_dimension = [this](msize value){return value < dimension();};
 	public:
-		MatrixGraph<SymmetricMatrixType>(MatrixGraph<SymmetricMatrixType>&& other) noexcept :
-			_matrix(std::move(other._matrix))
-		{
-			other.less_than_dimension = nullptr;
-		}
-
-		MatrixGraph<SymmetricMatrixType>& operator=(MatrixGraph<SymmetricMatrixType>&& other) noexcept
-		{
-			_matrix = std::move(other._matrix);
-			other.less_than_dimension = nullptr;
-			return *this;
-		}
-
 		MatrixGraph() :
 			_matrix(0)
 		{}
@@ -86,7 +72,7 @@ namespace graphcpp
         }
 		msize get_degree(msize vertex) const override
 		{
-			assert(less_than_dimension(vertex));
+			assert(vertex < dimension());
 
 			msize result = 0;
 			for(auto value : _matrix.get_string(vertex))
@@ -115,7 +101,7 @@ namespace graphcpp
 		}
 		std::vector<msize> get_linked_vertexes(msize vertex) const override
 		{
-			assert(less_than_dimension(vertex));
+			assert(vertex < dimension());
 
 			std::vector<msize> result;
 			auto string = _matrix.get_string(vertex);
@@ -131,7 +117,7 @@ namespace graphcpp
 		void delete_vertexes(const std::vector<msize>& vertexes) override
 		{
 			assert(!vertexes.empty());
-			assert(std::all_of(vertexes.cbegin(), vertexes.cend(), less_than_dimension));
+			assert(std::all_of(vertexes.cbegin(), vertexes.cend(), [&](msize vertex){return vertex < dimension();}));
 
 			msize current_position = dimension() - 1;
 			std::set<msize> to_delete(vertexes.cbegin(), vertexes.cend());
