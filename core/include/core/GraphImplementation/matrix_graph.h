@@ -16,6 +16,7 @@ namespace graphcpp
 	{
 	private:
 		SymmetricMatrixType _matrix;
+
 	public:
 		MatrixGraph() :
 			_matrix(0)
@@ -31,16 +32,8 @@ namespace graphcpp
 			}
 		}
 
-		explicit MatrixGraph(const SymmetricMatrixType& matrix) :
-                _matrix(matrix)
-		{}
-
 		explicit MatrixGraph(const GraphBase& other) :
 			_matrix(other.get_matrix())
-		{}
-
-		explicit MatrixGraph(const MatrixGraph& other) : 
-			_matrix(other._matrix)
 		{}
 
 		msize dimension() const override
@@ -48,9 +41,63 @@ namespace graphcpp
 			return _matrix.dimension();
 		}
 
+		bool equal(const GraphBase& other) const override //TODO: Optimize, maybe add weight check
+		{
+			RETURN_IF(this == &other, true);
+			RETURN_IF(dimension() != other.dimension(), false);
+
+			auto this_degrees = get_degrees();
+			auto other_degrees = other.get_degrees();
+			RETURN_IF(!std::is_permutation(this_degrees.cbegin(), this_degrees.cend(), other_degrees.cbegin()), false);
+
+			std::vector<msize> permutation(dimension());
+			std::iota(permutation.begin(), permutation.end(), 0);
+
+			MatrixGraph other_copy(other);
+			do
+			{
+				other_copy.rearrange(permutation);
+				RETURN_IF(_matrix == other_copy.get_matrix(), true);
+			} while (std::next_permutation(permutation.begin(), permutation.end()));
+
+			return false;
+		}
+
 		const SymmetricMatrixBase& get_matrix() const override
 		{
 			return _matrix;
+		}
+
+		std::vector<Edge> get_edges() const override
+		{
+			std::vector<Edge> result;
+			for (msize i = 0; i < dimension(); i++)
+			{
+				for (msize j = 0; j < i; j++)
+				{
+					if (_matrix.at(i, j) != 0)
+					{
+						result.emplace_back(i, j, _matrix.at(i, j));
+					}
+				}
+			}
+			return result;
+		}
+
+		std::vector<msize> get_linked_vertexes(msize vertex) const override
+		{
+			assert(vertex < dimension());
+
+			std::vector<msize> result;
+			auto string = _matrix.get_string(vertex);
+			for (msize i = 0; i < dimension(); i++)
+			{
+				if (string[i] != 0 && i != vertex)
+				{
+					result.push_back(i);
+				}
+			}
+			return result;
 		}
 
         std::vector<msize> get_degrees() const override
@@ -70,6 +117,7 @@ namespace graphcpp
             }
             return result;
         }
+
 		msize get_degree(msize vertex) const override
 		{
 			assert(vertex < dimension());
@@ -84,36 +132,7 @@ namespace graphcpp
 			}
 			return result;
 		}
-        std::vector<Edge> get_edges() const override
-		{
-			std::vector<Edge> result;
-			for(msize i = 0; i < dimension(); i++)
-			{
-				for(msize j = 0; j < i; j++)
-				{
-					if (_matrix.at(i,j) != 0)
-                    {
-                        result.emplace_back(i, j, _matrix.at(i, j));
-                    }
-				}
-			}
-			return result;
-		}
-		std::vector<msize> get_linked_vertexes(msize vertex) const override
-		{
-			assert(vertex < dimension());
 
-			std::vector<msize> result;
-			auto string = _matrix.get_string(vertex);
-			for(msize i = 0; i < dimension(); i++)
-			{
-				if (string[i] != 0 && i != vertex)
-                {
-                    result.push_back(i);
-                }
-			}
-			return result;
-		}
 		void delete_vertexes(const std::vector<msize>& vertexes) override
 		{
 			assert(!vertexes.empty());
@@ -128,29 +147,6 @@ namespace graphcpp
 					
 				}
 			}
-		}
-
-		bool equal(const GraphBase& other) const override //TODO: Optimize, maybe add weight check
-		{
-            RETURN_IF(this == &other, true);
-            RETURN_IF(dimension() != other.dimension(), false);
-
-            auto this_degrees = get_degrees();
-            auto other_degrees = other.get_degrees();
-            RETURN_IF(!std::is_permutation(this_degrees.cbegin(), this_degrees.cend(), other_degrees.cbegin()), false);
-
-            std::vector<msize> permutation(dimension());
-            std::iota(permutation.begin(), permutation.end(), 0);
-
-			MatrixGraph other_copy(other);
-            do
-            {
-				other_copy.rearrange(permutation);
-				RETURN_IF(_matrix == other_copy.get_matrix(), true);
-			} 
-			while (std::next_permutation(permutation.begin(), permutation.end()));
-
-			return false;
 		}
 
 		void rearrange(const std::vector<msize>& new_nums) override

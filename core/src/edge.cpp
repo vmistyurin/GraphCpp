@@ -12,10 +12,7 @@ Edge::Edge(msize v1, msize v2, mcontent weight):
 
 bool Edge::operator==(const Edge& right) const
 {
-	if(this == &right)
-    {
-        return true;
-    }
+	RETURN_IF(this == &right, true);
 	return (this->_v1 == right._v1) && (this->_v2 == right._v2) && (this->_weight == right._weight);
 }
 

@@ -1,5 +1,5 @@
-#ifndef GRAPH_CORE_MATRIX
-#define GRAPH_CORE_MATRIX
+#ifndef GRAPH_CORE_MATRIX_H
+#define GRAPH_CORE_MATRIX_H
 
 #include "symmetric_matrix_base.h"
 #include <limits>
@@ -13,6 +13,7 @@ namespace graphcpp
 	{
 	private:
 		std::vector<std::vector<mcontent>> _matrix;
+
 	public:
 		explicit Matrix(msize dimension)
 		{
@@ -62,40 +63,9 @@ namespace graphcpp
 			return !(*this == right);
 		}
 
-		void swap(msize str1, msize str2) override //Todo: optimize
+		msize dimension() const override
 		{
-			const mcontent previous_value = _matrix[str1][str2];
-
-			std::swap(_matrix[str1], _matrix[str2]);
-
-			for (msize i = 0; i < dimension(); i++)
-			{
-				std::swap(_matrix[i][str1], _matrix[i][str2]);
-			}
-
-			_matrix[str1][str2] = previous_value;
-			_matrix[str2][str1] = previous_value;
-		}
-
-        void rearrange(const std::vector<msize>& new_nums) override
-        {
-            std::vector<int> const_permatation; const_permatation.resize(dimension());
-            std::iota(const_permatation.begin(), const_permatation.end(), 0);
-            assert(std::is_permutation(new_nums.cbegin(), new_nums.cend(), const_permatation.cbegin(), const_permatation.cend()));
-
-            Matrix result(dimension());
-            for(msize i = 0; i < dimension(); i++)
-            {
-                for(msize j = i + 1; j < dimension(); j++)
-                {
-                    result.set(new_nums[i], new_nums[j], _matrix[i][j]);
-                }
-            }
-            _matrix = std::move(result._matrix);
-        }
-		const std::vector<mcontent>& get_string(msize str) const override
-		{
-			return _matrix[str];
+			return _matrix.size();
 		}
 
 		mcontent at(msize index1, msize index2) const override
@@ -114,17 +84,48 @@ namespace graphcpp
 			_matrix[index2][index1] = value;
 		}
 
-		msize dimension() const override
+		const std::vector<mcontent>& get_string(msize str) const override
 		{
-			assert(_matrix.size() < std::numeric_limits<msize>::max());
-
-			return _matrix.size();
+			return _matrix[str];
 		}
 
-        std::vector<std::vector<mcontent>>::const_iterator begin() const override
+		void swap(msize str1, msize str2) override //Todo: optimize
+		{
+			const mcontent previous_value = _matrix[str1][str2];
+
+			std::swap(_matrix[str1], _matrix[str2]);
+
+			for (msize i = 0; i < dimension(); i++)
+			{
+				std::swap(_matrix[i][str1], _matrix[i][str2]);
+			}
+
+			_matrix[str1][str2] = previous_value;
+			_matrix[str2][str1] = previous_value;
+		}
+
+		void rearrange(const std::vector<msize>& new_nums) override
+		{
+			std::vector<int> const_permatation; const_permatation.resize(dimension());
+			std::iota(const_permatation.begin(), const_permatation.end(), 0);
+			assert(std::is_permutation(new_nums.cbegin(), new_nums.cend(), const_permatation.cbegin(), const_permatation.cend()));
+
+			Matrix result(dimension());
+			for (msize i = 0; i < dimension(); i++)
+			{
+				for (msize j = i + 1; j < dimension(); j++)
+				{
+					result.set(new_nums[i], new_nums[j], _matrix[i][j]);
+				}
+			}
+			_matrix = std::move(result._matrix);
+		}
+		
+	    std::vector<std::vector<mcontent>>::const_iterator begin() const override
 		{
 			return _matrix.cbegin();
 		}
+
 		std::vector<std::vector<mcontent>>::const_iterator end() const override
         {
             return _matrix.cend();

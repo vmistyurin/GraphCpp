@@ -5,16 +5,14 @@
 
 namespace graphcpp
 {
-	class Edge
+	class Edge final
 	{
 	private:
 		msize _v1, _v2;
         mcontent _weight;
+
 	public:
 		Edge(msize v1, msize v2, mcontent weight);
-
-		//Edge(const Edge&) = delete;
-		//Edge operator=(const Edge&) = delete;
 
 		bool operator==(const Edge& right) const;
 		bool operator!=(const Edge& right) const;
