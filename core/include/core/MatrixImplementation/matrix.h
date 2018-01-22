@@ -2,7 +2,6 @@
 #define GRAPH_CORE_MATRIX_H
 
 #include "symmetric_matrix_base.h"
-#include <limits>
 #include <algorithm>
 #include <assert.h>
 #include <numeric>

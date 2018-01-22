@@ -7,8 +7,6 @@
 #include "core/macroses.h"
 #include <algorithm>
 #include <numeric>
-#include <iostream>
-#include <functional>
 
 namespace graphcpp
 {

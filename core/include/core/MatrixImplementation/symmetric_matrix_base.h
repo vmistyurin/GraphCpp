@@ -2,7 +2,6 @@
 #define GRAPH_CORE_MATRIX_BASE_H
 
 #include "core/macroses.h"
-#include <iterator>
 #include <vector>
 
 namespace graphcpp
