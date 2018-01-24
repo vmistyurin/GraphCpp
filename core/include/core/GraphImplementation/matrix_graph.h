@@ -136,15 +136,19 @@ namespace graphcpp
 			assert(!vertexes.empty());
 			assert(std::all_of(vertexes.cbegin(), vertexes.cend(), [&](msize vertex){return vertex < dimension();}));
 
-			msize current_position = dimension() - 1;
 			std::set<msize> to_delete(vertexes.cbegin(), vertexes.cend());
-			for(auto vertex : vertexes)
+			msize current_position = dimension() - 1;
+			for (auto current_deleted : to_delete)
 			{
-				if(vertex < vertexes.size() - dimension())
+				while (to_delete.count(current_position) == 1)
 				{
-					
+					to_delete.erase(current_position);
+					current_position--;
 				}
+				_matrix.swap(current_position, current_deleted);
+				current_position--;
 			}
+			_matrix.delete_last_strings(vertexes.size());
 		}
 
 		void rearrange(const std::vector<msize>& new_nums) override

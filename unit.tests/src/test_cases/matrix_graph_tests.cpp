@@ -109,16 +109,30 @@ TEST_F(MatrixGraphTests, EqualityTest)
 	EXPECT_FALSE(tested_graph.equal(different_degrees_non_equal_graph));
     EXPECT_FALSE(tested_graph.equal(different_edges_non_equal_graph));
 }
-//TEST_F(MatrixGraphTests, DeleteVertexesTest)
-//{
-//    std::vector<Edge> expected_edges = std::vector<Edge>
-//    { Edge(0,4,2),
-//      Edge(3,4,1) };
-//    msize expected_dimension = 5;
-//
-//    std::vector<msize> deleted_vertexes{3,4};
-//    tested_graph.delete_vertexes(deleted_vertexes);
-//
-//    EXPECT_EQ(tested_graph.dimension(), expected_dimension);
-//    EXPECT_TRUE(IsVectorOfEdgesAreEqual(tested_graph.get_edges(), expected_edges));
-//}
+
+TEST_F(MatrixGraphTests, DeleteVertexesTest1)
+{
+    std::vector<Edge> expected_edges = std::vector<Edge>
+    { Edge(0,1,2),
+      Edge(2,3,7) };
+    msize expected_dimension = 5;
+	MatrixGraph<Matrix> expected_graph(expected_edges, expected_dimension);
+
+    std::vector<msize> deleted_vertexes{3,4};
+    tested_graph.delete_vertexes(deleted_vertexes);
+
+    EXPECT_TRUE(expected_graph.equal(tested_graph));
+}
+
+TEST_F(MatrixGraphTests, DeleteVertexesTest2)
+{
+	std::vector<Edge> expected_edges = std::vector<Edge>
+	{ Edge(1,2,10) };
+	msize expected_dimension = 4;
+	MatrixGraph<Matrix> expected_graph(expected_edges, expected_dimension);
+
+	std::vector<msize> deleted_vertexes{1,5,6};
+	tested_graph.delete_vertexes(deleted_vertexes);
+
+	EXPECT_TRUE(expected_graph.equal(tested_graph));
+}
