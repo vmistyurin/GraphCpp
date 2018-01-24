@@ -50,10 +50,10 @@ TEST_F(MatrixTests, EqualityTest)
 TEST_F(MatrixTests, SwapTest)
 {
 	std::vector<std::vector<mcontent>> expected_array{ { 1, 0, 0, 0, 0 },
-												   { 0, 1, 1, 1, 0 },
-												   { 0, 1, 1, 1, 0 },
-	                                               { 0, 1, 1, 1, 1 },
-												   { 0, 0, 0, 1, 1 } };
+													   { 0, 1, 1, 1, 0 },
+													   { 0, 1, 1, 1, 0 },
+													   { 0, 1, 1, 1, 1 },
+													   { 0, 0, 0, 1, 1 } };
 
 	Matrix expected_matrix(expected_array);
 	matrix->swap(0, 2);
@@ -64,15 +64,14 @@ TEST_F(MatrixTests, SwapTest)
 TEST_F(MatrixTests, SetterTest)
 {
 	std::vector<std::vector<mcontent>> expected_array{ { 1, 1, 0, 1, 0 },
-												   { 1, 1, 1, 1, 0 },
-												   { 0, 1, 1, 0, 0 },
-												   { 1, 1, 0, 1, 1 },
-												   { 0, 0, 0, 1, 1 } };
+													   { 1, 1, 1, 1, 0 },
+													   { 0, 1, 1, 0, 0 },
+													   { 1, 1, 0, 1, 1 },
+													   { 0, 0, 0, 1, 1 } };
 	Matrix expected_matrix(expected_array);
 	matrix->set(1, 2, true);
 
 	EXPECT_EQ(*matrix, expected_matrix);
-	//EXPECT_DEATH(matrix->set(1, 1, true), "");
 }
 
 TEST_F(MatrixTests, RearrangeTest)
@@ -86,6 +85,19 @@ TEST_F(MatrixTests, RearrangeTest)
 	Matrix expected_matrix(expected_array);
 
 	matrix->rearrange(permutation);
+
+	EXPECT_EQ(*matrix, expected_matrix);
+}
+
+TEST_F(MatrixTests, DeleteLastStringsTest)
+{
+	std::vector<std::vector<mcontent>> expected_array{ { 1, 1, 0 },
+													   { 1, 1, 0 },
+													   { 0, 0, 1 } };
+
+	Matrix expected_matrix(expected_array);
+
+	matrix->delete_last_strings(2);
 
 	EXPECT_EQ(*matrix, expected_matrix);
 }

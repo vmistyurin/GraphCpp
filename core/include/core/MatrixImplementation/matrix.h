@@ -119,6 +119,21 @@ namespace graphcpp
 			}
 			_matrix = std::move(result._matrix);
 		}
+
+		virtual void delete_last_strings(msize count) //TODO: make it better
+		{
+			for (msize i = 0; i < count; i++)
+			{
+				_matrix.pop_back();
+			}
+			for (msize i = 0; i < dimension(); i++)
+			{
+				for (msize j = 0; j < count; j++)
+				{
+					_matrix[i].pop_back();
+				}
+			}
+		}
 		
 	    std::vector<std::vector<mcontent>>::const_iterator begin() const override
 		{
