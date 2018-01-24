@@ -36,7 +36,7 @@ TEST_F(MatrixGraphTests, GetLinkedVertexesTest)
 
 TEST_F(MatrixGraphTests, GetEdgesTest)
 {
-    EXPECT_TRUE(IsVectorOfEdgesAreEqual(edges, tested_graph.get_edges()));
+    EXPECT_TRUE(AreVectorsOfEdgesEqual(edges, tested_graph.get_edges()));
 }
 
 TEST_F(MatrixGraphTests, GetVertexesDegreeTest)

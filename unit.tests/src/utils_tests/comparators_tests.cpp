@@ -3,7 +3,7 @@
 
 using namespace graphcpp_testing;
 
-TEST(VectorOfEdgesComparator, VectorOfEdgesEquality)
+TEST(VectorsOfEdgesComparison, VectorsOfEdgesEquality)
 {
     std::vector<Edge> v1 
 	{ Edge(1,2,2),
@@ -14,10 +14,10 @@ TEST(VectorOfEdgesComparator, VectorOfEdgesEquality)
 	  Edge(1,2,2),
       Edge(2,4,1) };
 
-    EXPECT_TRUE(IsVectorOfEdgesAreEqual(v1,v2));
+    EXPECT_TRUE(AreVectorsOfEdgesEqual(v1,v2));
 }
 
-TEST(VectorOfEdgesComparator, VectorOfEdgesNonEquality)
+TEST(VectorsOfEdgesComparison, VectoraOfEdgesNonEquality)
 {
     std::vector<Edge> tested_list 
 	{ Edge(1,2,2),
@@ -44,8 +44,8 @@ TEST(VectorOfEdgesComparator, VectorOfEdgesNonEquality)
 	{Edge(1,2,2),
 	 Edge(4,5,2) };
 
-    EXPECT_FALSE(IsVectorOfEdgesAreEqual(tested_list, different_weight));
-    EXPECT_FALSE(IsVectorOfEdgesAreEqual(tested_list, different_node));
-    EXPECT_FALSE(IsVectorOfEdgesAreEqual(tested_list, more_edges));
-	EXPECT_FALSE(IsVectorOfEdgesAreEqual(tested_list, less_edges));
+    EXPECT_FALSE(AreVectorsOfEdgesEqual(tested_list, different_weight));
+    EXPECT_FALSE(AreVectorsOfEdgesEqual(tested_list, different_node));
+    EXPECT_FALSE(AreVectorsOfEdgesEqual(tested_list, more_edges));
+	EXPECT_FALSE(AreVectorsOfEdgesEqual(tested_list, less_edges));
 }
