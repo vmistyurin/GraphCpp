@@ -22,6 +22,7 @@ namespace graphcpp
 				str.resize(dimension);
 			}
 		}
+
 		explicit Matrix(const std::vector<std::vector<mcontent>>& matrix) : Matrix(matrix.size())
 		{
 			assert(matrix.size() < std::numeric_limits<msize>::max());
@@ -38,6 +39,7 @@ namespace graphcpp
 			}
             fill_diagonal();
 		}
+
 		explicit Matrix(const SymmetricMatrixBase& matrix)
 		{
 			_matrix.resize(matrix.dimension());
@@ -57,6 +59,7 @@ namespace graphcpp
 			}
 			return true;
 		}
+
 		bool operator!=(const SymmetricMatrixBase& right) const override
 		{
 			return !(*this == right);
@@ -85,11 +88,16 @@ namespace graphcpp
 
 		const std::vector<mcontent>& get_string(msize str) const override
 		{
+			assert(str < dimension());
+
 			return _matrix[str];
 		}
 
 		void swap(msize str1, msize str2) override //Todo: optimize
 		{
+			assert(str1 != str2);
+			assert(std::max(str1, str2) < dimension());
+
 			const mcontent previous_value = _matrix[str1][str2];
 
 			std::swap(_matrix[str1], _matrix[str2]);
@@ -122,6 +130,8 @@ namespace graphcpp
 
 		virtual void delete_last_strings(msize count) //TODO: make it better
 		{
+			assert(count <= dimension());
+
 			for (msize i = 0; i < count; i++)
 			{
 				_matrix.pop_back();
