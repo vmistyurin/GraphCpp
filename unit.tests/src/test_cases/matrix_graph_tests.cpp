@@ -1,6 +1,6 @@
 #include "unit.tests/utils/comparators.h"
 #include "core/GraphImplementation/matrix_graph.h"
-#include "core/MatrixImplementation/matrix.h"
+#include "core/MatrixImplementation/full_symmetric_matrix.h"
 #include "gtest/gtest.h"
 #include <memory>
 
@@ -18,11 +18,11 @@ protected:
 			Edge(1,5,7),
 			Edge(3,4,10) };
 
-		tested_graph = MatrixGraph<Matrix>(edges, 7);
+		tested_graph = MatrixGraph<FullSymmetricMatrix>(edges, 7);
 		linked_with_third = { 4,6 };
 		degrees = { 1,1,0,2,2,1,3 };
     }
-	MatrixGraph<Matrix> tested_graph;
+	MatrixGraph<FullSymmetricMatrix> tested_graph;
     std::vector<Edge> edges;
     std::vector<msize> linked_with_third;
     std::vector<msize> degrees;
@@ -116,7 +116,7 @@ TEST_F(MatrixGraphTests, DeleteVertexesTest1)
     { Edge(0,1,2),
       Edge(2,3,7) };
     msize expected_dimension = 5;
-	MatrixGraph<Matrix> expected_graph(expected_edges, expected_dimension);
+	MatrixGraph<FullSymmetricMatrix> expected_graph(expected_edges, expected_dimension);
 
     std::vector<msize> deleted_vertexes{3,4};
     tested_graph.delete_vertexes(deleted_vertexes);
@@ -129,7 +129,7 @@ TEST_F(MatrixGraphTests, DeleteVertexesTest2)
 	std::vector<Edge> expected_edges = std::vector<Edge>
 	{ Edge(1,2,10) };
 	msize expected_dimension = 4;
-	MatrixGraph<Matrix> expected_graph(expected_edges, expected_dimension);
+	MatrixGraph<FullSymmetricMatrix> expected_graph(expected_edges, expected_dimension);
 
 	std::vector<msize> deleted_vertexes{1,5,6};
 	tested_graph.delete_vertexes(deleted_vertexes);

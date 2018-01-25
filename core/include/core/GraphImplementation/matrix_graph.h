@@ -2,7 +2,7 @@
 #define GRAPH_CORE_MATRIX_GRAPH_H
 
 #include "core/MatrixImplementation/symmetric_matrix_base.h"
-#include "core/MatrixImplementation/matrix.h"
+#include "core/MatrixImplementation/full_symmetric_matrix.h"
 #include "graph_base.h"
 #include "core/macroses.h"
 #include <algorithm>
@@ -10,7 +10,7 @@
 
 namespace graphcpp
 {
-	template<class SymmetricMatrixType = Matrix> class MatrixGraph final : public GraphBase
+	template<class SymmetricMatrixType = FullSymmetricMatrix> class MatrixGraph final : public GraphBase
 	{
 	private:
 		SymmetricMatrixType _matrix;

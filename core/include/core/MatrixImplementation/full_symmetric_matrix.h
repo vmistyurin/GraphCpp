@@ -1,5 +1,5 @@
-#ifndef GRAPH_CORE_MATRIX_H
-#define GRAPH_CORE_MATRIX_H
+#ifndef GRAPH_CORE_FULL_SYMMETRIC_MATRIX_H
+#define GRAPH_CORE_FULL_SYMMETRIC_MATRIX_H
 
 #include "symmetric_matrix_base.h"
 #include <algorithm>
@@ -8,13 +8,13 @@
 
 namespace graphcpp
 {
-	class Matrix final: public SymmetricMatrixBase
+	class FullSymmetricMatrix final: public SymmetricMatrixBase
 	{
 	private:
 		std::vector<std::vector<mcontent>> _matrix;
 
 	public:
-		explicit Matrix(msize dimension)
+		explicit FullSymmetricMatrix(msize dimension)
 		{
 			_matrix.resize(dimension);
 			for (auto& str : _matrix)
@@ -23,7 +23,7 @@ namespace graphcpp
 			}
 		}
 
-		explicit Matrix(const std::vector<std::vector<mcontent>>& matrix) : Matrix(matrix.size())
+		explicit FullSymmetricMatrix(const std::vector<std::vector<mcontent>>& matrix) : FullSymmetricMatrix(matrix.size())
 		{
 			assert(matrix.size() < std::numeric_limits<msize>::max());
             for(msize i = 0; i < matrix.size(); i++)
@@ -40,7 +40,7 @@ namespace graphcpp
             fill_diagonal();
 		}
 
-		explicit Matrix(const SymmetricMatrixBase& matrix)
+		explicit FullSymmetricMatrix(const SymmetricMatrixBase& matrix)
 		{
 			_matrix.resize(matrix.dimension());
 			for (msize i = 0; i < dimension(); i++)
@@ -117,7 +117,7 @@ namespace graphcpp
 			std::iota(const_permatation.begin(), const_permatation.end(), 0);
 			assert(std::is_permutation(new_nums.cbegin(), new_nums.cend(), const_permatation.cbegin(), const_permatation.cend()));
 
-			Matrix result(dimension());
+			FullSymmetricMatrix result(dimension());
 			for (msize i = 0; i < dimension(); i++)
 			{
 				for (msize j = i + 1; j < dimension(); j++)
