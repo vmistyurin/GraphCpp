@@ -1,5 +1,5 @@
-#ifndef GRAPH_CORE_GRAPHBASE_H
-#define GRAPH_CORE_GRAPHBASE_H
+#ifndef GRAPH_CORE_GRAPH_BASE_H
+#define GRAPH_CORE_GRAPH_BASE_H
 
 #include "core/edge.h"
 #include "core/macroses.h"
