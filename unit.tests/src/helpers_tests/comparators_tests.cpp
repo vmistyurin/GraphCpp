@@ -3,7 +3,7 @@
 
 using namespace graphcpp_testing;
 
-TEST(VectorsOfEdgesComparison, VectorsOfEdgesEquality)
+TEST(HelpersTests, VectorsOfEdgesEquality)
 {
     std::vector<Edge> v1 
 	{ Edge(1,2,2),
@@ -17,7 +17,7 @@ TEST(VectorsOfEdgesComparison, VectorsOfEdgesEquality)
     EXPECT_TRUE(AreVectorsOfEdgesEqual(v1,v2));
 }
 
-TEST(VectorsOfEdgesComparison, VectoraOfEdgesNonEquality)
+TEST(HelpersTests, VectorsOfEdgesNonEquality)
 {
     std::vector<Edge> tested_list 
 	{ Edge(1,2,2),

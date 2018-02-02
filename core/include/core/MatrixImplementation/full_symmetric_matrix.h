@@ -2,6 +2,7 @@
 #define GRAPH_CORE_FULL_SYMMETRIC_MATRIX_H
 
 #include "symmetric_matrix_base.h"
+#include "core/utils.h"
 #include <algorithm>
 #include <assert.h>
 #include <numeric>
@@ -25,11 +26,8 @@ namespace graphcpp
 
 		explicit FullSymmetricMatrix(const std::vector<std::vector<mcontent>>& matrix) : FullSymmetricMatrix(matrix.size())
 		{
-			assert(matrix.size() < std::numeric_limits<msize>::max());
-            for(msize i = 0; i < matrix.size(); i++)
-            {
-                assert(matrix[i].size() == matrix.size());
-            }
+			assert(check_symmetrical_matrix(matrix));
+
 			for (msize i = 0; i < matrix.size(); i++)
 			{
 				for (msize j = 0; j < matrix.size(); j++)
@@ -49,20 +47,20 @@ namespace graphcpp
 			}
 		}
 		
-		bool operator==(const SymmetricMatrixBase& right) const override
+		bool operator==(const SymmetricMatrixBase& rhs) const override
 		{
-            RETURN_IF(this == &right, true);
-            RETURN_IF(right.dimension() != dimension(), false);
+            RETURN_IF(this == &rhs, true);
+            RETURN_IF(rhs.dimension() != dimension(), false);
 			for (msize i = 0; i < dimension(); i++)
 			{
-                RETURN_IF(get_string(i) != right.get_string(i), false);
+                RETURN_IF(get_string(i) != rhs.get_string(i), false);
 			}
 			return true;
 		}
 
-		bool operator!=(const SymmetricMatrixBase& right) const override
+		bool operator!=(const SymmetricMatrixBase& rhs) const override
 		{
-			return !(*this == right);
+			return !(*this == rhs);
 		}
 
 		msize dimension() const override
@@ -86,7 +84,7 @@ namespace graphcpp
 			_matrix[index2][index1] = value;
 		}
 
-		const std::vector<mcontent>& get_string(msize str) const override
+		std::vector<mcontent> get_string(msize str) const override
 		{
 			assert(str < dimension());
 
@@ -113,11 +111,10 @@ namespace graphcpp
 
 		void rearrange(const std::vector<msize>& new_nums) override
 		{
-			std::vector<int> const_permatation; const_permatation.resize(dimension());
-			std::iota(const_permatation.begin(), const_permatation.end(), 0);
-			assert(std::is_permutation(new_nums.cbegin(), new_nums.cend(), const_permatation.cbegin(), const_permatation.cend()));
+			assert(new_nums.size() == dimension());
+			assert(is_permutation(new_nums));
 
-			FullSymmetricMatrix result(dimension());
+			FullSymmetricMatrix result(dimension());	
 			for (msize i = 0; i < dimension(); i++)
 			{
 				for (msize j = i + 1; j < dimension(); j++)
@@ -128,7 +125,7 @@ namespace graphcpp
 			_matrix = std::move(result._matrix);
 		}
 
-		virtual void delete_last_strings(msize count) //TODO: make it better
+		virtual void delete_last_strings(msize count)
 		{
 			assert(count <= dimension());
 
