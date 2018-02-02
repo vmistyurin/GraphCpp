@@ -50,7 +50,7 @@ std::vector<std::pair<msize, msize>> graphcpp::to_transpositions(const std::vect
 	return result;
 }
 
-bool graphcpp::check_symmetrical_matrix(const std::vector<std::vector<msize>>& candidate)
+bool graphcpp::check_symmetrical_matrix(const std::vector<std::vector<mcontent>>& candidate)
 {
 	for (auto str : candidate)
 	{
