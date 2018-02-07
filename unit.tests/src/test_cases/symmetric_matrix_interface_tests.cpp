@@ -19,16 +19,16 @@ namespace
 			 {0, 0, 30, 0, 0, 0, 1, 0, 0} };
 
 	template<class T>
-	std::unique_ptr<SymmetricMatrixBase> GetMatrix(const std::vector<std::vector<mcontent>> &array);
+	std::unique_ptr<SymmetricMatrixBase> GetMatrix(const std::vector<std::vector<mcontent>>& array);
 
 	template<>
-	std::unique_ptr<SymmetricMatrixBase> GetMatrix<FullSymmetricMatrix>(const std::vector<std::vector<mcontent>> &array) 
+	std::unique_ptr<SymmetricMatrixBase> GetMatrix<FullSymmetricMatrix>(const std::vector<std::vector<mcontent>>& array) 
 	{
 		return std::make_unique<FullSymmetricMatrix>(array);
 	}
 
 	template<>
-	std::unique_ptr<SymmetricMatrixBase> GetMatrix<HalfSymmetricMatrix>(const std::vector<std::vector<mcontent>> &array) 
+	std::unique_ptr<SymmetricMatrixBase> GetMatrix<HalfSymmetricMatrix>(const std::vector<std::vector<mcontent>>& array) 
 	{
 		return std::make_unique<HalfSymmetricMatrix>(array);
 	}
