@@ -26,7 +26,7 @@ namespace graphcpp
 			for (const auto& edge : edges)
 			{
 				assert(std::max(edge.v1(), edge.v2()) < dimension);
-				_matrix.set(edge.v1(), edge.v2(), edge.weight());
+				_matrix.set(edge.v1(), edge.v2(), edge.weight);
 			}
 		}
 
@@ -69,7 +69,7 @@ namespace graphcpp
 		std::vector<Edge> get_edges() const override
 		{
 			std::vector<Edge> result;
-			for (msize i = 0; i < dimension(); i++)
+			for (msize i = 1; i < dimension(); i++)
 			{
 				for (msize j = 0; j < i; j++)
 				{
@@ -87,10 +87,9 @@ namespace graphcpp
 			assert(vertex < dimension());
 
 			std::vector<msize> result;
-			auto string = _matrix.get_string(vertex);
 			for (msize i = 0; i < dimension(); i++)
 			{
-				if (string[i] != 0 && i != vertex)
+				if (_matrix.at(vertex, i) > 0)
 				{
 					result.push_back(i);
 				}
@@ -101,12 +100,12 @@ namespace graphcpp
         std::vector<msize> get_degrees() const override
         {
 			std::vector<msize> result; result.reserve(dimension());
-            for(const auto& str : _matrix)
+			for (msize i = 0; i < dimension(); i++)
             {
                 msize current_degree = 0;
-                for(auto value : str)
+                for(msize j = 0; j < dimension(); j++)
                 {
-                    if(value > 0) //TODO: test mask
+                    if(_matrix.at(i,j) > 0)
                     {
                         current_degree++;
                     }
@@ -121,9 +120,9 @@ namespace graphcpp
 			assert(vertex < dimension());
 
 			msize result = 0;
-			for(auto value : _matrix.get_string(vertex))
+			for(msize i = 0; i < dimension(); i++)
 			{
-				if(value > 0)
+				if(_matrix.at(vertex, i) > 0)
 				{
 					result++;
 				}
@@ -155,6 +154,7 @@ namespace graphcpp
 		{
 			_matrix.rearrange(new_nums);
 		}
+
 	};
 }
 #endif

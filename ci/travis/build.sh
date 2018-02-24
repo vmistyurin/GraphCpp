@@ -1,0 +1,4 @@
+mkdir build
+cd build
+cmake .. -DTARGET_CPU=$TARGET_CPU -DCMAKE_BUILD_TYPE=$BUILD_CONFIGURATION
+make

@@ -3,6 +3,7 @@
 
 #include "core/edge.h"
 #include "core/macroses.h"
+#include "core/MatrixImplementation/symmetric_matrix_base.h"
 #include <vector>
 
 namespace graphcpp
