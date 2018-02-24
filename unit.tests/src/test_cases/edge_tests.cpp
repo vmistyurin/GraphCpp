@@ -17,7 +17,7 @@ TEST_F(EdgeTests, GettersTest)
 
 	EXPECT_EQ(1, edge.v1());
 	EXPECT_EQ(10, edge.v2());
-	EXPECT_EQ(3, edge.weight());
+	EXPECT_EQ(3, edge.weight);
 }
 TEST_F(EdgeTests, InvertEdge)
 {
@@ -25,7 +25,7 @@ TEST_F(EdgeTests, InvertEdge)
 
 	EXPECT_EQ(edge.v1(), 3);
 	EXPECT_EQ(edge.v2(), 10);
-	EXPECT_EQ(edge.weight(), 1);
+	EXPECT_EQ(edge.weight, 1);
 }
 
 TEST_F(EdgeTests, EqualityEdges)

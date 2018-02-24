@@ -9,7 +9,6 @@ namespace graphcpp
 	{
 	private:
 		msize _v1, _v2;
-        mcontent _weight;
 
 	public:
 		Edge(msize v1, msize v2, mcontent weight);
@@ -19,7 +18,8 @@ namespace graphcpp
 
 		msize v1() const;
 		msize v2() const;
-        mcontent weight() const;
+
+        mcontent weight;
 	};
 }
 #endif
