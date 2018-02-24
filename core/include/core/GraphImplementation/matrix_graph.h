@@ -154,7 +154,6 @@ namespace graphcpp
 		{
 			_matrix.rearrange(new_nums);
 		}
-
 	};
 }
 #endif
