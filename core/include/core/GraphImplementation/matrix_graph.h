@@ -8,6 +8,7 @@
 #include <numeric>
 #include <unordered_set>
 #include <queue>
+#include <type_traits>
 
 namespace graphcpp
 {
@@ -187,15 +188,18 @@ namespace graphcpp
 
 		mcontent get_flow(msize source, msize sink) const override
 		{
-			SymmetricMatrixType current_flows = _matrix;
+			assert(source != sink);
+			assert(std::max(source, sink) < dimension());
+
+			auto current_flows = _matrix;
 			mcontent flow = 0;
-			std::vector<msize> path = get_random_path(current_flows, source, sink);
+			auto path = get_random_path(current_flows, source, sink);
 			while (!path.empty())
 			{
-				mcontent min_flow = -1;
+				auto min_flow = std::numeric_limits<mcontent>::max();
 				for (msize i = 0; i < path.size() - 1; i++)
 				{
-					min_flow = std::min(min_flow, _matrix.at(path[i], path[i + 1]));
+					min_flow = std::min(min_flow, current_flows.at(path[i], path[i + 1]));
 				}
 
 				for (msize i = 0; i < path.size() - 1; i++)
@@ -209,6 +213,20 @@ namespace graphcpp
 			return flow;
 		}
 
+		std::shared_ptr<SymmetricMatrixBase> get_matrix_of_flows() const override
+		{
+			SymmetricMatrixType matrix(dimension());
+
+			for (msize i = 1; i < dimension(); i++)
+			{
+				for (msize j = 0; j < i; j++)
+				{
+					matrix.set(i, j, get_flow(i, j));
+				}
+			}
+
+			return std::make_shared<SymmetricMatrixType>(matrix);
+		}
 	private:
 		std::vector<msize> get_random_path(const SymmetricMatrixBase& matrix, msize start, msize finish) const
 		{

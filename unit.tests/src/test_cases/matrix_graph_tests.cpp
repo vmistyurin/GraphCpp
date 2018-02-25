@@ -212,11 +212,27 @@ TYPED_TEST(GraphBaseTests, GetConnectedComponentTest)
 TYPED_TEST(GraphBaseTests, FlowTest)
 {
 	const auto first_expected_flow = 7;
-	const auto second_expected_flow = 3;
+	const auto second_expected_flow = 2;
 
 	auto first_flow = this->test_graph->get_flow(1, 5);
-	auto second_flow = this->test_graph->get_flow(6, 4);
+	auto second_flow = this->test_graph->get_flow(0, 3);
 
 	EXPECT_EQ(first_flow, first_expected_flow);
 	EXPECT_EQ(second_flow, second_expected_flow);
+}
+
+TYPED_TEST(GraphBaseTests, MatrixOfFlowsTest)
+{
+	const std::vector<std::vector<mcontent>> flows = { {0, 0, 0, 2, 2, 0, 2},
+													   {0, 0, 0, 0, 0, 7, 0},
+													   {0, 0, 0, 0, 0, 0, 0},
+													   {2, 0, 0, 0, 11, 0, 3},
+													   {2, 0, 0, 11, 0, 0, 3},
+													   {0, 7, 0, 0, 0, 0, 0},
+													   {2, 0, 0, 3, 3, 0, 0} };
+	const auto ptr_to_matrix = std::make_shared<FullSymmetricMatrix>(flows);
+
+	const auto matrix_of_flows = this->test_graph->get_matrix_of_flows();
+
+	EXPECT_EQ(*matrix_of_flows, *ptr_to_matrix);
 }
