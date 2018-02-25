@@ -16,6 +16,7 @@ namespace graphcpp
 		virtual msize dimension() const = 0;
 		virtual mcontent at(msize index1, msize index2) const = 0;
 		virtual void set(msize index1, msize index2, mcontent value) = 0;
+		virtual void reduce_element(msize index1, msize index2, mcontent difference) = 0;
 		virtual std::vector<mcontent> get_string(msize str) const = 0;
 		virtual void swap(msize str1, msize str2) = 0;
 		virtual void rearrange(const std::vector<msize>& new_nums) = 0;

@@ -121,7 +121,7 @@ TYPED_TEST(SymmetricMatrixTests, SetUpperDiagonalTest)
 	const msize x_test_index = 0, y_test_index = 1;
 	const mcontent setted_value = test_array[x_test_index][y_test_index] + 10;
 
-	std::vector<std::vector<mcontent>> expected_after_set_array(test_array);
+	auto expected_after_set_array = test_array;
 	expected_after_set_array[x_test_index][y_test_index] = setted_value;
 	expected_after_set_array[y_test_index][x_test_index] = setted_value;
 
@@ -137,7 +137,7 @@ TYPED_TEST(SymmetricMatrixTests, SetUnderDiagonalTest)
 	const msize x_test_index = 4, y_test_index = 0;
 	const mcontent setted_value = test_array[x_test_index][y_test_index] + 100;
 
-	std::vector<std::vector<mcontent>> expected_after_set_array(test_array);
+	auto expected_after_set_array = test_array;
 	expected_after_set_array[x_test_index][y_test_index] = setted_value;
 	expected_after_set_array[y_test_index][x_test_index] = setted_value;
 
@@ -189,4 +189,21 @@ TYPED_TEST(SymmetricMatrixTests, DeleteLastStringsTest)
 	this->test_matrix->delete_last_strings(number_of_strings_to_delete);
 
 	EXPECT_EQ(*this->test_matrix, *expected_after_delete_matrix);
+}
+
+TYPED_TEST(SymmetricMatrixTests, ReduceElementTest)
+{
+	const auto x_test_index = 0;
+	const auto y_test_index = 4;
+	const auto difference = 5;
+
+	auto expected_after_set_array = test_array;
+	expected_after_set_array[x_test_index][y_test_index] -= difference;
+	expected_after_set_array[y_test_index][x_test_index] -= difference;
+
+	const auto expected_after_set_matrix = GetMatrix<TypeParam>(expected_after_set_array);
+
+	this->test_matrix->reduce_element(x_test_index, y_test_index, difference);
+
+	EXPECT_EQ(*this->test_matrix, *expected_after_set_matrix);
 }

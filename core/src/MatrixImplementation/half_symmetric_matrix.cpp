@@ -85,6 +85,15 @@ void HalfSymmetricMatrix::set(msize index1, msize index2, mcontent value)
 	_matrix[index2 - 1][index1] = value;
 }
 
+void HalfSymmetricMatrix::reduce_element(msize index1, msize index2, mcontent difference)
+{
+	MINMAX(index1, index2);
+	assert(index1 != index2);
+	assert(index2 < dimension());
+
+	_matrix[index2 - 1][index1] -= difference;
+}
+
 std::vector<mcontent> HalfSymmetricMatrix::get_string(msize str) const
 {
 	assert(str < dimension());

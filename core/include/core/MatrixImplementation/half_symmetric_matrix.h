@@ -21,6 +21,7 @@ namespace graphcpp
 		msize dimension() const override;
 		mcontent at(msize index1, msize index2) const override;
 		void set(msize index1, msize index2, mcontent value) override;
+		void reduce_element(msize index1, msize index2, mcontent difference) override;
 		std::vector<mcontent> get_string(msize str) const override;
 		void swap(msize str1, msize str2) override;
 		void rearrange(const std::vector<msize>& new_nums) override;
