@@ -214,8 +214,8 @@ TYPED_TEST(GraphBaseTests, FlowTest)
 	const auto first_expected_flow = 7;
 	const auto second_expected_flow = 3;
 
-	auto first_flow = this->test_graph->flow(1, 5);
-	auto second_flow = this->test_graph->flow(6, 4);
+	auto first_flow = this->test_graph->get_flow(1, 5);
+	auto second_flow = this->test_graph->get_flow(6, 4);
 
 	EXPECT_EQ(first_flow, first_expected_flow);
 	EXPECT_EQ(second_flow, second_expected_flow);

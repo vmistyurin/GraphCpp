@@ -5,6 +5,7 @@
 #include "core/macroses.h"
 #include "core/MatrixImplementation/symmetric_matrix_base.h"
 #include <vector>
+#include <memory>
 
 namespace graphcpp
 {
@@ -21,7 +22,7 @@ namespace graphcpp
 		virtual std::vector<msize> get_connected_component(msize vertex) const = 0;
         virtual std::vector<msize> get_degrees() const = 0;
 		virtual msize get_degree(msize vertex) const = 0;
-		virtual mcontent flow(msize source, msize sink) const = 0;
+		virtual mcontent get_flow(msize source, msize sink) const = 0;
 
 		virtual void delete_vertexes(const std::vector<msize>& vertexes) = 0;
 		virtual void rearrange(const std::vector<msize>& new_nums) = 0;

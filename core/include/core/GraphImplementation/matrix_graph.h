@@ -185,7 +185,7 @@ namespace graphcpp
 			return std::vector<msize>(result.cbegin(), result.cend());
 		}
 
-		mcontent flow(msize source, msize sink) const override
+		mcontent get_flow(msize source, msize sink) const override
 		{
 			SymmetricMatrixType current_flows = _matrix;
 			mcontent flow = 0;
