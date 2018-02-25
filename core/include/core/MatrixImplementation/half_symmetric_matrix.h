@@ -25,9 +25,6 @@ namespace graphcpp
 		void swap(msize str1, msize str2) override;
 		void rearrange(const std::vector<msize>& new_nums) override;
 		void delete_last_strings(msize count) override;
-
-		std::vector<std::vector<mcontent>>::const_iterator begin() const override;
-		std::vector<std::vector<mcontent>>::const_iterator end() const override;
 	};
 }
 #endif

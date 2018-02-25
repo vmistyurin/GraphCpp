@@ -133,16 +133,6 @@ void FullSymmetricMatrix::delete_last_strings(msize count)
 	}
 }
 
-std::vector<std::vector<mcontent>>::const_iterator FullSymmetricMatrix::begin() const
-{
-	return _matrix.cbegin();
-}
-
-std::vector<std::vector<mcontent>>::const_iterator FullSymmetricMatrix::end() const
-{
-	return _matrix.cend();
-}
-
 void FullSymmetricMatrix::fill_diagonal(mcontent value)
 {
 	for (msize i = 0; i < dimension(); i++)

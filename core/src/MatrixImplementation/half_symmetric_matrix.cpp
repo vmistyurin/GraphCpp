@@ -142,12 +142,3 @@ void HalfSymmetricMatrix::delete_last_strings(msize count)
 		_matrix.pop_back();
 	}
 }
-
-std::vector<std::vector<mcontent>>::const_iterator HalfSymmetricMatrix::begin() const
-{
-	return std::vector<std::vector<mcontent>>::const_iterator();
-}
-std::vector<std::vector<mcontent>>::const_iterator HalfSymmetricMatrix::end() const
-{
-	return std::vector<std::vector<mcontent>>::const_iterator();
-}

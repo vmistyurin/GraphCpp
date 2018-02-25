@@ -20,9 +20,6 @@ namespace graphcpp
 		virtual void swap(msize str1, msize str2) = 0;
 		virtual void rearrange(const std::vector<msize>& new_nums) = 0;
 		virtual void delete_last_strings(msize count) = 0;
-
-        virtual std::vector<std::vector<mcontent>>::const_iterator begin() const = 0;
-		virtual std::vector<std::vector<mcontent>>::const_iterator end() const = 0;
 	};
 }
 #endif
