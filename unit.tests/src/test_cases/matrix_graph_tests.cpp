@@ -193,3 +193,30 @@ TYPED_TEST(GraphBaseTests, DeleteVertexesTest2)
 
 	EXPECT_TRUE(this->test_graph->equal(expected_graph));
 }
+
+TYPED_TEST(GraphBaseTests, GetConnectedComponentTest)
+{
+	const std::vector<msize> first_expected_component = { 0,3,4,6 };
+	const std::vector<msize> second_expected_component = { 1,5 };
+
+	auto first_component = this->test_graph->get_connected_component(3);
+	auto second_component = this->test_graph->get_connected_component(1);
+
+	std::sort(first_component.begin(), first_component.end());
+	std::sort(second_component.begin(), second_component.end());
+
+	EXPECT_EQ(first_component, first_expected_component);
+	EXPECT_EQ(second_component, second_expected_component);
+}
+
+TYPED_TEST(GraphBaseTests, FlowTest)
+{
+	const auto first_expected_flow = 7;
+	const auto second_expected_flow = 3;
+
+	auto first_flow = this->test_graph->flow(1, 5);
+	auto second_flow = this->test_graph->flow(6, 4);
+
+	EXPECT_EQ(first_flow, first_expected_flow);
+	EXPECT_EQ(second_flow, second_expected_flow);
+}

@@ -2,15 +2,16 @@
 #define GRAPH_CORE_MATRIX_GRAPH_H
 
 #include "core/MatrixImplementation/symmetric_matrix_base.h"
-#include "core/MatrixImplementation/full_symmetric_matrix.h"
-#include "graph_base.h"
+#include "core/GraphImplementation/graph_base.h"
 #include "core/macroses.h"
 #include <algorithm>
 #include <numeric>
+#include <unordered_set>
+#include <queue>
 
 namespace graphcpp
 {
-	template<class SymmetricMatrixType = FullSymmetricMatrix> class MatrixGraph final : public GraphBase
+	template<class SymmetricMatrixType> class MatrixGraph final : public GraphBase
 	{
 	private:
 		SymmetricMatrixType _matrix;
@@ -154,6 +155,130 @@ namespace graphcpp
 		{
 			_matrix.rearrange(new_nums);
 		}
+
+		std::vector<msize> get_connected_component(msize vertex) const override
+		{
+			assert(vertex < dimension());
+
+			std::unordered_set<msize> result;
+			std::queue<msize> queue;
+
+			result.insert(vertex);
+			queue.push(vertex);
+
+			while (!queue.empty())
+			{
+				auto current_vertex = queue.front(); queue.pop();
+				for (msize i = 0; i < dimension(); i++)
+				{
+					if (_matrix.at(current_vertex, i) > 0)
+					{
+						if (auto[it, success] = result.insert(i); success)
+						{
+							*it; //to prevent compiler warning
+							queue.push(i);
+						}
+					}
+				}
+			}
+
+			return std::vector<msize>(result.cbegin(), result.cend());
+		}
+
+		mcontent flow(msize source, msize sink) const override
+		{
+			SymmetricMatrixType current_flows = _matrix;
+			mcontent flow = 0;
+			std::vector<msize> path = get_random_path(current_flows, source, sink);
+			while (!path.empty())
+			{
+				mcontent min_flow = -1;
+				for (msize i = 0; i < path.size() - 1; i++)
+				{
+					min_flow = std::min(min_flow, _matrix.at(path[i], path[i + 1]));
+				}
+
+				for (msize i = 0; i < path.size() - 1; i++)
+				{
+					current_flows.reduce_element(path[i], path[i + 1], min_flow);
+				}
+				flow += min_flow;
+				path = get_random_path(current_flows, source, sink);
+			}
+
+			return flow;
+		}
+
+	private:
+		std::vector<msize> get_random_path(const SymmetricMatrixBase& matrix, msize start, msize finish) const
+		{
+			assert(std::max(start, finish) < dimension());
+
+			std::vector<msize> ancestors(dimension());
+			std::queue<msize> queue;
+
+			queue.push(start);
+
+			while (!queue.empty())
+			{
+				auto current_vertex = queue.front(); queue.pop();
+				for (msize i = 0; i < dimension(); i++)
+				{
+					if (matrix.at(current_vertex, i) > 0)
+					{
+						if (ancestors[i] == 0)
+						{
+							ancestors[i] = current_vertex;
+							if (finish == i)
+							{
+								goto success;
+							}
+							queue.push(i);
+						}
+					}
+				}
+			}
+			return {};
+
+		success:
+			std::vector<msize> result;
+
+			auto current_vertex = finish;
+			while (current_vertex != start)
+			{
+				result.push_back(current_vertex);
+				current_vertex = ancestors[current_vertex];
+			}
+			result.push_back(start);
+
+			return result;
+		}
+
+		bool is_connected(msize vertex1, msize vertex2) 
+		{
+			std::queue<msize> queue;
+			queue.insert(vertex1);
+
+			while (!queue.empty())
+			{
+				auto current_vertex = queue.front(); queue.pop();
+				for (msize i = 0; i < dimension(); i++)
+				{
+					if (_matrix.at(current_vertex, i) > 0)
+					{
+						if (auto[it, success] = result.insert(i); success)
+						{
+							*it; //to prevent compiler warning
+							RETURN_IF(vertex2 == i, true)
+							queue.push(i);
+						}
+					}
+				}
+			}
+
+			return false;
+		}
+		
 	};
 }
 #endif
