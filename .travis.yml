@@ -29,8 +29,8 @@ matrix:
           env: TARGET_CPU=x86 BUILD_CONFIGURATION=Release
 
 install:
-    - source ci/travis/set-env.sh
-    - source ci/travis/install-$TRAVIS_OS_NAME.sh
+    - source ./ci/travis/set-env.sh
+    - source ./ci/travis/install-$TRAVIS_OS_NAME.sh
 
 script:
     - mkdir build
