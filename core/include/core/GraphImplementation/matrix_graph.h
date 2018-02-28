@@ -6,9 +6,10 @@
 #include "core/macroses.h"
 #include <algorithm>
 #include <numeric>
-#include <unordered_set>
+#include <set>
 #include <queue>
 #include <type_traits>
+#include <assert.h>
 
 namespace graphcpp
 {
@@ -146,6 +147,27 @@ namespace graphcpp
 			return result;
 		}
 
+		std::vector<std::pair<msize, msize>> get_hanged_vertexes() const
+		{			
+			std::vector<msize> hanged_vertexes;
+			auto degrees = get_degrees();
+			for (msize i = 0; i < degrees.size(); i++)
+			{
+				if (degrees[i] == 1)
+				{
+					hanged_vertexes.push_back(i);
+				}
+			}
+
+			std::vector<std::pair<msize, msize>> result; result.reserve(hanged_vertexes.size());
+			for (auto vertex : hanged_vertexes)
+			{
+				result.emplace_back(vertex, get_linked_vertexes(vertex)[0]);
+			}
+
+			return result;
+		}
+
         std::vector<msize> get_degrees() const override
         {
 			std::vector<msize> result; result.reserve(dimension());
@@ -208,7 +230,7 @@ namespace graphcpp
 		{
 			assert(vertex < dimension());
 
-			std::unordered_set<msize> result;
+			std::set<msize> result;
 			std::queue<msize> queue;
 
 			result.insert(vertex);
@@ -232,6 +254,31 @@ namespace graphcpp
 
 			return std::vector<msize>(result.cbegin(), result.cend());
 		}
+
+		std::vector<std::vector<msize>> get_connected_components() const override
+		{
+			std::vector<std::vector<msize>> result;
+			
+			std::vector<bool> used(dimension());
+			msize current_vertex = 0;
+			while (current_vertex != dimension())
+			{
+				if (used[current_vertex])
+				{
+					current_vertex++;
+					continue;
+				}
+				auto current_connected_component = get_connected_component(current_vertex);
+				for (auto vertex : current_connected_component)
+				{
+					used[vertex] = true;
+				}
+				result.push_back(current_connected_component);
+			}
+
+			return result;
+		}
+
 
 		mcontent get_flow(msize source, msize sink) const override
 		{

@@ -18,10 +18,15 @@ namespace graphcpp
 		virtual bool equal(const GraphBase& other) const = 0;
 		virtual const SymmetricMatrixBase& get_matrix() const = 0;
 		virtual std::vector<Edge> get_edges() const = 0;
+
 		virtual std::vector<msize> get_linked_vertexes(msize vertex) const = 0;
+		virtual std::vector<std::pair<msize, msize>> get_hanged_vertexes() const = 0;
 		virtual std::vector<msize> get_connected_component(msize vertex) const = 0;
+		virtual std::vector<std::vector<msize>> get_connected_components() const = 0;
+
         virtual std::vector<msize> get_degrees() const = 0;
 		virtual msize get_degree(msize vertex) const = 0;
+
 		virtual mcontent get_flow(msize source, msize sink) const = 0;
 		virtual std::shared_ptr<SymmetricMatrixBase> get_matrix_of_flows() const = 0;
 

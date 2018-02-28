@@ -2,10 +2,14 @@
 #define GRAPH_CORE_MACROSES_H
 
 #include <cstddef>
+#include <type_traits>
 
 #define RETURN_IF(condition, value) if(condition) return value;
 #define MINMAX(value1, value2) if(value1 > value2) std::swap(value1,value2)
-using msize = size_t;
-using mcontent = unsigned int; //TODO: Template it
+#define CONTAINS(container, value) (std::find(container.cbegin(),container.cend(), value) != container.cend())
 
+using msize = size_t;
+using mcontent = int; //TODO: Template it
+
+//constexpr auto undefined_msize = std::
 #endif

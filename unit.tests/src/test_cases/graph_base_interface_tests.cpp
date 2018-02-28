@@ -199,14 +199,29 @@ TYPED_TEST(GraphBaseTests, GetConnectedComponentTest)
 	const std::vector<msize> first_expected_component = { 0,3,4,6 };
 	const std::vector<msize> second_expected_component = { 1,5 };
 
-	auto first_component = this->test_graph->get_connected_component(3);
-	auto second_component = this->test_graph->get_connected_component(1);
-
-	std::sort(first_component.begin(), first_component.end());
-	std::sort(second_component.begin(), second_component.end());
+	const auto first_component = this->test_graph->get_connected_component(3);
+	const auto second_component = this->test_graph->get_connected_component(1);
 
 	EXPECT_EQ(first_component, first_expected_component);
 	EXPECT_EQ(second_component, second_expected_component);
+}
+
+TYPED_TEST(GraphBaseTests, GetConnectedComponentsTest)
+{
+	const std::vector<std::vector<msize>> expected_components = { { 0,3,4,6 }, {1,5}, {2} };
+
+	const auto components = this->test_graph->get_connected_components();
+
+	EXPECT_EQ(components, expected_components);
+}
+
+TYPED_TEST(GraphBaseTests, GetHangedVertexesTest)
+{
+	const std::vector<std::pair<msize, msize>> expected_hanged = { {0, 6}, {1,5}, {5,1} };
+
+	const auto hanged = this->test_graph->get_hanged_vertexes();
+
+	EXPECT_TRUE(CompareVectorsWithoutOrder(hanged, expected_hanged));
 }
 
 TYPED_TEST(GraphBaseTests, FlowTest)
