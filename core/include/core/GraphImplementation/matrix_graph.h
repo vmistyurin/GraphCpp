@@ -12,6 +12,53 @@
 
 namespace graphcpp
 {
+	namespace
+	{
+		std::vector<msize> get_random_path(const SymmetricMatrixBase& matrix, msize start, msize finish)
+		{
+			assert(std::max(start, finish) < matrix.dimension());
+
+			std::vector<msize> ancestors(matrix.dimension());
+			std::queue<msize> queue;
+
+			queue.push(start);
+
+			while (!queue.empty())
+			{
+				auto current_vertex = queue.front(); queue.pop();
+				for (msize i = 0; i < matrix.dimension(); i++)
+				{
+					if (matrix.at(current_vertex, i) > 0)
+					{
+						if (ancestors[i] == 0)
+						{
+							ancestors[i] = current_vertex;
+							if (finish == i)
+							{
+								goto success;
+							}
+							queue.push(i);
+						}
+					}
+				}
+			}
+			return {};
+
+		success:
+			std::vector<msize> result;
+
+			auto current_vertex = finish;
+			while (current_vertex != start)
+			{
+				result.push_back(current_vertex);
+				current_vertex = ancestors[current_vertex];
+			}
+			result.push_back(start);
+
+			return result;
+		}
+	}
+
 	template<class SymmetricMatrixType> class MatrixGraph final : public GraphBase
 	{
 	private:
@@ -227,51 +274,8 @@ namespace graphcpp
 
 			return std::make_shared<SymmetricMatrixType>(matrix);
 		}
+
 	private:
-		std::vector<msize> get_random_path(const SymmetricMatrixBase& matrix, msize start, msize finish) const
-		{
-			assert(std::max(start, finish) < dimension());
-
-			std::vector<msize> ancestors(dimension());
-			std::queue<msize> queue;
-
-			queue.push(start);
-
-			while (!queue.empty())
-			{
-				auto current_vertex = queue.front(); queue.pop();
-				for (msize i = 0; i < dimension(); i++)
-				{
-					if (matrix.at(current_vertex, i) > 0)
-					{
-						if (ancestors[i] == 0)
-						{
-							ancestors[i] = current_vertex;
-							if (finish == i)
-							{
-								goto success;
-							}
-							queue.push(i);
-						}
-					}
-				}
-			}
-			return {};
-
-		success:
-			std::vector<msize> result;
-
-			auto current_vertex = finish;
-			while (current_vertex != start)
-			{
-				result.push_back(current_vertex);
-				current_vertex = ancestors[current_vertex];
-			}
-			result.push_back(start);
-
-			return result;
-		}
-
 		bool is_connected(msize vertex1, msize vertex2) 
 		{
 			std::queue<msize> queue;
@@ -296,7 +300,6 @@ namespace graphcpp
 
 			return false;
 		}
-		
 	};
 }
 #endif
