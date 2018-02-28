@@ -85,7 +85,7 @@ TYPED_TEST(GraphBaseTests, GetLinkedVertexesTest)
 
 TYPED_TEST(GraphBaseTests, GetEdgesTest)
 {
-    EXPECT_TRUE(AreVectorsOfEdgesEqual(test_edges, this->test_graph->get_edges()));
+    EXPECT_TRUE(compare_vectors_without_order(test_edges, this->test_graph->get_edges()));
 }
 
 TYPED_TEST(GraphBaseTests, GetVertexesDegreeTest)
@@ -221,7 +221,7 @@ TYPED_TEST(GraphBaseTests, GetHangedVertexesTest)
 
 	const auto hanged = this->test_graph->get_hanged_vertexes();
 
-	EXPECT_TRUE(CompareVectorsWithoutOrder(hanged, expected_hanged));
+	EXPECT_TRUE(compare_vectors_without_order(hanged, expected_hanged));
 }
 
 TYPED_TEST(GraphBaseTests, FlowTest)

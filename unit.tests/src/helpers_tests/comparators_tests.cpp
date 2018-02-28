@@ -14,7 +14,7 @@ TEST(HelpersTests, VectorsOfEdgesEquality)
 	  Edge(1,2,2),
       Edge(2,4,1) };
 
-    EXPECT_TRUE(AreVectorsOfEdgesEqual(v1,v2));
+    EXPECT_TRUE(compare_vectors_without_order(v1,v2));
 }
 
 TEST(HelpersTests, VectorsOfEdgesNonEquality)
@@ -44,8 +44,8 @@ TEST(HelpersTests, VectorsOfEdgesNonEquality)
 	{Edge(1,2,2),
 	 Edge(4,5,2) };
 
-    EXPECT_FALSE(AreVectorsOfEdgesEqual(tested_list, different_weight));
-    EXPECT_FALSE(AreVectorsOfEdgesEqual(tested_list, different_node));
-    EXPECT_FALSE(AreVectorsOfEdgesEqual(tested_list, more_edges));
-	EXPECT_FALSE(AreVectorsOfEdgesEqual(tested_list, less_edges));
+    EXPECT_FALSE(compare_vectors_without_order(tested_list, different_weight));
+    EXPECT_FALSE(compare_vectors_without_order(tested_list, different_node));
+    EXPECT_FALSE(compare_vectors_without_order(tested_list, more_edges));
+	EXPECT_FALSE(compare_vectors_without_order(tested_list, less_edges));
 }

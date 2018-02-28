@@ -1,21 +1,9 @@
+#include "unit.tests/utils/comparators.h"
 #include "core/utils.h"
 #include "gtest/gtest.h"
 
 using namespace graphcpp;
-
-namespace
-{
-	bool equal_permutaions(const std::vector<std::pair<msize, msize>>& first, const std::vector<std::pair<msize, msize>>& second)
-	{
-		RETURN_IF(first.size() != second.size(), false);
-		for (std::vector<std::pair<msize, msize>>::size_type i = 0; i < first.size(); i++)
-		{
-			RETURN_IF(std::find(first.cbegin(), first.cend(), second[i]) == first.cend(), false);
-			RETURN_IF(std::find(second.cbegin(), second.cend(), first[i]) == second.cend(), false);
-		}
-		return true;
-	}
-}
+using namespace graphcpp_testing;
 
 TEST(UtilsTests, ToTranspositionTest)
 {
@@ -30,5 +18,5 @@ TEST(UtilsTests, ToTranspositionTest)
 		{0,8}
 	};
 
-	EXPECT_TRUE(equal_permutaions(expected_transpositions, to_transpositions(permutation)));
+	EXPECT_TRUE(compare_vectors_without_order(expected_transpositions, to_transpositions(permutation)));
 }
