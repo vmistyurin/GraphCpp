@@ -1,51 +1,57 @@
 #include "unit.tests/utils/comparators.h"
+#include "core/edge.h"
 #include "gtest/gtest.h"
 
+using namespace graphcpp;
 using namespace graphcpp_testing;
 
-TEST(HelpersTests, VectorsOfEdgesEquality)
+TEST(HelpersTests, CompareVectorsOfIntWithoutOrder)
 {
-    std::vector<Edge> v1 
+	std::vector<int> test_vector = { 1,2,3,4,5 };
+	std::vector<int> permutated_test_vector = { 1,2,4,5,3 };
+	std::vector<int> different_size = { 1,2,3,4 };
+	std::vector<int> different_content = { 1,2,3,4,6 };
+
+	EXPECT_TRUE(compare_vectors_without_order(test_vector, permutated_test_vector));
+	EXPECT_FALSE(compare_vectors_without_order(test_vector, different_size));
+	EXPECT_FALSE(compare_vectors_without_order(test_vector, different_content));
+}
+
+TEST(HelpersTests, CompareVectorsOfEdgesWithoutOrder)
+{
+    std::vector<Edge> test_vector 
 	{ Edge(1,2,2),
       Edge(4,5,1),
       Edge(2,4,1) };
-    std::vector<Edge> v2 
+
+    std::vector<Edge> equal_to_test_vector 
 	{ Edge(4,5,1),
 	  Edge(1,2,2),
       Edge(2,4,1) };
 
-    EXPECT_TRUE(compare_vectors_without_order(v1,v2));
-}
-
-TEST(HelpersTests, VectorsOfEdgesNonEquality)
-{
-    std::vector<Edge> tested_list 
-	{ Edge(1,2,2),
-	  Edge(4,5,1),
-	  Edge(4,2,1) };
-
-    std::vector<Edge> different_weight 
+	std::vector<Edge> different_weight
 	{ Edge(1,2,2),
 	  Edge(4,5,2),
 	  Edge(4,2,1) };
 
 	std::vector<Edge> different_node
-	{ Edge(1,2,2), 
+	{ Edge(1,2,2),
 	  Edge(4,5,2),
 	  Edge(4,2,1) };
 
-    std::vector<Edge> more_edges 
+	std::vector<Edge> more_edges
 	{ Edge(1,2,2),
-      Edge(4,5,1),
-      Edge(4,2,1),
-      Edge(5,6,5) };
+	  Edge(4,5,1),
+	  Edge(4,2,1),
+	  Edge(5,6,5) };
 
-    std::vector<Edge> less_edges 
-	{Edge(1,2,2),
-	 Edge(4,5,2) };
+	std::vector<Edge> less_edges
+	{ Edge(1,2,2),
+	  Edge(4,5,2) };
 
-    EXPECT_FALSE(compare_vectors_without_order(tested_list, different_weight));
-    EXPECT_FALSE(compare_vectors_without_order(tested_list, different_node));
-    EXPECT_FALSE(compare_vectors_without_order(tested_list, more_edges));
-	EXPECT_FALSE(compare_vectors_without_order(tested_list, less_edges));
+	EXPECT_TRUE(compare_vectors_without_order(test_vector, equal_to_test_vector));
+	EXPECT_FALSE(compare_vectors_without_order(test_vector, different_weight));
+	EXPECT_FALSE(compare_vectors_without_order(test_vector, different_node));
+	EXPECT_FALSE(compare_vectors_without_order(test_vector, more_edges));
+	EXPECT_FALSE(compare_vectors_without_order(test_vector, less_edges));
 }

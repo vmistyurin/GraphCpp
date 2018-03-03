@@ -6,6 +6,7 @@
 #include "gtest/gtest.h"
 #include <memory>
 
+using namespace graphcpp;
 using namespace graphcpp_testing;
 
 namespace

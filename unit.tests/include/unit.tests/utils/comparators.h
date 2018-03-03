@@ -1,15 +1,12 @@
 #ifndef UNIT_TESTS_COMPARATORS_H
 #define UNIT_TESTS_COMPARATORS_H
 
-#include "core/edge.h"
 #include "gtest/gtest.h"
+#include "core/macroses.h"
 #include <vector>
-#include <set>
-#include <algorithm>
 
 namespace graphcpp_testing
 {
-    using namespace graphcpp;
 	template<class T>
 	inline bool compare_vectors_without_order(const std::vector<T>& v1, const std::vector<T>& v2)
 	{
