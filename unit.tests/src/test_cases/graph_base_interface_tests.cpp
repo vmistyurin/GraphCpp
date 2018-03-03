@@ -59,12 +59,12 @@ protected:
 using GraphImplementations = testing::Types<MatrixGraph<FullSymmetricMatrix>, MatrixGraph<HalfSymmetricMatrix>>;
 TYPED_TEST_CASE(GraphBaseTests, GraphImplementations);
 
-TYPED_TEST(GraphBaseTests, GetDimensionTest)
+TYPED_TEST(GraphBaseTests, DimensionTest)
 {
 	EXPECT_EQ(this->test_graph->dimension(), test_dimension);
 }
 
-TYPED_TEST(GraphBaseTests, GetLinkedVertexesTest)
+TYPED_TEST(GraphBaseTests, LinkedVertexesTest)
 {
 	const msize test_vertex = 3;
 	std::vector<msize> linked_with_test_vertex;
@@ -84,17 +84,17 @@ TYPED_TEST(GraphBaseTests, GetLinkedVertexesTest)
     EXPECT_EQ(this->test_graph->get_linked_vertexes(test_vertex), linked_with_test_vertex);
 }
 
-TYPED_TEST(GraphBaseTests, GetEdgesTest)
+TYPED_TEST(GraphBaseTests, EdgesTest)
 {
     EXPECT_TRUE(compare_vectors_without_order(test_edges, this->test_graph->get_edges()));
 }
 
-TYPED_TEST(GraphBaseTests, GetVertexesDegreeTest)
+TYPED_TEST(GraphBaseTests, VertexesDegreeTest)
 {
     EXPECT_EQ(this->test_graph->get_degrees(), degrees);
 }
 
-TYPED_TEST(GraphBaseTests, GetVertexDegreeTests)
+TYPED_TEST(GraphBaseTests, VertexDegreeTests)
 {
 	const msize first_test_vertex = 0;
 	const msize second_test_vertex = 5;
@@ -195,7 +195,7 @@ TYPED_TEST(GraphBaseTests, DeleteVertexesTest2)
 	EXPECT_TRUE(this->test_graph->equal(expected_graph));
 }
 
-TYPED_TEST(GraphBaseTests, GetConnectedComponentTest)
+TYPED_TEST(GraphBaseTests, ConnectedComponentTest)
 {
 	const std::vector<msize> first_expected_component = { 0,3,4,6 };
 	const std::vector<msize> second_expected_component = { 1,5 };
@@ -207,7 +207,7 @@ TYPED_TEST(GraphBaseTests, GetConnectedComponentTest)
 	EXPECT_EQ(second_component, second_expected_component);
 }
 
-TYPED_TEST(GraphBaseTests, GetConnectedComponentsTest)
+TYPED_TEST(GraphBaseTests, ConnectedComponentsTest)
 {
 	const std::vector<std::vector<msize>> expected_components = { { 0,3,4,6 }, {1,5}, {2} };
 
@@ -216,7 +216,7 @@ TYPED_TEST(GraphBaseTests, GetConnectedComponentsTest)
 	EXPECT_EQ(components, expected_components);
 }
 
-TYPED_TEST(GraphBaseTests, GetHangedVertexesTest)
+TYPED_TEST(GraphBaseTests, HangedVertexesTest)
 {
 	const std::vector<std::pair<msize, msize>> expected_hanged = { {0, 6}, {1,5}, {5,1} };
 
