@@ -2,7 +2,6 @@
 #define GRAPH_CORE_MACROSES_H
 
 #include <cstddef>
-#include <type_traits>
 #include <limits>
 
 #define RETURN_IF(condition, value) if(condition) return value;
