@@ -4,6 +4,7 @@
 #include "gtest/gtest.h"
 #include "core/macroses.h"
 #include <vector>
+#include <list>
 
 namespace graphcpp_testing
 {
@@ -15,6 +16,18 @@ namespace graphcpp_testing
 		{
 			RETURN_IF(!CONTAINS(v1, v2[i]), false);
 			RETURN_IF(!CONTAINS(v2, v1[i]), false);
+		}
+		return true;
+	}
+
+	template<class T>
+	inline bool compare_lists_without_order(const std::list<T>& l1, const std::list<T>& l2)
+	{
+		RETURN_IF(l1.size() != l2.size(), false);
+		for (size_t i = 0; i < l1.size(); i++)
+		{
+			RETURN_IF(!CONTAINS(l1, *std::next(l2.cbegin(), i)), false);
+			RETURN_IF(!CONTAINS(l2, *std::next(l1.cbegin(), i)), false);
 		}
 		return true;
 	}

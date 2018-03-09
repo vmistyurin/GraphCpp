@@ -13,13 +13,15 @@ namespace
 {
 	const std::vector<Edge> test_edges =
 	{ 
-		Edge(0,6,2),
-		Edge(3,6,1),
-		Edge(4,6,2),
-		Edge(1,5,7),
-		Edge(3,4,10) 
+		Edge(3, 6, 1),
+		Edge(4, 6, 2),
+		Edge(1, 5, 7),
+		Edge(3, 4, 10),
+		Edge(2, 4, 4),
+		Edge(6, 0, 2),
+		Edge(6, 7, 10)
 	};
-	const msize test_dimension = 7;
+	const msize test_dimension = 8;
 
 	template<class T>
 	std::unique_ptr<GraphBase> GetGraph(const std::vector<Edge>& edges, msize dimension);
@@ -97,7 +99,7 @@ TYPED_TEST(GraphBaseTests, VertexesDegreeTest)
 TYPED_TEST(GraphBaseTests, VertexDegreeTests)
 {
 	const msize first_test_vertex = 0;
-	const msize second_test_vertex = 5;
+	const msize second_test_vertex = 6;
 
     EXPECT_EQ(this->test_graph->get_degree(first_test_vertex), degrees[first_test_vertex]);
     EXPECT_EQ(this->test_graph->get_degree(second_test_vertex), degrees[second_test_vertex]);
@@ -111,17 +113,19 @@ TYPED_TEST(GraphBaseTests, EqualityTest)
 	std::vector<Edge> shuffled_edges = test_edges;
 	std::swap(shuffled_edges[0], shuffled_edges[4]);
 	std::swap(shuffled_edges[1], shuffled_edges[3]);
-	TypeParam shuffled_edges_graph(shuffled_edges, 7);
+	TypeParam shuffled_edges_graph(shuffled_edges, test_dimension);
 
 
     std::vector<Edge> equal_edges
     {
-        Edge(1,5,2),
-        Edge(4,5,2),
-        Edge(2,4,10),
-        Edge(2,5,1),
-        Edge(3,6,7)
-    };
+        Edge(3, 6,7),
+		Edge(1, 5, 10),
+		Edge(1, 4, 2),
+		Edge(1, 2, 1),
+		Edge(0, 2, 10),
+		Edge(0, 1, 2),
+		Edge(0, 7, 4)
+	};
 	TypeParam equal_graph(equal_edges, test_dimension);
 
 
@@ -130,22 +134,25 @@ TYPED_TEST(GraphBaseTests, EqualityTest)
 
     std::vector<Edge> different_degrees_edges
     {
-		Edge(1,5,2),
-		Edge(4,5,3),
-		Edge(1,4,10),
-		Edge(2,5,1),
-		Edge(3,5,7)
+		Edge(1, 5, 2),
+		Edge(4, 5, 3),
+		Edge(1, 4, 10),
+		Edge(2, 5, 1),	
+		Edge(3, 5, 7),
+		Edge(7, 1, 10)
     };
 	TypeParam different_degrees_graph(different_degrees_edges, test_dimension);
 
 
 	std::vector<Edge> different_edges
 	{
-		Edge(1,5,2),
-		Edge(2,6,3),
-		Edge(3,4,10),
-		Edge(3,5,1),
-		Edge(2,5,7)
+		Edge(0, 1, 1),
+		Edge(0, 2, 1),
+		Edge(0, 3, 1),
+		Edge(0, 4, 1),
+		Edge(4, 5, 1),
+		Edge(5, 7, 1),
+		Edge(5, 6, 1)
 	};
 	TypeParam different_edges_graph(different_edges, test_dimension);
 
@@ -166,12 +173,13 @@ TYPED_TEST(GraphBaseTests, EqualityTest)
 
 TYPED_TEST(GraphBaseTests, DeleteVertexesTest1)
 {
-	const std::vector<msize> deleted_vertexes{ 3,4 };
+	const std::vector<msize> deleted_vertexes = { 3,4 };
 	const msize expected_dimension = test_dimension - deleted_vertexes.size();
 	const std::vector<Edge> expected_edges 
     {
-		Edge(0,1,2),
-		Edge(2,3,7) 
+		Edge(0, 1, 2),
+		Edge(1, 2, 10),
+		Edge(3, 4, 7)
 	};
 	TypeParam expected_graph(expected_edges, expected_dimension);
 
@@ -180,24 +188,9 @@ TYPED_TEST(GraphBaseTests, DeleteVertexesTest1)
     EXPECT_TRUE(this->test_graph->equal(expected_graph));
 }
 
-TYPED_TEST(GraphBaseTests, DeleteVertexesTest2)
-{
-	const std::vector<msize> deleted_vertexes{ 1,5,6 };
-	const msize expected_dimension = test_dimension - deleted_vertexes.size();
-	const std::vector<Edge> expected_edges
-	{ 
-		Edge(1,2,10) 
-	};
-	TypeParam expected_graph(expected_edges, expected_dimension);
-
-	this->test_graph->delete_vertexes(deleted_vertexes);
-
-	EXPECT_TRUE(this->test_graph->equal(expected_graph));
-}
-
 TYPED_TEST(GraphBaseTests, ConnectedComponentTest)
 {
-	const std::vector<msize> first_expected_component = { 0,3,4,6 };
+	const std::vector<msize> first_expected_component = { 0, 2, 3, 4, 6, 7 };
 	const std::vector<msize> second_expected_component = { 1,5 };
 
 	const auto first_component = this->test_graph->get_connected_component(3);
@@ -209,7 +202,7 @@ TYPED_TEST(GraphBaseTests, ConnectedComponentTest)
 
 TYPED_TEST(GraphBaseTests, ConnectedComponentsTest)
 {
-	const std::vector<std::vector<msize>> expected_components = { { 0,3,4,6 }, {1,5}, {2} };
+	const std::vector<std::vector<msize>> expected_components = { { 0, 2, 3, 4, 6, 7 }, {1, 5} };
 
 	const auto components = this->test_graph->get_connected_components();
 
@@ -218,20 +211,20 @@ TYPED_TEST(GraphBaseTests, ConnectedComponentsTest)
 
 TYPED_TEST(GraphBaseTests, HangedVertexesTest)
 {
-	const std::vector<std::pair<msize, msize>> expected_hanged = { {0, 6}, {1,5}, {5,1} };
+	const std::list<std::pair<msize, msize>> expected_hanged = { {0, 6}, {7, 6}, {5, 1}, {1, 5}, {2, 4} };
 
 	const auto hanged = this->test_graph->get_hanged_vertexes();
 
-	EXPECT_TRUE(compare_vectors_without_order(hanged, expected_hanged));
+	EXPECT_TRUE(compare_lists_without_order(hanged, expected_hanged));
 }
 
 TYPED_TEST(GraphBaseTests, FlowTest)
 {
-	const auto first_expected_flow = 7;
-	const auto second_expected_flow = 2;
+	const auto first_expected_flow = 3;
+	const auto second_expected_flow = 7;
 
-	auto first_flow = this->test_graph->get_flow(1, 5);
-	auto second_flow = this->test_graph->get_flow(0, 3);
+	auto first_flow = this->test_graph->get_flow(3, 6);
+	auto second_flow = this->test_graph->get_flow(1, 5);
 
 	EXPECT_EQ(first_flow, first_expected_flow);
 	EXPECT_EQ(second_flow, second_expected_flow);
@@ -239,16 +232,35 @@ TYPED_TEST(GraphBaseTests, FlowTest)
 
 TYPED_TEST(GraphBaseTests, MatrixOfFlowsTest)
 {
-	const std::vector<std::vector<mcontent>> flows = { {0, 0, 0, 2, 2, 0, 2},
-													   {0, 0, 0, 0, 0, 7, 0},
-													   {0, 0, 0, 0, 0, 0, 0},
-													   {2, 0, 0, 0, 11, 0, 3},
-													   {2, 0, 0, 11, 0, 0, 3},
-													   {0, 7, 0, 0, 0, 0, 0},
-													   {2, 0, 0, 3, 3, 0, 0} };
+	const std::vector<std::vector<mcontent>> flows = { {0, 0, 2, 2,  2,  0, 2, 2},
+													   {0, 0, 0, 0,  0,  7, 0, 0},
+													   {2, 0, 0, 4,  4,  0, 3, 3},
+													   {2, 0, 4, 0,  11, 0, 3, 3},
+													   {2, 0, 4, 11, 0,  0, 3, 3},
+													   {0, 7, 0, 0,  0,  0, 0, 0},
+													   {2, 0, 3, 3,  3,  0, 0, 10},
+													   {2, 0, 3, 3,  3,  0, 10, 0}};
 	const auto ptr_to_matrix = std::make_shared<FullSymmetricMatrix>(flows);
 
 	const auto matrix_of_flows = this->test_graph->get_matrix_of_flows();
+
+	EXPECT_EQ(*matrix_of_flows, *ptr_to_matrix);
+}
+
+
+TYPED_TEST(GraphBaseTests, OptimizedMatrixOfFlowsTest)
+{
+	const std::vector<std::vector<mcontent>> flows = { { 0, 0, 2, 2,  2,  0, 2, 2 },
+	{ 0, 0, 0, 0,  0,  7, 0, 0 },
+	{ 2, 0, 0, 4,  4,  0, 3, 3 },
+	{ 2, 0, 4, 0,  11, 0, 3, 3 },
+	{ 2, 0, 4, 11, 0,  0, 3, 3 },
+	{ 0, 7, 0, 0,  0,  0, 0, 0 },
+	{ 2, 0, 3, 3,  3,  0, 0, 10 },
+	{ 2, 0, 3, 3,  3,  0, 10, 0 } };
+	const auto ptr_to_matrix = std::make_shared<FullSymmetricMatrix>(flows);
+
+	const auto matrix_of_flows = this->test_graph->optimized_get_matrix_of_flows();
 
 	EXPECT_EQ(*matrix_of_flows, *ptr_to_matrix);
 }

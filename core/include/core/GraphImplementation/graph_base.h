@@ -6,6 +6,7 @@
 #include "core/MatrixImplementation/symmetric_matrix_base.h"
 #include <vector>
 #include <memory>
+#include <list>
 
 namespace graphcpp
 {
@@ -20,7 +21,7 @@ namespace graphcpp
 		virtual std::vector<Edge> get_edges() const = 0;
 
 		virtual std::vector<msize> get_linked_vertexes(msize vertex) const = 0;
-		virtual std::vector<std::pair<msize, msize>> get_hanged_vertexes() const = 0;
+		virtual std::list<std::pair<msize, msize>> get_hanged_vertexes() const = 0;
 		virtual std::vector<msize> get_connected_component(msize vertex) const = 0;
 		virtual std::vector<std::vector<msize>> get_connected_components() const = 0;
 
@@ -29,6 +30,7 @@ namespace graphcpp
 
 		virtual mcontent get_flow(msize source, msize sink) const = 0;
 		virtual std::shared_ptr<SymmetricMatrixBase> get_matrix_of_flows() const = 0;
+		virtual std::shared_ptr<SymmetricMatrixBase> optimized_get_matrix_of_flows() const = 0;
 
 		virtual void delete_vertexes(const std::vector<msize>& vertexes) = 0;
 		virtual void rearrange(const std::vector<msize>& new_nums) = 0;
