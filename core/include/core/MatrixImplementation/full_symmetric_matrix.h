@@ -1,7 +1,7 @@
 #ifndef GRAPH_CORE_FULL_SYMMETRIC_MATRIX_H
 #define GRAPH_CORE_FULL_SYMMETRIC_MATRIX_H
 
-#include "symmetric_matrix_base.h"
+#include "core/MatrixImplementation/symmetric_matrix_base.h"
 
 namespace graphcpp
 {
