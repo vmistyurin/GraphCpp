@@ -3,11 +3,11 @@
 
 int main(int argc, char **argv) 
 {
-#ifdef DEBUG
+#ifdef _DEBUG
 	std::cout << "DEBUG" << std::endl;
 #else	
 	std::cout << "RELEASE" << std::endl;
-#endif // DEBUG
+#endif // _DEBUG
 
 #ifdef _M_X64
 	std::cout << "x64" << std::endl;
