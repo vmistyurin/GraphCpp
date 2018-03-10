@@ -1,5 +1,4 @@
 cmake_minimum_required(VERSION 3.2)
-set(CMAKE_CONFIGURATION_TYPES Debug Release CACHE TYPE INTERNAL FORCE)
 project(graph_core)
 
 include(GetProjectFiles)

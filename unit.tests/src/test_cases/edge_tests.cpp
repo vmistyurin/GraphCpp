@@ -1,3 +1,4 @@
+#include "unit.tests/macroses.h"
 #include "core/edge.h"
 #include "gtest/gtest.h"
 

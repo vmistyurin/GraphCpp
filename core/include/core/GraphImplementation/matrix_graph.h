@@ -284,7 +284,7 @@ namespace graphcpp
 				{
 					if (auto[it, success] = result.insert(i); success)
 					{
-						*it; //to prevent compiler warning
+						auto de_it = *it; //to prevent compiler warning
 						queue.push(i);
 					}
 				}
