@@ -3,6 +3,7 @@
 
 #include "core/macroses.h"
 #include <vector>
+#include <ostream>
 
 namespace graphcpp
 {
@@ -21,6 +22,10 @@ namespace graphcpp
 		virtual void swap(msize str1, msize str2) = 0;
 		virtual void rearrange(const std::vector<msize>& new_nums) = 0;
 		virtual void delete_last_strings(msize count) = 0;
-	};
+
+		std::string to_string() const;
+	}; 
+
+	std::ostream& operator<< (std::ostream& stream, const SymmetricMatrixBase& matrix);
 }
 #endif
