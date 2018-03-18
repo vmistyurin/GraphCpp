@@ -55,7 +55,8 @@ namespace graphcpp
 		{
 			assert(std::max(start, finish) < matrix.dimension());
 
-			std::vector<msize> ancestors(matrix.dimension());
+			std::vector<msize> ancestors(matrix.dimension(), msize_undefined);
+			ancestors[start] = start;
 			std::queue<msize> queue;
 
 			queue.push(start);
@@ -67,7 +68,7 @@ namespace graphcpp
 				{
 					if (matrix.at(current_vertex, i) > 0)
 					{
-						if (ancestors[i] == 0)
+						if (ancestors[i] == msize_undefined)
 						{
 							ancestors[i] = current_vertex;
 							if (finish == i)
@@ -99,7 +100,8 @@ namespace graphcpp
 	template<typename T>
 	inline MatrixGraph<T>::MatrixGraph() :
 		_matrix(0)
-	{}
+	{
+	}
 
 	template<typename T>
 	inline MatrixGraph<T>::MatrixGraph(const std::vector<Edge>& edges, msize dimension) :
@@ -115,7 +117,8 @@ namespace graphcpp
 	template<typename T> inline 
 	MatrixGraph<T>::MatrixGraph(const GraphBase& other) :
 		_matrix(other.get_matrix())
-	{}
+	{
+	}
 
 	template<typename T> inline 
 	msize MatrixGraph<T>::dimension() const
@@ -381,7 +384,7 @@ namespace graphcpp
 		}
 
 		auto hanged_vertexes = get_hanged_vertexes();
-		for (auto current = hanged_vertexes.cbegin(); current != hanged_vertexes.cend(); ++current)
+		for (auto current = hanged_vertexes.cbegin(); !hanged_vertexes.empty() && current != hanged_vertexes.cend(); ++current)
 		{
 			auto standalone_pair = false;
 			for (auto suspect = std::next(current); suspect != hanged_vertexes.cend(); ++suspect)
@@ -397,6 +400,10 @@ namespace graphcpp
 			}
 			if (standalone_pair)
 			{
+				if (current == hanged_vertexes.cend())
+				{
+					break;
+				}
 				continue;
 			}
 
