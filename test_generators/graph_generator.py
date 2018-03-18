@@ -4,7 +4,7 @@ import shutil
 
 upper_bound_of_edge_weight = 100
 number_of_test = 20
-tests_dimension = [(15,35), (20, 40), (25, 50), (30, 60)]
+tests_dimension = [(30, 60), (60, 140)]
 test_directory_name = "graphs"
 
 if os.path.isdir(test_directory_name):
@@ -17,7 +17,7 @@ for test in tests_dimension:
     for count_of_test in range(0, number_of_test):
         successfull_generated = []
         while len(successfull_generated) < test[1]:
-            new_edge = (random.randint(0, test[0]), random.randint(0, test[0]))
+            new_edge = (random.randint(0, test[0] - 1), random.randint(0, test[0] - 1))
             if new_edge[0] != new_edge[1]:
                 unique = True
                 for edge in successfull_generated:
