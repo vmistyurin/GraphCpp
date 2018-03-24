@@ -8,16 +8,31 @@ using namespace graphcpp;
 
 namespace
 {
-	const std::vector<std::vector<mcontent>> test_array
-			{{0, 0, 0, 4, 8, 0, 0, 0, 0},
-			 {0, 0, 0, 7, 0, 0, 10, 0, 0},
-			 {0, 0, 0, 0, 5, 0, 9, 40, 30},
-			 {4, 7, 0, 0, 1, 0, 0, 0, 0},
-			 {8, 0, 5, 1, 0, 0, 0, 0, 0},
-			 {0, 0, 0, 0, 0, 0, 0, 0, 0},
-			 {0, 10, 9, 0, 0, 0, 0, 0, 1},
-			 {0, 0, 40, 0, 0, 0, 0, 0, 0},
-			 {0, 0, 30, 0, 0, 0, 1, 0, 0} };
+	const std::vector<std::vector<mcontent>> test_array = 
+	{{ 0, 0, 0, 4, 8, 0, 0, 0, 0},
+	 { 0, 0, 0, 7, 0, 0, 10, 0, 0},
+	 { 0, 0, 0, 0, 5, 0, 9, 40, 30},
+	 { 4, 7, 0, 0, 1, 0, 0, 0, 0},
+	 { 8, 0, 5, 1, 0, 0, 0, 0, 0},
+	 { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+	 { 0, 10, 9, 0, 0, 0, 0, 0, 1},
+	 { 0, 0, 40, 0, 0, 0, 0, 0, 0},
+	 { 0, 0, 30, 0, 0, 0, 1, 0, 0} };
+
+	const auto test_dimension = test_array.size();
+
+	const std::vector<msize> test_permutation = { 3,6,7,0,4,1,2,8,5 };
+
+	const std::vector<std::vector<mcontent>> rearranged_test_array =
+	{{ 0, 0, 0, 4, 1, 0, 7, 0, 0 },
+	 { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+	 { 0, 0, 0, 0, 0, 1, 10, 9, 0 },
+	 { 4, 0, 0, 0, 8, 0, 0, 0, 0 },
+	 { 1, 0, 0, 8, 0, 0, 0, 5, 0 },
+	 { 0, 0, 1, 0, 0, 0, 0, 30, 0 },
+	 { 7, 0, 10, 0, 0, 0, 0, 0, 0 },
+	 { 0, 0, 9, 0, 5, 30, 0, 0, 40},
+	 { 0, 0, 0, 0, 0, 0, 0, 40, 0 } };
 
 	template<class T>
 	std::unique_ptr<SymmetricMatrixBase> GetMatrix(const std::vector<std::vector<mcontent>>& array);
@@ -149,24 +164,32 @@ TYPED_TEST(SymmetricMatrixTests, SetUnderDiagonalTest)
 	EXPECT_EQ(*this->test_matrix, *expected_after_set_matrix);
 }
 
-TYPED_TEST(SymmetricMatrixTests, RearrangeTest)
+TYPED_TEST(SymmetricMatrixTests, RearrangeWithSwapTest)
 {
-	const std::vector<msize> test_permutation{ 3,6,7,0,4,1,2,8,5};
-	const std::vector<std::vector<mcontent>> expected_after_rearrange_array
-	{ { 0, 0, 0, 4, 1, 0, 7, 0, 0 },
-	  { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-	  { 0, 0, 0, 0, 0, 1, 10, 9, 0 },
-	  { 4, 0, 0, 0, 8, 0, 0, 0, 0 },
-	  { 1, 0, 0, 8, 0, 0, 0, 5, 0 },
-	  { 0, 0, 1, 0, 0, 0, 0, 30, 0 },
-	  { 7, 0, 10, 0, 0, 0, 0, 0, 0 },
-	  { 0, 0, 9, 0, 5, 30, 0, 0, 40 },
-	  { 0, 0, 0, 0, 0, 0, 0, 40, 0 } };
-	const auto expected_after_rearrange_matrix = GetMatrix<TypeParam>(expected_after_rearrange_array);
+	const auto expected_after_rearrange_matrix = GetMatrix<TypeParam>(rearranged_test_array);
 
-	this->test_matrix->rearrange(test_permutation);
+	this->test_matrix->rearrange_with_permutations(test_permutation);
 
 	EXPECT_EQ(*this->test_matrix, *expected_after_rearrange_matrix);
+}
+
+TYPED_TEST(SymmetricMatrixTests, RearrangeWithAllocTest)
+{	
+	const auto expected_after_rearrange_matrix = GetMatrix<TypeParam>(rearranged_test_array);
+
+	this->test_matrix->rearrange_with_allocate(test_permutation);
+
+	EXPECT_EQ(*this->test_matrix, *expected_after_rearrange_matrix);
+}
+
+TYPED_TEST(SymmetricMatrixTests, MakeRearrangedTest)
+{
+	const auto expected_after_rearrange_matrix = GetMatrix<TypeParam>(rearranged_test_array);
+	auto rearranged_matrix = std::make_shared<TypeParam>(test_dimension);
+
+	this->test_matrix->make_rearranged(test_permutation, rearranged_matrix);
+
+	EXPECT_EQ(*rearranged_matrix, *expected_after_rearrange_matrix);
 }
 
 TYPED_TEST(SymmetricMatrixTests, DeleteLastStringsTest)
@@ -177,7 +200,7 @@ TYPED_TEST(SymmetricMatrixTests, DeleteLastStringsTest)
 	{
 		expected_after_delete_array.pop_back();
 	}
-	for (msize i = 0; i < test_array.size() - number_of_strings_to_delete; i++)
+	for (msize i = 0; i < test_dimension - number_of_strings_to_delete; i++)
 	{
 		for (msize j = 0; j < number_of_strings_to_delete; j++)
 		{

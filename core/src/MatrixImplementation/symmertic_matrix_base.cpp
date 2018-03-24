@@ -6,7 +6,7 @@
 using namespace graphcpp;
 
 namespace {
-	unsigned int get_len(mcontent number)
+	auto get_len(mcontent number)
 	{
 		return std::to_string(number).length();
 	}

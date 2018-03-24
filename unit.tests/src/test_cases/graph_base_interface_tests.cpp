@@ -106,7 +106,7 @@ TYPED_TEST(GraphBaseTests, VertexDegreeTests)
     EXPECT_EQ(this->test_graph->get_degree(second_test_vertex), degrees[second_test_vertex]);
 }
 
-TYPED_TEST(GraphBaseTests, DeleteVertexesTest1)
+TYPED_TEST(GraphBaseTests, DeleteVertexesTest)
 {
 	const std::vector<msize> deleted_vertexes = { 3,4 };
 	const msize expected_dimension = test_dimension - deleted_vertexes.size();
@@ -126,7 +126,7 @@ TYPED_TEST(GraphBaseTests, DeleteVertexesTest1)
 TYPED_TEST(GraphBaseTests, ConnectedComponentTest)
 {
 	const std::vector<msize> first_expected_component = { 0, 2, 3, 4, 6, 7 };
-	const std::vector<msize> second_expected_component = { 1,5 };
+	const std::vector<msize> second_expected_component = { 1, 5 };
 
 	const auto first_component = this->test_graph->get_connected_component(3);
 	const auto second_component = this->test_graph->get_connected_component(1);
@@ -198,6 +198,20 @@ TYPED_TEST(GraphBaseTests, OptimizedMatrixOfFlowsTest)
 	const auto matrix_of_flows = this->test_graph->optimized_get_matrix_of_flows();
 
 	EXPECT_EQ(*matrix_of_flows, *ptr_to_matrix);
+}
+
+TYPED_TEST(GraphBaseTests, ExtractSubgraph)
+{
+	const std::vector<msize> vertexes = { 0, 3, 6, 7 };
+	const std::vector<std::vector<mcontent>> expected_matrix = { {0, 10, 1, 2},
+																 {10, 0, 0, 0},
+																 {1, 0, 0, 0},
+																 {2, 0, 0, 0} };
+	const TypeParam expected_subgraph(expected_matrix);
+
+	const auto extracted_graph = this->test_graph->extract_subgraph(vertexes);
+
+	EXPECT_TRUE(extracted_graph->equal(expected_subgraph));
 }
 
 #ifdef USE_SLOW_TESTS

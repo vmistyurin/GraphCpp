@@ -109,7 +109,19 @@ void FullSymmetricMatrix::swap(msize str1, msize str2) //Todo: optimize
 	_matrix[str2][str1] = previous_value;
 }
 
-void FullSymmetricMatrix::rearrange(const std::vector<msize>& new_nums)
+void FullSymmetricMatrix::rearrange_with_permutations(const std::vector<msize>& new_nums)
+{
+	assert(new_nums.size() == dimension());
+	assert(is_permutation(new_nums));
+
+	auto transpositions = to_transpositions(new_nums);
+	for (auto[str1, str2] : transpositions)
+	{
+		swap(str1, str2);
+	}
+}
+
+void FullSymmetricMatrix::rearrange_with_allocate(const std::vector<msize>& new_nums)
 {
 	assert(new_nums.size() == dimension());
 	assert(is_permutation(new_nums));
@@ -122,7 +134,23 @@ void FullSymmetricMatrix::rearrange(const std::vector<msize>& new_nums)
 			result.set(new_nums[i], new_nums[j], _matrix[i][j]);
 		}
 	}
+
 	_matrix = std::move(result._matrix);
+}
+
+void FullSymmetricMatrix::make_rearranged(const std::vector<msize>& new_nums, std::shared_ptr<SymmetricMatrixBase> result) const
+{
+	assert(new_nums.size() == dimension());
+	assert(is_permutation(new_nums));
+	assert(result->dimension() == dimension());
+
+	for (msize i = 1; i < new_nums.size(); i++)
+	{
+		for (msize j = 0; j < i; j++)
+		{
+			result->set(new_nums[i], new_nums[j], at(i, j));
+		}
+	}
 }
 
 void FullSymmetricMatrix::delete_last_strings(msize count)

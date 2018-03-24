@@ -4,6 +4,7 @@
 #include "core/macroses.h"
 #include <vector>
 #include <ostream>
+#include <memory>
 
 namespace graphcpp
 {
@@ -19,8 +20,12 @@ namespace graphcpp
 		virtual void set(msize index1, msize index2, mcontent value) = 0;
 		virtual void reduce_element(msize index1, msize index2, mcontent difference) = 0;
 		virtual std::vector<mcontent> get_string(msize str) const = 0;
+
+		virtual void rearrange_with_permutations(const std::vector<msize>& new_nums) = 0;
+		virtual void rearrange_with_allocate(const std::vector<msize>& new_nums) = 0;
+		virtual void make_rearranged(const std::vector<msize>& new_nums, std::shared_ptr<SymmetricMatrixBase> memory) const = 0;
+
 		virtual void swap(msize str1, msize str2) = 0;
-		virtual void rearrange(const std::vector<msize>& new_nums) = 0;
 		virtual void delete_last_strings(msize count) = 0;
 
 		std::string to_string() const;

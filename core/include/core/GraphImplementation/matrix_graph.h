@@ -22,6 +22,9 @@ namespace graphcpp
 		MatrixGraph(const std::vector<Edge>& edges, msize dimension);
 		explicit MatrixGraph(const GraphBase& other);
 
+		template<typename V>
+		explicit MatrixGraph(V&& matrix);
+
 		msize dimension() const override;
 		bool equal(const GraphBase& other) const override;
 		const SymmetricMatrixBase& get_matrix() const override;
@@ -31,6 +34,7 @@ namespace graphcpp
 		std::list<std::pair<msize, msize>> get_hanged_vertexes() const override;
 		std::vector<msize> get_degrees() const override;
 		msize get_degree(msize vertex) const override;
+		std::shared_ptr<GraphBase> extract_subgraph(const std::vector<msize>& vertexes) const override;
 
 		std::vector<msize> get_connected_component(msize vertex) const override;
 		std::vector<std::vector<msize>> get_connected_components() const override;
@@ -97,14 +101,14 @@ namespace graphcpp
 		}
 	}
 
-	template<typename T>
-	inline MatrixGraph<T>::MatrixGraph() :
+	template<typename T> inline 
+	MatrixGraph<T>::MatrixGraph() :
 		_matrix(0)
 	{
 	}
 
-	template<typename T>
-	inline MatrixGraph<T>::MatrixGraph(const std::vector<Edge>& edges, msize dimension) :
+	template<typename T> inline 
+	MatrixGraph<T>::MatrixGraph(const std::vector<Edge>& edges, msize dimension) :
 		_matrix(dimension)
 	{
 		for (const auto& edge : edges)
@@ -118,6 +122,13 @@ namespace graphcpp
 	MatrixGraph<T>::MatrixGraph(const GraphBase& other) :
 		_matrix(other.get_matrix())
 	{
+	}
+
+	template<typename T> template<typename V>  inline
+	MatrixGraph<T>::MatrixGraph(V&& matrix) :
+		_matrix(std::forward<V>(matrix))
+	{
+
 	}
 
 	template<typename T> inline 
@@ -139,11 +150,11 @@ namespace graphcpp
 		std::vector<msize> permutation(dimension());
 		std::iota(permutation.begin(), permutation.end(), 0);
 
-		MatrixGraph other_copy(other);
+		std::shared_ptr<T> this_copy = std::make_shared<T>(_matrix);
 		do
 		{
-			other_copy.rearrange(permutation);
-			RETURN_IF(_matrix == other_copy.get_matrix(), true);
+			_matrix.make_rearranged(permutation, this_copy);
+			RETURN_IF(*this_copy == other.get_matrix(), true);
 		} while (std::next_permutation(permutation.begin(), permutation.end()));
 
 		return false;
@@ -241,6 +252,24 @@ namespace graphcpp
 	}
 
 	template<typename T> inline
+	std::shared_ptr<GraphBase> MatrixGraph<T>::extract_subgraph(const std::vector<msize>& vertexes) const
+	{
+		assert(!vertexes.empty());
+		assert(std::all_of(vertexes.cbegin(), vertexes.cend(), [&](auto vertex) {return vertex < dimension(); }));
+
+		T result(vertexes.size());
+		for (msize i = 0; i < vertexes.size(); i++)
+		{
+			for (msize j = 0; j < i; j++)
+			{
+				result.set(i, j, _matrix.at(vertexes[i], vertexes[j]));
+			}
+		}
+
+		return std::make_shared<MatrixGraph<T>>(std::move(result));
+	}
+
+	template<typename T> inline
 	void MatrixGraph<T>::delete_vertexes(const std::vector<msize>& vertexes)
 	{
 		assert(!vertexes.empty());
@@ -264,7 +293,7 @@ namespace graphcpp
 	template<typename T> inline
 	void MatrixGraph<T>::rearrange(const std::vector<msize>& new_nums)
 	{
-		MatrixGraph<T>::_matrix.rearrange(new_nums);
+		MatrixGraph<T>::_matrix.rearrange_with_allocate(new_nums);
 	}
 
 	template<typename T> inline

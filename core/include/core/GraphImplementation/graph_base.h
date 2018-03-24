@@ -24,7 +24,7 @@ namespace graphcpp
 		virtual std::list<std::pair<msize, msize>> get_hanged_vertexes() const = 0;
 		virtual std::vector<msize> get_connected_component(msize vertex) const = 0;
 		virtual std::vector<std::vector<msize>> get_connected_components() const = 0;
-
+		virtual std::shared_ptr<GraphBase> extract_subgraph(const std::vector<msize>& vertexes) const = 0;
         virtual std::vector<msize> get_degrees() const = 0;
 		virtual msize get_degree(msize vertex) const = 0;
 

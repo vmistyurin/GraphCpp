@@ -23,8 +23,12 @@ namespace graphcpp
 		void set(msize index1, msize index2, mcontent value) override;
 		void reduce_element(msize index1, msize index2, mcontent difference) override;
 		std::vector<mcontent> get_string(msize str) const override;
+
+		void make_rearranged(const std::vector<msize>& new_nums, std::shared_ptr<SymmetricMatrixBase> memory) const override;
+		void rearrange_with_permutations(const std::vector<msize>& new_nums) override;
+		void rearrange_with_allocate(const std::vector<msize>& new_nums) override;
+
 		void swap(msize str1, msize str2) override;
-		void rearrange(const std::vector<msize>& new_nums) override;
 		void delete_last_strings(msize count) override;
 	};
 }
