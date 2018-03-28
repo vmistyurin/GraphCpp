@@ -12,7 +12,7 @@ namespace graphcpp_testing
 	inline bool compare_vectors_without_order(const std::vector<T>& v1, const std::vector<T>& v2)
 	{
 		RETURN_IF(v1.size() != v2.size(), false);
-		for (std::vector<T>::size_type i = 0; i < v1.size(); i++)
+		for (typename std::vector<T>::size_type i = 0; i < v1.size(); i++)
 		{
 			RETURN_IF(!CONTAINS(v1, v2[i]), false);
 			RETURN_IF(!CONTAINS(v2, v1[i]), false);
@@ -24,7 +24,7 @@ namespace graphcpp_testing
 	inline bool compare_lists_without_order(const std::list<T>& l1, const std::list<T>& l2)
 	{
 		RETURN_IF(l1.size() != l2.size(), false);
-		for (size_t i = 0; i < l1.size(); i++)
+		for (typename std::list<T>::size_type i = 0; i < l1.size(); i++)
 		{
 			RETURN_IF(!CONTAINS(l1, *std::next(l2.cbegin(), i)), false);
 			RETURN_IF(!CONTAINS(l2, *std::next(l1.cbegin(), i)), false);

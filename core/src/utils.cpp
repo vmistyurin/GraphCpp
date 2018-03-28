@@ -1,6 +1,7 @@
 #include "core/utils.h"
 #include <numeric>
 #include <assert.h>
+#include <algorithm>
 
 using namespace graphcpp;
 
