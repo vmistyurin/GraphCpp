@@ -45,8 +45,6 @@ namespace graphcpp
 
 		void delete_vertexes(const std::vector<msize>& vertexes) override;
 		void rearrange(const std::vector<msize>& new_nums) override;
-	private:
-		bool is_connected(msize vertex1, msize vertex2);
 	};
 
 	namespace
@@ -316,7 +314,7 @@ namespace graphcpp
 				{
 					if (auto[it, success] = result.insert(i); success)
 					{
-						auto de_it = *it; //to prevent compiler warning
+						(void)it; //to prevent compiler warning
 						queue.push(i);
 					}
 				}
@@ -476,32 +474,6 @@ namespace graphcpp
 		}
 
 		return result;
-	}
-
-	template<typename T> inline
-	bool MatrixGraph<T>::is_connected(msize vertex1, msize vertex2)
-	{
-		std::queue<msize> queue;
-		queue.insert(vertex1);
-
-		while (!queue.empty())
-		{
-			auto current_vertex = queue.front(); queue.pop();
-			for (msize i = 0; i < dimension(); i++)
-			{
-				if (_matrix.at(current_vertex, i) > 0)
-				{
-					if (auto[it, success] = result.insert(i); success)
-					{
-						*it; //to prevent compiler warning
-						RETURN_IF(vertex2 == i, true)
-							queue.push(i);
-					}
-				}
-			}
-		}
-
-		return false;
 	}
 }
 #endif

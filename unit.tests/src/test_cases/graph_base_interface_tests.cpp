@@ -56,7 +56,6 @@ protected:
 	}
 	std::unique_ptr<GraphBase> test_graph;
 	std::vector<msize> degrees;
-
 };
 
 using GraphImplementations = testing::Types<MatrixGraph<FullSymmetricMatrix>, MatrixGraph<HalfSymmetricMatrix>>;
@@ -94,7 +93,7 @@ TYPED_TEST(GraphBaseTests, EdgesTest)
 
 TYPED_TEST(GraphBaseTests, VertexesDegreeTest)
 {
-    EXPECT_EQ(this->test_graph->get_degrees(), degrees);
+    EXPECT_EQ(this->test_graph->get_degrees(), this->degrees);
 }
 
 TYPED_TEST(GraphBaseTests, VertexDegreeTests)
@@ -102,8 +101,8 @@ TYPED_TEST(GraphBaseTests, VertexDegreeTests)
 	const msize first_test_vertex = 0;
 	const msize second_test_vertex = 6;
 
-    EXPECT_EQ(this->test_graph->get_degree(first_test_vertex), degrees[first_test_vertex]);
-    EXPECT_EQ(this->test_graph->get_degree(second_test_vertex), degrees[second_test_vertex]);
+    EXPECT_EQ(this->test_graph->get_degree(first_test_vertex), this->degrees[first_test_vertex]);
+    EXPECT_EQ(this->test_graph->get_degree(second_test_vertex), this->degrees[second_test_vertex]);
 }
 
 TYPED_TEST(GraphBaseTests, DeleteVertexesTest)
@@ -271,7 +270,7 @@ TYPED_TEST(GraphBaseTests, ExtractSubgraph)
 		different_weight_edges[4].weight++;
 		TypeParam different_weight_graph(different_weight_edges, test_dimension);
 
-		EXPECT_TRUE(this->test_graph->equal(*test_graph));
+		EXPECT_TRUE(this->test_graph->equal(*(this->test_graph)));
 		EXPECT_TRUE(this->test_graph->equal(same_edges_graph));
 		EXPECT_TRUE(this->test_graph->equal(shuffled_edges_graph));
 		EXPECT_TRUE(this->test_graph->equal(equal_graph));
