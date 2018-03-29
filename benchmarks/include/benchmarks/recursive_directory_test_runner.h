@@ -1,8 +1,7 @@
-#ifndef FUNCTIONAL_TESTS_RECURSIVE_DIRECTORY_TEST_RUNNER_H
-#define FUNCTIONAL_TESTS_RECURSIVE_DIRECTORY_TEST_RUNNER_H
+#ifndef BENCHMARKS_RECURSIVE_DIRECTORY_TEST_RUNNER_H
+#define BENCHMARKS_RECURSIVE_DIRECTORY_TEST_RUNNER_H
 
 #include <boost/filesystem.hpp>
-#include <functional>
 #include <chrono>
 
 namespace graphcpp_bench
@@ -21,7 +20,5 @@ namespace graphcpp_bench
 		void run_tests_in_directory_uncheked(const fs::path& path_to_directory, const fs::path& path_to_answers, 
 			const std::function<std::string(std::ifstream&&)>& test_function, unsigned int indent);
 	};
-
-	
 }
 #endif
