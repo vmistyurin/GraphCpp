@@ -2,7 +2,7 @@
 #define FUNCTIONAL_TESTS_TEST_FUNCTIONS_H
 
 #include "core/edge.h"
-#include "core/GraphImplementation/graph_base.h"
+#include "core/graph_implementation/graph_base.h"
 #include <iostream>
 #include <fstream>
 #include <string>

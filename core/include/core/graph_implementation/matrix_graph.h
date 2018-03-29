@@ -1,8 +1,8 @@
 #ifndef GRAPH_CORE_MATRIX_GRAPH_H
 #define GRAPH_CORE_MATRIX_GRAPH_H
 
-#include "core/MatrixImplementation/symmetric_matrix_base.h"
-#include "core/GraphImplementation/graph_base.h"
+#include "core/matrix_implementation/symmetric_matrix_base.h"
+#include "core/graph_implementation/graph_base.h"
 #include "core/macroses.h"
 #include <algorithm>
 #include <numeric>

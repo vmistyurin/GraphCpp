@@ -1,7 +1,6 @@
 #ifndef FUNCTIONAL_TESTS_RECURSIVE_DIRECTORY_TEST_RUNNER_H
 #define FUNCTIONAL_TESTS_RECURSIVE_DIRECTORY_TEST_RUNNER_H
 
-#include "core/GraphImplementation/graph_base.h"
 #include <boost/filesystem.hpp>
 #include <functional>
 #include <chrono>

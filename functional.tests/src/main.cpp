@@ -1,9 +1,9 @@
 #include "functional.tests/recursive_directory_test_runner.h"	
 #include "functional.tests/test_functions.h"
 #include "functional.tests/recursive_directory_test_runner.h"
-#include "core/MatrixImplementation/full_symmetric_matrix.h"
-#include "core/MatrixImplementation/half_symmetric_matrix.h"
-#include "core/GraphImplementation/matrix_graph.h"
+#include "core/matrix_implementation/full_symmetric_matrix.h"
+#include "core/matrix_implementation/half_symmetric_matrix.h"
+#include "core/graph_implementation/matrix_graph.h"
 
 int main(int argc, char **argv)
 {
