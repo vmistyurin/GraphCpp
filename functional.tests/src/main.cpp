@@ -4,11 +4,9 @@
 #include "core/MatrixImplementation/full_symmetric_matrix.h"
 #include "core/MatrixImplementation/half_symmetric_matrix.h"
 #include "core/GraphImplementation/matrix_graph.h"
-#include "boost/filesystem/path.hpp"
 
 int main(int argc, char **argv)
 {
-	boost::filesystem::path s;
 	graphcpp_bench::RecursiveDirectoryTestRunner tes;
 
 	tes.run_tests_in_directory("../../test_generators/graphs", "../answers", 

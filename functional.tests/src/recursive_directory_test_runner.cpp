@@ -15,7 +15,7 @@ namespace {
 std::chrono::milliseconds RecursiveDirectoryTestRunner::run_single_test(const fs::path& path_to_test, const fs::path& path_to_answer,
 	const std::function<std::string(std::ifstream&&)>& test_function, unsigned int indent)
 {
-	std::ifstream input(path_to_test);
+	std::ifstream input(path_to_test.string());
 
 	std::chrono::system_clock clock;
 	auto start = clock.now();
@@ -29,7 +29,7 @@ std::chrono::milliseconds RecursiveDirectoryTestRunner::run_single_test(const fs
 	std::cout << get_indent_string(indent) << "Test " << path_to_test.filename() << " ended, time = "
 		<< time.count() << "ms " << std::endl;
 
-	std::ofstream output(path_to_answer);
+	std::ofstream output(path_to_answer.string());
 	output << result;
 	output.close();
 
