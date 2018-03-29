@@ -22,7 +22,7 @@ namespace graphcpp
 		MatrixGraph(const std::vector<Edge>& edges, msize dimension);
 		explicit MatrixGraph(const GraphBase& other);
 
-		template<typename V>
+		template<class V>
 		explicit MatrixGraph(V&& matrix);
 
 		msize dimension() const override;
@@ -99,13 +99,13 @@ namespace graphcpp
 		}
 	}
 
-	template<typename T> inline 
+	template<class T> inline
 	MatrixGraph<T>::MatrixGraph() :
 		_matrix(0)
 	{
 	}
 
-	template<typename T> inline 
+	template<class T> inline
 	MatrixGraph<T>::MatrixGraph(const std::vector<Edge>& edges, msize dimension) :
 		_matrix(dimension)
 	{
@@ -116,26 +116,26 @@ namespace graphcpp
 		}
 	}
 
-	template<typename T> inline 
+	template<class T> inline
 	MatrixGraph<T>::MatrixGraph(const GraphBase& other) :
 		_matrix(other.get_matrix())
 	{
 	}
 
-	template<typename T> template<typename V>  inline
+	template<class T> template<class V>  inline
 	MatrixGraph<T>::MatrixGraph(V&& matrix) :
 		_matrix(std::forward<V>(matrix))
 	{
 
 	}
 
-	template<typename T> inline 
+	template<class T> inline
 	msize MatrixGraph<T>::dimension() const
 	{
 		return _matrix.dimension();
 	}
 
-	template<typename T> inline
+	template<class T> inline
 	bool MatrixGraph<T>::equal(const GraphBase& other) const //TODO: Optimize, maybe add weight check
 	{
 		RETURN_IF(this == &other, true);
@@ -158,13 +158,13 @@ namespace graphcpp
 		return false;
 	}
 
-	template<typename T> inline
+	template<class T> inline
 	const SymmetricMatrixBase& MatrixGraph<T>::get_matrix() const
 	{
 		return _matrix;
 	}
 
-	template<typename T> inline
+	template<class T> inline
 	std::vector<Edge> MatrixGraph<T>::get_edges() const
 	{
 		std::vector<Edge> result;
@@ -181,7 +181,7 @@ namespace graphcpp
 		return result;
 	}
 
-	template<typename T> inline
+	template<class T> inline
 	std::vector<msize> MatrixGraph<T>::get_linked_vertexes(msize vertex) const
 	{
 		assert(vertex < dimension());
@@ -197,7 +197,7 @@ namespace graphcpp
 		return result;
 	}
 
-	template<typename T> inline
+	template<class T> inline
 	std::list<std::pair<msize, msize>> MatrixGraph<T>::get_hanged_vertexes() const
 	{
 		std::list<std::pair<msize, msize>> result;
@@ -214,7 +214,7 @@ namespace graphcpp
 		return result;
 	}
 
-	template<typename T> inline
+	template<class T> inline
 	std::vector<msize> MatrixGraph<T>::get_degrees() const
 	{
 		std::vector<msize> result; result.reserve(dimension());
@@ -233,7 +233,7 @@ namespace graphcpp
 		return result;
 	}
 
-	template<typename T> inline
+	template<class T> inline
 	msize MatrixGraph<T>::get_degree(msize vertex) const
 	{
 		assert(vertex < dimension());
@@ -249,7 +249,7 @@ namespace graphcpp
 		return result;
 	}
 
-	template<typename T> inline
+	template<class T> inline
 	std::shared_ptr<GraphBase> MatrixGraph<T>::extract_subgraph(const std::vector<msize>& vertexes) const
 	{
 		assert(!vertexes.empty());
@@ -267,7 +267,7 @@ namespace graphcpp
 		return std::make_shared<MatrixGraph<T>>(std::move(result));
 	}
 
-	template<typename T> inline
+	template<class T> inline
 	void MatrixGraph<T>::delete_vertexes(const std::vector<msize>& vertexes)
 	{
 		assert(!vertexes.empty());
@@ -288,13 +288,13 @@ namespace graphcpp
 		_matrix.delete_last_strings(vertexes.size());
 	}
 
-	template<typename T> inline
+	template<class T> inline
 	void MatrixGraph<T>::rearrange(const std::vector<msize>& new_nums)
 	{
 		MatrixGraph<T>::_matrix.rearrange_with_allocate(new_nums);
 	}
 
-	template<typename T> inline
+	template<class T> inline
 	std::vector<msize> MatrixGraph<T>::get_connected_component(msize vertex) const
 	{
 		assert(vertex < dimension());
@@ -324,7 +324,7 @@ namespace graphcpp
 		return std::vector<msize>(result.cbegin(), result.cend());
 	}
 
-	template<typename T> inline
+	template<class T> inline
 	std::vector<std::vector<msize>> MatrixGraph<T>::get_connected_components() const
 	{
 		std::vector<std::vector<msize>> result;
@@ -349,7 +349,7 @@ namespace graphcpp
 		return result;
 	}
 
-	template<typename T> inline
+	template<class T> inline
 	mcontent MatrixGraph<T>::get_flow(msize source, msize sink) const
 	{
 		assert(source != sink);
@@ -377,7 +377,7 @@ namespace graphcpp
 		return flow;
 	}
 
-	template<typename T> inline
+	template<class T> inline
 	std::shared_ptr<SymmetricMatrixBase> MatrixGraph<T>::get_matrix_of_flows() const
 	{
 		auto result = std::make_shared<T>(dimension());
@@ -393,7 +393,7 @@ namespace graphcpp
 		return result;
 	}
 
-	template<typename T> inline
+	template<class T> inline
 	std::shared_ptr<SymmetricMatrixBase> MatrixGraph<T>::optimized_get_matrix_of_flows() const
 	{
 		auto result = std::make_shared<T>(dimension());
