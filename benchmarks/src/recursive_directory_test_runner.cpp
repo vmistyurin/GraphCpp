@@ -78,7 +78,6 @@ void RecursiveDirectoryTestRunner::run_tests_in_directory_uncheked(const fs::pat
 	{
 		std::cout << "average time = " << time.count() / count << "ms";
 	}
-
 	std::cout << std::endl;
 }
 
@@ -93,7 +92,7 @@ bool RecursiveDirectoryTestRunner::check_results(const fs::path& first_answers, 
 		{
 			if (!check_results(first_answers / filename, second_answers / filename))
 			{
-				are_equal = false;
+				return false;
 			}
 		}
 		else
@@ -106,14 +105,14 @@ bool RecursiveDirectoryTestRunner::check_results(const fs::path& first_answers, 
 				char fc, sc;
 				first_file >> fc;
 				second_file >> sc;
-				if (sc != fc)
+				if (fc != sc)
 				{
-					are_equal = false;
+					return false;
 					break;
 				}
 			}
 		}
 
-		return are_equal;
+		return true;
 	}
 }
