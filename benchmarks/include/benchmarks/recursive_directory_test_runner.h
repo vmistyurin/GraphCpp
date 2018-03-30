@@ -15,7 +15,10 @@ namespace graphcpp_bench
 			const std::function<std::string(std::ifstream&&)>& test_function, unsigned int indent = 0);
 
 		void run_tests_in_directory(const fs::path& path_to_directory, const fs::path& path_to_answers, 
-			const std::function<std::string(std::ifstream&&)>& test_function);
+			const std::function<std::string(std::ifstream&&)>& test_function, std::string_view test_name);
+
+		bool check_results(const fs::path& first_answers, const fs::path& second_answers);
+
 	private:
 		void run_tests_in_directory_uncheked(const fs::path& path_to_directory, const fs::path& path_to_answers, 
 			const std::function<std::string(std::ifstream&&)>& test_function, unsigned int indent);

@@ -2,6 +2,7 @@
 #include <type_traits>
 #include <iostream>
 #include <fstream>
+#include <string_view>
 
 using namespace graphcpp_bench;
 
@@ -37,8 +38,10 @@ std::chrono::milliseconds RecursiveDirectoryTestRunner::run_single_test(const fs
 }
 
 void RecursiveDirectoryTestRunner::run_tests_in_directory(const fs::path& path_to_directory, const fs::path& path_to_answers, 
-	const std::function<std::string(std::ifstream&&)>& test_function)
+	const std::function<std::string(std::ifstream&&)>& test_function, std::string_view test_name)
 {
+	std::cout << "Test " << test_name << " has started" << std::endl;
+
 	if (fs::exists(path_to_answers))
 	{
 		fs::remove_all(fs::canonical(path_to_answers));
@@ -73,6 +76,44 @@ void RecursiveDirectoryTestRunner::run_tests_in_directory_uncheked(const fs::pat
 	std::cout << get_indent_string(indent) << "Tests for directory " << path_to_directory.filename() << " has ended ";
 	if (count > 0)
 	{
-		std::cout << "average time = " << time.count() / count << "ms" << std::endl;
+		std::cout << "average time = " << time.count() / count << "ms";
+	}
+
+	std::cout << std::endl;
+}
+
+bool RecursiveDirectoryTestRunner::check_results(const fs::path& first_answers, const fs::path& second_answers)
+{
+	for (const auto& file : fs::directory_iterator(first_answers))
+	{
+		auto filename = file.path().filename();
+		bool are_equal = true;
+
+		if (fs::is_directory(file))
+		{
+			if (!check_results(first_answers / filename, second_answers / filename))
+			{
+				are_equal = false;
+			}
+		}
+		else
+		{
+			std::ifstream first_file((first_answers / filename).string());
+			std::ifstream second_file((second_answers / filename).string());
+
+			while (!(first_file.eof() || second_file.eof()))
+			{
+				char fc, sc;
+				first_file >> fc;
+				second_file >> sc;
+				if (sc != fc)
+				{
+					are_equal = false;
+					break;
+				}
+			}
+		}
+
+		return are_equal;
 	}
 }
