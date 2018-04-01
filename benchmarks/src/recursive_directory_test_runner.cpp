@@ -113,6 +113,7 @@ bool RecursiveDirectoryTestRunner::check_results(const fs::path& first_answers, 
 			}
 		}
 
-		return true;
 	}
+	
+	return true;
 }
