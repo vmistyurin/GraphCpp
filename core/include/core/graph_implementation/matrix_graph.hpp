@@ -445,14 +445,18 @@ namespace graphcpp
 		}
 
 
-		for (msize i = 1; i < dimension(); i++)
+		for (const auto& component : components)
 		{
-			for (msize j = 0; j < i; j++)
+			auto extracted_subgraph = extract_subgraph(component);
+
+			for (msize i = 0; i < extracted_subgraph->dimension(); i++)
 			{
-				if (result->at(i, j) == flow_to_compute)
+				for (msize j = 0; j < i; j++)
 				{
-					result->set(i, j, get_flow(i, j));
-					continue;
+					if (result->at(component[i], component[j]) != hanged_vertex_not_linked)
+					{
+						result->set(component[i], component[j], extracted_subgraph->get_flow(i, j));
+					}
 				}
 			}
 		}
@@ -475,5 +479,6 @@ namespace graphcpp
 
 		return result;
 	}
+
 }
 #endif
