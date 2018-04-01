@@ -1,7 +1,7 @@
 #ifndef GRAPH_CORE_EDGE_H
 #define GRAPH_CORE_EDGE_H
 
-#include "macroses.h"
+#include "core/macroses.hpp"
 
 namespace graphcpp
 {

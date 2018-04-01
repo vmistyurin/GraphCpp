@@ -1,4 +1,4 @@
-#include "core/matrix_implementation/symmetric_matrix_base.h"
+#include "core/matrix_implementation/symmetric_matrix_base.hpp"
 #include <string>
 #include <algorithm>
 #include <assert.h>

@@ -1,6 +1,6 @@
-#include "unit.tests/macroses.h"
-#include "unit.tests/utils/comparators.h"
-#include "core/edge.h"
+#include "unit.tests/macroses.hpp"
+#include "unit.tests/utils/comparators.hpp"
+#include "core/edge.hpp"
 #include "gtest/gtest.h"
 
 using namespace graphcpp;

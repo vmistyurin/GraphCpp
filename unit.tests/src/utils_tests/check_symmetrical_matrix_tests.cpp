@@ -1,5 +1,5 @@
-#include "unit.tests/macroses.h"
-#include "core/utils.h"
+#include "unit.tests/macroses.hpp"
+#include "core/utils.hpp"
 #include "gtest/gtest.h"
 
 using namespace graphcpp;

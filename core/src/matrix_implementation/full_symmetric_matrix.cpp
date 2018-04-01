@@ -1,5 +1,5 @@
-#include "core/matrix_implementation/full_symmetric_matrix.h"
-#include "core/utils.h"
+#include "core/matrix_implementation/full_symmetric_matrix.hpp"
+#include "core/utils.hpp"
 #include <algorithm>
 #include <assert.h>
 #include <numeric>

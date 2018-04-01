@@ -1,9 +1,8 @@
-#include "unit.tests/utils/comparators.h"
-#include "unit.tests/macroses.h"
-#include "core/graph_implementation/graph_base.h"
-#include "core/graph_implementation/matrix_graph.h"
-#include "core/matrix_implementation/full_symmetric_matrix.h"
-#include "core/matrix_implementation/half_symmetric_matrix.h"
+#include "unit.tests/utils/comparators.hpp"
+#include "unit.tests/macroses.hpp"
+#include "core/graph_implementation/matrix_graph.hpp"
+#include "core/matrix_implementation/full_symmetric_matrix.hpp"
+#include "core/matrix_implementation/half_symmetric_matrix.hpp"
 #include "gtest/gtest.h"
 #include <memory>
 

@@ -2,7 +2,7 @@
 #define UNIT_TESTS_COMPARATORS_H
 
 #include "gtest/gtest.h"
-#include "core/macroses.h"
+#include "core/macroses.hpp"
 #include <vector>
 #include <list>
 

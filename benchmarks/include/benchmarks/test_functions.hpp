@@ -1,8 +1,8 @@
 #ifndef BENCHMARKS_TEST_FUNCTIONS_H
 #define BENCHMARKS_TEST_FUNCTIONS_H
 
-#include "core/edge.h"
-#include "core/graph_implementation/graph_base.h"
+#include "core/edge.hpp"
+#include "core/graph_implementation/graph_base.hpp"
 #include <iostream>
 #include <fstream>
 #include <string>

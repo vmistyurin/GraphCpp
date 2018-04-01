@@ -1,6 +1,6 @@
-#include "unit.tests/macroses.h"
-#include "core/matrix_implementation/full_symmetric_matrix.h"
-#include "core/matrix_implementation/half_symmetric_matrix.h"
+#include "unit.tests/macroses.hpp"
+#include "core/matrix_implementation/full_symmetric_matrix.hpp"
+#include "core/matrix_implementation/half_symmetric_matrix.hpp"
 #include "gtest/gtest.h"
 #include <memory>
 

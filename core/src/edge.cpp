@@ -1,4 +1,4 @@
-#include "core/edge.h"
+#include "core/edge.hpp"
 #include <algorithm>
 #include <assert.h>
 

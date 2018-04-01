@@ -1,9 +1,9 @@
 #ifndef GRAPH_CORE_GRAPH_BASE_H
 #define GRAPH_CORE_GRAPH_BASE_H
 
-#include "core/edge.h"
-#include "core/macroses.h"
-#include "core/matrix_implementation/symmetric_matrix_base.h"
+#include "core/edge.hpp"
+#include "core/macroses.hpp"
+#include "core/matrix_implementation/symmetric_matrix_base.hpp"
 #include <vector>
 #include <memory>
 #include <list>

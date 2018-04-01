@@ -1,7 +1,7 @@
 #ifndef GRAPH_CORE_MATRIX_BASE_H
 #define GRAPH_CORE_MATRIX_BASE_H
 
-#include "core/macroses.h"
+#include "core/macroses.hpp"
 #include <vector>
 #include <ostream>
 #include <memory>

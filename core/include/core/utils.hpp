@@ -1,7 +1,7 @@
 #ifndef GRAPH_CORE_UTILS_H
 #define GRAPH_CORE_UTILS_H
 
-#include "core/macroses.h"
+#include "core/macroses.hpp"
 #include <vector>
 
 namespace graphcpp

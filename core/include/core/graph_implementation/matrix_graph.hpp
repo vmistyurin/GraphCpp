@@ -1,9 +1,9 @@
 #ifndef GRAPH_CORE_MATRIX_GRAPH_H
 #define GRAPH_CORE_MATRIX_GRAPH_H
 
-#include "core/matrix_implementation/symmetric_matrix_base.h"
-#include "core/graph_implementation/graph_base.h"
-#include "core/macroses.h"
+#include "core/matrix_implementation/symmetric_matrix_base.hpp"
+#include "core/graph_implementation/graph_base.hpp"
+#include "core/macroses.hpp"
 #include <algorithm>
 #include <numeric>
 #include <set>

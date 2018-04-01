@@ -1,20 +1,20 @@
-#ifndef GRAPH_CORE_HALF_SYMMETRIC_MATRIX_H
-#define GRAPH_CORE_HALF_SYMMETRIC_MATRIX_H
+#ifndef GRAPH_CORE_FULL_SYMMETRIC_MATRIX_H
+#define GRAPH_CORE_FULL_SYMMETRIC_MATRIX_H
 
-#include "core/matrix_implementation/symmetric_matrix_base.h"
+#include "core/matrix_implementation/symmetric_matrix_base.hpp"
 
 namespace graphcpp
 {
-	class HalfSymmetricMatrix final: public SymmetricMatrixBase
+	class FullSymmetricMatrix final: public SymmetricMatrixBase
 	{
 	private:
 		std::vector<std::vector<mcontent>> _matrix;
 
 	public:
-		explicit HalfSymmetricMatrix(msize dimension);
-		explicit HalfSymmetricMatrix(const std::vector<std::vector<mcontent>>& matrix);
-		explicit HalfSymmetricMatrix(const SymmetricMatrixBase& matrix);
-
+		explicit FullSymmetricMatrix(msize dimension);
+		explicit FullSymmetricMatrix(const std::vector<std::vector<mcontent>>& matrix);
+		explicit FullSymmetricMatrix(const SymmetricMatrixBase& matrix);
+		
 		bool operator==(const SymmetricMatrixBase& rhs) const override;
 		bool operator!=(const SymmetricMatrixBase& rhs) const override;
 
@@ -30,6 +30,9 @@ namespace graphcpp
 
 		void swap(msize str1, msize str2) override;
 		void delete_last_strings(msize count) override;
+
+	private:
+		void fill_diagonal(mcontent value = 0);
 	};
 }
 #endif

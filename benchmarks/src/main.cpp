@@ -1,9 +1,9 @@
-#include "benchmarks/recursive_directory_test_runner.h"	
-#include "benchmarks/test_functions.h"
-#include "benchmarks/recursive_directory_test_runner.h"
-#include "core/matrix_implementation/full_symmetric_matrix.h"
-#include "core/matrix_implementation/half_symmetric_matrix.h"
-#include "core/graph_implementation/matrix_graph.h"
+#include "benchmarks/recursive_directory_test_runner.hpp"	
+#include "benchmarks/test_functions.hpp"
+#include "benchmarks/recursive_directory_test_runner.hpp"
+#include "core/matrix_implementation/full_symmetric_matrix.hpp"
+#include "core/matrix_implementation/half_symmetric_matrix.hpp"
+#include "core/graph_implementation/matrix_graph.hpp"
 
 using namespace graphcpp_bench;
 

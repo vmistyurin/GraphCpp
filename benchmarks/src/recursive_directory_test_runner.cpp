@@ -1,4 +1,4 @@
-#include "benchmarks/recursive_directory_test_runner.h"
+#include "benchmarks/recursive_directory_test_runner.hpp"
 #include <type_traits>
 #include <iostream>
 #include <fstream>

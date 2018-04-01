@@ -1,6 +1,6 @@
-#include "core/matrix_implementation/half_symmetric_matrix.h"
-#include "core/macroses.h"
-#include "core/utils.h"
+#include "core/matrix_implementation/half_symmetric_matrix.hpp"
+#include "core/macroses.hpp"
+#include "core/utils.hpp"
 #include <assert.h>
 #include <algorithm>
 
