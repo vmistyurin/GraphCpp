@@ -1,5 +1,5 @@
-#ifndef GRAPH_CORE_UTILS_H
-#define GRAPH_CORE_UTILS_H
+#ifndef GRAPH_CORE_UTILS_HPP
+#define GRAPH_CORE_UTILS_HPP
 
 #include "core/macroses.hpp"
 #include <vector>

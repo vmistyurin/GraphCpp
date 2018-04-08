@@ -1,5 +1,5 @@
-#ifndef GRAPH_CORE_MACROSES_H
-#define GRAPH_CORE_MACROSES_H
+#ifndef GRAPH_CORE_MACROSES_HPP
+#define GRAPH_CORE_MACROSES_HPP
 
 #include <cstddef>
 #include <limits>

@@ -1,5 +1,5 @@
-#ifndef UNIT_TESTS_COMPARATORS_H
-#define UNIT_TESTS_COMPARATORS_H
+#ifndef UNIT_TESTS_COMPARATORS_HPP
+#define UNIT_TESTS_COMPARATORS_HPP
 
 #include "gtest/gtest.h"
 #include "core/macroses.hpp"

@@ -1,5 +1,5 @@
-#ifndef GRAPH_CORE_MATRIX_GRAPH_H
-#define GRAPH_CORE_MATRIX_GRAPH_H
+#ifndef GRAPH_CORE_MATRIX_GRAPH_HPP
+#define GRAPH_CORE_MATRIX_GRAPH_HPP
 
 #include "core/matrix_implementation/symmetric_matrix_base.hpp"
 #include "core/graph_implementation/graph_base.hpp"
@@ -45,6 +45,9 @@ namespace graphcpp
 
 		void delete_vertexes(const std::vector<msize>& vertexes) override;
 		void rearrange(const std::vector<msize>& new_nums) override;
+
+	private:
+		std::shared_ptr<GraphBase> optimized_get_matrix_of_flows_spilted() const;
 	};
 
 	namespace
@@ -410,6 +413,34 @@ namespace graphcpp
 			}
 		}
 
+		
+
+		for (const auto& component : components)
+		{
+			auto extracted_subgraph = extract_subgraph(component);
+
+			for (msize i = 0; i < extracted_subgraph->dimension(); i++)
+			{
+				for (msize j = 0; j < i; j++)
+				{
+					if (result->at(component[i], component[j]) != hanged_vertex_not_linked)
+					{
+						result->set(component[i], component[j], extracted_subgraph->get_flow(i, j));
+					}
+				}
+			}
+		}
+
+
+
+		return result;
+	}
+
+	template<class T> inline
+	std::shared_ptr<GraphBase> MatrixGraph<T>::optimized_get_matrix_of_flows_spilted() const
+	{
+		auto result = std::make_shared<T>(dimension());
+
 		auto hanged_vertexes = get_hanged_vertexes();
 		for (auto current = hanged_vertexes.cbegin(); !hanged_vertexes.empty() && current != hanged_vertexes.cend(); ++current)
 		{
@@ -445,22 +476,6 @@ namespace graphcpp
 		}
 
 
-		for (const auto& component : components)
-		{
-			auto extracted_subgraph = extract_subgraph(component);
-
-			for (msize i = 0; i < extracted_subgraph->dimension(); i++)
-			{
-				for (msize j = 0; j < i; j++)
-				{
-					if (result->at(component[i], component[j]) != hanged_vertex_not_linked)
-					{
-						result->set(component[i], component[j], extracted_subgraph->get_flow(i, j));
-					}
-				}
-			}
-		}
-
 		for (const auto&[hanged, support] : hanged_vertexes)
 		{
 			for (msize i = 0; i < dimension(); i++)
@@ -479,6 +494,5 @@ namespace graphcpp
 
 		return result;
 	}
-
 }
 #endif

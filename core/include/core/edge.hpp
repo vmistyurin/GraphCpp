@@ -1,5 +1,5 @@
-#ifndef GRAPH_CORE_EDGE_H
-#define GRAPH_CORE_EDGE_H
+#ifndef GRAPH_CORE_EDGE_HPP
+#define GRAPH_CORE_EDGE_HPP
 
 #include "core/macroses.hpp"
 

@@ -1,5 +1,5 @@
-#ifndef BENCHMARKS_TEST_FUNCTIONS_H
-#define BENCHMARKS_TEST_FUNCTIONS_H
+#ifndef BENCHMARKS_TEST_FUNCTIONS_HPP
+#define BENCHMARKS_TEST_FUNCTIONS_HPP
 
 #include "core/edge.hpp"
 #include "core/graph_implementation/graph_base.hpp"
