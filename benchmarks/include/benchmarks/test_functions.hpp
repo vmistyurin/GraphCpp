@@ -1,8 +1,7 @@
 #ifndef BENCHMARKS_TEST_FUNCTIONS_HPP
 #define BENCHMARKS_TEST_FUNCTIONS_HPP
 
-#include "core/edge.hpp"
-#include "core/graph_implementation/graph_base.hpp"
+#include "core/all.hpp"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -12,7 +11,8 @@ namespace graphcpp_bench
 {
 	namespace
 	{
-		template<class T> T read_graph_from_stream(std::ifstream&& stream)
+		template<class T> 
+		T read_graph_from_stream(std::ifstream&& stream)
 		{
 			unsigned int V, E;
 			stream >> V >> E;
@@ -30,7 +30,8 @@ namespace graphcpp_bench
 		}
 	}
 
-	template<class T> std::function<std::string(std::ifstream&&)> get_test_function_matrix_of_flows()
+	template<class T> 
+	std::function<std::string(std::ifstream&&)> Edmonds_Karp_algorithm()
 	{
 		static_assert(std::is_base_of_v<graphcpp::GraphBase, T>, "T must be descendant of GraphBase");
 
@@ -38,11 +39,12 @@ namespace graphcpp_bench
 		{
 			auto graph = read_graph_from_stream<T>(std::move(input));
 			
-			return graph.get_matrix_of_flows()->to_string();
+			return graphcpp::flow_calculators::Edmonds_Karp_algorithm(graph)->to_string();
 		};
 	}
 	
-	template<class T> std::function<std::string(std::ifstream&&)> get_test_function_optimized_matrix_of_flows()
+	template<class T> 
+	std::function<std::string(std::ifstream&&)> Edmonds_Karp_optimized_algorithm()
 	{
 		static_assert(std::is_base_of_v<graphcpp::GraphBase, T>, "T must be descendant of GraphBase");
 
@@ -50,7 +52,7 @@ namespace graphcpp_bench
 		{
 			auto graph = read_graph_from_stream<T>(std::move(input));
 
-			return graph.optimized_get_matrix_of_flows()->to_string();
+			return graphcpp::flow_calculators::Edmonds_Karp_optimized_algorithm(graph)->to_string();
 		};
 	}
 }

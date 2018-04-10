@@ -26,8 +26,11 @@ namespace graphcpp
 		explicit MatrixGraph(V&& matrix);
 
 		msize dimension() const override;
+		mcontent at(msize v1, msize v2) const;
+		void set(msize v1, msize v2, mcontent value);
+
 		bool equal(const GraphBase& other) const override;
-		const SymmetricMatrixBase& get_matrix() const override;
+		std::shared_ptr<SymmetricMatrixBase> get_matrix() const override;
 		std::vector<Edge> get_edges() const override;
 
 		std::vector<msize> get_linked_vertexes(msize vertex) const override;
@@ -39,66 +42,19 @@ namespace graphcpp
 		std::vector<msize> get_connected_component(msize vertex) const override;
 		std::vector<std::vector<msize>> get_connected_components() const override;
 
-		mcontent get_flow(msize source, msize sink) const override;
-		std::shared_ptr<SymmetricMatrixBase> get_matrix_of_flows() const override;
-		std::shared_ptr<SymmetricMatrixBase> optimized_get_matrix_of_flows() const override;
-
 		void delete_vertexes(const std::vector<msize>& vertexes) override;
 		void rearrange(const std::vector<msize>& new_nums) override;
-
-	private:
-		std::shared_ptr<GraphBase> optimized_get_matrix_of_flows_spilted() const;
 	};
 
 	namespace
 	{
-		constexpr mcontent flow_to_compute = -1;
-		constexpr mcontent hanged_vertex_not_linked = -2;
-		constexpr mcontent hanged_vertex_linked = -3;
-
-		std::vector<msize> get_random_path(const SymmetricMatrixBase& matrix, msize start, msize finish)
+		bool is_matrix_from_graph(const SymmetricMatrixBase& first, const GraphBase& second)
 		{
-			assert(std::max(start, finish) < matrix.dimension());
-
-			std::vector<msize> ancestors(matrix.dimension(), msize_undefined);
-			ancestors[start] = start;
-			std::queue<msize> queue;
-
-			queue.push(start);
-
-			while (!queue.empty())
+			for (auto[i, j] : second)
 			{
-				auto current_vertex = queue.front(); queue.pop();
-				for (msize i = 0; i < matrix.dimension(); i++)
-				{
-					if (matrix.at(current_vertex, i) > 0)
-					{
-						if (ancestors[i] == msize_undefined)
-						{
-							ancestors[i] = current_vertex;
-							if (finish == i)
-							{
-								goto success;
-							}
-							queue.push(i);
-						}
-					}
-				}
+				RETURN_IF(first.at(i, j) != second.at(i, j), false);
 			}
-			return {};
-
-		success:
-			std::vector<msize> result;
-
-			auto current_vertex = finish;
-			while (current_vertex != start)
-			{
-				result.push_back(current_vertex);
-				current_vertex = ancestors[current_vertex];
-			}
-			result.push_back(start);
-
-			return result;
+			return true;
 		}
 	}
 
@@ -139,6 +95,22 @@ namespace graphcpp
 	}
 
 	template<class T> inline
+	mcontent MatrixGraph<T>::at(msize v1, msize v2) const
+	{
+		assert(std::max(v1, v2) < dimension());
+
+		return _matrix.at(v1, v2);
+	}
+
+	template<class T> inline
+	void MatrixGraph<T>::set(msize v1, msize v2, mcontent value)
+	{
+		assert(std::max(v1, v2) < dimension());
+
+		_matrix.set(v1, v2, value);
+	}
+
+	template<class T> inline
 	bool MatrixGraph<T>::equal(const GraphBase& other) const //TODO: Optimize, maybe add weight check
 	{
 		RETURN_IF(this == &other, true);
@@ -155,16 +127,16 @@ namespace graphcpp
 		do
 		{
 			_matrix.make_rearranged(permutation, this_copy);
-			RETURN_IF(*this_copy == other.get_matrix(), true);
+			RETURN_IF(is_matrix_from_graph(*this_copy, other), true);
 		} while (std::next_permutation(permutation.begin(), permutation.end()));
 
 		return false;
 	}
 
 	template<class T> inline
-	const SymmetricMatrixBase& MatrixGraph<T>::get_matrix() const
+	std::shared_ptr<SymmetricMatrixBase> MatrixGraph<T>::get_matrix() const
 	{
-		return _matrix;
+		return std::make_shared<T>(_matrix);
 	}
 
 	template<class T> inline
@@ -294,7 +266,7 @@ namespace graphcpp
 	template<class T> inline
 	void MatrixGraph<T>::rearrange(const std::vector<msize>& new_nums)
 	{
-		MatrixGraph<T>::_matrix.rearrange_with_allocate(new_nums);
+		_matrix.rearrange_with_allocate(new_nums);
 	}
 
 	template<class T> inline
@@ -347,149 +319,6 @@ namespace graphcpp
 				used[vertex] = true;
 			}
 			result.push_back(current_connected_component);
-		}
-
-		return result;
-	}
-
-	template<class T> inline
-	mcontent MatrixGraph<T>::get_flow(msize source, msize sink) const
-	{
-		assert(source != sink);
-		assert(std::max(source, sink) < dimension());
-
-		auto current_flows = _matrix;
-		mcontent flow = 0;
-		auto path = get_random_path(current_flows, source, sink);
-		while (!path.empty())
-		{
-			auto min_flow = std::numeric_limits<mcontent>::max();
-			for (msize i = 0; i < path.size() - 1; i++)
-			{
-				min_flow = std::min(min_flow, current_flows.at(path[i], path[i + 1]));
-			}
-
-			for (msize i = 0; i < path.size() - 1; i++)
-			{
-				current_flows.reduce_element(path[i], path[i + 1], min_flow);
-			}
-			flow += min_flow;
-			path = get_random_path(current_flows, source, sink);
-		}
-
-		return flow;
-	}
-
-	template<class T> inline
-	std::shared_ptr<SymmetricMatrixBase> MatrixGraph<T>::get_matrix_of_flows() const
-	{
-		auto result = std::make_shared<T>(dimension());
-
-		for (msize i = 1; i < dimension(); i++)
-		{
-			for (msize j = 0; j < i; j++)
-			{
-				result->set(i, j, get_flow(i, j));
-			}
-		}
-
-		return result;
-	}
-
-	template<class T> inline
-	std::shared_ptr<SymmetricMatrixBase> MatrixGraph<T>::optimized_get_matrix_of_flows() const
-	{
-		auto result = std::make_shared<T>(dimension());
-
-		auto components = get_connected_components();
-		for (const auto& component : components)
-		{
-			for (msize i = 0; i < component.size(); i++)
-			{
-				for (msize j = i + 1; j < component.size(); j++)
-				{
-					result->set(component[i], component[j], flow_to_compute);
-				}
-			}
-		}
-
-		
-
-		for (const auto& component : components)
-		{
-			auto extracted_subgraph = extract_subgraph(component);
-
-			for (msize i = 0; i < extracted_subgraph->dimension(); i++)
-			{
-				for (msize j = 0; j < i; j++)
-				{
-					if (result->at(component[i], component[j]) != hanged_vertex_not_linked)
-					{
-						result->set(component[i], component[j], extracted_subgraph->get_flow(i, j));
-					}
-				}
-			}
-		}
-
-
-
-		return result;
-	}
-
-	template<class T> inline
-	std::shared_ptr<GraphBase> MatrixGraph<T>::optimized_get_matrix_of_flows_spilted() const
-	{
-		auto result = std::make_shared<T>(dimension());
-
-		auto hanged_vertexes = get_hanged_vertexes();
-		for (auto current = hanged_vertexes.cbegin(); !hanged_vertexes.empty() && current != hanged_vertexes.cend(); ++current)
-		{
-			auto standalone_pair = false;
-			for (auto suspect = std::next(current); suspect != hanged_vertexes.cend(); ++suspect)
-			{
-				if (current->first == suspect->second)
-				{
-					result->set(current->first, current->second, _matrix.at(current->first, current->second));
-					hanged_vertexes.erase(suspect);
-					current = hanged_vertexes.erase(current);
-					standalone_pair = true;
-					break;
-				}
-			}
-			if (standalone_pair)
-			{
-				if (current == hanged_vertexes.cend())
-				{
-					break;
-				}
-				continue;
-			}
-
-			for (msize j = 0; j < dimension(); j++)
-			{
-				if (result->at(current->first, j) == flow_to_compute)
-				{
-					result->set(current->first, j, hanged_vertex_not_linked);
-				}
-			}
-			result->set(current->first, current->second, _matrix.at(current->first, current->second));
-		}
-
-
-		for (const auto&[hanged, support] : hanged_vertexes)
-		{
-			for (msize i = 0; i < dimension(); i++)
-			{
-				if (result->at(hanged, i) != 0 && support != i)// && result->at(support, i) != hanged_vertex_not_linked)
-				{
-					auto flow_from_support_to_i = result->at(i, support);
-					assert(flow_from_support_to_i != flow_to_compute);
-
-					auto flow_from_support_to_hanged = _matrix.at(hanged, support);
-
-					result->set(hanged, i, std::min(flow_from_support_to_hanged, flow_from_support_to_i));
-				}
-			}
 		}
 
 		return result;

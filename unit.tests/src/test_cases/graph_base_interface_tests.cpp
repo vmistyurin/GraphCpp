@@ -1,8 +1,7 @@
 #include "unit.tests/utils/comparators.hpp"
 #include "unit.tests/macroses.hpp"
-#include "core/graph_implementation/matrix_graph.hpp"
-#include "core/matrix_implementation/full_symmetric_matrix.hpp"
-#include "core/matrix_implementation/half_symmetric_matrix.hpp"
+#include "unit.tests/test_data/reliable_test_graph.hpp"
+#include "core/all.hpp"
 #include "gtest/gtest.h"
 #include <memory>
 
@@ -11,32 +10,7 @@ using namespace graphcpp_testing;
 
 namespace
 {
-	const std::vector<Edge> test_edges =
-	{ 
-		Edge(3, 6, 1),
-		Edge(4, 6, 2),
-		Edge(1, 5, 7),
-		Edge(3, 4, 10),
-		Edge(2, 4, 4),
-		Edge(6, 0, 2),
-		Edge(6, 7, 10)
-	};
-	const msize test_dimension = 8;
-
-	template<class T>
-	std::unique_ptr<GraphBase> GetGraph(const std::vector<Edge>& edges, msize dimension);
-
-	template<>
-	std::unique_ptr<GraphBase> GetGraph<MatrixGraph<FullSymmetricMatrix>>(const std::vector<Edge>& edges, msize dimension)
-	{
-		return std::make_unique<MatrixGraph<FullSymmetricMatrix>>(edges, dimension);
-	}
-
-	template<>
-	std::unique_ptr<GraphBase> GetGraph<MatrixGraph<HalfSymmetricMatrix>>(const std::vector<Edge>& edges, msize dimension)
-	{
-		return std::make_unique<MatrixGraph<HalfSymmetricMatrix>>(edges, dimension);
-	}
+	auto test_dimension = reliable_test_graph::dimension();
 }
 
 template<class TestGraphType>
@@ -44,17 +18,10 @@ class GraphBaseTests : public ::testing::Test
 {
 protected:
 	GraphBaseTests() :
-		test_graph(GetGraph<TestGraphType>(test_edges, test_dimension))
+		test_graph(reliable_test_graph::get_graph<TestGraphType>())
 	{
-		degrees.resize(test_dimension);
-		for (const auto& edge : test_edges)
-		{
-			degrees[edge.v1()]++;
-			degrees[edge.v2()]++;
-		}
 	}
 	std::unique_ptr<GraphBase> test_graph;
-	std::vector<msize> degrees;
 };
 
 using GraphImplementations = testing::Types<MatrixGraph<FullSymmetricMatrix>, MatrixGraph<HalfSymmetricMatrix>>;
@@ -65,11 +32,27 @@ TYPED_TEST(GraphBaseTests, DimensionTest)
 	EXPECT_EQ(this->test_graph->dimension(), test_dimension);
 }
 
+TYPED_TEST(GraphBaseTests, GetterTest)
+{
+	EXPECT_EQ(this->test_graph->at(reliable_test_graph::get_edges()[0].v1(), reliable_test_graph::get_edges()[0].v2()), reliable_test_graph::get_edges()[0].weight);
+	EXPECT_EQ(this->test_graph->at(reliable_test_graph::get_edges()[0].v2(), reliable_test_graph::get_edges()[0].v1()), reliable_test_graph::get_edges()[0].weight);
+}
+
+TYPED_TEST(GraphBaseTests, SetterTest)
+{
+	msize v1 = 0, v2 = 5;
+	mcontent value = 10;
+
+	this->test_graph->set(v1, v2, value);
+
+	EXPECT_EQ(this->test_graph->at(v1, v2), value);
+}
+
 TYPED_TEST(GraphBaseTests, LinkedVertexesTest)
 {
 	const msize test_vertex = 3;
 	std::vector<msize> linked_with_test_vertex;
-	for (const auto& edge : test_edges)
+	for (const auto& edge : reliable_test_graph::get_edges())
 	{
 		if (edge.v1() == test_vertex)
 		{
@@ -87,12 +70,12 @@ TYPED_TEST(GraphBaseTests, LinkedVertexesTest)
 
 TYPED_TEST(GraphBaseTests, EdgesTest)
 {
-    EXPECT_TRUE(compare_vectors_without_order(test_edges, this->test_graph->get_edges()));
+    EXPECT_TRUE(compare_vectors_without_order(reliable_test_graph::get_edges(), this->test_graph->get_edges()));
 }
 
 TYPED_TEST(GraphBaseTests, VertexesDegreeTest)
 {
-    EXPECT_EQ(this->test_graph->get_degrees(), this->degrees);
+    EXPECT_EQ(this->test_graph->get_degrees(), reliable_test_graph::get_degrees());
 }
 
 TYPED_TEST(GraphBaseTests, VertexDegreeTests)
@@ -100,8 +83,8 @@ TYPED_TEST(GraphBaseTests, VertexDegreeTests)
 	const msize first_test_vertex = 0;
 	const msize second_test_vertex = 6;
 
-    EXPECT_EQ(this->test_graph->get_degree(first_test_vertex), this->degrees[first_test_vertex]);
-    EXPECT_EQ(this->test_graph->get_degree(second_test_vertex), this->degrees[second_test_vertex]);
+    EXPECT_EQ(this->test_graph->get_degree(first_test_vertex), reliable_test_graph::get_degrees()[first_test_vertex]);
+    EXPECT_EQ(this->test_graph->get_degree(second_test_vertex), reliable_test_graph::get_degrees()[second_test_vertex]);
 }
 
 TYPED_TEST(GraphBaseTests, DeleteVertexesTest)
@@ -151,53 +134,6 @@ TYPED_TEST(GraphBaseTests, HangedVertexesTest)
 	EXPECT_TRUE(compare_lists_without_order(hanged, expected_hanged));
 }
 
-TYPED_TEST(GraphBaseTests, FlowTest)
-{
-	const auto first_expected_flow = 3;
-	const auto second_expected_flow = 7;
-
-	auto first_flow = this->test_graph->get_flow(3, 6);
-	auto second_flow = this->test_graph->get_flow(1, 5);
-
-	EXPECT_EQ(first_flow, first_expected_flow);
-	EXPECT_EQ(second_flow, second_expected_flow);
-}
-
-TYPED_TEST(GraphBaseTests, MatrixOfFlowsTest)
-{
-	const std::vector<std::vector<mcontent>> flows = { {0, 0, 2, 2,  2,  0, 2, 2},
-													   {0, 0, 0, 0,  0,  7, 0, 0},
-													   {2, 0, 0, 4,  4,  0, 3, 3},
-													   {2, 0, 4, 0,  11, 0, 3, 3},
-													   {2, 0, 4, 11, 0,  0, 3, 3},
-													   {0, 7, 0, 0,  0,  0, 0, 0},
-													   {2, 0, 3, 3,  3,  0, 0, 10},
-													   {2, 0, 3, 3,  3,  0, 10, 0}};
-	const auto ptr_to_matrix = std::make_shared<FullSymmetricMatrix>(flows);
-
-	const auto matrix_of_flows = this->test_graph->get_matrix_of_flows();
-
-	EXPECT_EQ(*matrix_of_flows, *ptr_to_matrix);
-}
-
-
-TYPED_TEST(GraphBaseTests, OptimizedMatrixOfFlowsTest)
-{
-	const std::vector<std::vector<mcontent>> flows = { { 0, 0, 2, 2,  2,  0, 2, 2 },
-	{ 0, 0, 0, 0,  0,  7, 0, 0 },
-	{ 2, 0, 0, 4,  4,  0, 3, 3 },
-	{ 2, 0, 4, 0,  11, 0, 3, 3 },
-	{ 2, 0, 4, 11, 0,  0, 3, 3 },
-	{ 0, 7, 0, 0,  0,  0, 0, 0 },
-	{ 2, 0, 3, 3,  3,  0, 0, 10 },
-	{ 2, 0, 3, 3,  3,  0, 10, 0 } };
-	const auto ptr_to_matrix = std::make_shared<FullSymmetricMatrix>(flows);
-
-	const auto matrix_of_flows = this->test_graph->optimized_get_matrix_of_flows();
-
-	EXPECT_EQ(*matrix_of_flows, *ptr_to_matrix);
-}
-
 TYPED_TEST(GraphBaseTests, ExtractSubgraph)
 {
 	const std::vector<msize> vertexes = { 0, 3, 6, 7 };
@@ -215,10 +151,10 @@ TYPED_TEST(GraphBaseTests, ExtractSubgraph)
 #ifdef USE_SLOW_TESTS
 	TYPED_TEST(GraphBaseTests, EqualityTest)
 	{
-		TypeParam same_edges_graph(test_edges, test_dimension);
+		TypeParam same_edges_graph(reliable_test_graph::get_edges(), test_dimension);
 
 
-		std::vector<Edge> shuffled_edges = test_edges;
+		std::vector<Edge> shuffled_edges = reliable_test_graph::get_edges();
 		std::swap(shuffled_edges[0], shuffled_edges[4]);
 		std::swap(shuffled_edges[1], shuffled_edges[3]);
 		TypeParam shuffled_edges_graph(shuffled_edges, test_dimension);
@@ -237,7 +173,7 @@ TYPED_TEST(GraphBaseTests, ExtractSubgraph)
 		TypeParam equal_graph(equal_edges, test_dimension);
 
 
-		TypeParam dimensional_non_equal_graph(test_edges, test_dimension + 1);
+		TypeParam dimensional_non_equal_graph(reliable_test_graph::get_edges(), test_dimension + 1);
 
 
 		std::vector<Edge> different_degrees_edges
@@ -264,7 +200,7 @@ TYPED_TEST(GraphBaseTests, ExtractSubgraph)
 		};
 		TypeParam different_edges_graph(different_edges, test_dimension);
 
-		std::vector<Edge> different_weight_edges = test_edges;
+		std::vector<Edge> different_weight_edges = reliable_test_graph::get_edges();
 		different_weight_edges[0].weight++;
 		different_weight_edges[4].weight++;
 		TypeParam different_weight_graph(different_weight_edges, test_dimension);

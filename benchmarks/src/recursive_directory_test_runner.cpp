@@ -40,7 +40,7 @@ std::chrono::milliseconds RecursiveDirectoryTestRunner::run_single_test(const fs
 void RecursiveDirectoryTestRunner::run_tests_in_directory(const fs::path& path_to_directory, const fs::path& path_to_answers, 
 	const std::function<std::string(std::ifstream&&)>& test_function, std::string_view test_name)
 {
-	std::cout << "Test " << test_name << " has started" << std::endl;
+	std::cout << "Test " << test_name << " started" << std::endl;
 
 	if (fs::exists(path_to_answers))
 	{
@@ -52,7 +52,7 @@ void RecursiveDirectoryTestRunner::run_tests_in_directory(const fs::path& path_t
 void RecursiveDirectoryTestRunner::run_tests_in_directory_uncheked(const fs::path& path_to_directory, const fs::path& path_to_answers, 
 	const std::function<std::string(std::ifstream&&)>& test_function, unsigned int indent)
 {
-	std::cout << get_indent_string(indent) << "Tests for directory " << path_to_directory.filename() << " has started" << std::endl;
+	std::cout << get_indent_string(indent) << "Tests for directory " << path_to_directory.filename() << " started" << std::endl;
 	fs::create_directory(path_to_answers);
 
 	unsigned int count = 0;
@@ -73,10 +73,10 @@ void RecursiveDirectoryTestRunner::run_tests_in_directory_uncheked(const fs::pat
 		}
 	}
 
-	std::cout << get_indent_string(indent) << "Tests for directory " << path_to_directory.filename() << " has ended ";
+	std::cout << get_indent_string(indent) << "Tests for directory " << path_to_directory.filename() << " ended ";
 	if (count > 0)
 	{
-		std::cout << "average time = " << time.count() / count << "ms";
+		std::cout << ", average time = " << time.count() / count << "ms";
 	}
 	std::cout << std::endl;
 }
@@ -99,9 +99,11 @@ bool RecursiveDirectoryTestRunner::check_results(const fs::path& first_answers, 
 		{
 			std::ifstream first_file((first_answers / filename).string());
 			std::ifstream second_file((second_answers / filename).string());
+			int count = 0;
 
 			while (!(first_file.eof() || second_file.eof()))
 			{
+				count++;
 				char fc, sc;
 				first_file >> fc;
 				second_file >> sc;
@@ -112,7 +114,6 @@ bool RecursiveDirectoryTestRunner::check_results(const fs::path& first_answers, 
 				}
 			}
 		}
-
 	}
 	
 	return true;

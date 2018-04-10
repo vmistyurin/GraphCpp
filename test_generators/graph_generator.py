@@ -4,7 +4,7 @@ import shutil
 
 upper_bound_of_edge_weight = 100
 number_of_test = 20
-tests_dimension = [(30, 60), (60, 140)]
+tests_dimension = [(15, 40), (20, 60), (30, 70)]
 test_directory_name = "graphs"
 
 if os.path.isdir(test_directory_name):
