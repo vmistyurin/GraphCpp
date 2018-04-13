@@ -50,14 +50,11 @@ namespace
 			result->set(current->first, current->second, graph.at(current->first, current->second));
 		}
 
-		for (msize i = 1; i < graph.dimension(); i++)
+		for (auto[i, j] : graph)
 		{
-			for (msize j = 0; j < i; j++)
+			if (result->at(i, j) == 0)
 			{
-				if (result->at(i, j) == 0)
-				{
-					result->set(i, j, flow_calculators::Edmonds_Karp_algorithm(graph, i, j));
-				}
+				result->set(i, j, flow_calculators::Edmonds_Karp_algorithm(graph, i, j));
 			}
 		}
 
@@ -87,6 +84,11 @@ namespace
 		auto components = graph.get_connected_components();
 		for (const auto& component : components)
 		{
+			if (component.size() == 1)
+			{
+				continue;
+			}
+
 			auto subgraph = graph.extract_subgraph(component);
 			auto subgraph_flows = EK_optimized_algorithm_splited(*subgraph);
 			for (msize i = 1; i < component.size(); i++)

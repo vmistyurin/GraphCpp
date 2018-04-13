@@ -3,14 +3,12 @@
 
 using namespace graphcpp;
 
-SymmetricMatrixIterator::SymmetricMatrixIterator() :
-	_dimension(msize_undefined)
-{}
-
-SymmetricMatrixIterator::SymmetricMatrixIterator(msize dimension) :
-	_i(0), _j(1), _dimension(dimension)
+SymmetricMatrixIterator::SymmetricMatrixIterator() : SymmetricMatrixIterator(msize_undefined)
 {
-	assert(dimension > 2);
+}
+
+SymmetricMatrixIterator::SymmetricMatrixIterator(msize dimension) : SymmetricMatrixIterator(0, 1, dimension)
+{
 }
 
 SymmetricMatrixIterator::SymmetricMatrixIterator(msize i, msize j, msize dimension) :
@@ -18,7 +16,7 @@ SymmetricMatrixIterator::SymmetricMatrixIterator(msize i, msize j, msize dimensi
 {
 	assert(i < j);
 	assert(j < dimension);
-	assert(dimension > 2);
+	assert(dimension > 1);
 }
 
 std::pair<msize, msize> SymmetricMatrixIterator::operator*() const
