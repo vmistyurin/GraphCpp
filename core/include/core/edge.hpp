@@ -2,6 +2,7 @@
 #define GRAPH_CORE_EDGE_HPP
 
 #include "core/macroses.hpp"
+#include <ostream>
 
 namespace graphcpp
 {
@@ -21,5 +22,7 @@ namespace graphcpp
 
         mcontent weight;
 	};
+
+	std::ostream& operator<< (std::ostream& stream, const Edge& edge);
 }
 #endif

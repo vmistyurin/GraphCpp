@@ -4,7 +4,7 @@
 
 using namespace graphcpp;
 
-Edge::Edge(msize v1, msize v2, mcontent weight):
+Edge::Edge(msize v1, msize v2, mcontent weight) :
 	_v1(std::min(v1, v2)), _v2(std::max(v1, v2)), weight(weight)
 {
 	assert(v1 != v2);
@@ -31,3 +31,8 @@ msize Edge::v2() const
 	return _v2;
 }
 
+std::ostream& graphcpp::operator<< (std::ostream& stream, const Edge& edge)
+{
+	stream << edge.v1() << " " << edge.v2() << edge.weight << std::endl;
+	return stream;
+}
