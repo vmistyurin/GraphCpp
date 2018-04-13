@@ -143,14 +143,11 @@ namespace graphcpp
 	std::vector<Edge> MatrixGraph<T>::get_edges() const
 	{
 		std::vector<Edge> result;
-		for (msize i = 1; i < dimension(); i++)
+		for(auto[i,j] : _matrix)
 		{
-			for (msize j = 0; j < i; j++)
+			if (_matrix.at(i, j) != 0)
 			{
-				if (_matrix.at(i, j) != 0)
-				{
-					result.emplace_back(i, j, _matrix.at(i, j));
-				}
+				result.emplace_back(i, j, _matrix.at(i, j));
 			}
 		}
 		return result;
@@ -192,19 +189,13 @@ namespace graphcpp
 	template<class T> inline
 	std::vector<msize> MatrixGraph<T>::get_degrees() const
 	{
-		std::vector<msize> result; result.reserve(dimension());
+		std::vector<msize> result(dimension());
+
 		for (msize i = 0; i < dimension(); i++)
 		{
-			msize current_degree = 0;
-			for (msize j = 0; j < dimension(); j++)
-			{
-				if (_matrix.at(i, j) > 0)
-				{
-					current_degree++;
-				}
-			}
-			result.push_back(current_degree);
+			result[i] = get_degree(i);
 		}
+
 		return result;
 	}
 

@@ -1,7 +1,8 @@
-#ifndef GRAPH_CORE_MATRIX_BASE_H
-#define GRAPH_CORE_MATRIX_BASE_H
+#ifndef GRAPH_CORE_MATRIX_BASE_HPP
+#define GRAPH_CORE_MATRIX_BASE_HPP
 
 #include "core/macroses.hpp"
+#include "core/symmetric_matrix_iterator.hpp"
 #include <vector>
 #include <ostream>
 #include <memory>
@@ -27,6 +28,9 @@ namespace graphcpp
 
 		virtual void swap(msize str1, msize str2) = 0;
 		virtual void delete_last_strings(msize count) = 0;
+
+		SymmetricMatrixIterator begin() const;
+		SymmetricMatrixIterator end() const;
 
 		std::string to_string() const;
 	}; 

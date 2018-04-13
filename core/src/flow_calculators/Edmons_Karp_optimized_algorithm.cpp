@@ -2,6 +2,7 @@
 #include "core/matrix_implementation/full_symmetric_matrix.hpp"
 #include "core/matrix_implementation/half_symmetric_matrix.hpp"
 #include <algorithm>
+#include <assert.h>
 
 using namespace graphcpp;
 using MatrixType = HalfSymmetricMatrix;

@@ -22,23 +22,17 @@ HalfSymmetricMatrix::HalfSymmetricMatrix(const std::vector<std::vector<mcontent>
 {
 	assert(check_symmetrical_matrix(matrix));
 
-	for (msize i = 0; i < dimension(); i++)
+	for(auto[i,j] : *this)
 	{
-		for (msize j = 0; j < i; j++)
-		{
-			_matrix[i - 1][j] = matrix[i][j];
-		}
+		set(i, j, matrix[i][j]);
 	}
 }
 
 HalfSymmetricMatrix::HalfSymmetricMatrix(const SymmetricMatrixBase& matrix) : HalfSymmetricMatrix(matrix.dimension())
 {
-	for (msize i = 0; i < dimension(); i++)
+	for (auto[i, j] : *this)
 	{
-		for (msize j = 0; j < i; j++)
-		{
-			_matrix[i - 1][j] = matrix.at(i, j);
-		}
+		set(i, j, matrix.at(i, j));
 	}
 }
 
@@ -46,12 +40,10 @@ bool HalfSymmetricMatrix::operator==(const SymmetricMatrixBase& rhs) const
 {
 	RETURN_IF(this == &rhs, true);
 	RETURN_IF(rhs.dimension() != dimension(), false);
-	for (msize i = 1; i < dimension(); i++)
+
+	for(auto[i, j] : *this)
 	{
-		for (msize j = 0; j < i; j++)
-		{
-			RETURN_IF(_matrix[i - 1][j] != rhs.at(i, j), false);
-		}
+		RETURN_IF(at(i, j) != rhs.at(i, j), false);
 	}
 	return true;
 }
@@ -149,12 +141,9 @@ void HalfSymmetricMatrix::rearrange_with_allocate(const std::vector<msize>& new_
 
 	HalfSymmetricMatrix result(dimension());
 
-	for (msize i = 1; i < new_nums.size(); i++)
+	for(auto[i,j] : *this)
 	{
-		for (msize j = 0; j < i; j++)
-		{
-			result.set(new_nums[i], new_nums[j], at(i, j));
-		}
+		result.set(new_nums[i], new_nums[j], at(i, j));
 	}
 
 	_matrix = std::move(result._matrix);
@@ -166,12 +155,9 @@ void HalfSymmetricMatrix::make_rearranged(const std::vector<msize>& new_nums, st
 	assert(is_permutation(new_nums));
 	assert(result->dimension() == dimension());
 
-	for (msize i = 1; i < new_nums.size(); i++)
+	for(auto[i,j] : *this)
 	{
-		for (msize j = 0; j < i; j++)
-		{
-			result->set(new_nums[i], new_nums[j], at(i, j));
-		}
+		result->set(new_nums[i], new_nums[j], at(i, j));
 	}
 }
 

@@ -2,10 +2,8 @@
 #define GRAPH_CORE_GRAPH_BASE_HPP
 
 #include "core/edge.hpp"
-#include "core/macroses.hpp"
 #include "core/matrix_implementation/symmetric_matrix_base.hpp"
 #include "core/symmetric_matrix_iterator.hpp"
-#include <assert.h>
 #include <vector>
 #include <memory>
 #include <list>

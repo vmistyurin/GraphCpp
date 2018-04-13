@@ -5,7 +5,8 @@
 
 using namespace graphcpp;
 
-namespace {
+namespace 
+{
 	auto get_len(mcontent number)
 	{
 		return std::to_string(number).length();
@@ -16,6 +17,16 @@ namespace {
 		assert(get_len(number) <= len);
 		return std::to_string(number) + std::string(len - get_len(number) + 1, ' ');
 	}
+}
+
+SymmetricMatrixIterator SymmetricMatrixBase::begin() const
+{
+	return SymmetricMatrixIterator(dimension());
+}
+
+SymmetricMatrixIterator SymmetricMatrixBase::end() const
+{
+	return SymmetricMatrixIterator();
 }
 
 std::string SymmetricMatrixBase::to_string() const

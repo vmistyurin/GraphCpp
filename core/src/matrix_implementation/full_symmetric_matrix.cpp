@@ -29,12 +29,12 @@ FullSymmetricMatrix::FullSymmetricMatrix(const std::vector<std::vector<mcontent>
 	fill_diagonal();
 }
 
-FullSymmetricMatrix::FullSymmetricMatrix::FullSymmetricMatrix(const SymmetricMatrixBase& matrix)
+FullSymmetricMatrix::FullSymmetricMatrix(const SymmetricMatrixBase& matrix)
 {
 	_matrix.resize(matrix.dimension());
-	for (msize i = 0; i < dimension(); i++)
+	for (auto[i, j] : matrix)
 	{
-		_matrix[i] = matrix.get_string(i);
+		set(i, j, matrix.at(i, j));
 	}
 }
 
@@ -42,9 +42,10 @@ bool FullSymmetricMatrix::operator==(const SymmetricMatrixBase& rhs) const
 {
 	RETURN_IF(this == &rhs, true);
 	RETURN_IF(rhs.dimension() != dimension(), false);
-	for (msize i = 0; i < dimension(); i++)
+	
+	for(auto[i,j] : *this)
 	{
-		RETURN_IF(get_string(i) != rhs.get_string(i), false);
+		RETURN_IF(at(i, j) != rhs.at(i, j), false);
 	}
 	return true;
 }
@@ -127,12 +128,9 @@ void FullSymmetricMatrix::rearrange_with_allocate(const std::vector<msize>& new_
 	assert(is_permutation(new_nums));
 
 	FullSymmetricMatrix result(dimension());
-	for (msize i = 0; i < dimension(); i++)
+	for(auto[i,j] : *this)
 	{
-		for (msize j = i + 1; j < dimension(); j++)
-		{
-			result.set(new_nums[i], new_nums[j], _matrix[i][j]);
-		}
+		result.set(new_nums[i], new_nums[j], _matrix[i][j]);
 	}
 
 	_matrix = std::move(result._matrix);
@@ -144,12 +142,9 @@ void FullSymmetricMatrix::make_rearranged(const std::vector<msize>& new_nums, st
 	assert(is_permutation(new_nums));
 	assert(result->dimension() == dimension());
 
-	for (msize i = 1; i < new_nums.size(); i++)
+	for(auto[i,j] : *this)
 	{
-		for (msize j = 0; j < i; j++)
-		{
-			result->set(new_nums[i], new_nums[j], at(i, j));
-		}
+		result->set(new_nums[i], new_nums[j], at(i, j));
 	}
 }
 

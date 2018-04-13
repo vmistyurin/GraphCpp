@@ -1,5 +1,5 @@
-#ifndef GRAPH_CORE_FULL_SYMMETRIC_MATRIX_H
-#define GRAPH_CORE_FULL_SYMMETRIC_MATRIX_H
+#ifndef GRAPH_CORE_FULL_SYMMETRIC_MATRIX_HPP
+#define GRAPH_CORE_FULL_SYMMETRIC_MATRIX_HPP
 
 #include "core/matrix_implementation/symmetric_matrix_base.hpp"
 
