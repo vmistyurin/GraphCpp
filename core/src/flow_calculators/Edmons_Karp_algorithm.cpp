@@ -4,7 +4,6 @@
 #include <assert.h>
 #include <queue>
 #include <utility>
-#include <iostream>
 
 using namespace graphcpp;
 using MatrixType = HalfSymmetricMatrix;
@@ -80,6 +79,7 @@ mcontent flow_calculators::Edmonds_Karp_algorithm(const GraphBase& graph, msize 
 		{
 			current_flows->reduce_element(path[i], path[i + 1], min_flow);
 		}
+
 		flow += min_flow;
 		path = get_random_path(current_flows, source, sink);
 	}
