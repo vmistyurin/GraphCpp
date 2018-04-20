@@ -24,7 +24,7 @@ namespace graphcpp
 
 		virtual void rearrange_with_permutations(const std::vector<msize>& new_nums) = 0;
 		virtual void rearrange_with_allocate(const std::vector<msize>& new_nums) = 0;
-		virtual void make_rearranged(const std::vector<msize>& new_nums, std::shared_ptr<SymmetricMatrixBase> memory) const = 0;
+		virtual void make_rearranged(const std::vector<msize>& new_nums, SymmetricMatrixBase& memory) const = 0;
 
 		virtual void swap(msize str1, msize str2) = 0;
 		virtual void delete_last_strings(msize count) = 0;

@@ -6,7 +6,8 @@
 
 using namespace graphcpp_bench;
 
-namespace {
+namespace 
+{
 	std::string get_indent_string(unsigned int indent)
 	{
 		return std::string(indent, '\t');

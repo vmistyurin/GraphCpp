@@ -51,13 +51,13 @@ std::vector<msize> reliable_test_graph::get_degrees()
 }
 
 template<>
-std::unique_ptr<GraphBase> reliable_test_graph::get_graph<MatrixGraph<FullSymmetricMatrix>>()
+std::unique_ptr<MatrixGraph<FullSymmetricMatrix>> reliable_test_graph::get_graph<MatrixGraph<FullSymmetricMatrix>>()
 {
 	return std::make_unique<MatrixGraph<FullSymmetricMatrix>>(test_edges, test_dimension);
 }
 
 template<>
-std::unique_ptr<GraphBase> reliable_test_graph::get_graph<MatrixGraph<HalfSymmetricMatrix>>()
+std::unique_ptr<MatrixGraph<HalfSymmetricMatrix>> reliable_test_graph::get_graph<MatrixGraph<HalfSymmetricMatrix>>()
 {
 	return std::make_unique<MatrixGraph<HalfSymmetricMatrix>>(test_edges, test_dimension);
 }

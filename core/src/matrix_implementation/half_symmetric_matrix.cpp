@@ -1,4 +1,4 @@
-#include "core/matrix_implementation/half_symmetric_matrix.hpp"
+#include "core/matrix_implementations/half_symmetric_matrix.hpp"
 #include "core/macroses.hpp"
 #include "core/utils.hpp"
 #include <assert.h>
@@ -149,15 +149,15 @@ void HalfSymmetricMatrix::rearrange_with_allocate(const std::vector<msize>& new_
 	_matrix = std::move(result._matrix);
 }
 
-void HalfSymmetricMatrix::make_rearranged(const std::vector<msize>& new_nums, std::shared_ptr<SymmetricMatrixBase> result) const
+void HalfSymmetricMatrix::make_rearranged(const std::vector<msize>& new_nums, SymmetricMatrixBase& result) const
 {
 	assert(new_nums.size() == dimension());
 	assert(is_permutation(new_nums));
-	assert(result->dimension() == dimension());
+	assert(result.dimension() == dimension());
 
 	for(auto[i,j] : *this)
 	{
-		result->set(new_nums[i], new_nums[j], at(i, j));
+		result.set(new_nums[i], new_nums[j], at(i, j));
 	}
 }
 

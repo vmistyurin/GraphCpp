@@ -1,8 +1,8 @@
 #ifndef GRAPH_CORE_MATRIX_GRAPH_HPP
 #define GRAPH_CORE_MATRIX_GRAPH_HPP
 
-#include "core/matrix_implementation/symmetric_matrix_base.hpp"
-#include "core/graph_implementation/graph_base.hpp"
+#include "core/matrix_implementations/symmetric_matrix_base.hpp"
+#include "core/graph_implementations/graph_base.hpp"
 #include "core/macroses.hpp"
 #include <algorithm>
 #include <numeric>
@@ -123,11 +123,11 @@ namespace graphcpp
 		std::vector<msize> permutation(dimension());
 		std::iota(permutation.begin(), permutation.end(), 0);
 
-		std::shared_ptr<T> this_copy = std::make_shared<T>(_matrix);
+		T this_copy = _matrix;
 		do
 		{
 			_matrix.make_rearranged(permutation, this_copy);
-			RETURN_IF(is_matrix_from_graph(*this_copy, other), true);
+			RETURN_IF(is_matrix_from_graph(this_copy, other), true);
 		} while (std::next_permutation(permutation.begin(), permutation.end()));
 
 		return false;

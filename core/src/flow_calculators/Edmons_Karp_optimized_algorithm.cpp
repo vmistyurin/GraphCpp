@@ -1,6 +1,9 @@
 #include "core/flow_calculators.hpp"
-#include "core/matrix_implementation/full_symmetric_matrix.hpp"
-#include "core/matrix_implementation/half_symmetric_matrix.hpp"
+#include "core/matrix_implementations/matrix_implementations.hpp"
+#include "core/graph_implementations/graph_implementations.hpp"
+
+#include "boost/preprocessor.hpp"
+
 #include <algorithm>
 #include <assert.h>
 
@@ -13,7 +16,8 @@ namespace
 	constexpr mcontent hanged_vertex_not_linked = -2;
 	constexpr mcontent hanged_vertex_linked = -3;
 
-	std::shared_ptr<SymmetricMatrixBase> EK_optimized_algorithm_splited(const GraphBase& graph)
+	template<class GraphType>
+	std::shared_ptr<SymmetricMatrixBase> EK_optimized_algorithm_splited(const GraphType& graph)
 	{
 		auto result = std::make_shared<MatrixType>(graph.dimension());
 
@@ -78,7 +82,8 @@ namespace
 		return result;
 	}
 
-	std::shared_ptr<SymmetricMatrixBase> EK_optimized_algorithm_not_splited(const GraphBase& graph)
+	template<class GraphType>
+	std::shared_ptr<SymmetricMatrixBase> EK_optimized_algorithm_not_splited(const GraphType& graph)
 	{
 		auto result = std::make_shared<MatrixType>(graph.dimension());
 
@@ -90,7 +95,7 @@ namespace
 				continue;
 			}
 
-			auto subgraph = graph.extract_subgraph(component);
+			auto subgraph = std::static_pointer_cast<GraphType>(graph.extract_subgraph(component));
 			auto subgraph_flows = EK_optimized_algorithm_splited(*subgraph);
 			for (msize i = 1; i < component.size(); i++)
 			{
@@ -105,7 +110,11 @@ namespace
 	}
 }
 
-std::shared_ptr<SymmetricMatrixBase> flow_calculators::Edmonds_Karp_optimized_algorithm(const GraphBase& graph)
+template<class GraphType>
+std::shared_ptr<SymmetricMatrixBase> flow_calculators::Edmonds_Karp_optimized_algorithm(const GraphType& graph)
 {
 	return EK_optimized_algorithm_not_splited(graph);
 }
+
+#define EDMONDS_KARP_OPTIMIZED_ALGORITHM_MACRO(r, data, graph_type) template std::shared_ptr<SymmetricMatrixBase> flow_calculators::Edmonds_Karp_optimized_algorithm<graph_type>(const graph_type&);
+BOOST_PP_SEQ_FOR_EACH(EDMONDS_KARP_OPTIMIZED_ALGORITHM_MACRO, 0, GRAPH_IMPLEMENTATIONS_SEQ);

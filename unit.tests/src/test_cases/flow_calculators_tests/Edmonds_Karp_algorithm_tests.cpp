@@ -5,15 +5,15 @@
 using namespace graphcpp;
 using namespace graphcpp_testing;
 
-template<class TestGraphType>
+template<class GraphType>
 class EdmondsKarpAlgorithmTests : public ::testing::Test
 {
 protected:
 	EdmondsKarpAlgorithmTests() :
-		test_graph(reliable_test_graph::get_graph<TestGraphType>())
+		test_graph(reliable_test_graph::get_graph<GraphType>())
 	{
 	}
-	std::unique_ptr<GraphBase> test_graph;
+	std::unique_ptr<GraphType> test_graph;
 };
 
 using GraphImplementations = testing::Types<MatrixGraph<FullSymmetricMatrix>, MatrixGraph<HalfSymmetricMatrix>>;

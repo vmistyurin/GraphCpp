@@ -14,9 +14,9 @@ namespace graphcpp
 
 	public:
 		SymmetricMatrixIterator();
-		SymmetricMatrixIterator(msize dimension);
+		explicit SymmetricMatrixIterator(msize dimension);
 		SymmetricMatrixIterator(msize i, msize j, msize dimension);
-
+		
 		std::pair<msize, msize> operator*() const;
 
 		bool operator==(const SymmetricMatrixIterator& rhs) const;
@@ -26,5 +26,4 @@ namespace graphcpp
 		SymmetricMatrixIterator operator++(int);
 	};
 }
-
 #endif

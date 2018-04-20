@@ -1,7 +1,7 @@
 #ifndef GRAPH_CORE_FULL_SYMMETRIC_MATRIX_HPP
 #define GRAPH_CORE_FULL_SYMMETRIC_MATRIX_HPP
 
-#include "core/matrix_implementation/symmetric_matrix_base.hpp"
+#include "core/matrix_implementations/symmetric_matrix_base.hpp"
 
 namespace graphcpp
 {
@@ -24,7 +24,7 @@ namespace graphcpp
 		void reduce_element(msize index1, msize index2, mcontent difference) override;
 		std::vector<mcontent> get_string(msize str) const override;
 
-		void make_rearranged(const std::vector<msize>& new_nums, std::shared_ptr<SymmetricMatrixBase> memory) const override;
+		void make_rearranged(const std::vector<msize>& new_nums, SymmetricMatrixBase& memory) const override;
 		void rearrange_with_permutations(const std::vector<msize>& new_nums) override;
 		void rearrange_with_allocate(const std::vector<msize>& new_nums) override;
 

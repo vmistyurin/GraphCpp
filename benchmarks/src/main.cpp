@@ -18,12 +18,12 @@ int main(int argc, char **argv)
 	tester.run_tests_in_directory(path_to_tests,
 		first_answers, 
 		Edmonds_Karp_algorithm<graphcpp::MatrixGraph<graphcpp::FullSymmetricMatrix>>(),
-		"Non optimized FullSymmetricMatrix");
+		"Edmonds-Karp");
 
 	tester.run_tests_in_directory(path_to_tests, 
 		second_answers,
-		Edmonds_Karp_optimized_algorithm<graphcpp::MatrixGraph<graphcpp::FullSymmetricMatrix>>(), 
-		"Optimized FullSymmetricMatrix");
+		Dinic_algorithm<graphcpp::MatrixGraph<graphcpp::FullSymmetricMatrix>>(), 
+		"Dinic");
 
 	std::cout << std::boolalpha;
 	std::cout << tester.check_results(first_answers, second_answers) << std::endl;

@@ -2,7 +2,7 @@
 #define GRAPH_CORE_GRAPH_BASE_HPP
 
 #include "core/edge.hpp"
-#include "core/matrix_implementation/symmetric_matrix_base.hpp"
+#include "core/matrix_implementations/symmetric_matrix_base.hpp"
 #include "core/symmetric_matrix_iterator.hpp"
 #include <vector>
 #include <memory>

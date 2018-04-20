@@ -55,6 +55,19 @@ namespace graphcpp_bench
 			return graphcpp::flow_calculators::Edmonds_Karp_optimized_algorithm(graph)->to_string();
 		};
 	}
+
+	template<class T>
+	std::function<std::string(std::ifstream&&)> Dinic_algorithm()
+	{
+		static_assert(std::is_base_of_v<graphcpp::GraphBase, T>, "T must be descendant of GraphBase");
+
+		return [&](std::ifstream&& input)
+		{
+			auto graph = read_graph_from_stream<T>(std::move(input));
+
+			return graphcpp::flow_calculators::Dinic_algorithm(graph)->to_string();
+		};
+	}
 }
 
 #endif

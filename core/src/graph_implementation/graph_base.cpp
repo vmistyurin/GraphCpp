@@ -1,4 +1,4 @@
-#include "core/graph_implementation/graph_base.hpp"
+#include "core/graph_implementations/graph_base.hpp"
 
 using namespace graphcpp;
 

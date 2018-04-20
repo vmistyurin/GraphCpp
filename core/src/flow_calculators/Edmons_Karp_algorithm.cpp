@@ -1,6 +1,9 @@
 #include "core/flow_calculators.hpp"
-#include "core/matrix_implementation/full_symmetric_matrix.hpp"
-#include "core/matrix_implementation/half_symmetric_matrix.hpp"
+#include "core/matrix_implementations/matrix_implementations.hpp"
+#include "core/graph_implementations/graph_implementations.hpp"
+
+#include "boost/preprocessor.hpp"
+
 #include <assert.h>
 #include <queue>
 #include <utility>
@@ -25,11 +28,11 @@ namespace
 		return result;
 	}
 
-	std::vector<msize> get_random_path(std::shared_ptr<SymmetricMatrixBase> matrix, msize start, msize finish)
+	std::vector<msize> get_random_path(SymmetricMatrixBase& matrix, msize start, msize finish)
 	{
-		assert(std::max(start, finish) < matrix->dimension());
+		assert(std::max(start, finish) < matrix.dimension());
 
-		std::vector<msize> ancestors(matrix->dimension(), msize_undefined);
+		std::vector<msize> ancestors(matrix.dimension(), msize_undefined);
 		ancestors[start] = start;
 		std::queue<msize> queue;
 
@@ -38,9 +41,9 @@ namespace
 		while (!queue.empty())
 		{
 			auto current_vertex = queue.front(); queue.pop();
-			for (msize i = 0; i < matrix->dimension(); i++)
+			for (msize i = 0; i < matrix.dimension(); i++)
 			{
-				if (matrix->at(current_vertex, i) > 0)
+				if (matrix.at(current_vertex, i) > 0)
 				{
 					if (ancestors[i] == msize_undefined)
 					{
@@ -58,7 +61,8 @@ namespace
 	}
 }
 
-mcontent flow_calculators::Edmonds_Karp_algorithm(const GraphBase& graph, msize source, msize sink)
+template<class GraphType>
+mcontent flow_calculators::Edmonds_Karp_algorithm(const GraphType& graph, msize source, msize sink)
 {
 	assert(source != sink);
 	assert(std::max(source, sink) < graph.dimension());
@@ -66,7 +70,7 @@ mcontent flow_calculators::Edmonds_Karp_algorithm(const GraphBase& graph, msize 
 	auto current_flows = graph.get_matrix();
 	mcontent flow = 0;
 
-	auto path = get_random_path(current_flows, source, sink);
+	auto path = get_random_path(*current_flows, source, sink);
 	while (!path.empty())
 	{
 		auto min_flow = std::numeric_limits<mcontent>::max();
@@ -81,13 +85,18 @@ mcontent flow_calculators::Edmonds_Karp_algorithm(const GraphBase& graph, msize 
 		}
 
 		flow += min_flow;
-		path = get_random_path(current_flows, source, sink);
+		path = get_random_path(*current_flows, source, sink);
 	}
 
 	return flow;
 }
 
-std::shared_ptr<SymmetricMatrixBase> flow_calculators::Edmonds_Karp_algorithm(const GraphBase& graph)
+
+#define EDMONDS_KARP_ALGORITHM_SINGLE_MACRO(r, data, graph_type) template mcontent flow_calculators::Edmonds_Karp_algorithm<graph_type>(const graph_type&, msize, msize);
+BOOST_PP_SEQ_FOR_EACH(EDMONDS_KARP_ALGORITHM_SINGLE_MACRO, 0, GRAPH_IMPLEMENTATIONS_SEQ);
+
+template<class GraphType>
+std::shared_ptr<SymmetricMatrixBase> flow_calculators::Edmonds_Karp_algorithm(const GraphType& graph)
 {
 	auto result = std::make_shared<MatrixType>(graph.dimension());
 
@@ -98,3 +107,6 @@ std::shared_ptr<SymmetricMatrixBase> flow_calculators::Edmonds_Karp_algorithm(co
 
 	return result;
 }
+
+#define EDMONDS_KARP_ALGORITHM_MATRIX_MACRO(r, data, graph_type) template std::shared_ptr<SymmetricMatrixBase> flow_calculators::Edmonds_Karp_algorithm<graph_type>(const graph_type&);
+BOOST_PP_SEQ_FOR_EACH(EDMONDS_KARP_ALGORITHM_MATRIX_MACRO, 0, GRAPH_IMPLEMENTATIONS_SEQ);

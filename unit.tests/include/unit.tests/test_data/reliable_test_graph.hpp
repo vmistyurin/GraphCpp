@@ -12,7 +12,7 @@ namespace graphcpp_testing::reliable_test_graph
 	std::vector<msize> get_degrees();
 
 	template<class GraphType>
-	std::unique_ptr<GraphBase> get_graph();
+	std::unique_ptr<GraphType> get_graph();
 
 	std::vector<std::vector<mcontent>> get_flows();
 }

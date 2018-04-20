@@ -1,4 +1,4 @@
-#include "core/matrix_implementation/full_symmetric_matrix.hpp"
+#include "core/matrix_implementations/full_symmetric_matrix.hpp"
 #include "core/utils.hpp"
 #include <algorithm>
 #include <assert.h>
@@ -136,15 +136,15 @@ void FullSymmetricMatrix::rearrange_with_allocate(const std::vector<msize>& new_
 	_matrix = std::move(result._matrix);
 }
 
-void FullSymmetricMatrix::make_rearranged(const std::vector<msize>& new_nums, std::shared_ptr<SymmetricMatrixBase> result) const
+void FullSymmetricMatrix::make_rearranged(const std::vector<msize>& new_nums, SymmetricMatrixBase& result) const
 {
 	assert(new_nums.size() == dimension());
 	assert(is_permutation(new_nums));
-	assert(result->dimension() == dimension());
+	assert(result.dimension() == dimension());
 
 	for(auto[i,j] : *this)
 	{
-		result->set(new_nums[i], new_nums[j], at(i, j));
+		result.set(new_nums[i], new_nums[j], at(i, j));
 	}
 }
 

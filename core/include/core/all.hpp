@@ -6,12 +6,8 @@
 #include "core/symmetric_matrix_iterator.hpp"
 #include "core/utils.hpp"
 
-#include "core/matrix_implementation/symmetric_matrix_base.hpp"
-#include "core/matrix_implementation/full_symmetric_matrix.hpp"
-#include "core/matrix_implementation/half_symmetric_matrix.hpp"
-
-#include "core/graph_implementation/graph_base.hpp"
-#include "core/graph_implementation/matrix_graph.hpp"
+#include "core/matrix_implementations/matrix_implementations.hpp"
+#include "core/graph_implementations/graph_implementations.hpp"
 
 #include "core/flow_calculators.hpp"
 

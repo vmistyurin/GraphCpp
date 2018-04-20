@@ -1,6 +1,5 @@
 #include "unit.tests/macroses.hpp"
-#include "core/matrix_implementation/full_symmetric_matrix.hpp"
-#include "core/matrix_implementation/half_symmetric_matrix.hpp"
+#include "core/all.hpp"
 #include "gtest/gtest.h"
 #include <memory>
 
@@ -185,11 +184,11 @@ TYPED_TEST(SymmetricMatrixTests, RearrangeWithAllocTest)
 TYPED_TEST(SymmetricMatrixTests, MakeRearrangedTest)
 {
 	const auto expected_after_rearrange_matrix = GetMatrix<TypeParam>(rearranged_test_array);
-	auto rearranged_matrix = std::make_shared<TypeParam>(test_dimension);
+	TypeParam rearranged_matrix(test_dimension);
 
 	this->test_matrix->make_rearranged(test_permutation, rearranged_matrix);
 
-	EXPECT_EQ(*rearranged_matrix, *expected_after_rearrange_matrix);
+	EXPECT_EQ(rearranged_matrix, *expected_after_rearrange_matrix);
 }
 
 TYPED_TEST(SymmetricMatrixTests, DeleteLastStringsTest)
