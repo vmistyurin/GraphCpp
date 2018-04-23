@@ -1,7 +1,8 @@
+#include "gtest/gtest.h"
+
+#include "core/edge.hpp"
 #include "unit.tests/macroses.hpp"
 #include "unit.tests/utils/comparators.hpp"
-#include "core/edge.hpp"
-#include "gtest/gtest.h"
 
 using namespace graphcpp;
 using namespace graphcpp_testing;

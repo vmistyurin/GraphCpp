@@ -1,8 +1,9 @@
 #ifndef GRAPH_CORE_EDGE_HPP
 #define GRAPH_CORE_EDGE_HPP
 
-#include "core/macroses.hpp"
 #include <ostream>
+
+#include "core/macroses.hpp"
 
 namespace graphcpp
 {

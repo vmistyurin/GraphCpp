@@ -1,7 +1,8 @@
 #include "core/matrix_implementations/symmetric_matrix_base.hpp"
+
+#include <assert.h>
 #include <string>
 #include <algorithm>
-#include <assert.h>
 
 using namespace graphcpp;
 

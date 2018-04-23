@@ -1,12 +1,13 @@
 #include "core/flow_calculators.hpp"
-#include "core/matrix_implementations/matrix_implementations.hpp"
-#include "core/graph_implementations/graph_implementations.hpp"
-
-#include "boost/preprocessor.hpp"
 
 #include <assert.h>
 #include <queue>
 #include <utility>
+
+#include "boost/preprocessor.hpp"
+
+#include "core/matrix_implementations/matrix_implementations.hpp"
+#include "core/graph_implementations/graph_implementations.hpp"
 
 using namespace graphcpp;
 using MatrixType = HalfSymmetricMatrix;

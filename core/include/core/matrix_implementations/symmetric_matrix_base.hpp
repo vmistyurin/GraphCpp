@@ -1,11 +1,12 @@
 #ifndef GRAPH_CORE_MATRIX_BASE_HPP
 #define GRAPH_CORE_MATRIX_BASE_HPP
 
-#include "core/macroses.hpp"
-#include "core/symmetric_matrix_iterator.hpp"
 #include <vector>
 #include <ostream>
 #include <memory>
+
+#include "core/macroses.hpp"
+#include "core/symmetric_matrix_iterator.hpp"
 
 namespace graphcpp
 {

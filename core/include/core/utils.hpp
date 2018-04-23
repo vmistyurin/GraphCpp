@@ -1,8 +1,9 @@
 #ifndef GRAPH_CORE_UTILS_HPP
 #define GRAPH_CORE_UTILS_HPP
 
-#include "core/macroses.hpp"
 #include <vector>
+
+#include "core/macroses.hpp"
 
 namespace graphcpp
 {

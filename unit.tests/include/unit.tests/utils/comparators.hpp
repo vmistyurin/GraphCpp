@@ -1,10 +1,10 @@
 #ifndef UNIT_TESTS_COMPARATORS_HPP
 #define UNIT_TESTS_COMPARATORS_HPP
 
-#include "gtest/gtest.h"
-#include "core/macroses.hpp"
 #include <vector>
 #include <list>
+
+#include "core/macroses.hpp"
 
 namespace graphcpp_testing
 {

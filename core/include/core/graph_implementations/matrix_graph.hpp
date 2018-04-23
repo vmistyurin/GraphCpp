@@ -1,14 +1,15 @@
 #ifndef GRAPH_CORE_MATRIX_GRAPH_HPP
 #define GRAPH_CORE_MATRIX_GRAPH_HPP
 
-#include "core/matrix_implementations/symmetric_matrix_base.hpp"
-#include "core/graph_implementations/graph_base.hpp"
-#include "core/macroses.hpp"
+#include <assert.h>
 #include <algorithm>
 #include <numeric>
 #include <set>
 #include <queue>
-#include <assert.h>
+
+#include "core/matrix_implementations/symmetric_matrix_base.hpp"
+#include "core/graph_implementations/graph_base.hpp"
+#include "core/macroses.hpp"
 
 namespace graphcpp
 {

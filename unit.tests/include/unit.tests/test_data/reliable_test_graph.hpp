@@ -16,5 +16,4 @@ namespace graphcpp_testing::reliable_test_graph
 
 	std::vector<std::vector<mcontent>> get_flows();
 }
-
 #endif

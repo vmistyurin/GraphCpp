@@ -1,8 +1,9 @@
 #ifndef GRAPH_CORE_SYMMETRIC_MATRIX_ITERATOR_HPP
 #define GRAPH_CORE_SYMMETRIC_MATRIX_ITERATOR_HPP
 
-#include "core/macroses.hpp"
 #include <utility>
+
+#include "core/macroses.hpp"
 
 namespace graphcpp
 {

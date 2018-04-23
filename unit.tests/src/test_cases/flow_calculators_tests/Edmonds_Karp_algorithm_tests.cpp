@@ -1,6 +1,7 @@
-#include "unit.tests/test_data/reliable_test_graph.hpp"
-#include "core/all.hpp"
 #include "gtest/gtest.h"
+
+#include "core/all.hpp"
+#include "unit.tests/test_data/reliable_test_graph.hpp"
 
 using namespace graphcpp;
 using namespace graphcpp_testing;

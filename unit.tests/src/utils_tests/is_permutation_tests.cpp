@@ -1,6 +1,7 @@
-#include "unit.tests/macroses.hpp"
-#include "core/utils.hpp"
 #include "gtest/gtest.h"
+
+#include "core/all.hpp"
+#include "unit.tests/macroses.hpp"
 
 using namespace graphcpp;
 

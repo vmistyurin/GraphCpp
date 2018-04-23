@@ -1,6 +1,8 @@
 #include "core/edge.hpp"
-#include <algorithm>
+
 #include <assert.h>
+#include <algorithm>
+
 
 using namespace graphcpp;
 

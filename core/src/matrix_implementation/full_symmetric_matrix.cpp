@@ -1,8 +1,10 @@
 #include "core/matrix_implementations/full_symmetric_matrix.hpp"
-#include "core/utils.hpp"
-#include <algorithm>
+
 #include <assert.h>
+#include <algorithm>
 #include <numeric>
+
+#include "core/utils.hpp"
 
 using namespace graphcpp;
 

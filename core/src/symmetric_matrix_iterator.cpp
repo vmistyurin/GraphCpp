@@ -1,4 +1,5 @@
 #include "core/symmetric_matrix_iterator.hpp"
+
 #include <assert.h>
 
 using namespace graphcpp;
