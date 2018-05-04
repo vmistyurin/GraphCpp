@@ -93,7 +93,7 @@ mcontent flow_calculators::Edmonds_Karp_algorithm(const GraphType& graph, msize 
 }
 
 #define EDMONDS_KARP_ALGORITHM_SINGLE_MACRO(r, data, graph_type) template mcontent flow_calculators::Edmonds_Karp_algorithm<graph_type>(const graph_type&, msize, msize);
-BOOST_PP_SEQ_FOR_EACH(EDMONDS_KARP_ALGORITHM_SINGLE_MACRO, 0, GRAPH_IMPLEMENTATIONS_SEQ);
+BOOST_PP_SEQ_FOR_EACH(EDMONDS_KARP_ALGORITHM_SINGLE_MACRO, 0, NON_ORIENTED_GRAPH_IMPLEMENTATIONS_SEQ);
 
 template<class GraphType>
 std::shared_ptr<SymmetricMatrixBase> flow_calculators::Edmonds_Karp_algorithm(const GraphType& graph)
@@ -109,4 +109,4 @@ std::shared_ptr<SymmetricMatrixBase> flow_calculators::Edmonds_Karp_algorithm(co
 }
 
 #define EDMONDS_KARP_ALGORITHM_MATRIX_MACRO(r, data, graph_type) template std::shared_ptr<SymmetricMatrixBase> flow_calculators::Edmonds_Karp_algorithm<graph_type>(const graph_type&);
-BOOST_PP_SEQ_FOR_EACH(EDMONDS_KARP_ALGORITHM_MATRIX_MACRO, 0, GRAPH_IMPLEMENTATIONS_SEQ);
+BOOST_PP_SEQ_FOR_EACH(EDMONDS_KARP_ALGORITHM_MATRIX_MACRO, 0, NON_ORIENTED_GRAPH_IMPLEMENTATIONS_SEQ);

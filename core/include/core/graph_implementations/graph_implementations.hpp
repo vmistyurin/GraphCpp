@@ -5,7 +5,7 @@
 #include "core/matrix_implementations/matrix_implementations.hpp"
 #include "core/graph_implementations/non-oriented_graphs/non_oriented_matrix_graph.hpp"
 
-#define GRAPH_IMPLEMENTATIONS_SEQ (graphcpp::NonOrientedMatrixGraph<graphcpp::FullSymmetricMatrix>) (graphcpp::NonOrientedMatrixGraph<graphcpp::HalfSymmetricMatrix>)
+#define NON_ORIENTED_GRAPH_IMPLEMENTATIONS_SEQ (graphcpp::NonOrientedMatrixGraph<graphcpp::FullSymmetricMatrix>) (graphcpp::NonOrientedMatrixGraph<graphcpp::HalfSymmetricMatrix>)
 
 //TODO : uncomment and fix this
 //#define GRAPH_IMPLEMENTATIONS_MATRIX_GRAPH(matrix_type) graphcpp::MatrixGraph<matrix_type>

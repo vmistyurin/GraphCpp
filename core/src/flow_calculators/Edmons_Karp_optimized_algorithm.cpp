@@ -118,4 +118,4 @@ std::shared_ptr<SymmetricMatrixBase> flow_calculators::Edmonds_Karp_optimized_al
 }
 
 #define EDMONDS_KARP_OPTIMIZED_ALGORITHM_MACRO(r, data, graph_type) template std::shared_ptr<SymmetricMatrixBase> flow_calculators::Edmonds_Karp_optimized_algorithm<graph_type>(const graph_type&);
-BOOST_PP_SEQ_FOR_EACH(EDMONDS_KARP_OPTIMIZED_ALGORITHM_MACRO, 0, GRAPH_IMPLEMENTATIONS_SEQ);
+BOOST_PP_SEQ_FOR_EACH(EDMONDS_KARP_OPTIMIZED_ALGORITHM_MACRO, 0, NON_ORIENTED_GRAPH_IMPLEMENTATIONS_SEQ);

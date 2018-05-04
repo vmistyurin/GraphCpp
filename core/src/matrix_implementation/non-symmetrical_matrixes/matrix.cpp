@@ -1,7 +1,8 @@
 #include "core/matrix_implementations/non-symmetric_matrixes/matrix.hpp"
 
-#include <assert.h>
+#include <cassert>
 #include <algorithm>
+
 
 #include "core/utils.hpp"
 
