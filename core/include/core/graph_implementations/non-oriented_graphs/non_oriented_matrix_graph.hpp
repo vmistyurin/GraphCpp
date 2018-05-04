@@ -1,44 +1,47 @@
-#ifndef GRAPH_CORE_MATRIX_GRAPH_HPP
-#define GRAPH_CORE_MATRIX_GRAPH_HPP
+#ifndef GRAPH_CORE_NON_ORIENTED_MATRIX_GRAPH_HPP
+#define GRAPH_CORE_NON_ORIENTED_MATRIX_GRAPH_HPP
 
-/*#include <assert.h>
-#include <algorithm>
-#include <numeric>
+#include <cassert>
 #include <set>
 #include <queue>
+#include <algorithm>
+#include <numeric>
 
-#include "core/matrix_implementations/matrix_base.hpp"
-#include "core/graph_implementations/graph_base.hpp"
-#include "core/macroses.hpp"
+#include "core/utils.hpp"
+#include "core/graph_implementations/non-oriented_graphs/non_oriented_graph_base.hpp"
+#include "core/symmetrical_edge.hpp"
 
 namespace graphcpp
 {
-	template<class MatrixType> 
-	class MatrixGraph : public GraphBase
+	template<class SymmetricalMatrixType>
+	class NonOrientedMatrixGraph : public NonOrientedGraphBase
 	{
 	protected:
-		MatrixType _matrix;
+		SymmetricalMatrixType _matrix;
 
 	public:
-		MatrixGraph();
-		explicit MatrixGraph(const GraphBase& other);
-		virtual ~MatrixGraph() = 0;
-		
-		template<class MatrixTypeForwarded>
-		explicit MatrixGraph(MatrixTypeForwarded&& matrix);
+		NonOrientedMatrixGraph();
+		NonOrientedMatrixGraph(const std::vector<SymmetricalEdge>& edges, msize dimension);
+		explicit NonOrientedMatrixGraph(const NonOrientedGraphBase& other);
+
+		template<class SymmetricalMatrixTypeForwarded>
+		explicit NonOrientedMatrixGraph(SymmetricalMatrixTypeForwarded&& matrix);
 
 		msize dimension() const override;
 		mcontent at(msize v1, msize v2) const override;
 		void set(msize v1, msize v2, mcontent value) override;
 
+		std::vector<SymmetricalEdge> get_edges() const override;
+		std::shared_ptr<SymmetricMatrixBase> get_matrix() const override;
+		std::shared_ptr<NonOrientedGraphBase> extract_subgraph(const std::vector<msize>& vertexes) const override;
+
 		bool equal(const GraphBase& rhs) const override;
 
 		std::vector<msize> get_linked_vertexes(msize vertex) const override;
-		std::list<std::pair<msize, msize>> get_hanged_vertexes() const override;
 		std::vector<msize> get_degrees() const override;
 		msize get_degree(msize vertex) const override;
-		std::shared_ptr<GraphBase> extract_subgraph(const std::vector<msize>& vertexes) const;
 
+		std::list<std::pair<msize, msize>> get_hanged_vertexes() const override;
 		std::vector<msize> get_connected_component(msize vertex) const override;
 		std::vector<std::vector<msize>> get_connected_components() const override;
 
@@ -46,54 +49,66 @@ namespace graphcpp
 		void rearrange(const std::vector<msize>& new_nums) override;
 	};
 
-	template<class T> inline
-	MatrixGraph<T>::MatrixGraph() :
+	template<class T>
+	NonOrientedMatrixGraph<T>::NonOrientedMatrixGraph() : 
 		_matrix(0)
 	{
 	}
 
-	template<class T> inline
-	MatrixGraph<T>::MatrixGraph(const GraphBase& other) :
-		_matrix(other.get_matrix())
+	template<class T>
+	NonOrientedMatrixGraph<T>::NonOrientedMatrixGraph(const std::vector<SymmetricalEdge>& edges, msize dimension) :
+		_matrix(dimension)
+	{
+		for (auto edge : edges)
+		{
+			assert(std::max(edge.v1(), edge.v2()) < dimension);
+			set(edge.v1(), edge.v2(), edge.weight);
+		}
+	}
+
+	template<class T>
+	NonOrientedMatrixGraph<T>::NonOrientedMatrixGraph(const NonOrientedGraphBase& other) :
+		_matrix(other)
 	{
 	}
 
-	template<class T> template<class MatrixTypeForwarded>  inline
-	MatrixGraph<T>::MatrixGraph(MatrixTypeForwarded&& matrix) :
-		_matrix(std::forward<V>(matrix))
+
+	template<class T> template<class SymmetricalMatrixTypeForwarded>
+	NonOrientedMatrixGraph<T>::NonOrientedMatrixGraph(SymmetricalMatrixTypeForwarded&& matrix) :
+		_matrix(std::forward<SymmetricalMatrixTypeForwarded>(matrix))
 	{
 	}
 
-	template<class T> inline
-	msize MatrixGraph<T>::dimension() const
+	template<class T>
+	msize NonOrientedMatrixGraph<T>::dimension() const
 	{
 		return _matrix.dimension();
 	}
 
-	template<class T> inline
-	mcontent MatrixGraph<T>::at(msize v1, msize v2) const
+	template<class T>
+	mcontent NonOrientedMatrixGraph<T>::at(msize v1, msize v2) const
 	{
 		assert(std::max(v1, v2) < dimension());
 
 		return _matrix.at(v1, v2);
 	}
 
-	template<class T> inline
-	void MatrixGraph<T>::set(msize v1, msize v2, mcontent value)
+	template<class T>
+	void NonOrientedMatrixGraph<T>::set(msize v1, msize v2, mcontent value)
 	{
 		assert(std::max(v1, v2) < dimension());
 
 		_matrix.set(v1, v2, value);
 	}
 
-	template<class T> inline
-	bool MatrixGraph<T>::equal(const GraphBase& other) const //TODO: Optimize, maybe add weight check
+	template<class T>
+	bool NonOrientedMatrixGraph<T>::equal(const GraphBase& rhs) const //TODO: Optimize, maybe add weight check
 	{
-		RETURN_IF(this == &other, true);
-		RETURN_IF(dimension() != other.dimension(), false);
+		RETURN_IF(this == &rhs, true);
+		RETURN_IF(dimension() != rhs.dimension(), false);
 
 		auto this_degrees = get_degrees();
-		auto other_degrees = other.get_degrees();
+		auto other_degrees = rhs.get_degrees();
 		RETURN_IF(!std::is_permutation(this_degrees.cbegin(), this_degrees.cend(), other_degrees.cbegin()), false);
 
 		std::vector<msize> permutation(dimension());
@@ -103,14 +118,35 @@ namespace graphcpp
 		do
 		{
 			_matrix.make_rearranged(permutation, this_copy);
-			RETURN_IF(is_matrix_from_graph(this_copy, other), true);
+			RETURN_IF(is_matrix_from_graph(this_copy, rhs), true);
 		} while (std::next_permutation(permutation.begin(), permutation.end()));
 
 		return false;
 	}
 
-	template<class T> inline
-	std::vector<msize> MatrixGraph<T>::get_linked_vertexes(msize vertex) const
+	template<class T>
+	std::vector<SymmetricalEdge> NonOrientedMatrixGraph<T>::get_edges() const
+	{
+		std::vector<SymmetricalEdge> result;
+		for (auto[i, j] : *this)
+		{
+			if (at(i, j) != 0)
+			{
+				result.emplace_back(i, j, at(i, j));
+			}
+		}
+
+		return result;
+	}
+
+	template<class T> 
+	std::shared_ptr<SymmetricMatrixBase> NonOrientedMatrixGraph<T>::get_matrix() const
+	{
+		return std::make_shared<T>(_matrix);
+	}
+
+	template<class T>
+	std::vector<msize> NonOrientedMatrixGraph<T>::get_linked_vertexes(msize vertex) const
 	{
 		assert(vertex < dimension());
 
@@ -125,8 +161,8 @@ namespace graphcpp
 		return result;
 	}
 
-	template<class T> inline
-	std::list<std::pair<msize, msize>> MatrixGraph<T>::get_hanged_vertexes() const
+	template<class T>
+	std::list<std::pair<msize, msize>> NonOrientedMatrixGraph<T>::get_hanged_vertexes() const
 	{
 		std::list<std::pair<msize, msize>> result;
 
@@ -142,8 +178,8 @@ namespace graphcpp
 		return result;
 	}
 
-	template<class T> inline
-	std::vector<msize> MatrixGraph<T>::get_degrees() const
+	template<class T>
+	std::vector<msize> NonOrientedMatrixGraph<T>::get_degrees() const
 	{
 		std::vector<msize> result(dimension());
 
@@ -155,8 +191,8 @@ namespace graphcpp
 		return result;
 	}
 
-	template<class T> inline
-	msize MatrixGraph<T>::get_degree(msize vertex) const
+	template<class T>
+	msize NonOrientedMatrixGraph<T>::get_degree(msize vertex) const
 	{
 		assert(vertex < dimension());
 
@@ -171,8 +207,8 @@ namespace graphcpp
 		return result;
 	}
 
-	template<class T> inline
-	std::shared_ptr<GraphBase> MatrixGraph<T>::extract_subgraph(const std::vector<msize>& vertexes) const
+	template<class T>
+	std::shared_ptr<NonOrientedGraphBase> NonOrientedMatrixGraph<T>::extract_subgraph(const std::vector<msize>& vertexes) const
 	{
 		assert(!vertexes.empty());
 		assert(std::all_of(vertexes.cbegin(), vertexes.cend(), [&](auto vertex) {return vertex < dimension(); }));
@@ -186,17 +222,17 @@ namespace graphcpp
 			}
 		}
 
-		return std::make_shared<MatrixGraph<T>>(std::move(result));
+		return std::make_shared<NonOrientedMatrixGraph<T>>(std::move(result));
 	}
 
-	template<class T> inline
-	void MatrixGraph<T>::delete_vertexes(const std::vector<msize>& vertexes)
+	template<class T>
+	void NonOrientedMatrixGraph<T>::delete_vertexes(const std::vector<msize>& vertexes)
 	{
 		assert(!vertexes.empty());
 		assert(std::all_of(vertexes.cbegin(), vertexes.cend(), [&](msize vertex) {return vertex < dimension(); }));
 
 		std::set<msize> to_delete(vertexes.cbegin(), vertexes.cend());
-		msize current_position = dimension() - 1;
+		auto current_position = dimension() - 1;
 		for (auto current_deleted : to_delete)
 		{
 			while (to_delete.count(current_position) == 1)
@@ -210,14 +246,14 @@ namespace graphcpp
 		_matrix.delete_last_strings(vertexes.size());
 	}
 
-	template<class T> inline
-	void MatrixGraph<T>::rearrange(const std::vector<msize>& new_nums)
+	template<class T>
+	void NonOrientedMatrixGraph<T>::rearrange(const std::vector<msize>& new_nums)
 	{
 		_matrix.rearrange_with_allocate(new_nums);
 	}
 
-	template<class T> inline
-	std::vector<msize> MatrixGraph<T>::get_connected_component(msize vertex) const
+	template<class T>
+	std::vector<msize> NonOrientedMatrixGraph<T>::get_connected_component(msize vertex) const
 	{
 		assert(vertex < dimension());
 
@@ -247,7 +283,7 @@ namespace graphcpp
 	}
 
 	template<class T> inline
-	std::vector<std::vector<msize>> MatrixGraph<T>::get_connected_components() const
+	std::vector<std::vector<msize>> NonOrientedMatrixGraph<T>::get_connected_components() const
 	{
 		std::vector<std::vector<msize>> result;
 
@@ -270,5 +306,5 @@ namespace graphcpp
 
 		return result;
 	}
-}*/
+}
 #endif

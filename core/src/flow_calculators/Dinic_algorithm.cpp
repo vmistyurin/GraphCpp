@@ -1,7 +1,7 @@
 #include "core/flow_calculators.hpp"
 
-#include <queue>
 #include <assert.h>
+#include <queue>
 #include <cmath>
 
 #include "boost/preprocessor.hpp"
@@ -140,21 +140,7 @@ namespace
 			}
 			layers = get_layers(graph, source);
 		}
-
 		return flow;
-	}
-
-	template<class GraphType>
-	std::shared_ptr<SymmetricMatrixBase> Matrix_Dinic_algorithm_typed(const GraphType& graph)
-	{
-		auto result = std::make_shared<MatrixType>(graph.dimension());
-
-		for (auto[i, j] : graph)
-		{
-			result->set(i, j, Single_Dinic_algorithm_typed<GraphType>(graph, i, j));
-		}
-
-		return result;
 	}
 }
 
@@ -170,7 +156,14 @@ BOOST_PP_SEQ_FOR_EACH(DINIC_ALGORITHM_SINGLE_MACRO, 0, GRAPH_IMPLEMENTATIONS_SEQ
 template<class GraphType>
 std::shared_ptr<SymmetricMatrixBase> flow_calculators::Dinic_algorithm(const GraphType& graph)
 {
-	return Matrix_Dinic_algorithm_typed(graph);
+	auto result = std::make_shared<MatrixType>(graph.dimension());
+
+	for (auto[i, j] : graph)
+	{
+		result->set(i, j, Single_Dinic_algorithm_typed<GraphType>(graph, i, j));
+	}
+
+	return result;
 }
 
 #define DINIC_ALGORITHM_MATRIX_MACRO(r, data, graph_type) template std::shared_ptr<SymmetricMatrixBase> flow_calculators::Dinic_algorithm<graph_type>(const graph_type&);

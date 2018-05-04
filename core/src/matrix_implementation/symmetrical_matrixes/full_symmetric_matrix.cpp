@@ -1,12 +1,23 @@
-#include "core/matrix_implementations/full_symmetric_matrix.hpp"
+#include "core/matrix_implementations/symmetric_matrixes/full_symmetric_matrix.hpp"
 
-#include <assert.h>
+#include <cassert>
 #include <algorithm>
-#include <numeric>
 
 #include "core/utils.hpp"
+#include "core/iterators/matrix_iterator.hpp"
 
 using namespace graphcpp;
+
+namespace
+{
+	void fill_diagonal(std::vector<std::vector<mcontent>>& matrix, mcontent value)
+	{
+		for (msize i = 0; i < matrix.size(); i++)
+		{
+			matrix[i][i] = value;
+		}
+	}
+}
 
 FullSymmetricMatrix::FullSymmetricMatrix(msize dimension)
 {
@@ -17,7 +28,8 @@ FullSymmetricMatrix::FullSymmetricMatrix(msize dimension)
 	}
 }
 
-FullSymmetricMatrix::FullSymmetricMatrix(const std::vector<std::vector<mcontent>>& matrix) : FullSymmetricMatrix(matrix.size())
+FullSymmetricMatrix::FullSymmetricMatrix(const std::vector<std::vector<mcontent>>& matrix) : 
+	FullSymmetricMatrix(matrix.size())
 {
 	assert(check_symmetrical_matrix(matrix));
 
@@ -28,7 +40,7 @@ FullSymmetricMatrix::FullSymmetricMatrix(const std::vector<std::vector<mcontent>
 			_matrix[i][j] = matrix[i][j];
 		}
 	}
-	fill_diagonal();
+	fill_diagonal(_matrix, 0);
 }
 
 FullSymmetricMatrix::FullSymmetricMatrix(const SymmetricMatrixBase& matrix)
@@ -38,23 +50,6 @@ FullSymmetricMatrix::FullSymmetricMatrix(const SymmetricMatrixBase& matrix)
 	{
 		set(i, j, matrix.at(i, j));
 	}
-}
-
-bool FullSymmetricMatrix::operator==(const SymmetricMatrixBase& rhs) const
-{
-	RETURN_IF(this == &rhs, true);
-	RETURN_IF(rhs.dimension() != dimension(), false);
-	
-	for(auto[i,j] : *this)
-	{
-		RETURN_IF(at(i, j) != rhs.at(i, j), false);
-	}
-	return true;
-}
-
-bool FullSymmetricMatrix::operator!=(const SymmetricMatrixBase& rhs) const
-{
-	return !(*this == rhs);
 }
 
 msize FullSymmetricMatrix::dimension() const
@@ -85,13 +80,6 @@ void FullSymmetricMatrix::reduce_element(msize index1, msize index2, mcontent di
 
 	_matrix[index1][index2] -= difference;
 	_matrix[index2][index1] -= difference;
-}
-
-std::vector<mcontent> FullSymmetricMatrix::get_string(msize str) const
-{
-	assert(str < dimension());
-
-	return _matrix[str];
 }
 
 void FullSymmetricMatrix::swap(msize str1, msize str2) //Todo: optimize
@@ -138,18 +126,6 @@ void FullSymmetricMatrix::rearrange_with_allocate(const std::vector<msize>& new_
 	_matrix = std::move(result._matrix);
 }
 
-void FullSymmetricMatrix::make_rearranged(const std::vector<msize>& new_nums, SymmetricMatrixBase& result) const
-{
-	assert(new_nums.size() == dimension());
-	assert(is_permutation(new_nums));
-	assert(result.dimension() == dimension());
-
-	for(auto[i,j] : *this)
-	{
-		result.set(new_nums[i], new_nums[j], at(i, j));
-	}
-}
-
 void FullSymmetricMatrix::delete_last_strings(msize count)
 {
 	assert(count <= dimension());
@@ -164,13 +140,5 @@ void FullSymmetricMatrix::delete_last_strings(msize count)
 		{
 			_matrix[i].pop_back();
 		}
-	}
-}
-
-void FullSymmetricMatrix::fill_diagonal(mcontent value)
-{
-	for (msize i = 0; i < dimension(); i++)
-	{
-		_matrix[i][i] = value;
 	}
 }

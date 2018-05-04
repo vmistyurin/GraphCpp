@@ -1,26 +1,21 @@
 #include "core/edge.hpp"
 
-#include <assert.h>
-#include <algorithm>
-
-
 using namespace graphcpp;
 
 Edge::Edge(msize v1, msize v2, mcontent weight) :
-	_v1(std::min(v1, v2)), _v2(std::max(v1, v2)), weight(weight)
+	_v1(v1), _v2(v2), weight(weight)
 {
-	assert(v1 != v2);
 }
 
-bool Edge::operator==(const Edge& right) const
+bool Edge::operator==(const Edge& rhs) const
 {
-	RETURN_IF(this == &right, true);
-	return (this->_v1 == right._v1) && (this->_v2 == right._v2) && (this->weight == right.weight);
+	RETURN_IF(this == &rhs, true);
+	return _v1 == rhs.v1() && _v2 == rhs.v2() && weight == rhs.weight;
 }
 
-bool Edge::operator!=(const Edge& right) const
+bool Edge::operator!=(const Edge& rhs) const
 {
-	return !(*this == right);
+	return !(*this == rhs);
 }
 
 msize Edge::v1() const

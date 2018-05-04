@@ -1,6 +1,6 @@
 #include "core/utils.hpp"
 
-#include <assert.h>
+#include <cassert>
 #include <numeric>
 #include <algorithm>
 
@@ -66,5 +66,23 @@ bool graphcpp::check_symmetrical_matrix(const std::vector<std::vector<mcontent>>
 		}
 	}
 
+	return true;
+}
+
+bool graphcpp::is_matrix_from_graph(const SymmetricMatrixBase& matrix, const GraphBase& graph)
+{
+	for (auto[i, j] : matrix)
+	{
+		RETURN_IF(matrix.at(i, j) != graph.at(i, j), false);
+	}
+	return true;
+}
+
+bool graphcpp::is_matrix_from_graph(const NonSymmetricMatrixBase& matrix, const GraphBase& graph)
+{
+	for (auto[i, j] : matrix)
+	{
+		RETURN_IF(matrix.at(i, j) != graph.at(i, j), false);
+	}
 	return true;
 }

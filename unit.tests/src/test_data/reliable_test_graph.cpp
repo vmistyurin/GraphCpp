@@ -5,15 +5,15 @@ using namespace graphcpp_testing;
 
 namespace
 {
-	const std::vector<Edge> test_edges =
+	const std::vector<SymmetricalEdge> test_edges =
 	{
-		Edge(3, 6, 1),
-		Edge(4, 6, 2),
-		Edge(1, 5, 7),
-		Edge(3, 4, 10),
-		Edge(2, 4, 4),
-		Edge(6, 0, 2),
-		Edge(6, 7, 10)
+		SymmetricalEdge(3, 6, 1),
+		SymmetricalEdge(4, 6, 2),
+		SymmetricalEdge(1, 5, 7),
+		SymmetricalEdge(3, 4, 10),
+		SymmetricalEdge(2, 4, 4),
+		SymmetricalEdge(6, 0, 2),
+		SymmetricalEdge(6, 7, 10)
 	};
 	constexpr msize test_dimension = 8;
 
@@ -32,7 +32,7 @@ msize reliable_test_graph::dimension()
 	return test_dimension;
 }
 
-std::vector<Edge> reliable_test_graph::get_edges()
+std::vector<SymmetricalEdge> reliable_test_graph::get_edges()
 {
 	return test_edges;
 }
@@ -51,15 +51,15 @@ std::vector<msize> reliable_test_graph::get_degrees()
 }
 
 template<>
-std::unique_ptr<MatrixGraph<FullSymmetricMatrix>> reliable_test_graph::get_graph<MatrixGraph<FullSymmetricMatrix>>()
+std::unique_ptr<NonOrientedMatrixGraph<FullSymmetricMatrix>> reliable_test_graph::get_graph<NonOrientedMatrixGraph<FullSymmetricMatrix>>()
 {
-	return std::make_unique<MatrixGraph<FullSymmetricMatrix>>(test_edges, test_dimension);
+	return std::make_unique<NonOrientedMatrixGraph<FullSymmetricMatrix>>(test_edges, test_dimension);
 }
 
 template<>
-std::unique_ptr<MatrixGraph<HalfSymmetricMatrix>> reliable_test_graph::get_graph<MatrixGraph<HalfSymmetricMatrix>>()
+std::unique_ptr<NonOrientedMatrixGraph<HalfSymmetricMatrix>> reliable_test_graph::get_graph<NonOrientedMatrixGraph<HalfSymmetricMatrix>>()
 {
-	return std::make_unique<MatrixGraph<HalfSymmetricMatrix>>(test_edges, test_dimension);
+	return std::make_unique<NonOrientedMatrixGraph<HalfSymmetricMatrix>>(test_edges, test_dimension);
 }
 
 std::vector<std::vector<mcontent>> reliable_test_graph::get_flows()

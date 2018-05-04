@@ -1,6 +1,7 @@
 #include "benchmarks/recursive_directory_test_runner.hpp"	
 #include "benchmarks/test_functions.hpp"
 #include "benchmarks/recursive_directory_test_runner.hpp"
+
 #include "core/all.hpp"
 
 using namespace graphcpp_bench;
@@ -17,16 +18,26 @@ int main(int argc, char **argv)
 
 	tester.run_tests_in_directory(path_to_tests,
 		first_answers, 
-		Edmonds_Karp_algorithm<graphcpp::MatrixGraph<graphcpp::FullSymmetricMatrix>>(),
+		Edmonds_Karp_algorithm<graphcpp::NonOrientedMatrixGraph<graphcpp::FullSymmetricMatrix>>(),
 		"Edmonds-Karp");
 
 	tester.run_tests_in_directory(path_to_tests, 
 		second_answers,
-		Dinic_algorithm<graphcpp::MatrixGraph<graphcpp::FullSymmetricMatrix>>(), 
+		Dinic_algorithm<graphcpp::NonOrientedMatrixGraph<graphcpp::FullSymmetricMatrix>>(), 
 		"Dinic");
 
-	std::cout << std::boolalpha;
-	std::cout << tester.check_results(first_answers, second_answers) << std::endl;
+	if (auto differences = tester.check_results(first_answers, second_answers); differences.empty())
+	{
+		std::cout << "No differences" << std::endl;
+	}
+	else
+	{
+		std::cout << "There is " << differences.size() << " differences" << std::endl;
+		for (const auto& path : differences)
+		{
+			std::cout << path.string() << std::endl;
+		}
+	}
 	
 	getchar();
 	return 0;

@@ -17,13 +17,13 @@ namespace graphcpp_bench
 			unsigned int V, E;
 			stream >> V >> E;
 
-			std::vector<graphcpp::Edge> edges;
+			std::vector<graphcpp::SymmetricalEdge> edges;
 			edges.reserve(V);
 			for (size_t i = 0; i < E; i++)
 			{
 				unsigned int v1, v2, weight;
 				stream >> v1 >> v2 >> weight;
-				edges.emplace_back(graphcpp::Edge(v1, v2, weight));
+				edges.emplace_back(graphcpp::SymmetricalEdge(v1, v2, weight));
 			}
 
 			return T(edges, V);
@@ -61,9 +61,12 @@ namespace graphcpp_bench
 	{
 		static_assert(std::is_base_of_v<graphcpp::GraphBase, T>, "T must be descendant of GraphBase");
 
+
 		return [&](std::ifstream&& input)
 		{
 			auto graph = read_graph_from_stream<T>(std::move(input));
+
+			auto res = graphcpp::flow_calculators::Dinic_algorithm(graph, 1, 3);
 
 			return graphcpp::flow_calculators::Dinic_algorithm(graph)->to_string();
 		};

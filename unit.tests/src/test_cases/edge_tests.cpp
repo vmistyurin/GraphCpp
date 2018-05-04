@@ -1,14 +1,13 @@
 #include "gtest/gtest.h"
 
 #include "core/all.hpp"
-#include "unit.tests/macroses.hpp"
 
 using namespace graphcpp;
 
-class EdgeTests : public ::testing::Test 
+class EdgeTests : public ::testing::Test
 {
 protected:
-	static void SetUpTestCase() 
+	static void SetUpTestCase()
 	{
 	}
 };
@@ -20,14 +19,6 @@ TEST_F(EdgeTests, GettersTest)
 	EXPECT_EQ(1, edge.v1());
 	EXPECT_EQ(10, edge.v2());
 	EXPECT_EQ(3, edge.weight);
-}
-TEST_F(EdgeTests, InvertEdge)
-{
-	Edge edge(10, 3, 1);
-
-	EXPECT_EQ(edge.v1(), 3);
-	EXPECT_EQ(edge.v2(), 10);
-	EXPECT_EQ(edge.weight, 1);
 }
 
 TEST_F(EdgeTests, EqualityEdges)

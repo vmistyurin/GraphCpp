@@ -1,4 +1,4 @@
-#include "core/symmetric_matrix_iterator.hpp"
+#include "core/iterators/symmetric_matrix_iterator.hpp"
 
 #include <assert.h>
 

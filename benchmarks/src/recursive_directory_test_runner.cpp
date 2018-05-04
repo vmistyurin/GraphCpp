@@ -1,4 +1,5 @@
 #include "benchmarks/recursive_directory_test_runner.hpp"
+
 #include <type_traits>
 #include <iostream>
 #include <fstream>
@@ -82,40 +83,37 @@ void RecursiveDirectoryTestRunner::run_tests_in_directory_uncheked(const fs::pat
 	std::cout << std::endl;
 }
 
-bool RecursiveDirectoryTestRunner::check_results(const fs::path& first_answers, const fs::path& second_answers)
+std::list<fs::path> RecursiveDirectoryTestRunner::check_results(const fs::path& first_answers, const fs::path& second_answers)
 {
+	std::list<fs::path> result;
+
 	for (const auto& file : fs::directory_iterator(first_answers))
 	{
 		auto filename = file.path().filename();
-		bool are_equal = true;
 
 		if (fs::is_directory(file))
 		{
-			if (!check_results(first_answers / filename, second_answers / filename))
-			{
-				return false;
-			}
+			auto directory_result = check_results(first_answers / filename, second_answers / filename);
+			result.merge(std::move(directory_result));
 		}
 		else
 		{
 			std::ifstream first_file((first_answers / filename).string());
 			std::ifstream second_file((second_answers / filename).string());
-			int count = 0;
 
 			while (!(first_file.eof() || second_file.eof()))
 			{
-				count++;
 				char fc, sc;
 				first_file >> fc;
 				second_file >> sc;
 				if (fc != sc)
 				{
-					return false;
+					result.push_back(first_answers / filename);
 					break;
 				}
 			}
 		}
 	}
 	
-	return true;
+	return result;
 }

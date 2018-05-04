@@ -95,7 +95,7 @@ namespace
 			{
 				continue;
 			}
-
+			
 			auto subgraph = std::static_pointer_cast<GraphType>(graph.extract_subgraph(component));
 			auto subgraph_flows = EK_optimized_algorithm_splited(*subgraph);
 			for (msize i = 1; i < component.size(); i++)

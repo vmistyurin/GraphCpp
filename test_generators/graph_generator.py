@@ -2,9 +2,9 @@ import random
 import os
 import shutil
 
-upper_bound_of_edge_weight = 100
+upper_bound_of_edge_weight = 10
 number_of_test = 20
-tests_dimension = [(15, 40), (20, 30), (30, 40), (50, 60)]
+tests_dimension = [(5, 6), (5, 5)]
 test_directory_name = "graphs"
 
 if os.path.isdir(test_directory_name):

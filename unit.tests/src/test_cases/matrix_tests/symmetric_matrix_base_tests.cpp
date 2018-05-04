@@ -4,6 +4,7 @@
 
 #include "core/all.hpp"
 #include "unit.tests/macroses.hpp"
+#include "unit.tests/implementations.hpp"
 
 using namespace graphcpp;
 
@@ -62,16 +63,14 @@ public:
 	std::unique_ptr<SymmetricMatrixBase> test_matrix;
 }; 
 
-using SymmericMatrixImplementations = testing::Types<FullSymmetricMatrix, HalfSymmetricMatrix>;
-TYPED_TEST_CASE(SymmetricMatrixTests, SymmericMatrixImplementations);
-
+TYPED_TEST_CASE(SymmetricMatrixTests, SymmetricMatrixImplementations);
 
 TYPED_TEST(SymmetricMatrixTests, IndexatorTest)
 {
-	const msize x_first_test_index = 0, y_first_test_index = 1;
-	const mcontent first_indexed_value = test_array[0][1];
-	const msize x_second_test_index = 4, y_second_test_index = 0;
-	const mcontent second_indexed_value = test_array[4][0];
+	msize x_first_test_index = 0, y_first_test_index = 1;
+	auto first_indexed_value = test_array[0][1];
+	msize x_second_test_index = 4, y_second_test_index = 0;
+	auto second_indexed_value = test_array[4][0];
 
 	EXPECT_EQ(this->test_matrix->at(x_first_test_index, y_first_test_index), first_indexed_value);
 	EXPECT_EQ(this->test_matrix->at(x_second_test_index, y_second_test_index), second_indexed_value);
@@ -79,32 +78,23 @@ TYPED_TEST(SymmetricMatrixTests, IndexatorTest)
 
 TYPED_TEST(SymmetricMatrixTests, DimensionTest)
 {
-	const msize test_dimension = test_array.size();
+	msize test_dimension = test_array.size();
 
 	EXPECT_EQ(this->test_matrix->dimension(), test_dimension);
 }
 
-TYPED_TEST(SymmetricMatrixTests, GetStringTest)
-{
-	const msize number_of_test_string = 1;
-	const std::vector<mcontent> test_string = test_array[number_of_test_string];
-
-	EXPECT_EQ(this->test_matrix->get_string(number_of_test_string), test_string);
-}
-
 TYPED_TEST(SymmetricMatrixTests, EqualityTest)
 {
-	const std::vector<std::vector<mcontent>> dimensional_non_equal_array
-			{ { 1,0,0 },
-			  { 0,1,0 },
-			  { 0,0,1 } };
+	std::vector<std::vector<mcontent>> dimensional_non_equal_array = { { 1,0,0 },
+																	   { 0,1,0 },
+																	   { 0,0,1 } };
 	std::vector<std::vector<mcontent>> content_non_equal_array(test_array);
 	content_non_equal_array[5][2]++;
 	content_non_equal_array[2][5]++;
 
-	const auto equal_to_test_matrix = GetMatrix<TypeParam>(test_array);
-	const auto dimensional_non_equal_matrix = GetMatrix<TypeParam>(dimensional_non_equal_array);
-	const auto content_non_equal_matrix = GetMatrix<TypeParam>(content_non_equal_array);
+	auto equal_to_test_matrix = GetMatrix<TypeParam>(test_array);
+	auto dimensional_non_equal_matrix = GetMatrix<TypeParam>(dimensional_non_equal_array);
+	auto content_non_equal_matrix = GetMatrix<TypeParam>(content_non_equal_array);
 
 	EXPECT_EQ(*this->test_matrix, *this->test_matrix);
 	EXPECT_EQ(*this->test_matrix, *equal_to_test_matrix);

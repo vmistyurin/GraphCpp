@@ -2,6 +2,7 @@
 
 #include "core/all.hpp"
 #include "unit.tests/test_data/reliable_test_graph.hpp"
+#include "unit.tests/implementations.hpp"
 
 using namespace graphcpp;
 using namespace graphcpp_testing;
@@ -17,8 +18,7 @@ protected:
 	std::unique_ptr<GraphType> test_graph;
 };
 
-using GraphImplementations = testing::Types<MatrixGraph<FullSymmetricMatrix>, MatrixGraph<HalfSymmetricMatrix>>;
-TYPED_TEST_CASE(EdmondsKarpOptimizedAlgorithmTests, GraphImplementations);
+TYPED_TEST_CASE(EdmondsKarpOptimizedAlgorithmTests, NonOrientedGraphImplementations);
 
 TYPED_TEST(EdmondsKarpOptimizedAlgorithmTests, FlowsMatrixTests)
 {
