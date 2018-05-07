@@ -20,12 +20,13 @@ namespace graphcpp
 		MatrixType _matrix;
 
 	public:
-		OrientedMatrixGraph();
+		OrientedMatrixGraph(msize dimension);
 		OrientedMatrixGraph(const std::vector<Edge>& edges, msize dimension);
-		explicit OrientedMatrixGraph(const OrientedGraphBase& other);
+		explicit OrientedMatrixGraph(const NonOrientedGraphBase& rhs);
 
-		template<class SymmetricalMatrixTypeForwarded>
-		explicit OrientedMatrixGraph(SymmetricalMatrixTypeForwarded&& matrix);
+		explicit OrientedMatrixGraph(const NonSymmetricMatrixBase& rhs);
+
+		explicit OrientedMatrixGraph(std::vector<std::vector<mcontent>> matrix);
 
 		std::vector<Edge> get_edges() const override;
 		std::shared_ptr<MatrixBase> get_matrix() const override;
@@ -46,8 +47,8 @@ namespace graphcpp
 	};
 
 	template<class T>
-	OrientedMatrixGraph<T>::OrientedMatrixGraph() :
-		_matrix(0)
+	OrientedMatrixGraph<T>::OrientedMatrixGraph(msize dimension) :
+		_matrix(dimension)
 	{
 	}
 
@@ -63,15 +64,25 @@ namespace graphcpp
 	}
 
 	template<class T>
-	OrientedMatrixGraph<T>::OrientedMatrixGraph(const OrientedGraphBase& other) :
-		_matrix(other)
+	OrientedMatrixGraph<T>::OrientedMatrixGraph(const NonOrientedGraphBase& rhs) :
+		_matrix(rhs.dimension())
+	{
+		for (auto[i, j] : rhs)
+		{
+			set(i, j, rhs.at(i, j));
+			set(j, i, rhs.at(i, j));
+		}
+	}
+
+	template<class T>
+	OrientedMatrixGraph<T>::OrientedMatrixGraph(const NonSymmetricMatrixBase& rhs) :
+		_matrix(rhs)
 	{
 	}
 
-
-	template<class T> template<class SymmetricalMatrixTypeForwarded>
-	OrientedMatrixGraph<T>::OrientedMatrixGraph(SymmetricalMatrixTypeForwarded&& matrix) :
-		_matrix(std::forward<SymmetricalMatrixTypeForwarded>(matrix))
+	template<class T>
+	OrientedMatrixGraph<T>::OrientedMatrixGraph(std::vector<std::vector<mcontent>> matrix) :
+		_matrix(std::move(matrix))
 	{
 	}
 

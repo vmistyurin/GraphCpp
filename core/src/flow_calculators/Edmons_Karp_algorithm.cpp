@@ -1,20 +1,20 @@
 #include "core/flow_calculators.hpp"
 
-#include <assert.h>
+#include <cassert>
 #include <queue>
-#include <utility>
 
 #include "boost/preprocessor.hpp"
 
 #include "core/matrix_implementations/matrix_implementations.hpp"
 #include "core/graph_implementations/graph_implementations.hpp"
+#include "core/matrix_implementations/non-symmetric_matrixes/matrix.hpp"
 
 using namespace graphcpp;
 using MatrixType = HalfSymmetricMatrix;
 
 namespace 
 {
-	std::vector<msize> get_path_from_bfs_tree(const std::vector<msize>& partial_tree, msize start, msize finish)
+	std::vector<msize> get_reversed_path_from_bfs_tree(const std::vector<msize>& partial_tree, msize start, msize finish)
 	{
 		std::vector<msize> result;
 
@@ -29,7 +29,7 @@ namespace
 		return result;
 	}
 
-	std::vector<msize> get_random_path(SymmetricMatrixBase& matrix, msize start, msize finish)
+	std::vector<msize> get_random_path(MatrixBase& matrix, msize start, msize finish)
 	{
 		assert(std::max(start, finish) < matrix.dimension());
 
@@ -41,20 +41,17 @@ namespace
 
 		while (!queue.empty())
 		{
-			auto current_vertex = queue.front(); queue.pop();
+			const auto current_vertex = queue.front(); queue.pop();
 			for (msize i = 0; i < matrix.dimension(); i++)
 			{
-				if (matrix.at(current_vertex, i) > 0)
+				if (matrix.at(current_vertex, i) > 0 && (ancestors[i] == msize_undefined))
 				{
-					if (ancestors[i] == msize_undefined)
+					ancestors[i] = current_vertex;
+					if (finish == i)
 					{
-						ancestors[i] = current_vertex;
-						if (finish == i)
-						{
-							return get_path_from_bfs_tree(ancestors, start, finish);
-						}
-						queue.push(i);
+						return get_reversed_path_from_bfs_tree(ancestors, start, finish);
 					}
+					queue.push(i);
 				}
 			}
 		}
@@ -68,25 +65,26 @@ mcontent flow_calculators::Edmonds_Karp_algorithm(const GraphType& graph, msize 
 	assert(source != sink);
 	assert(std::max(source, sink) < graph.dimension());
 
-	auto current_flows = graph.get_matrix();
+	Matrix current_flows(*graph.get_matrix());
 	mcontent flow = 0;
 
-	auto path = get_random_path(*current_flows, source, sink);
+	auto path = get_random_path(current_flows, source, sink);
 	while (!path.empty())
 	{
 		auto min_flow = std::numeric_limits<mcontent>::max();
 		for (msize i = 0; i < path.size() - 1; i++)
 		{
-			min_flow = std::min(min_flow, current_flows->at(path[i], path[i + 1]));
+			min_flow = std::min(min_flow, current_flows.at(path[i + 1], path[i]));
 		}
 
 		for (msize i = 0; i < path.size() - 1; i++)
 		{
-			current_flows->reduce_element(path[i], path[i + 1], min_flow);
+			current_flows.reduce_element(path[i + 1], path[i], min_flow);
+			current_flows.reduce_element(path[i], path[i + 1], -min_flow);
 		}
 
 		flow += min_flow;
-		path = get_random_path(*current_flows, source, sink);
+		path = get_random_path(current_flows, source, sink);
 	}
 
 	return flow;
@@ -100,6 +98,16 @@ std::shared_ptr<SymmetricMatrixBase> flow_calculators::Edmonds_Karp_algorithm(co
 {
 	auto result = std::make_shared<MatrixType>(graph.dimension());
 
+	/*for(msize i = 0; i < graph.dimension(); i++)
+	{
+		for(msize j = 0; j < graph.dimension(); j++)
+		{
+			if (i != j)
+			{
+				result->set(i, j, flow_calculators::Edmonds_Karp_algorithm(graph, i, j));
+			}
+		}
+	}*/
 	for (auto[i, j] : graph)
 	{
 		result->set(i, j, flow_calculators::Edmonds_Karp_algorithm(graph, i, j));

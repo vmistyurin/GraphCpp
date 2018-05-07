@@ -21,19 +21,19 @@ namespace
 }
 
 template<class TestMatrixType>
-class MatrixTests : public testing::Test
+class MatrixBaseTests : public testing::Test
 {
 public:
-	MatrixTests() :
+	MatrixBaseTests() :
 		test_matrix(GetMatrix<TestMatrixType>(tested_matrix::matrix_as_vector()))
 	{
 	};
 	std::unique_ptr<MatrixBase> test_matrix;
 };
 
-TYPED_TEST_CASE(MatrixTests, MatrixImplementations);
+TYPED_TEST_CASE(MatrixBaseTests, MatrixImplementations);
 
-TYPED_TEST(MatrixTests, IndexatorTest)
+TYPED_TEST(MatrixBaseTests, IndexatorTest)
 {
 	msize x_first_test_index = 0, y_first_test_index = 4;
 	mcontent first_indexed_value = tested_matrix::matrix_as_vector()[x_first_test_index][y_first_test_index];
@@ -45,14 +45,14 @@ TYPED_TEST(MatrixTests, IndexatorTest)
 	EXPECT_EQ(this->test_matrix->at(x_second_test_index, y_second_test_index), second_indexed_value);
 }
 
-TYPED_TEST(MatrixTests, DimensionTest)
+TYPED_TEST(MatrixBaseTests, DimensionTest)
 {
 	msize test_dimension = tested_matrix::dimension();
 
 	EXPECT_EQ(this->test_matrix->dimension(), test_dimension);
 }
 
-TYPED_TEST(MatrixTests, EqualityTest)
+TYPED_TEST(MatrixBaseTests, EqualityTest)
 {
 	std::vector<std::vector<mcontent>> dimensional_non_equal_array = { { 1,0,0 },
 																	   { 0,1,0 },
@@ -72,7 +72,7 @@ TYPED_TEST(MatrixTests, EqualityTest)
 	EXPECT_NE(*this->test_matrix, *content_non_equal_matrix);
 }
 
-TYPED_TEST(MatrixTests, SwapTest)
+TYPED_TEST(MatrixBaseTests, SwapTest)
 {
 	auto expected_after_swap_matrix = GetMatrix<TypeParam>(tested_matrix::expected_after_swap_matrix());
 	auto[first_string, second_string] = tested_matrix::swapped_strings();
@@ -82,7 +82,7 @@ TYPED_TEST(MatrixTests, SwapTest)
 	EXPECT_EQ(*this->test_matrix, *expected_after_swap_matrix);
 }
 
-TYPED_TEST(MatrixTests, SetTest)
+TYPED_TEST(MatrixBaseTests, SetTest)
 {
 	msize x_test_index = 4, y_test_index = 0;
 	mcontent setted_value = tested_matrix::matrix_as_vector()[x_test_index][y_test_index] + 100;
@@ -97,7 +97,7 @@ TYPED_TEST(MatrixTests, SetTest)
 	EXPECT_EQ(*this->test_matrix, *expected_after_set_matrix);
 }
 
-TYPED_TEST(MatrixTests, RearrangeWithSwapTest)
+TYPED_TEST(MatrixBaseTests, RearrangeWithSwapTest)
 {
 	auto expected_after_rearrange_matrix = GetMatrix<TypeParam>(tested_matrix::expected_after_rearrange_matrix());
 
@@ -106,7 +106,7 @@ TYPED_TEST(MatrixTests, RearrangeWithSwapTest)
 	EXPECT_EQ(*this->test_matrix, *expected_after_rearrange_matrix);
 }
 
-TYPED_TEST(MatrixTests, RearrangeWithAllocTest)
+TYPED_TEST(MatrixBaseTests, RearrangeWithAllocTest)
 {
 	auto expected_after_rearrange_matrix = GetMatrix<TypeParam>(tested_matrix::expected_after_rearrange_matrix());
 
@@ -115,7 +115,7 @@ TYPED_TEST(MatrixTests, RearrangeWithAllocTest)
 	EXPECT_EQ(*this->test_matrix, *expected_after_rearrange_matrix);
 }
 
-TYPED_TEST(MatrixTests, MakeRearrangedTest)
+TYPED_TEST(MatrixBaseTests, MakeRearrangedTest)
 {
 	auto expected_after_rearrange_matrix = GetMatrix<TypeParam>(tested_matrix::expected_after_rearrange_matrix());
 	TypeParam rearranged_matrix(tested_matrix::dimension());
@@ -125,7 +125,7 @@ TYPED_TEST(MatrixTests, MakeRearrangedTest)
 	EXPECT_EQ(rearranged_matrix, *expected_after_rearrange_matrix);
 }
 
-TYPED_TEST(MatrixTests, DeleteLastStringsTest)
+TYPED_TEST(MatrixBaseTests, DeleteLastStringsTest)
 {
 	msize number_of_strings_to_delete = 2;
 	auto expected_after_delete_array = tested_matrix::matrix_as_vector();
@@ -148,7 +148,7 @@ TYPED_TEST(MatrixTests, DeleteLastStringsTest)
 	EXPECT_EQ(*this->test_matrix, *expected_after_delete_matrix);
 }
 
-TYPED_TEST(MatrixTests, ReduceElementTest)
+TYPED_TEST(MatrixBaseTests, ReduceElementTest)
 {
 	msize x_test_index = 0;
 	msize y_test_index = 4;

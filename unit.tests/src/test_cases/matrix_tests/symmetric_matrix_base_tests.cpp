@@ -8,7 +8,7 @@
 
 using namespace graphcpp;
 
-namespace
+namespace //TODO: move it to test_data
 {
 	const std::vector<std::vector<mcontent>> test_array = 
 	{{ 0, 0, 0, 4, 8, 0, 0, 0, 0},
@@ -104,9 +104,9 @@ TYPED_TEST(SymmetricMatrixTests, EqualityTest)
 
 TYPED_TEST(SymmetricMatrixTests, SwapTest)
 {
-	const msize first_swapped_string = 2;
-	const msize second_swapped_string = 6;
-	const std::vector<std::vector<mcontent>> expected_after_swap_array
+	msize first_swapped_string = 2;
+	msize second_swapped_string = 6;
+	std::vector<std::vector<mcontent>> expected_after_swap_array
 	{ { 0, 0, 0, 4, 8, 0, 0, 0, 0 },
 	  { 0, 0, 10, 7, 0, 0, 0, 0, 0 },
 	  { 0, 10, 0, 0, 0, 0, 9, 0, 1 },
@@ -116,7 +116,7 @@ TYPED_TEST(SymmetricMatrixTests, SwapTest)
 	  { 0, 0, 9, 0, 5, 0, 0, 40, 30 },
 	  { 0, 0, 0, 0, 0, 0, 40, 0, 0 },
 	  { 0, 0, 1, 0, 0, 0, 30, 0, 0 } };
-	const auto expected_after_swap_matrix = GetMatrix<TypeParam>(expected_after_swap_array);
+	auto expected_after_swap_matrix = GetMatrix<TypeParam>(expected_after_swap_array);
 
 	this->test_matrix->swap(first_swapped_string, second_swapped_string);
 
@@ -125,14 +125,14 @@ TYPED_TEST(SymmetricMatrixTests, SwapTest)
 
 TYPED_TEST(SymmetricMatrixTests, SetUpperDiagonalTest)
 {
-	const msize x_test_index = 0, y_test_index = 1;
-	const mcontent setted_value = test_array[x_test_index][y_test_index] + 10;
+	msize x_test_index = 0, y_test_index = 1;
+	mcontent setted_value = test_array[x_test_index][y_test_index] + 10;
 
 	auto expected_after_set_array = test_array;
 	expected_after_set_array[x_test_index][y_test_index] = setted_value;
 	expected_after_set_array[y_test_index][x_test_index] = setted_value;
 
-	const auto expected_after_set_matrix = GetMatrix<TypeParam>(expected_after_set_array);
+	auto expected_after_set_matrix = GetMatrix<TypeParam>(expected_after_set_array);
 
 	this->test_matrix->set(x_test_index, y_test_index, setted_value);
 
@@ -141,14 +141,14 @@ TYPED_TEST(SymmetricMatrixTests, SetUpperDiagonalTest)
 
 TYPED_TEST(SymmetricMatrixTests, SetUnderDiagonalTest)
 {
-	const msize x_test_index = 4, y_test_index = 0;
-	const mcontent setted_value = test_array[x_test_index][y_test_index] + 100;
+	msize x_test_index = 4, y_test_index = 0;
+	mcontent setted_value = test_array[x_test_index][y_test_index] + 100;
 
 	auto expected_after_set_array = test_array;
 	expected_after_set_array[x_test_index][y_test_index] = setted_value;
 	expected_after_set_array[y_test_index][x_test_index] = setted_value;
 
-	const auto expected_after_set_matrix = GetMatrix<TypeParam>(expected_after_set_array);
+	auto expected_after_set_matrix = GetMatrix<TypeParam>(expected_after_set_array);
 
 	this->test_matrix->set(x_test_index, y_test_index, setted_value);
 
@@ -157,7 +157,7 @@ TYPED_TEST(SymmetricMatrixTests, SetUnderDiagonalTest)
 
 TYPED_TEST(SymmetricMatrixTests, RearrangeWithSwapTest)
 {
-	const auto expected_after_rearrange_matrix = GetMatrix<TypeParam>(rearranged_test_array);
+	auto expected_after_rearrange_matrix = GetMatrix<TypeParam>(rearranged_test_array);
 
 	this->test_matrix->rearrange_with_permutations(test_permutation);
 
@@ -166,7 +166,7 @@ TYPED_TEST(SymmetricMatrixTests, RearrangeWithSwapTest)
 
 TYPED_TEST(SymmetricMatrixTests, RearrangeWithAllocTest)
 {	
-	const auto expected_after_rearrange_matrix = GetMatrix<TypeParam>(rearranged_test_array);
+	auto expected_after_rearrange_matrix = GetMatrix<TypeParam>(rearranged_test_array);
 
 	this->test_matrix->rearrange_with_allocate(test_permutation);
 
@@ -175,7 +175,7 @@ TYPED_TEST(SymmetricMatrixTests, RearrangeWithAllocTest)
 
 TYPED_TEST(SymmetricMatrixTests, MakeRearrangedTest)
 {
-	const auto expected_after_rearrange_matrix = GetMatrix<TypeParam>(rearranged_test_array);
+	auto expected_after_rearrange_matrix = GetMatrix<TypeParam>(rearranged_test_array);
 	TypeParam rearranged_matrix(test_dimension);
 
 	this->test_matrix->make_rearranged(test_permutation, rearranged_matrix);
@@ -185,7 +185,7 @@ TYPED_TEST(SymmetricMatrixTests, MakeRearrangedTest)
 
 TYPED_TEST(SymmetricMatrixTests, DeleteLastStringsTest)
 {
-	const msize number_of_strings_to_delete = 2;
+	msize number_of_strings_to_delete = 2;
 	std::vector<std::vector<mcontent>> expected_after_delete_array(test_array);
 	for (msize i = 0; i < number_of_strings_to_delete; i++)
 	{
@@ -199,7 +199,7 @@ TYPED_TEST(SymmetricMatrixTests, DeleteLastStringsTest)
 		}
 	}
 
-	const auto expected_after_delete_matrix = GetMatrix<TypeParam>(expected_after_delete_array);
+	auto expected_after_delete_matrix = GetMatrix<TypeParam>(expected_after_delete_array);
 
 	this->test_matrix->delete_last_strings(number_of_strings_to_delete);
 
@@ -208,15 +208,15 @@ TYPED_TEST(SymmetricMatrixTests, DeleteLastStringsTest)
 
 TYPED_TEST(SymmetricMatrixTests, ReduceElementTest)
 {
-	const auto x_test_index = 0;
-	const auto y_test_index = 4;
-	const auto difference = 5;
+	msize x_test_index = 0;
+	msize y_test_index = 4;
+	mcontent difference = 5;
 
 	auto expected_after_set_array = test_array;
 	expected_after_set_array[x_test_index][y_test_index] -= difference;
 	expected_after_set_array[y_test_index][x_test_index] -= difference;
 
-	const auto expected_after_set_matrix = GetMatrix<TypeParam>(expected_after_set_array);
+	auto expected_after_set_matrix = GetMatrix<TypeParam>(expected_after_set_array);
 
 	this->test_matrix->reduce_element(x_test_index, y_test_index, difference);
 

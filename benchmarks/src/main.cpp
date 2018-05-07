@@ -1,6 +1,5 @@
 #include "benchmarks/recursive_directory_test_runner.hpp"	
 #include "benchmarks/test_functions.hpp"
-#include "benchmarks/recursive_directory_test_runner.hpp"
 
 #include "core/all.hpp"
 
@@ -12,19 +11,19 @@ int main(int argc, char **argv)
 	
 	RecursiveDirectoryTestRunner tester;
 
-	fs::path path_to_tests = "../../test_generators/graphs";
-	fs::path first_answers = "../answers";
-	fs::path second_answers = "../answers1";
+	const fs::path path_to_tests = "../../test_generators/graphs";
+	const fs::path first_answers = "../answers";
+	const fs::path second_answers = "../answers1";
 
 	tester.run_tests_in_directory(path_to_tests,
 		first_answers, 
-		Edmonds_Karp_algorithm<graphcpp::NonOrientedMatrixGraph<graphcpp::FullSymmetricMatrix>>(),
-		"Edmonds-Karp");
+		preflow_push_algorithm<graphcpp::NonOrientedMatrixGraph<graphcpp::FullSymmetricMatrix>>(),
+		"Preflow-push");
 
 	tester.run_tests_in_directory(path_to_tests, 
 		second_answers,
-		Dinic_algorithm<graphcpp::NonOrientedMatrixGraph<graphcpp::FullSymmetricMatrix>>(), 
-		"Dinic");
+		Edmonds_Karp_algorithm<graphcpp::NonOrientedMatrixGraph<graphcpp::FullSymmetricMatrix>>(), 
+		"Edmonds-Karp");
 
 	if (auto differences = tester.check_results(first_answers, second_answers); differences.empty())
 	{

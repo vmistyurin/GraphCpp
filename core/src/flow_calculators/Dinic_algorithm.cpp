@@ -1,16 +1,17 @@
 #include "core/flow_calculators.hpp"
 
-#include <assert.h>
+#include <cassert>
 #include <queue>
-#include <cmath>
 
 #include "boost/preprocessor.hpp"
 
-#include "core/graph_implementations/graph_implementations.hpp"
 #include "core/matrix_implementations/matrix_implementations.hpp"
+#include "core/matrix_implementations/non-symmetric_matrixes/matrix.hpp"
+#include "core/graph_implementations/graph_implementations.hpp"
+#include "core/graph_implementations/oriented_graphs/oriented_matrix_graph.hpp"
 
 using namespace graphcpp;
-using MatrixType = HalfSymmetricMatrix;
+using MatrixType = FullSymmetricMatrix;
 
 namespace
 {
@@ -26,7 +27,7 @@ namespace
 
 		while (!queue.empty())
 		{
-			auto current = queue.front(); queue.pop();
+			const auto current = queue.front(); queue.pop();
 
 			for (msize i = 0; i < graph.dimension(); i++)
 			{
@@ -51,7 +52,7 @@ namespace
 		
 		for (auto[i, j] : result)
 		{
-			if (result.at(i, j) > 0 && std::max(layers[i], layers[j]) - std::min(layers[i], layers[j]) != 1)
+			if (result.at(i, j) > 0 && layers[i] == layers[j] + 1)
 			{
 				result.set(i, j, 0);
 			}
@@ -93,7 +94,7 @@ namespace
 
 		std::vector<msize> result;
 
-		msize current = finish;
+		auto current = finish;
 		while (current != start)
 		{
 			result.push_back(current);
@@ -102,22 +103,24 @@ namespace
 
 		result.push_back(current);
 
+		std::reverse(result.begin(), result.end());
 		return result;
 	}
 
 	template<class GraphType>	
-	mcontent Single_Dinic_algorithm_typed(GraphType graph, msize source, msize sink)
+	mcontent Single_Dinic_algorithm_typed(GraphType _graph, msize source, msize sink)
 	{
 		assert(source != sink);
-		assert(std::max(source, sink) < graph.dimension());
+		assert(std::max(source, sink) < _graph.dimension());
 
 		mcontent flow = 0;
-
-		auto layers = get_layers(graph, source);
+			
+		OrientedMatrixGraph<Matrix> matrix_graph(_graph);
+		auto layers = get_layers(matrix_graph, source);
 
 		while (layers[sink] != msize_undefined)
 		{
-			auto layered_network = get_layered_network<GraphType>(graph, layers, source);
+			auto layered_network = get_layered_network<OrientedMatrixGraph<Matrix>>(matrix_graph, layers, source);
 
 			auto path = get_path(layered_network, source, sink);
 			while (!path.empty())
@@ -132,13 +135,17 @@ namespace
 				for (msize i = 0; i < path.size() - 1; i++)
 				{
 					layered_network.set(path[i], path[i + 1], layered_network.at(path[i], path[i + 1]) - min_flow);
-					graph.set(path[i], path[i + 1], graph.at(path[i], path[i + 1]) - min_flow);
+					layered_network.set(path[i + 1], path[i], layered_network.at(path[i + 1], path[i]) + min_flow);
+
+
+					matrix_graph.set(path[i], path[i + 1], matrix_graph.at(path[i], path[i + 1]) - min_flow);
+					matrix_graph.set(path[i + 1], path[i], matrix_graph.at(path[i + 1], path[i]) + min_flow);
 				}
 
 				flow += min_flow;
 				path = get_path(layered_network, source, sink);
 			}
-			layers = get_layers(graph, source);
+			layers = get_layers(matrix_graph, source);
 		}
 		return flow;
 	}
@@ -151,7 +158,7 @@ mcontent flow_calculators::Dinic_algorithm(const GraphType& graph, msize source,
 }
 
 #define DINIC_ALGORITHM_SINGLE_MACRO(r, data, graph_type) template mcontent flow_calculators::Dinic_algorithm<graph_type>(const graph_type&, msize, msize);
-BOOST_PP_SEQ_FOR_EACH(DINIC_ALGORITHM_SINGLE_MACRO, 0, NON_ORIENTED_GRAPH_IMPLEMENTATIONS_SEQ);
+BOOST_PP_SEQ_FOR_EACH(DINIC_ALGORITHM_SINGLE_MACRO, 0, NON_ORIENTED_GRAPH_IMPLEMENTATIONS_SEQ)
 
 template<class GraphType>
 std::shared_ptr<SymmetricMatrixBase> flow_calculators::Dinic_algorithm(const GraphType& graph)
@@ -167,5 +174,4 @@ std::shared_ptr<SymmetricMatrixBase> flow_calculators::Dinic_algorithm(const Gra
 }
 
 #define DINIC_ALGORITHM_MATRIX_MACRO(r, data, graph_type) template std::shared_ptr<SymmetricMatrixBase> flow_calculators::Dinic_algorithm<graph_type>(const graph_type&);
-BOOST_PP_SEQ_FOR_EACH(DINIC_ALGORITHM_MATRIX_MACRO, 0, NON_ORIENTED_GRAPH_IMPLEMENTATIONS_SEQ);
-
+BOOST_PP_SEQ_FOR_EACH(DINIC_ALGORITHM_MATRIX_MACRO, 0, NON_ORIENTED_GRAPH_IMPLEMENTATIONS_SEQ)

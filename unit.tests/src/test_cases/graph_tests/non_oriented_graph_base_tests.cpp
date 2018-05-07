@@ -148,27 +148,27 @@ TYPED_TEST(NonOrientedGraphBaseTests, ExtractSubgraph)
 	EXPECT_TRUE(extracted_graph->equal(expected_subgraph));
 }
 
-#ifndef USE_SLOW_TESTS
+#ifdef USE_SLOW_TESTS
 	TYPED_TEST(NonOrientedGraphBaseTests, EqualityTest)
 	{
 		TypeParam same_edges_graph(reliable_test_graph::get_edges(), test_dimension);
 
 
-		std::vector<Edge> shuffled_edges = reliable_test_graph::get_edges();
+		std::vector<SymmetricalEdge> shuffled_edges = reliable_test_graph::get_edges();
 		std::swap(shuffled_edges[0], shuffled_edges[4]);
 		std::swap(shuffled_edges[1], shuffled_edges[3]);
 		TypeParam shuffled_edges_graph(shuffled_edges, test_dimension);
 
 
-		std::vector<Edge> equal_edges
+		std::vector<SymmetricalEdge> equal_edges
 		{
-			Edge(3, 6,7),
-			Edge(1, 5, 10),
-			Edge(1, 4, 2),
-			Edge(1, 2, 1),
-			Edge(0, 2, 10),
-			Edge(0, 1, 2),
-			Edge(0, 7, 4)
+			SymmetricalEdge(3, 6,7),
+			SymmetricalEdge(1, 5, 10),
+			SymmetricalEdge(1, 4, 2),
+			SymmetricalEdge(1, 2, 1),
+			SymmetricalEdge(0, 2, 10),
+			SymmetricalEdge(0, 1, 2),
+			SymmetricalEdge(0, 7, 4)
 		};
 		TypeParam equal_graph(equal_edges, test_dimension);
 
@@ -176,31 +176,31 @@ TYPED_TEST(NonOrientedGraphBaseTests, ExtractSubgraph)
 		TypeParam dimensional_non_equal_graph(reliable_test_graph::get_edges(), test_dimension + 1);
 
 
-		std::vector<Edge> different_degrees_edges
+		std::vector<SymmetricalEdge> different_degrees_edges
 		{
-			Edge(1, 5, 2),
-			Edge(4, 5, 3),
-			Edge(1, 4, 10),
-			Edge(2, 5, 1),
-			Edge(3, 5, 7),
-			Edge(7, 1, 10)
+			SymmetricalEdge(1, 5, 2),
+			SymmetricalEdge(4, 5, 3),
+			SymmetricalEdge(1, 4, 10),
+			SymmetricalEdge(2, 5, 1),
+			SymmetricalEdge(3, 5, 7),
+			SymmetricalEdge(7, 1, 10)
 		};
 		TypeParam different_degrees_graph(different_degrees_edges, test_dimension);
 
 
-		std::vector<Edge> different_edges
+		std::vector<SymmetricalEdge> different_edges
 		{
-			Edge(0, 1, 1),
-			Edge(0, 2, 1),
-			Edge(0, 3, 1),
-			Edge(0, 4, 1),
-			Edge(4, 5, 1),
-			Edge(5, 7, 1),
-			Edge(5, 6, 1)
+			SymmetricalEdge(0, 1, 1),
+			SymmetricalEdge(0, 2, 1),
+			SymmetricalEdge(0, 3, 1),
+			SymmetricalEdge(0, 4, 1),
+			SymmetricalEdge(4, 5, 1),
+			SymmetricalEdge(5, 7, 1),
+			SymmetricalEdge(5, 6, 1)
 		};
 		TypeParam different_edges_graph(different_edges, test_dimension);
 
-		std::vector<Edge> different_weight_edges = reliable_test_graph::get_edges();
+		std::vector<SymmetricalEdge> different_weight_edges = reliable_test_graph::get_edges();
 		different_weight_edges[0].weight++;
 		different_weight_edges[4].weight++;
 		TypeParam different_weight_graph(different_weight_edges, test_dimension);

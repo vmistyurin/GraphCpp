@@ -23,6 +23,7 @@ namespace graphcpp
 		NonOrientedMatrixGraph();
 		NonOrientedMatrixGraph(const std::vector<SymmetricalEdge>& edges, msize dimension);
 		explicit NonOrientedMatrixGraph(const NonOrientedGraphBase& other);
+		explicit NonOrientedMatrixGraph(const SymmetricMatrixBase& rhs);
 
 		template<class SymmetricalMatrixTypeForwarded>
 		explicit NonOrientedMatrixGraph(SymmetricalMatrixTypeForwarded&& matrix);
@@ -68,10 +69,15 @@ namespace graphcpp
 
 	template<class T>
 	NonOrientedMatrixGraph<T>::NonOrientedMatrixGraph(const NonOrientedGraphBase& other) :
-		_matrix(other)
+		_matrix(other.get_matrix())
 	{
 	}
 
+	template<class T>
+	NonOrientedMatrixGraph<T>::NonOrientedMatrixGraph(const SymmetricMatrixBase& rhs) :
+		_matrix(rhs)
+	{	
+	}
 
 	template<class T> template<class SymmetricalMatrixTypeForwarded>
 	NonOrientedMatrixGraph<T>::NonOrientedMatrixGraph(SymmetricalMatrixTypeForwarded&& matrix) :
