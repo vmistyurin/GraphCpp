@@ -5,6 +5,7 @@
 #include "unit.tests/macroses.hpp"
 #include "unit.tests/test_data/oriented_test_graph.hpp"
 #include "unit.tests/implementations.hpp"
+#include <yvals.h>
 
 using namespace graphcpp;
 using namespace graphcpp_testing;

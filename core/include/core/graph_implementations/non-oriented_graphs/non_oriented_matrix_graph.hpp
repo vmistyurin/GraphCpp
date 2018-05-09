@@ -177,7 +177,7 @@ namespace graphcpp
 			auto linked_with = get_linked_vertexes(i);
 			if (linked_with.size() == 1)
 			{
-				result.emplace_front(i, linked_with[0]);
+				result.emplace_back(i, linked_with[0]);
 			}
 		}
 

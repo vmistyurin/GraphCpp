@@ -17,13 +17,13 @@ int main(int argc, char **argv)
 
 	tester.run_tests_in_directory(path_to_tests,
 		first_answers, 
-		preflow_push_algorithm<graphcpp::NonOrientedMatrixGraph<graphcpp::FullSymmetricMatrix>>(),
-		"Preflow-push");
+		Edmonds_Karp_algorithm<graphcpp::NonOrientedMatrixGraph<graphcpp::HalfSymmetricMatrix>>(),
+		"Edmonds-Karp");
 
 	tester.run_tests_in_directory(path_to_tests, 
 		second_answers,
-		Edmonds_Karp_algorithm<graphcpp::NonOrientedMatrixGraph<graphcpp::FullSymmetricMatrix>>(), 
-		"Edmonds-Karp");
+		reduction_use_algorithm<graphcpp::NonOrientedMatrixGraph<graphcpp::HalfSymmetricMatrix>>(graphcpp::flow_calculators::preflow_push_algorithm), 
+		"optimized");
 
 	if (auto differences = tester.check_results(first_answers, second_answers); differences.empty())
 	{
@@ -37,7 +37,7 @@ int main(int argc, char **argv)
 			std::cout << path.string() << std::endl;
 		}
 	}
-	
+
 	getchar();
 	return 0;
 }

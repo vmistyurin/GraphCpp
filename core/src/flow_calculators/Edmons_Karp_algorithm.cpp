@@ -3,8 +3,6 @@
 #include <cassert>
 #include <queue>
 
-#include "boost/preprocessor.hpp"
-
 #include "core/matrix_implementations/matrix_implementations.hpp"
 #include "core/graph_implementations/graph_implementations.hpp"
 #include "core/matrix_implementations/non-symmetric_matrixes/matrix.hpp"
@@ -59,8 +57,7 @@ namespace
 	}
 }
 
-template<class GraphType>
-mcontent flow_calculators::Edmonds_Karp_algorithm(const GraphType& graph, msize source, msize sink)
+mcontent flow_calculators::Edmonds_Karp_algorithm(const NonOrientedGraphBase& graph, msize source, msize sink)
 {
 	assert(source != sink);
 	assert(std::max(source, sink) < graph.dimension());
@@ -89,32 +86,3 @@ mcontent flow_calculators::Edmonds_Karp_algorithm(const GraphType& graph, msize 
 
 	return flow;
 }
-
-#define EDMONDS_KARP_ALGORITHM_SINGLE_MACRO(r, data, graph_type) template mcontent flow_calculators::Edmonds_Karp_algorithm<graph_type>(const graph_type&, msize, msize);
-BOOST_PP_SEQ_FOR_EACH(EDMONDS_KARP_ALGORITHM_SINGLE_MACRO, 0, NON_ORIENTED_GRAPH_IMPLEMENTATIONS_SEQ);
-
-template<class GraphType>
-std::shared_ptr<SymmetricMatrixBase> flow_calculators::Edmonds_Karp_algorithm(const GraphType& graph)
-{
-	auto result = std::make_shared<MatrixType>(graph.dimension());
-
-	/*for(msize i = 0; i < graph.dimension(); i++)
-	{
-		for(msize j = 0; j < graph.dimension(); j++)
-		{
-			if (i != j)
-			{
-				result->set(i, j, flow_calculators::Edmonds_Karp_algorithm(graph, i, j));
-			}
-		}
-	}*/
-	for (auto[i, j] : graph)
-	{
-		result->set(i, j, flow_calculators::Edmonds_Karp_algorithm(graph, i, j));
-	}
-
-	return result;
-}
-
-#define EDMONDS_KARP_ALGORITHM_MATRIX_MACRO(r, data, graph_type) template std::shared_ptr<SymmetricMatrixBase> flow_calculators::Edmonds_Karp_algorithm<graph_type>(const graph_type&);
-BOOST_PP_SEQ_FOR_EACH(EDMONDS_KARP_ALGORITHM_MATRIX_MACRO, 0, NON_ORIENTED_GRAPH_IMPLEMENTATIONS_SEQ);

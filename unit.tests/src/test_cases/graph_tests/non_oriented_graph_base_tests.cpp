@@ -50,7 +50,7 @@ TYPED_TEST(NonOrientedGraphBaseTests, SetterTest)
 
 TYPED_TEST(NonOrientedGraphBaseTests, LinkedVertexesTest)
 {
-	const msize test_vertex = 3;
+	msize test_vertex = 3;
 	std::vector<msize> linked_with_test_vertex;
 	for (const auto& edge : reliable_test_graph::get_edges())
 	{
@@ -80,8 +80,8 @@ TYPED_TEST(NonOrientedGraphBaseTests, VertexesDegreeTest)
 
 TYPED_TEST(NonOrientedGraphBaseTests, VertexDegreeTests)
 {
-	const msize first_test_vertex = 0;
-	const msize second_test_vertex = 6;
+	msize first_test_vertex = 0;
+	msize second_test_vertex = 6;
 
     EXPECT_EQ(this->test_graph->get_degree(first_test_vertex), reliable_test_graph::get_degrees()[first_test_vertex]);
     EXPECT_EQ(this->test_graph->get_degree(second_test_vertex), reliable_test_graph::get_degrees()[second_test_vertex]);
@@ -89,9 +89,9 @@ TYPED_TEST(NonOrientedGraphBaseTests, VertexDegreeTests)
 
 TYPED_TEST(NonOrientedGraphBaseTests, DeleteVertexesTest)
 {
-	const std::vector<msize> deleted_vertexes = { 3,4 };
-	const msize expected_dimension = test_dimension - deleted_vertexes.size();
-	const std::vector<SymmetricalEdge> expected_edges 
+	std::vector<msize> deleted_vertexes = { 3,4 };
+	msize expected_dimension = test_dimension - deleted_vertexes.size();
+    std::vector<SymmetricalEdge> expected_edges 
     {
 		SymmetricalEdge(0, 1, 2),
 		SymmetricalEdge(1, 2, 10),
@@ -106,11 +106,11 @@ TYPED_TEST(NonOrientedGraphBaseTests, DeleteVertexesTest)
 
 TYPED_TEST(NonOrientedGraphBaseTests, ConnectedComponentTest)
 {
-	const std::vector<msize> first_expected_component = { 0, 2, 3, 4, 6, 7 };
-	const std::vector<msize> second_expected_component = { 1, 5 };
+	std::vector<msize> first_expected_component = { 0, 2, 3, 4, 6, 7 };
+	std::vector<msize> second_expected_component = { 1, 5 };
 
-	const auto first_component = this->test_graph->get_connected_component(3);
-	const auto second_component = this->test_graph->get_connected_component(1);
+	auto first_component = this->test_graph->get_connected_component(3);
+	auto second_component = this->test_graph->get_connected_component(1);
 
 	EXPECT_EQ(first_component, first_expected_component);
 	EXPECT_EQ(second_component, second_expected_component);
@@ -118,34 +118,59 @@ TYPED_TEST(NonOrientedGraphBaseTests, ConnectedComponentTest)
 
 TYPED_TEST(NonOrientedGraphBaseTests, ConnectedComponentsTest)
 {
-	const std::vector<std::vector<msize>> expected_components = { { 0, 2, 3, 4, 6, 7 }, {1, 5} };
+	std::vector<std::vector<msize>> expected_components = { { 0, 2, 3, 4, 6, 7 }, {1, 5} };
 
-	const auto components = this->test_graph->get_connected_components();
+	auto components = this->test_graph->get_connected_components();
 
 	EXPECT_EQ(components, expected_components);
 }
 
 TYPED_TEST(NonOrientedGraphBaseTests, HangedVertexesTest)
 {
-	const std::list<std::pair<msize, msize>> expected_hanged = { {0, 6}, {7, 6}, {5, 1}, {1, 5}, {2, 4} };
+	std::list<std::pair<msize, msize>> expected_hanged = { {0, 6}, {7, 6}, {5, 1}, {1, 5}, {2, 4} };
 
-	const auto hanged = this->test_graph->get_hanged_vertexes();
+	auto hanged = this->test_graph->get_hanged_vertexes();
 
 	EXPECT_TRUE(compare_lists_without_order(hanged, expected_hanged));
 }
 
 TYPED_TEST(NonOrientedGraphBaseTests, ExtractSubgraph)
 {
-	const std::vector<msize> vertexes = { 0, 3, 6, 7 };
-	const std::vector<std::vector<mcontent>> expected_matrix = { {0, 10, 1, 2},
+	std::vector<msize> vertexes = { 0, 3, 6, 7 };
+	std::vector<std::vector<mcontent>> expected_matrix = { {0, 10, 1, 2},
 																 {10, 0, 0, 0},
 																 {1, 0, 0, 0},
 																 {2, 0, 0, 0} };
-	const TypeParam expected_subgraph(expected_matrix);
+	TypeParam expected_subgraph(expected_matrix);
 
-	const auto extracted_graph = this->test_graph->extract_subgraph(vertexes);
+	auto extracted_graph = this->test_graph->extract_subgraph(vertexes);
 
 	EXPECT_TRUE(extracted_graph->equal(expected_subgraph));
+}
+
+TYPED_TEST(NonOrientedGraphBaseTests, BridgesTest)
+{
+	std::vector<SymmetricalEdge> edges = {
+		SymmetricalEdge(0, 1, 1),
+		SymmetricalEdge(0, 2, 1),
+		SymmetricalEdge(1, 2, 1),
+		SymmetricalEdge(2, 3, 1),
+		SymmetricalEdge(3, 5, 1),
+		SymmetricalEdge(5, 7, 1),
+		SymmetricalEdge(3, 7, 1),
+		SymmetricalEdge(2, 4, 1),
+		SymmetricalEdge(4, 6, 1),
+		SymmetricalEdge(4, 8, 1),
+		SymmetricalEdge(6, 8, 1)
+	};
+
+	TypeParam graph(edges, 9);
+
+	std::list<std::pair<msize, msize>> expected_bridges = { {2,3}, {2, 4} };
+
+	auto bridges = graph.get_bridges();
+
+	EXPECT_TRUE(compare_lists_without_order(bridges, expected_bridges));
 }
 
 #ifdef USE_SLOW_TESTS

@@ -1,27 +1,24 @@
 #ifndef GRAPH_CORE_FLOW_CALCULATORS_HPP
-#define GRAPH_CORE_FLOW_CALUCLATORS_HPP
+#define GRAPH_CORE_FLOW_CALCULATORS_HPP
+
+#include <functional>
 
 #include "core/matrix_implementations/symmetric_matrixes/symmetric_matrix_base.hpp"
+#include "core/graph_implementations/non-oriented_graphs/non_oriented_graph_base.hpp"
 #include "core/graph_implementations/graph_base.hpp"
 
 namespace graphcpp::flow_calculators
 {
-	template<class GraphType>
-	mcontent Edmonds_Karp_algorithm(const GraphType& graph, msize source, msize sink);
-	template<class GraphType>
-	std::shared_ptr<SymmetricMatrixBase> Edmonds_Karp_algorithm(const GraphType& graph);
+	mcontent Edmonds_Karp_algorithm(const NonOrientedGraphBase& graph, msize source, msize sink);
 
-	template<class GraphType>
-	std::shared_ptr<SymmetricMatrixBase> Edmonds_Karp_optimized_algorithm(const GraphType& graph);
+	mcontent Dinic_algorithm(const NonOrientedGraphBase& graph, msize source, msize sink);
 
-	template<class GraphType>
-	mcontent Dinic_algorithm(const GraphType& graph, msize source, msize sink);
-	template<class GraphType>
-    std::shared_ptr<SymmetricMatrixBase> Dinic_algorithm(const GraphType& graph);
+	mcontent preflow_push_algorithm(const NonOrientedGraphBase& graph, msize source, msize sink);
 
-	template<class GraphType>
-	mcontent preflow_push_algorithm(const GraphType& graph, msize source, msize sink);
-	template<class GraphType>
-	std::shared_ptr<SymmetricMatrixBase> preflow_push_algorithm(const GraphType& graph);
+	std::shared_ptr<SymmetricMatrixBase> reduction_use_algorithm(const NonOrientedGraphBase& graph,
+		const std::function<mcontent(const NonOrientedGraphBase&, msize, msize)>& single_flow_calculator);
+
+	std::shared_ptr<SymmetricMatrixBase> matrix_of_flows(const NonOrientedGraphBase& graph,
+		const std::function<mcontent(const NonOrientedGraphBase&, msize, msize)>& single_flow_calculator);
 }
 #endif

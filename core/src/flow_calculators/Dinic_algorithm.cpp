@@ -61,7 +61,7 @@ namespace
 		return result;
 	}
 
-	void dfs(const GraphBase& graph, msize current, msize finish, std::vector<msize>& ancestors, msize depth = 0)
+	void dfs(const GraphBase& graph, msize current, msize finish, std::vector<msize>& ancestors)
 	{
 		assert(current < graph.dimension());
 		
@@ -74,7 +74,7 @@ namespace
 				{
 					return;
 				}
-				dfs(graph, i, finish, ancestors, depth + 1);
+				dfs(graph, i, finish, ancestors);
 			}
 		}
 	}
@@ -106,72 +106,46 @@ namespace
 		std::reverse(result.begin(), result.end());
 		return result;
 	}
+}
 
-	template<class GraphType>	
-	mcontent Single_Dinic_algorithm_typed(GraphType _graph, msize source, msize sink)
+mcontent flow_calculators::Dinic_algorithm(const NonOrientedGraphBase& graph, msize source, msize sink)
+{
+	assert(source != sink);
+	assert(std::max(source, sink) < graph.dimension());
+
+	mcontent flow = 0;
+
+	OrientedMatrixGraph<Matrix> matrix_graph(graph);
+	auto layers = get_layers(matrix_graph, source);
+
+	while (layers[sink] != msize_undefined)
 	{
-		assert(source != sink);
-		assert(std::max(source, sink) < _graph.dimension());
+		auto layered_network = get_layered_network<OrientedMatrixGraph<Matrix>>(matrix_graph, layers, source);
 
-		mcontent flow = 0;
-			
-		OrientedMatrixGraph<Matrix> matrix_graph(_graph);
-		auto layers = get_layers(matrix_graph, source);
-
-		while (layers[sink] != msize_undefined)
+		auto path = get_path(layered_network, source, sink);
+		while (!path.empty())
 		{
-			auto layered_network = get_layered_network<OrientedMatrixGraph<Matrix>>(matrix_graph, layers, source);
+			mcontent min_flow = std::numeric_limits<mcontent>::max();
 
-			auto path = get_path(layered_network, source, sink);
-			while (!path.empty())
+			for (msize i = 0; i < path.size() - 1; i++)
 			{
-				mcontent min_flow = std::numeric_limits<mcontent>::max();
-
-				for (msize i = 0; i < path.size() - 1; i++)
-				{
-					min_flow = std::min(min_flow, layered_network.at(path[i], path[i + 1]));
-				}
-
-				for (msize i = 0; i < path.size() - 1; i++)
-				{
-					layered_network.set(path[i], path[i + 1], layered_network.at(path[i], path[i + 1]) - min_flow);
-					layered_network.set(path[i + 1], path[i], layered_network.at(path[i + 1], path[i]) + min_flow);
-
-
-					matrix_graph.set(path[i], path[i + 1], matrix_graph.at(path[i], path[i + 1]) - min_flow);
-					matrix_graph.set(path[i + 1], path[i], matrix_graph.at(path[i + 1], path[i]) + min_flow);
-				}
-
-				flow += min_flow;
-				path = get_path(layered_network, source, sink);
+				min_flow = std::min(min_flow, layered_network.at(path[i], path[i + 1]));
 			}
-			layers = get_layers(matrix_graph, source);
+
+			for (msize i = 0; i < path.size() - 1; i++)
+			{
+				layered_network.set(path[i], path[i + 1], layered_network.at(path[i], path[i + 1]) - min_flow);
+				layered_network.set(path[i + 1], path[i], layered_network.at(path[i + 1], path[i]) + min_flow);
+
+
+				matrix_graph.set(path[i], path[i + 1], matrix_graph.at(path[i], path[i + 1]) - min_flow);
+				matrix_graph.set(path[i + 1], path[i], matrix_graph.at(path[i + 1], path[i]) + min_flow);
+			}
+
+			flow += min_flow;
+			path = get_path(layered_network, source, sink);
 		}
-		return flow;
+		layers = get_layers(matrix_graph, source);
 	}
+	return flow;
 }
-
-template<class GraphType>
-mcontent flow_calculators::Dinic_algorithm(const GraphType& graph, msize source, msize sink)
-{
-	return Single_Dinic_algorithm_typed(graph, source, sink);
-}
-
-#define DINIC_ALGORITHM_SINGLE_MACRO(r, data, graph_type) template mcontent flow_calculators::Dinic_algorithm<graph_type>(const graph_type&, msize, msize);
-BOOST_PP_SEQ_FOR_EACH(DINIC_ALGORITHM_SINGLE_MACRO, 0, NON_ORIENTED_GRAPH_IMPLEMENTATIONS_SEQ)
-
-template<class GraphType>
-std::shared_ptr<SymmetricMatrixBase> flow_calculators::Dinic_algorithm(const GraphType& graph)
-{
-	auto result = std::make_shared<MatrixType>(graph.dimension());
-
-	for (auto[i, j] : graph)
-	{
-		result->set(i, j, Single_Dinic_algorithm_typed<GraphType>(graph, i, j));
-	}
-
-	return result;
-}
-
-#define DINIC_ALGORITHM_MATRIX_MACRO(r, data, graph_type) template std::shared_ptr<SymmetricMatrixBase> flow_calculators::Dinic_algorithm<graph_type>(const graph_type&);
-BOOST_PP_SEQ_FOR_EACH(DINIC_ALGORITHM_MATRIX_MACRO, 0, NON_ORIENTED_GRAPH_IMPLEMENTATIONS_SEQ)

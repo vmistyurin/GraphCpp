@@ -2,10 +2,8 @@
 #define GRAPH_CORE_GRAPH_BASE_HPP
 
 #include <vector>
-#include <memory>
-#include <list>
 
-#include "core/matrix_implementations/matrix_base.hpp"
+#include "core/macroses.hpp"
 
 namespace graphcpp
 {

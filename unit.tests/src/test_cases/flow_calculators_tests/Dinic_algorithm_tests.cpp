@@ -28,5 +28,5 @@ TYPED_TEST(DinicAlgorithmTests, SingleFlowTests)
 
 TYPED_TEST(DinicAlgorithmTests, FlowsMatrixTests)
 {
-	EXPECT_EQ(*flow_calculators::Dinic_algorithm(*this->test_graph), FullSymmetricMatrix(reliable_test_graph::get_flows()));
+	EXPECT_EQ(*flow_calculators::matrix_of_flows(*this->test_graph, flow_calculators::Dinic_algorithm), FullSymmetricMatrix(reliable_test_graph::get_flows()));
 }

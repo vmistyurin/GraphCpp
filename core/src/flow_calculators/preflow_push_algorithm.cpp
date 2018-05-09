@@ -1,9 +1,6 @@
 #include "core/flow_calculators.hpp"
 
 #include <cassert>
-#include <functional>
-
-#include "boost/preprocessor.hpp"
 
 #include "core/matrix_implementations/matrix_implementations.hpp"
 #include "core/matrix_implementations/non-symmetric_matrixes/matrix.hpp"
@@ -13,29 +10,10 @@
 using namespace graphcpp;
 using MatrixType = HalfSymmetricMatrix;
 
-namespace
-{
-	msize get_excess_vertex(const std::vector<mcontent>& excesses, msize sink)
-	{
-		for(msize i = 0; i < excesses.size(); i++)
-		{
-			if(excesses[i] > 0 && i != sink)
-			{
-				return i;
-			}
-		}
-
-		return sink;
-	}
-}
-
-template<class GraphType>
-mcontent flow_calculators::preflow_push_algorithm(const GraphType& _graph, msize source, msize sink)
+mcontent flow_calculators::preflow_push_algorithm(const NonOrientedGraphBase& graph, msize source, msize sink)
 {
 	assert(source != sink);
-	assert(std::max(source, sink) < _graph.dimension());
-
-	OrientedMatrixGraph<Matrix> graph(_graph);
+	assert(std::max(source, sink) < graph.dimension());
 
 	std::vector<msize> heights(graph.dimension());
 	heights[source] = graph.dimension();
@@ -54,8 +32,6 @@ mcontent flow_calculators::preflow_push_algorithm(const GraphType& _graph, msize
 		flows.set(i, source, - graph.at(source, i));
 	}
 	
-	//auto excessed_vertex = get_excess_vertex(excesses, sink);
-
 	while(true)
 	{
 		auto moved = false;
@@ -167,22 +143,3 @@ mcontent flow_calculators::preflow_push_algorithm(const GraphType& _graph, msize
 
 	return flow;
 }
-
-#define PREFLOW_PUSH_SINGLE_MACRO(r, data, graph_type) template mcontent flow_calculators::preflow_push_algorithm<graph_type>(const graph_type&, msize, msize);
-BOOST_PP_SEQ_FOR_EACH(PREFLOW_PUSH_SINGLE_MACRO, 0, NON_ORIENTED_GRAPH_IMPLEMENTATIONS_SEQ);
-
-template<class GraphType>
-std::shared_ptr<SymmetricMatrixBase> flow_calculators::preflow_push_algorithm(const GraphType& graph)
-{
-	auto result = std::make_shared<MatrixType>(graph.dimension());
-
-	for (auto[i, j] : graph)
-	{
-		result->set(i, j, preflow_push_algorithm<GraphType>(graph, i, j));
-	}
-
-	return result;
-}
-
-#define PREFLOW_PUSH_MATRIX_MACRO(r, data, graph_type) template std::shared_ptr<SymmetricMatrixBase> flow_calculators::preflow_push_algorithm<graph_type>(const graph_type&);
-BOOST_PP_SEQ_FOR_EACH(PREFLOW_PUSH_MATRIX_MACRO, 0, NON_ORIENTED_GRAPH_IMPLEMENTATIONS_SEQ);
