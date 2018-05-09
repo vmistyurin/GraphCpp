@@ -1,6 +1,8 @@
 #ifndef GRAPH_CORE_ORIENTED_GRAPH_BASE_HPP
 #define GRAPH_CORE_ORIENTED_GRAPH_BASE_HPP
 
+#include <memory>
+
 #include "core/edge.hpp"
 #include "core/iterators/matrix_iterator.hpp"
 #include "core/graph_implementations/graph_base.hpp"
