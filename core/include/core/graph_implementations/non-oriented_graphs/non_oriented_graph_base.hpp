@@ -2,6 +2,7 @@
 #define GRAPH_CORE_NON_ORIENTED_GRAPH_BASE_HPP
 
 #include <list> 
+#include <memory>
 
 #include "core/graph_implementations/graph_base.hpp"
 #include "core/iterators/symmetric_matrix_iterator.hpp"
