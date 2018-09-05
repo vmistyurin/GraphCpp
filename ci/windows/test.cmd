@@ -1,6 +1,8 @@
 cd build
 cd build
-cd %CONFIGURATION%
+dir
+ 
+cd %configuration%
 
 echo %cd%
 unit_tests
