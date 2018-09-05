@@ -16,4 +16,4 @@ build_script:
   - cmd: ci\windows\build.cmd
 
 test_script:
-  - cmd: ci\windows\test.cmd'%APPVEYOR_BUILD_FOLDER%\build\build\%CONFIGURATION%\unit_tests.exe'
+  - cmd: ci\windows\test.cmd
