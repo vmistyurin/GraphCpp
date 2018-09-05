@@ -1,4 +1,6 @@
 cd build
 cd build
 cd %CONFIGURATION%
-./unit_tests.exe
+
+echo %cd%
+unit_tests
