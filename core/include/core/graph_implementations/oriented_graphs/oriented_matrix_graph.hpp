@@ -42,7 +42,7 @@ namespace graphcpp
 		std::vector<msize> get_degrees() const override;
 		msize get_degree(msize vertex) const override;
 
-		void delete_vertexes(const std::vector<msize>& vertexes) override;
+		std::vector<msize> delete_vertexes(const std::vector<msize>& vertexes) override;
 		void rearrange(const std::vector<msize>& new_nums) override;
 	};
 
@@ -216,7 +216,7 @@ namespace graphcpp
 	}
 
 	template<class T>
-	void OrientedMatrixGraph<T>::delete_vertexes(const std::vector<msize>& vertexes)
+	std::vector<msize> OrientedMatrixGraph<T>::delete_vertexes(const std::vector<msize>& vertexes)
 	{
 		assert(!vertexes.empty());
 		assert(std::all_of(vertexes.cbegin(), vertexes.cend(), [&](msize vertex) {return vertex < dimension(); }));
@@ -234,6 +234,22 @@ namespace graphcpp
 			current_position--;
 		}
 		_matrix.delete_last_strings(vertexes.size());
+
+		std::vector<msize> new_nums(dimension());
+		msize current = 0;
+		for (msize i = 0; i < dimension(); i++)
+		{
+			if (contains(vertexes, i))
+			{
+				new_nums[i] = msize_undefined;
+			}
+			else
+			{
+				new_nums[i] = current++;
+			}
+		}
+
+		return new_nums;
 	}
 
 	template<class T>

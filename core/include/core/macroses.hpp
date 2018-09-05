@@ -6,7 +6,6 @@
 
 #define RETURN_IF(condition, value) if(condition) return value;
 #define MINMAX(value1, value2) if(value1 > value2) std::swap(value1, value2)
-#define CONTAINS(container, value) (std::find(container.cbegin(), container.cend(), value) != container.cend())
 
 namespace graphcpp
 {

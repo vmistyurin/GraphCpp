@@ -17,5 +17,10 @@ namespace graphcpp
 	bool is_matrix_from_graph(const SymmetricMatrixBase& matrix, const GraphBase& graph);
 	bool is_matrix_from_graph(const NonSymmetricMatrixBase& matrix, const GraphBase& graph);
 
+	template<class T, class V> 
+	bool contains(const T& container, V&& value)
+	{
+		return std::find(container.cbegin(), container.cend(), value) != container.cend();
+	}
 }
 #endif

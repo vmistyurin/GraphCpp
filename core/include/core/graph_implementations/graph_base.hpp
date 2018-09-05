@@ -20,7 +20,7 @@ namespace graphcpp
         virtual std::vector<msize> get_degrees() const = 0;
 		virtual msize get_degree(msize vertex) const = 0;
 
-		virtual void delete_vertexes(const std::vector<msize>& vertexes) = 0;
+		virtual std::vector<msize> delete_vertexes(const std::vector<msize>& vertexes) = 0;
 		virtual void rearrange(const std::vector<msize>& new_nums) = 0;
 
 		virtual ~GraphBase() = default;

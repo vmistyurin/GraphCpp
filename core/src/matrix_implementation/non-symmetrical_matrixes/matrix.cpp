@@ -25,7 +25,7 @@ Matrix::Matrix(std::vector<std::vector<mcontent>> matrix) :
 Matrix::Matrix(const MatrixBase& rhs) :
 	Matrix(rhs.dimension())
 {
-	for (auto&[i, j] : *this)
+	for (const auto&[i, j] : *this)
 	{
 		_matrix[i][j] = rhs.at(i, j);	
 	}

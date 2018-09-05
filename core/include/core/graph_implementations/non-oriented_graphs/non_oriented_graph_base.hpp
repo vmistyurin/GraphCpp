@@ -22,7 +22,8 @@ namespace graphcpp
 		virtual std::vector<msize> get_connected_component(msize vertex) const = 0;
 		virtual std::vector<std::vector<msize>> get_connected_components() const = 0;
 
-		std::list<std::pair<msize, msize>> get_bridges() const;
+		std::pair<std::list<std::pair<msize, msize>>, std::vector<msize>> get_bridges() const;
+		std::vector<std::vector<msize>> get_chains() const;
 
 		SymmetricMatrixIterator begin() const;
 		SymmetricMatrixIterator end() const;

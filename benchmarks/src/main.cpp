@@ -14,16 +14,22 @@ int main(int argc, char **argv)
 	const fs::path path_to_tests = "../../test_generators/graphs";
 	const fs::path first_answers = "../answers";
 	const fs::path second_answers = "../answers1";
+	const fs::path third_answers = "../answers2";
 
 	tester.run_tests_in_directory(path_to_tests,
 		first_answers, 
-		Edmonds_Karp_algorithm<graphcpp::NonOrientedMatrixGraph<graphcpp::HalfSymmetricMatrix>>(),
+		reduction_use_algorithm<graphcpp::NonOrientedMatrixGraph<graphcpp::HalfSymmetricMatrix>>(graphcpp::flow_calculators::Edmonds_Karp_algorithm),
 		"Edmonds-Karp");
 
 	tester.run_tests_in_directory(path_to_tests, 
 		second_answers,
-		reduction_use_algorithm<graphcpp::NonOrientedMatrixGraph<graphcpp::HalfSymmetricMatrix>>(graphcpp::flow_calculators::preflow_push_algorithm), 
-		"optimized");
+		reduction_use_algorithm<graphcpp::NonOrientedMatrixGraph<graphcpp::HalfSymmetricMatrix>>(graphcpp::flow_calculators::Dinic_algorithm), 
+		"Dinic");
+
+	tester.run_tests_in_directory(path_to_tests,
+		third_answers,
+		reduction_use_algorithm<graphcpp::NonOrientedMatrixGraph<graphcpp::HalfSymmetricMatrix>>(graphcpp::flow_calculators::preflow_push_algorithm),
+		"preflow_push");
 
 	if (auto differences = tester.check_results(first_answers, second_answers); differences.empty())
 	{

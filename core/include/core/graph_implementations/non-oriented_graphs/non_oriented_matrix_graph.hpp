@@ -46,7 +46,7 @@ namespace graphcpp
 		std::vector<msize> get_connected_component(msize vertex) const override;
 		std::vector<std::vector<msize>> get_connected_components() const override;
 
-		void delete_vertexes(const std::vector<msize>& vertexes) override;
+		std::vector<msize> delete_vertexes(const std::vector<msize>& vertexes) override;
 		void rearrange(const std::vector<msize>& new_nums) override;
 	};
 
@@ -232,12 +232,13 @@ namespace graphcpp
 	}
 
 	template<class T>
-	void NonOrientedMatrixGraph<T>::delete_vertexes(const std::vector<msize>& vertexes)
+	std::vector<msize> NonOrientedMatrixGraph<T>::delete_vertexes(const std::vector<msize>& vertexes)
 	{
 		assert(!vertexes.empty());
 		assert(std::all_of(vertexes.cbegin(), vertexes.cend(), [&](msize vertex) {return vertex < dimension(); }));
 
 		std::set<msize> to_delete(vertexes.cbegin(), vertexes.cend());
+
 		auto current_position = dimension() - 1;
 		for (auto current_deleted : to_delete)
 		{
@@ -250,6 +251,22 @@ namespace graphcpp
 			current_position--;
 		}
 		_matrix.delete_last_strings(vertexes.size());
+
+		std::vector<msize> new_nums(dimension() + vertexes.size());
+		msize current = 0;
+		for (msize i = 0; i < new_nums.size(); i++)
+		{
+			if(contains(vertexes, i))
+			{
+				new_nums[i] = msize_undefined;
+			}
+			else
+			{
+				new_nums[i] = current++;
+			}
+		}
+
+		return new_nums;
 	}
 
 	template<class T>
