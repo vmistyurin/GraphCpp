@@ -14,7 +14,7 @@ install:
   - git submodule update --init --recursive
 
 build_script:
-  - ps: ci/build.cmd
+  - ps: ci/build.ps1
 
 test_script:
-  - ps: ci/test.cmd
+  - ps: ci/test.ps1
