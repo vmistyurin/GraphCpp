@@ -9,6 +9,9 @@ Set-Location $build_directory
 
 $CMAKE_CXX_FLAGS = " "
 
+$configuration
+$Configuration
+
 if ($isWindows) {
     $generator = "Visual Studio 15 2017"
 
