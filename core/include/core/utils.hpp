@@ -2,6 +2,7 @@
 #define GRAPH_CORE_UTILS_HPP
 
 #include <vector>
+#include <algorithm>
 
 #include "core/macroses.hpp"
 #include "core/graph_implementations/graph_base.hpp"

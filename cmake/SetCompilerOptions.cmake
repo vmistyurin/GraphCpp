@@ -5,6 +5,7 @@ macro(set_named_compiler_options PROJECT)
         PRIVATE "-W3"
         PRIVATE "/std:c++latest"
         PRIVATE "/openmp"
+        PRIVATE "/EHsc"
       )
     else()
       target_compile_options(${PROJECT} 

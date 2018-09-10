@@ -9,6 +9,8 @@
 
 namespace graphcpp_testing
 {
+	using namespace graphcpp;
+	
 	template<class T>
 	inline bool compare_vectors_without_order(const std::vector<T>& v1, const std::vector<T>& v2)
 	{

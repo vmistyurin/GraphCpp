@@ -4,17 +4,17 @@
 
 int main(int argc, char **argv) 
 {
-#ifdef _M_X64
+#if defined(_M_X64) || defined(__LP64__)
 	std::cout << "x64" << std::endl;
 #else 
 	std::cout << "x86" << std::endl;
-#endif // _M_X64
+#endif
 
-#ifdef _DEBUG
+#if defined(_DEBUG) || !defined(NDEBUG)
 	std::cout << "DEBUG" << std::endl;
 #else	
 	std::cout << "RELEASE" << std::endl;
-#endif // _DEBUG
+#endif
 
 	std::cout << "Running main() from gtest_main.cc" << std::endl;
 	testing::InitGoogleTest(&argc, argv);
