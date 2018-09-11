@@ -4,7 +4,7 @@ Set-Location $build_directory
 Set-Location "build"
 
 if ($isWindows) {
-    Set-Location $CONFIGURATION
+    Set-Location $env:CONFIGURATION
 } else { if ($isLinux) {
 } else {
     "Unknown system!"

@@ -12,13 +12,13 @@ $CMAKE_CXX_FLAGS = " "
 if ($isWindows) {
     $generator = "Visual Studio 15 2017"
 
-    if ($PLATFORM -eq "x64") {
+    if ($env:PLATFORM -eq "x64") {
         $generator = $generator + " Win64"
     }
 } else { if ($isLinux) {
     $generator = "Unix Makefiles"
 
-    if ($PLATFORM -eq "x64") {
+    if ($env:PLATFORM -eq "x64") {
         $CMAKE_CXX_FLAGS = $CMAKE_CXX_FLAGS + " -m64"
     }
 } else {
@@ -30,6 +30,6 @@ cmake .. -G "$generator" `
     -DUSE_ALL_TESTS:BOOL=ON `
     -DBOOST_ROOT="C:\Libraries\boost_1_64_0"
     
-cmake --build . --config $CONFIGURATION
+cmake --build . --config $env:CONFIGURATION
 
 Set-Location ..
