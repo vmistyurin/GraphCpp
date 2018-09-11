@@ -8,9 +8,11 @@ New-Item -ItemType directory $build_directory
 Set-Location $build_directory   
 
 $CMAKE_CXX_FLAGS = " "
+$CMAKE_BOOST_ROOT = ""
 
 if ($isWindows) {
     $generator = "Visual Studio 15 2017"
+    $CMAKE_BOOST_ROOT = "-DBOOST_ROOT=`"C:\Libraries\boost_1_64_0`""
 
     if ($env:PLATFORM -eq "x64") {
         $generator = $generator + " Win64"
@@ -23,12 +25,13 @@ if ($isWindows) {
     }
 } else {
     "Unknown system!"
+    return 1
 }}
 
 cmake .. -G "$generator" `
-    -DCMAKE_CXX_FLAGS="$CMAKE_CXX_FLAGS" `
     -DUSE_ALL_TESTS:BOOL=ON `
-    -DBOOST_ROOT="C:\Libraries\boost_1_64_0"
+    -DCMAKE_CXX_FLAGS="$CMAKE_CXX_FLAGS" `
+    $CMAKE_BOOST_ROOT
     
 cmake --build . --config $env:CONFIGURATION
 
