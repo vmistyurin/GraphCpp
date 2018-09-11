@@ -20,6 +20,8 @@ if ($isWindows) {
 } else { if ($isLinux) {
     $generator = "Unix Makefiles"
 
+    sudo apt-get install libboost-all-dev
+        
     if ($env:PLATFORM -eq "x64") {
         $CMAKE_CXX_FLAGS = $CMAKE_CXX_FLAGS + " -m64"
     }
