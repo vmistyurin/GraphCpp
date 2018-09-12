@@ -10,10 +10,10 @@ int main(int argc, char **argv)
 	std::cout << "x86" << std::endl;
 #endif
 
-#if defined(_DEBUG) || defined(NDEBUG)
-	std::cout << "DEBUG" << std::endl;
-#else	
+#if defined(NDEBUG)
 	std::cout << "RELEASE" << std::endl;
+#else	
+	std::cout << "DEBUG" << std::endl;
 #endif
 
 	std::cout << "Running main() from gtest_main.cc" << std::endl;

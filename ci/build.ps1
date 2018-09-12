@@ -35,9 +35,10 @@ if ($isWindows) {
 cmake .. -G "$GENERATOR" `
     -DUSE_ALL_TESTS:BOOL=ON `
     -DCMAKE_CXX_FLAGS="$CMAKE_CXX_FLAGS" `
+    -DCMAKE_BUILD_TYPE=$env:CONFIGURATION `
     $CMAKE_BOOST_ROOT `
     $CMAKE_CXX_COMPILER
     
-cmake --build . --config $env:CONFIGURATION
+cmake --build .
 
 Set-Location ..
