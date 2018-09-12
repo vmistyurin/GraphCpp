@@ -15,7 +15,6 @@ $CMAKE_GENERATE_CONFIGURATION = ""
 if ($isWindows) {
     $GENERATOR = "Visual Studio 15 2017"
     $CMAKE_BOOST_ROOT = "-DBOOST_ROOT=`"C:\Libraries\boost_1_67_0`""
-    $CMAKE_BUILD_CONFIGURATION = "--config $env:CONFIGURATION"
 
     if ($env:PLATFORM -eq "x64") {
         $GENERATOR = $GENERATOR + " Win64"
@@ -29,7 +28,10 @@ if ($isWindows) {
         
     if ($env:PLATFORM -eq "x64") {
         $CMAKE_CXX_FLAGS = $CMAKE_CXX_FLAGS + " -m64"
+    } else {
+        $CMAKE_CXX_FLAGS = $CMAKE_CXX_FLAGS + " -m32"
     }
+
 } else {
     "Unknown system!"
     return 1
