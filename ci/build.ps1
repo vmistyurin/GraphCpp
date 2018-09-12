@@ -20,7 +20,7 @@ if ($isWindows) {
     }
 } else { if ($isLinux) {
     $generator = "Unix Makefiles"
-    $CMAKE_CXX_COMPILER="DCMAKE_CXX_COMPILER=`"/usr/bin/g++-8`""
+    $CMAKE_CXX_COMPILER="-DCMAKE_CXX_COMPILER=`"/usr/bin/g++-8`""
     ls /usr/bin
 
     sudo apt-get install -y libboost-all-dev 
