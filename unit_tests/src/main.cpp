@@ -10,7 +10,7 @@ int main(int argc, char **argv)
 	std::cout << "x86" << std::endl;
 #endif
 
-#if defined(_DEBUG) || !defined(NDEBUG)
+#if defined(_DEBUG) || defined(NDEBUG)
 	std::cout << "DEBUG" << std::endl;
 #else	
 	std::cout << "RELEASE" << std::endl;
