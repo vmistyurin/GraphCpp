@@ -7,9 +7,9 @@ if (Test-Path $BUILD_DIRECTORY) {
 New-Item -ItemType directory $BUILD_DIRECTORY
 Set-Location $BUILD_DIRECTORY   
 
-$CMAKE_CXX_FLAGS = " "
-$CMAKE_BOOST_ROOT = " "
-$CMAKE_CXX_COMPILER = " "
+$CMAKE_CXX_FLAGS = ""
+$CMAKE_BOOST_ROOT = ""
+$CMAKE_CXX_COMPILER = ""
 
 if ($isWindows) {
     $GENERATOR = "Visual Studio 15 2017"
