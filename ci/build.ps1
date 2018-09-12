@@ -9,6 +9,7 @@ Set-Location $build_directory
 
 $CMAKE_CXX_FLAGS = " "
 $CMAKE_BOOST_ROOT = ""
+$CMAKE_CXX_COMPILER =""
 
 if ($isWindows) {
     $generator = "Visual Studio 15 2017"
@@ -19,6 +20,8 @@ if ($isWindows) {
     }
 } else { if ($isLinux) {
     $generator = "Unix Makefiles"
+    $CMAKE_CXX_COMPILER="DCMAKE_CXX_COMPILER=`"/usr/bin/g++-8`""
+    ls /usr/bin
 
     sudo apt-get install -y libboost-all-dev 
         
@@ -33,7 +36,8 @@ if ($isWindows) {
 cmake .. -G "$generator" `
     -DUSE_ALL_TESTS:BOOL=ON `
     -DCMAKE_CXX_FLAGS="$CMAKE_CXX_FLAGS" `
-    $CMAKE_BOOST_ROOT
+    $CMAKE_BOOST_ROOT `
+    $CMAKE_CXX_COMPILER
     
 cmake --build . --config $env:CONFIGURATION
 
