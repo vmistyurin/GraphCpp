@@ -8,12 +8,12 @@ New-Item -ItemType directory $BUILD_DIRECTORY
 Set-Location $BUILD_DIRECTORY   
 
 $CMAKE_CXX_FLAGS = " "
-$CMAKE_BOOST_ROOT = ""
-$CMAKE_CXX_COMPILER =""
+$CMAKE_BOOST_ROOT = " "
+$CMAKE_CXX_COMPILER = " "
 
 if ($isWindows) {
     $GENERATOR = "Visual Studio 15 2017"
-    $CMAKE_BOOST_ROOT = "-DBOOST_ROOT=`"C:\Libraries\boost_1_64_0`""
+    $CMAKE_BOOST_ROOT = "-DBOOST_ROOT=`"C:\Libraries\boost_1_67_0`""
 
     if ($env:PLATFORM -eq "x64") {
         $GENERATOR = $GENERATOR + " Win64"
