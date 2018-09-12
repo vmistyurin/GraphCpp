@@ -1,6 +1,6 @@
-Set-Variable build_directory -option Constant -value "build"
+Set-Variable BUILD_DIRECTORY -option Constant -value "build"
 
-Set-Location $build_directory  
+Set-Location $BUILD_DIRECTORY  
 Set-Location "build"
 
 if ($isWindows) {
@@ -8,6 +8,7 @@ if ($isWindows) {
 } else { if ($isLinux) {
 } else {
     "Unknown system!"
+    return 1
 }}
 
 ./unit_tests
