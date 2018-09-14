@@ -3,7 +3,6 @@ version: '1.0.{build}'
 image: 
   - Ubuntu
 platform:
-  - x64
   - Win32
 configuration:
   - Release
