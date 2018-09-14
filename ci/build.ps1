@@ -1,3 +1,4 @@
+$ErrorActionPreference = "Stop"
 Set-Variable BUILD_DIRECTORY -option Constant -value "build"
 
 if (Test-Path $BUILD_DIRECTORY) {
