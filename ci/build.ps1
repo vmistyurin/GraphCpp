@@ -30,8 +30,7 @@ if ($isWindows) {
     if ($env:PLATFORM -eq "x64") {
         $CMAKE_CXX_FLAGS = $CMAKE_CXX_FLAGS + " -m64"
     } else {
-        sudo apt-get install gcc-multilib
-        $CMAKE_CXX_FLAGS = $CMAKE_CXX_FLAGS + " -m32"
+        $CMAKE_CXX_FLAGS = $CMAKE_CXX_FLAGS + " -m32 -Wl,-m32"
     }
 
 } else {
