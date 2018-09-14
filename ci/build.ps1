@@ -12,6 +12,7 @@ $CMAKE_CXX_FLAGS = ""
 $CMAKE_BOOST_ROOT = ""
 $CMAKE_CXX_COMPILER = ""
 $CMAKE_GENERATE_CONFIGURATION = ""
+$CMAKE_EXE_LINKER_FLAGS = ""
 
 if ($isWindows) {
     $GENERATOR = "Visual Studio 15 2017"
@@ -30,7 +31,8 @@ if ($isWindows) {
     if ($env:PLATFORM -eq "x64") {
         $CMAKE_CXX_FLAGS = $CMAKE_CXX_FLAGS + " -m64"
     } else {
-        $CMAKE_CXX_FLAGS = $CMAKE_CXX_FLAGS + " -m32 -Wl,-m32"
+        $CMAKE_CXX_FLAGS = $CMAKE_CXX_FLAGS + " -m32"
+        $CMAKE_EXE_LINKER_FLAGS = $CMAKE_EXE_LINKER_FLAGS + " -m32"
     }
 
 } else {
@@ -41,6 +43,7 @@ if ($isWindows) {
 cmake .. -G "$GENERATOR" `
     -DUSE_ALL_TESTS:BOOL=ON `
     -DCMAKE_CXX_FLAGS="$CMAKE_CXX_FLAGS" `
+    -DCMAKE_EXE_LINKER_FLAGS="$CMAKE_EXE_LINKER_FLAGS"
     $CMAKE_GENERATE_CONFIGURATION `
     $CMAKE_BOOST_ROOT `
     $CMAKE_CXX_COMPILER
