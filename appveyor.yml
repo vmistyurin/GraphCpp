@@ -12,14 +12,14 @@ configuration:
 
 matrix:
   exclude:
-    - image: Ubuntu
+    - image: Ubuntu1804
       platform: Win32
 
 for:
 -
   matrix:
     only:
-      - image: Ubuntu
+      - image: Ubuntu1804
       
   environment:
     matrix:
