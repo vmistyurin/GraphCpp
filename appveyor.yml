@@ -1,7 +1,6 @@
 version: '1.0.{build}'
 
 image: 
-  - Visual Studio 2017
   - Ubuntu1804
 platform:
   - x64
@@ -14,17 +13,6 @@ matrix:
   exclude:
     - image: Ubuntu1804
       platform: Win32
-
-for:
--
-  matrix:
-    only:
-      - image: Ubuntu1804
-      
-  environment:
-    matrix:
-      - cxx_compiler: gcc
-      - cxx_compiler: clang
 
 install:
   - git submodule update --init --recursive

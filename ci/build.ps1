@@ -25,16 +25,9 @@ if ($isWindows) {
     $GENERATOR = "Unix Makefiles"
     $CMAKE_BUILD_CONFIGURATION = "-DCMAKE_BUILD_TYPE=$env:CONFIGURATION"       
     $CMAKE_CXX_FLAGS = $CMAKE_CXX_FLAGS + " -m64"
+    $CMAKE_CXX_COMPILER = "-DCMAKE_CXX_COMPILER=`"/usr/bin/g++-8`""
 
     sudo apt-get install -y libboost-all-dev 
-
-    if($env:CXX_COMPILER -eq "gcc") {
-        $CMAKE_CXX_COMPILER = "-DCMAKE_CXX_COMPILER=`"/usr/bin/g++-8`""
-    } else { if ($env:CXX_COMPILER -eq "clang") {
-        sudo apt-get install -y clang++
-        $CMAKE_CXX_COMPILER = "-DCMAKE_CXX_COMPILER=`"/usr/bin/clang++-6`""
-    }}
-
 } else {
     "Unknown system!"
     return 1
