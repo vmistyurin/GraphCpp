@@ -16,9 +16,11 @@ matrix:
       platform: Win32
 
 for:
+-
   matrix:
     only:
       - image: Ubuntu
+      
   environment:
     matrix:
       - cxx_compiler: gcc
