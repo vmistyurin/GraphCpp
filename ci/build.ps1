@@ -1,4 +1,5 @@
 $ErrorActionPreference = "Stop"
+
 Set-Variable BUILD_DIRECTORY -option Constant -value "build"
 
 if (Test-Path $BUILD_DIRECTORY) {
@@ -8,11 +9,10 @@ if (Test-Path $BUILD_DIRECTORY) {
 New-Item -ItemType directory $BUILD_DIRECTORY
 Set-Location $BUILD_DIRECTORY   
 
+$CMAKE_CXX_COMPILER = ""
 $CMAKE_CXX_FLAGS = ""
 $CMAKE_BOOST_ROOT = ""
-$CMAKE_CXX_COMPILER = ""
-$CMAKE_GENERATE_CONFIGURATION = ""
-$CMAKE_EXE_LINKER_FLAGS = ""
+$CMAKE_BUILD_CONFIGURATION = ""
 
 if ($isWindows) {
     $GENERATOR = "Visual Studio 15 2017"
@@ -24,17 +24,8 @@ if ($isWindows) {
 } else { if ($isLinux) {
     $GENERATOR = "Unix Makefiles"
     $CMAKE_CXX_COMPILER = "-DCMAKE_CXX_COMPILER=`"/usr/bin/g++-8`""
-    $CMAKE_GENERATE_CONFIGURATION = "-DCMAKE_BUILD_TYPE=$env:CONFIGURATION"
-
-    sudo apt-get install -y libboost-all-dev 
-        
-    if ($env:PLATFORM -eq "x64") {
-        $CMAKE_CXX_FLAGS = $CMAKE_CXX_FLAGS + " -m64"
-    } else {
-        $CMAKE_CXX_FLAGS = $CMAKE_CXX_FLAGS + " -m32"
-        $CMAKE_EXE_LINKER_FLAGS = $CMAKE_EXE_LINKER_FLAGS + " -m32"
-    }
-
+    $CMAKE_BUILD_CONFIGURATION = "-DCMAKE_BUILD_TYPE=$env:CONFIGURATION"       
+    $CMAKE_CXX_FLAGS = $CMAKE_CXX_FLAGS + " -m64"
 } else {
     "Unknown system!"
     return 1
@@ -45,7 +36,7 @@ cmake .. -G "$GENERATOR" `
     -DCMAKE_C_FLAGS="$CMAKE_CXX_FLAGS" `
     -DCMAKE_CXX_FLAGS="$CMAKE_CXX_FLAGS" `
     -DCMAKE_EXE_LINKER_FLAGS="$CMAKE_EXE_LINKER_FLAGS" `
-    $CMAKE_GENERATE_CONFIGURATION `
+    $CMAKE_BUILD_CONFIGURATION `
     $CMAKE_BOOST_ROOT `
     $CMAKE_CXX_COMPILER
     

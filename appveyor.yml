@@ -1,12 +1,19 @@
 version: '1.0.{build}'
 
 image: 
+  - Visual Studio 2017
   - Ubuntu
 platform:
+  - x64
   - Win32
 configuration:
   - Release
-  - Debug
+  - Debug 
+
+matrix:
+  exclude:
+    - image: Ubuntu
+      platform: Win32
 
 install:
   - git submodule update --init --recursive
