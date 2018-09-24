@@ -30,7 +30,7 @@ if ($isWindows) {
 
     if($env:CXX_COMPILER -eq "gcc") {
         $CMAKE_CXX_COMPILER = "-DCMAKE_CXX_COMPILER=`"/usr/bin/g++-8`""
-    } else { if $env:CXX_COMPILER -eq "clang") {
+    } else { if ($env:CXX_COMPILER -eq "clang") {
         sudo apt-get install -y clang++
         $CMAKE_CXX_COMPILER = "-DCMAKE_CXX_COMPILER=`"/usr/bin/clang++-6`""
     }}
