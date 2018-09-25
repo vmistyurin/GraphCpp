@@ -8,8 +8,13 @@ platform:
   - Win32
 configuration:
   - Release
-  - Debug
+  - Debug 
 
+matrix:
+  exclude:
+    - image: Ubuntu
+      platform: Win32
+      
 install:
   - git submodule update --init --recursive
 
