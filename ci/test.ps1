@@ -1,14 +1,15 @@
-Set-Variable build_directory -option Constant -value "build"
+$ErrorActionPreference = "Stop"
+Set-Variable BUILD_DIRECTORY -option Constant -value "build"
 
-Set-Location $build_directory  
+Set-Location $BUILD_DIRECTORY  
 Set-Location "build"
 
 if ($isWindows) {
-    Set-Location $configuration
+    Set-Location $env:CONFIGURATION
 } else { if ($isLinux) {
-
 } else {
     "Unknown system!"
+    return 1
 }}
 
 ./unit_tests
