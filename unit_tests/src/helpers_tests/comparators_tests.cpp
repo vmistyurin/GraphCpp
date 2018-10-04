@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "core/edge.hpp"
+#include "core/edges/edge.hpp"
 #include "unit_tests/macroses.hpp"
 #include "unit_tests/utils/comparators.hpp"
 

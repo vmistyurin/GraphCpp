@@ -6,7 +6,7 @@
 
 #include "core/graph_implementations/graph_base.hpp"
 #include "core/iterators/symmetric_matrix_iterator.hpp"
-#include "core/symmetrical_edge.hpp"
+#include "core/edges/symmetrical_edge.hpp"
 #include "core/matrix_implementations/symmetric_matrixes/symmetric_matrix_base.hpp"
 
 namespace graphcpp

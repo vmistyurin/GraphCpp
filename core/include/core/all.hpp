@@ -4,8 +4,9 @@
 #include "core/macroses.hpp"
 #include "core/utils.hpp"
 
-#include "core/edge.hpp"
-#include "core/symmetrical_edge.hpp"
+#include "core/edges/edge.hpp"
+#include "core/edges/symmetrical_edge.hpp"
+#include "core/edges/random_edge.hpp"
 
 #include "core/iterators/matrix_iterator.hpp"
 #include "core/iterators/symmetric_matrix_iterator.hpp"
@@ -25,6 +26,8 @@
 #include "core/graph_implementations/oriented_graphs/oriented_graph_base.hpp"
 #include "core/graph_implementations/oriented_graphs/oriented_matrix_graph.hpp"
 
+#include "core/random_graphs_implementations/random_graph_base.hpp"
+#include "core/random_graphs_implementations/random_graph.hpp"
 
 #include "core/flow_calculators.hpp"
 

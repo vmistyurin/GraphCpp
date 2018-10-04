@@ -20,4 +20,10 @@ using NonOrientedGraphImplementations = testing::Types<
 using OrientedGraphImplementations = testing::Types<
 	graphcpp::OrientedMatrixGraph<graphcpp::Matrix>
 >;
+
+using RandomGraphImplementations = testing::Types<
+	graphcpp::RandomGraph<graphcpp::NonOrientedMatrixGraph<graphcpp::FullSymmetricMatrix>>,
+	graphcpp::RandomGraph<graphcpp::OrientedMatrixGraph<graphcpp::Matrix>>
+>;
+
 #endif

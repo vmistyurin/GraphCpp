@@ -8,7 +8,7 @@
 #include <queue>
 
 #include "core/utils.hpp"
-#include "core/edge.hpp"
+#include "core/edges/edge.hpp"
 #include "core/graph_implementations/oriented_graphs/oriented_graph_base.hpp"
 
 namespace graphcpp
@@ -20,12 +20,10 @@ namespace graphcpp
 		MatrixType _matrix;
 
 	public:
-		OrientedMatrixGraph(msize dimension);
+		explicit OrientedMatrixGraph(msize dimension);
 		OrientedMatrixGraph(const std::vector<Edge>& edges, msize dimension);
 		explicit OrientedMatrixGraph(const NonOrientedGraphBase& rhs);
-
 		explicit OrientedMatrixGraph(const NonSymmetricMatrixBase& rhs);
-
 		explicit OrientedMatrixGraph(std::vector<std::vector<mcontent>> matrix);
 
 		std::vector<Edge> get_edges() const override;

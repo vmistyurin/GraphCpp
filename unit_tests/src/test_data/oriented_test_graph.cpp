@@ -1,18 +1,13 @@
 #include "unit_tests/test_data/oriented_test_graph.hpp"
 
-#include "unit_tests/test_data/tested_matrix.hpp"
+#include "unit_tests/test_data/test_matrix.hpp"
 
 using namespace graphcpp;
 using namespace graphcpp_testing;
 
-namespace
-{
-	
-}
-
 msize oriented_test_graph::dimension()
 {
-	return tested_matrix::dimension();
+	return test_matrix::dimension();
 }
 
 std::vector<Edge> oriented_test_graph::get_edges()
@@ -22,9 +17,9 @@ std::vector<Edge> oriented_test_graph::get_edges()
 	{
 		for(msize j = 0; j < dimension(); j++)
 		{
-			if(tested_matrix::matrix_as_vector()[i][j] > 0)
+			if(test_matrix::matrix_as_vector()[i][j] > 0)
 			{
-				result.emplace_back(i, j, tested_matrix::matrix_as_vector()[i][j]);
+				result.emplace_back(i, j, test_matrix::matrix_as_vector()[i][j]);
 			}
 		}
 	}
@@ -40,7 +35,7 @@ std::vector<msize> oriented_test_graph::get_degrees()
 	{
 		for(msize j = 0; j < dimension(); j++)
 		{
-			if(tested_matrix::matrix_as_vector()[i][j] > 0)
+			if(test_matrix::matrix_as_vector()[i][j] > 0)
 			{
 				result[i]++;
 			}
@@ -53,5 +48,5 @@ std::vector<msize> oriented_test_graph::get_degrees()
 template<>
 std::unique_ptr<OrientedMatrixGraph<Matrix>> oriented_test_graph::get_graph<OrientedMatrixGraph<Matrix>>()
 {
-	return std::make_unique<OrientedMatrixGraph<Matrix>>(tested_matrix::matrix_as_vector());
+	return std::make_unique<OrientedMatrixGraph<Matrix>>(test_matrix::matrix_as_vector());
 }

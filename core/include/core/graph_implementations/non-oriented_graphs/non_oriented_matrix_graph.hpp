@@ -9,7 +9,7 @@
 
 #include "core/utils.hpp"
 #include "core/graph_implementations/non-oriented_graphs/non_oriented_graph_base.hpp"
-#include "core/symmetrical_edge.hpp"
+#include "core/edges/symmetrical_edge.hpp"
 
 namespace graphcpp
 {

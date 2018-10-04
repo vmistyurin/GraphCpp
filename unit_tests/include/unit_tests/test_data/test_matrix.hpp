@@ -3,7 +3,7 @@
 
 #include "core/all.hpp"
 
-namespace graphcpp_testing::tested_matrix
+namespace graphcpp_testing::test_matrix
 {
 	using namespace graphcpp;
 

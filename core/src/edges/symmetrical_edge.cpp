@@ -1,4 +1,4 @@
-#include "core/symmetrical_edge.hpp"
+#include "core/edges/symmetrical_edge.hpp"
 
 #include <cassert>
 #include <algorithm>

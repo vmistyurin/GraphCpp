@@ -1,4 +1,4 @@
-#include "core/edge.hpp"
+#include "core/edges/edge.hpp"
 
 using namespace graphcpp;
 

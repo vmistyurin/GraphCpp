@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "core/edge.hpp"
+#include "core/edges/edge.hpp"
 #include "core/iterators/matrix_iterator.hpp"
 #include "core/graph_implementations/graph_base.hpp"
 #include "core/matrix_implementations/matrix_base.hpp"

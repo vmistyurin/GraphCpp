@@ -16,11 +16,6 @@ SymmetricMatrixIterator::SymmetricMatrixIterator(msize i, msize j, msize dimensi
 	_i(i), _j(j), _dimension(dimension)
 {
 	assert(i < j);
-	if (j >= dimension)
-	{
-		int a;
-		a = 5;
-	}
 	assert(j < dimension);
 	assert(dimension > 1);
 }
