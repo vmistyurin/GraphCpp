@@ -5,15 +5,15 @@ using namespace graphcpp_testing;
 
 namespace
 {
-	const std::vector<SymmetricalEdge> test_edges =
+	const std::vector<SymmetricEdge> test_edges =
 	{
-		SymmetricalEdge(3, 6, 1),
-		SymmetricalEdge(4, 6, 2),
-		SymmetricalEdge(1, 5, 7),
-		SymmetricalEdge(3, 4, 10),
-		SymmetricalEdge(2, 4, 4),
-		SymmetricalEdge(6, 0, 2),
-		SymmetricalEdge(6, 7, 10)
+		SymmetricEdge(3, 6, 1),
+		SymmetricEdge(4, 6, 2),
+		SymmetricEdge(1, 5, 7),
+		SymmetricEdge(3, 4, 10),
+		SymmetricEdge(2, 4, 4),
+		SymmetricEdge(6, 0, 2),
+		SymmetricEdge(6, 7, 10)
 	};
 	constexpr msize test_dimension = 8;
 
@@ -32,7 +32,7 @@ msize reliable_test_graph::dimension()
 	return test_dimension;
 }
 
-std::vector<SymmetricalEdge> reliable_test_graph::get_edges()
+std::vector<SymmetricEdge> reliable_test_graph::get_edges()
 {
 	return test_edges;
 }

@@ -152,7 +152,7 @@ namespace
 
 		std::vector<mcontent> right_flows(chain.size());
 		auto right_flow = graph.at(right_chain_element, chain.back());
-		for(msize i = chain.size() - 1; i > 0; i++)
+		for(msize i = chain.size() - 1; i > 0; i--)
 		{
 			right_flows[i] = right_flow;
 			right_flow = std::min(right_flow, graph.at(chain[i], chain[i - 1]));

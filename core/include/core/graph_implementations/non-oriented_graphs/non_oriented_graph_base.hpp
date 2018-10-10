@@ -6,7 +6,7 @@
 
 #include "core/graph_implementations/graph_base.hpp"
 #include "core/iterators/symmetric_matrix_iterator.hpp"
-#include "core/edges/symmetrical_edge.hpp"
+#include "core/edges/symmetric_edge.hpp"
 #include "core/matrix_implementations/symmetric_matrixes/symmetric_matrix_base.hpp"
 
 namespace graphcpp
@@ -14,7 +14,7 @@ namespace graphcpp
 	class NonOrientedGraphBase : public GraphBase
 	{
 	public:
-		virtual std::vector<SymmetricalEdge> get_edges() const = 0;
+		virtual std::vector<SymmetricEdge> get_edges() const = 0;
 		virtual std::shared_ptr<SymmetricMatrixBase> get_matrix() const = 0;
 		virtual std::shared_ptr<NonOrientedGraphBase> extract_subgraph(const std::vector<msize>& vertexes) const = 0;
 

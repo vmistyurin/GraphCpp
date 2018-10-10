@@ -8,7 +8,7 @@ namespace graphcpp_testing::reliable_test_graph
 	using namespace graphcpp;
 
 	msize dimension();
-	std::vector<SymmetricalEdge> get_edges();
+	std::vector<SymmetricEdge> get_edges();
 	std::vector<msize> get_degrees();
 
 	template<class GraphType>

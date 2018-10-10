@@ -18,13 +18,13 @@ namespace graphcpp_bench
 			unsigned int V, E;
 			stream >> V >> E;
 
-			std::vector<graphcpp::SymmetricalEdge> edges;
+			std::vector<graphcpp::SymmetricEdge> edges;
 			edges.reserve(V);
 			for (size_t i = 0; i < E; i++)
 			{
 				unsigned int v1, v2, weight;
 				stream >> v1 >> v2 >> weight;
-				edges.emplace_back(graphcpp::SymmetricalEdge(v1, v2, weight));
+				edges.emplace_back(graphcpp::SymmetricEdge(v1, v2, weight));
 			}
 
 			return T(edges, V);

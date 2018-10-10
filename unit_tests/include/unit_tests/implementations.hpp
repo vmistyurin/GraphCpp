@@ -21,9 +21,9 @@ using OrientedGraphImplementations = testing::Types<
 	graphcpp::OrientedMatrixGraph<graphcpp::Matrix>
 >;
 
-using RandomGraphImplementations = testing::Types<
-	graphcpp::RandomGraph<graphcpp::NonOrientedMatrixGraph<graphcpp::FullSymmetricMatrix>>,
-	graphcpp::RandomGraph<graphcpp::OrientedMatrixGraph<graphcpp::Matrix>>
+using RandomNonOrientedGraphImplementations = testing::Types<
+	graphcpp::RandomNonOrientedGraph<graphcpp::NonOrientedMatrixGraph<graphcpp::FullSymmetricMatrix>, graphcpp::FullSymmetricMatrix>,
+	graphcpp::RandomNonOrientedGraph<graphcpp::NonOrientedMatrixGraph<graphcpp::HalfSymmetricMatrix>, graphcpp::HalfSymmetricMatrix>
 >;
 
 #endif

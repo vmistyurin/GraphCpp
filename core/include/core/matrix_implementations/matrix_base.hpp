@@ -25,6 +25,7 @@ namespace graphcpp
 
 		virtual void swap(msize str1, msize str2) = 0;
 		virtual void delete_last_strings(msize count) = 0;
+		void delete_strings(const std::vector<msize>& strings);
 
 		std::string to_string() const;
 

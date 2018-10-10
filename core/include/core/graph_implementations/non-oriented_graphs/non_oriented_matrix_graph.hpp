@@ -9,7 +9,7 @@
 
 #include "core/utils.hpp"
 #include "core/graph_implementations/non-oriented_graphs/non_oriented_graph_base.hpp"
-#include "core/edges/symmetrical_edge.hpp"
+#include "core/edges/symmetric_edge.hpp"
 
 namespace graphcpp
 {
@@ -21,7 +21,7 @@ namespace graphcpp
 
 	public:
 		NonOrientedMatrixGraph();
-		NonOrientedMatrixGraph(const std::vector<SymmetricalEdge>& edges, msize dimension);
+		NonOrientedMatrixGraph(const std::vector<SymmetricEdge>& edges, msize dimension);
 		explicit NonOrientedMatrixGraph(const NonOrientedGraphBase& other);
 		explicit NonOrientedMatrixGraph(const SymmetricMatrixBase& rhs);
 
@@ -32,7 +32,7 @@ namespace graphcpp
 		mcontent at(msize v1, msize v2) const override;
 		void set(msize v1, msize v2, mcontent value) override;
 
-		std::vector<SymmetricalEdge> get_edges() const override;
+		std::vector<SymmetricEdge> get_edges() const override;
 		std::shared_ptr<SymmetricMatrixBase> get_matrix() const override;
 		std::shared_ptr<NonOrientedGraphBase> extract_subgraph(const std::vector<msize>& vertexes) const override;
 
@@ -57,7 +57,7 @@ namespace graphcpp
 	}
 
 	template<class T>
-	NonOrientedMatrixGraph<T>::NonOrientedMatrixGraph(const std::vector<SymmetricalEdge>& edges, msize dimension) :
+	NonOrientedMatrixGraph<T>::NonOrientedMatrixGraph(const std::vector<SymmetricEdge>& edges, msize dimension) :
 		_matrix(dimension)
 	{
 		for (auto edge : edges)
@@ -131,9 +131,9 @@ namespace graphcpp
 	}
 
 	template<class T>
-	std::vector<SymmetricalEdge> NonOrientedMatrixGraph<T>::get_edges() const
+	std::vector<SymmetricEdge> NonOrientedMatrixGraph<T>::get_edges() const
 	{
-		std::vector<SymmetricalEdge> result;
+		std::vector<SymmetricEdge> result;
 		for (auto[i, j] : *this)
 		{
 			if (at(i, j) != 0)
@@ -235,28 +235,15 @@ namespace graphcpp
 	std::vector<msize> NonOrientedMatrixGraph<T>::delete_vertexes(const std::vector<msize>& vertexes)
 	{
 		assert(!vertexes.empty());
-		assert(std::all_of(vertexes.cbegin(), vertexes.cend(), [&](msize vertex) {return vertex < dimension(); }));
+		assert(std::all_of(vertexes.cbegin(), vertexes.cend(), [&](msize vertex) { return vertex < dimension(); }));
 
-		std::set<msize> to_delete(vertexes.cbegin(), vertexes.cend());
-
-		auto current_position = dimension() - 1;
-		for (auto current_deleted : to_delete)
-		{
-			while (to_delete.count(current_position) == 1)
-			{
-				to_delete.erase(current_position);
-				current_position--;
-			}
-			_matrix.swap(current_position, current_deleted);
-			current_position--;
-		}
-		_matrix.delete_last_strings(vertexes.size());
-
+		_matrix.delete_strings(vertexes);
+		
 		std::vector<msize> new_nums(dimension() + vertexes.size());
 		msize current = 0;
 		for (msize i = 0; i < new_nums.size(); i++)
 		{
-			if(contains(vertexes, i))
+			if (contains(vertexes, i))
 			{
 				new_nums[i] = msize_undefined;
 			}

@@ -7,11 +7,11 @@ using namespace graphcpp;
 class SymmetricalEdgeTests : public ::testing::Test 
 {
 protected:
-	std::unique_ptr<SymmetricalEdge> edge;
+	std::unique_ptr<SymmetricEdge> edge;
 
 	void SetUp() override
 	{
-		edge = std::make_unique<SymmetricalEdge>(1, 10, 3);
+		edge = std::make_unique<SymmetricEdge>(1, 10, 3);
 	}
 };
 
@@ -24,7 +24,7 @@ TEST_F(SymmetricalEdgeTests, GettersTest)
 
 TEST_F(SymmetricalEdgeTests, InvertEdge)
 {
-	SymmetricalEdge edge(10, 1, 3);
+	SymmetricEdge edge(10, 1, 3);
 
 	EXPECT_EQ(edge.v1(), 1);
 	EXPECT_EQ(edge.v2(), 10);
@@ -33,10 +33,10 @@ TEST_F(SymmetricalEdgeTests, InvertEdge)
 
 TEST_F(SymmetricalEdgeTests, EqualityEdges)
 {
-	SymmetricalEdge equal_edge(1, 10, 3);
-	SymmetricalEdge first_vertex_different(4, 10, 3);
-	SymmetricalEdge second_vertex_different(1, 9, 3);
-	SymmetricalEdge weight_different(1, 10, 5);
+	SymmetricEdge equal_edge(1, 10, 3);
+	SymmetricEdge first_vertex_different(4, 10, 3);
+	SymmetricEdge second_vertex_different(1, 9, 3);
+	SymmetricEdge weight_different(1, 10, 5);
 
 	EXPECT_EQ(*edge, *edge);
 	EXPECT_EQ(*edge, equal_edge);

@@ -10,7 +10,7 @@
 namespace graphcpp
 {
 	using msize = size_t;
-	using mcontent = int; //TODO: Template it
+	using mcontent = double; //TODO: Template it
 
 	constexpr static auto msize_undefined = std::numeric_limits<msize>::max();
 	constexpr static auto mcontent_undefined = std::numeric_limits<mcontent>::max();

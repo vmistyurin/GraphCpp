@@ -7,16 +7,16 @@
 
 namespace graphcpp
 {
-	class SymmetricalEdge final
+	class SymmetricEdge final
 	{
 	private:
 		msize _v1, _v2;
 
 	public:
-		SymmetricalEdge(msize v1, msize v2, mcontent weight);
+		SymmetricEdge(msize v1, msize v2, mcontent weight);
 
-		bool operator==(const SymmetricalEdge& rhs) const;
-		bool operator!=(const SymmetricalEdge& rhs) const;
+		bool operator==(const SymmetricEdge& rhs) const;
+		bool operator!=(const SymmetricEdge& rhs) const;
 
 		msize v1() const;
 		msize v2() const;
@@ -24,6 +24,6 @@ namespace graphcpp
         mcontent weight;
 	};
 
-	std::ostream& operator<< (std::ostream& stream, const SymmetricalEdge& edge);
+	std::ostream& operator<< (std::ostream& stream, const SymmetricEdge& edge);
 }
 #endif

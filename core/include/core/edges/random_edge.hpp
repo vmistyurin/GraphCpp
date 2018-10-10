@@ -12,7 +12,7 @@ namespace graphcpp
         double _probability;
 
     public:
-        RandomEdge(Edge edge, double probabitiy);
+        RandomEdge(Edge edge, double probability);
 
         bool operator==(const RandomEdge& rhs) const;
         bool operator!=(const RandomEdge& rhs) const;

@@ -1,10 +1,14 @@
 #include "core/edges/random_edge.hpp"
 
+#include <cassert>
+
 using namespace graphcpp;
 
-RandomEdge::RandomEdge(Edge edge, double probabitiy) :
-    _edge(edge), _probability(probabitiy)
+RandomEdge::RandomEdge(Edge edge, double probability) :
+    _edge(edge), _probability(probability)
 {
+    assert(probability > 0);
+    assert(probability <= 1);
 }
 
 bool RandomEdge::operator==(const RandomEdge& rhs) const

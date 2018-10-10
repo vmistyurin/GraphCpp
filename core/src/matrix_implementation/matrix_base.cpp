@@ -1,7 +1,8 @@
 #include "core/matrix_implementations/matrix_base.hpp"
 
-#include <assert.h>
+#include <cassert>
 #include <algorithm>
+#include <set>
 
 #include "core/utils.hpp"
 
@@ -55,6 +56,30 @@ void MatrixBase::make_rearranged(const std::vector<msize>& new_nums, MatrixBase&
 	}
 }
 
+void MatrixBase::delete_strings(const std::vector<msize>& strings)
+{
+	std::set<msize, std::greater<msize>> to_delete(strings.cbegin(), strings.cend());
+
+	auto current_position = dimension() - 1;
+
+	for (auto it = to_delete.cbegin(); it != to_delete.cend(); ++it)
+	{
+		while (to_delete.count(current_position) == 1)
+		{
+			++it;
+			current_position--;
+		}
+
+		for (auto i = *it; i < current_position; i++)
+		{
+			swap(i, i + 1);
+		}
+
+		current_position--;
+	}
+	delete_last_strings(strings.size());
+}
+
 std::string MatrixBase::to_string() const
 {
 	mcontent max_len = 0;
@@ -84,8 +109,7 @@ std::string MatrixBase::to_string() const
 	return result;
 }
 
-std::ostream& graphcpp::operator<< (std::ostream& stream, const MatrixBase& matrix)
+std::ostream& graphcpp::operator<<(std::ostream& stream, const MatrixBase& matrix)
 {
-	stream << matrix.to_string();
-	return stream;
+	return stream << matrix.to_string();
 }
