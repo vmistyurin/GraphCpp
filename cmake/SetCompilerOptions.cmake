@@ -2,7 +2,7 @@ macro(set_named_compiler_options PROJECT)
     if(MSVC)
       target_compile_options(${PROJECT} 
         PRIVATE "/MT$<$<CONFIG:Debug>:d>" 
-        PRIVATE "-W3"
+        PRIVATE "/W4"
         PRIVATE "/std:c++latest"
         PRIVATE "/openmp"
         PRIVATE "/EHsc"
