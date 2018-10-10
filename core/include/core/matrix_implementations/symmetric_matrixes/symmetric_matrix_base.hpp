@@ -1,5 +1,4 @@
-#ifndef GRAPH_CORE_SYMMETRIC_MATRIX_BASE_HPP
-#define GRAPH_CORE_SYMMETRIC_MATRIX_BASE_HPP
+#pragma once
 
 #include "core/macroses.hpp"
 #include "core/matrix_implementations/matrix_base.hpp"
@@ -26,4 +25,3 @@ namespace graphcpp
 		SymmetricMatrixBase& operator=(SymmetricMatrixBase&&) = default;
 	}; 
 }
-#endif

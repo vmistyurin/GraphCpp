@@ -1,5 +1,4 @@
-#ifndef GRAPH_CORE_FULL_SYMMETRIC_MATRIX_HPP
-#define GRAPH_CORE_FULL_SYMMETRIC_MATRIX_HPP
+#pragma once
 
 #include "core/matrix_implementations/symmetric_matrixes/symmetric_matrix_base.hpp"
 
@@ -27,4 +26,3 @@ namespace graphcpp
 		void delete_last_strings(msize count) override;
 	};
 }
-#endif

@@ -1,5 +1,4 @@
-#ifndef GRAPH_CORE_UTILS_HPP
-#define GRAPH_CORE_UTILS_HPP
+#pragma once
 
 #include <cassert>
 #include <vector>
@@ -56,4 +55,3 @@ namespace graphcpp
 		return result;
 	}
 }
-#endif

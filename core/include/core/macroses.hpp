@@ -1,5 +1,4 @@
-#ifndef GRAPH_CORE_MACROSES_HPP
-#define GRAPH_CORE_MACROSES_HPP
+#pragma once
 
 #include <cstddef>
 #include <limits>
@@ -15,4 +14,3 @@ namespace graphcpp
 	constexpr static auto msize_undefined = std::numeric_limits<msize>::max();
 	constexpr static auto mcontent_undefined = std::numeric_limits<mcontent>::max();
 }
-#endif

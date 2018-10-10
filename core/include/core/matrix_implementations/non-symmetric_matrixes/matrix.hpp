@@ -1,5 +1,4 @@
-#ifndef GRAPH_CORE_MATRIX_HPP
-#define GRAPH_CORE_MATRIX_HPP
+#pragma once
 
 #include "core/matrix_implementations/non-symmetric_matrixes/non-symmetric_matrix_base.hpp"
 
@@ -29,4 +28,3 @@ namespace graphcpp
 		void make_rearranged(const std::vector<msize>& new_nums, NonSymmetricMatrixBase& memory) const;
 	};
 }
-#endif

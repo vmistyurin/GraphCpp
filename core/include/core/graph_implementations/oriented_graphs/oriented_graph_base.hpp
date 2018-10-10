@@ -1,5 +1,4 @@
-#ifndef GRAPH_CORE_ORIENTED_GRAPH_BASE_HPP
-#define GRAPH_CORE_ORIENTED_GRAPH_BASE_HPP
+#pragma once
 
 #include <memory>
 
@@ -28,4 +27,3 @@ namespace graphcpp
 		OrientedGraphBase& operator=(OrientedGraphBase&&) = default;
 	};
 }
-#endif

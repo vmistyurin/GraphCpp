@@ -1,5 +1,4 @@
-#ifndef GRAPH_CORE_NON_ORIENTED_MATRIX_GRAPH_HPP
-#define GRAPH_CORE_NON_ORIENTED_MATRIX_GRAPH_HPP
+#pragma once
 
 #include <cassert>
 #include <set>
@@ -317,4 +316,3 @@ namespace graphcpp
 		return result;
 	}
 }
-#endif

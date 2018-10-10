@@ -1,5 +1,4 @@
-#ifndef GRAPH_CORE_FLOW_CALCULATORS_HPP
-#define GRAPH_CORE_FLOW_CALCULATORS_HPP
+#pragma once
 
 #include <functional>
 
@@ -21,4 +20,3 @@ namespace graphcpp::flow_calculators
 	std::shared_ptr<SymmetricMatrixBase> matrix_of_flows(const NonOrientedGraphBase& graph,
 		const std::function<mcontent(const NonOrientedGraphBase&, msize, msize)>& single_flow_calculator);
 }
-#endif

@@ -1,5 +1,4 @@
-#ifndef UNIT_TESTS_COMPARATORS_HPP
-#define UNIT_TESTS_COMPARATORS_HPP
+#pragma once
 
 #include <vector>
 #include <list>
@@ -35,4 +34,3 @@ namespace graphcpp_testing
 		return true;
 	}
 }
-#endif

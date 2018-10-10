@@ -1,5 +1,4 @@
-#ifndef BENCHMARKS_RECURSIVE_DIRECTORY_TEST_RUNNER_HPP
-#define BENCHMARKS_RECURSIVE_DIRECTORY_TEST_RUNNER_HPP
+#pragma once
 
 #include <chrono>
 
@@ -25,4 +24,3 @@ namespace graphcpp_bench
 			const std::function<std::string(std::ifstream&&)>& test_function, unsigned int indent);
 	};
 }
-#endif

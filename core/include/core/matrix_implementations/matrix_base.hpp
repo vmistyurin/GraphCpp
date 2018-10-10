@@ -1,5 +1,4 @@
-#ifndef GRAPH_CORE_MATRIX_BASE_HPP
-#define GRAPH_CORE_MATRIX_BASE_HPP
+#pragma once
 
 #include <vector>
 #include <string>
@@ -39,4 +38,3 @@ namespace graphcpp
 
 	std::ostream& operator<< (std::ostream& stream, const MatrixBase& matrix);
 }
-#endif

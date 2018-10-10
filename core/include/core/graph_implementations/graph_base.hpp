@@ -1,5 +1,4 @@
-#ifndef GRAPH_CORE_GRAPH_BASE_HPP
-#define GRAPH_CORE_GRAPH_BASE_HPP
+#pragma once
 
 #include <vector>
 
@@ -31,4 +30,3 @@ namespace graphcpp
 		GraphBase& operator=(GraphBase&&) = default;
 	};
 }
-#endif

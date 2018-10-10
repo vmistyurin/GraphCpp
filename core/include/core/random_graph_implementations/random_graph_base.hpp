@@ -1,11 +1,8 @@
 #pragma once
 
-
 #include <vector>
-#include <string>
 
 #include "core/macroses.hpp"
-
 
 namespace graphcpp 
 {

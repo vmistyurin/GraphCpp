@@ -1,5 +1,4 @@
-#ifndef GRAPH_CORE_ALL_HPP
-#define GRAPH_CORE_ALL_HPP
+#pragma once
 
 #include "core/macroses.hpp"
 #include "core/utils.hpp"
@@ -32,5 +31,3 @@
 #include "core/random_graph_implementations/non_oriented_graphs/random_non_oriented_graph.hpp"
 
 #include "core/flow_calculators.hpp"
-
-#endif

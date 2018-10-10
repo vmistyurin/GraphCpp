@@ -1,5 +1,4 @@
-#ifndef GRAPH_CORE_NON_SYMMETRIC_MATRIX_BASE_HPP
-#define GRAPH_CORE_NON_SYMMETRIC_MATRIX_BASE_HPP
+#pragma once
 
 #include "core/iterators/matrix_iterator.hpp"
 #include "core/matrix_implementations/matrix_base.hpp"
@@ -20,4 +19,3 @@ namespace graphcpp
 		NonSymmetricMatrixBase& operator=(NonSymmetricMatrixBase&&) = default;
 	};
 };
-#endif

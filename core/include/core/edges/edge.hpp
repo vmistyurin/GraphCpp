@@ -1,5 +1,4 @@
-#ifndef GRAPH_CORE_EDGE_HPP
-#define GRAPH_CORE_EDGE_HPP
+#pragma once
 
 #include <ostream>
 
@@ -26,4 +25,3 @@ namespace graphcpp
 
 	std::ostream& operator<< (std::ostream& stream, const Edge& edge);
 }
-#endif

@@ -1,5 +1,4 @@
-#ifndef GRAPH_CORE_MATRIX_ITERATOR_HPP
-#define GRAPH_CORE_MATRIX_ITERATOR_HPP
+#pragma once
 
 #include <utility>
 
@@ -27,4 +26,3 @@ namespace graphcpp
 		MatrixIterator operator++(int);
 	};
 }
-#endif

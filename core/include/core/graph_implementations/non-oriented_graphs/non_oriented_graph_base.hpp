@@ -1,5 +1,4 @@
-#ifndef GRAPH_CORE_NON_ORIENTED_GRAPH_BASE_HPP
-#define GRAPH_CORE_NON_ORIENTED_GRAPH_BASE_HPP
+#pragma once
 
 #include <list> 
 #include <memory>
@@ -36,4 +35,3 @@ namespace graphcpp
 		NonOrientedGraphBase& operator=(NonOrientedGraphBase&&) = default;
 	};
 }
-#endif

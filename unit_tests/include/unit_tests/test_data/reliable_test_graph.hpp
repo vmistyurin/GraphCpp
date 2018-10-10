@@ -1,5 +1,4 @@
-#ifndef UNIT_TESTS_RELIABLE_TEST_GRAPH_HPP
-#define UNIT_TESTS_RELIABLE_TEST_GRAPH_HPP
+#pragma once
 
 #include "core/all.hpp"
 
@@ -16,4 +15,3 @@ namespace graphcpp_testing::reliable_test_graph
 
 	std::vector<std::vector<mcontent>> get_flows();
 }
-#endif

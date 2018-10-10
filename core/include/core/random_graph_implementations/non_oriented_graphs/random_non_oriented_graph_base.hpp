@@ -1,10 +1,7 @@
 #pragma once
 
-
 #include <vector>
-#include <string>
 
-#include "core/macroses.hpp"
 #include "core/random_graph_implementations/random_graph_base.hpp"
 #include "core/edges/symmetric_random_edge.hpp"
 #include "core/iterators/symmetric_matrix_iterator.hpp"

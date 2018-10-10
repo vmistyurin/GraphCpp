@@ -1,5 +1,4 @@
-#ifndef UNIT_TESTS_ORIENTED_TEST_GRAPH_HPP
-#define UNIT_TESTS_ORIENTED_TEST_GRAPH_HPP
+#pragma once
 
 #include "core/all.hpp"
 
@@ -14,4 +13,3 @@ namespace graphcpp_testing::oriented_test_graph
 	template<class OrientedGraphType>
 	std::unique_ptr<OrientedGraphType> get_graph();
 }
-#endif

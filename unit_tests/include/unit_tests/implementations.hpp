@@ -1,5 +1,4 @@
-#ifndef UNIT_TESTS_IMPLEMENTATIONS_HPP
-#define UNIT_TESTS_IMPLEMENTATIONS_HPP
+#pragma once
 
 #include "gtest/gtest.h"
 
@@ -25,5 +24,3 @@ using RandomNonOrientedGraphImplementations = testing::Types<
 	graphcpp::RandomNonOrientedGraph<graphcpp::NonOrientedMatrixGraph<graphcpp::FullSymmetricMatrix>, graphcpp::FullSymmetricMatrix>,
 	graphcpp::RandomNonOrientedGraph<graphcpp::NonOrientedMatrixGraph<graphcpp::HalfSymmetricMatrix>, graphcpp::HalfSymmetricMatrix>
 >;
-
-#endif

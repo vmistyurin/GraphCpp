@@ -1,5 +1,4 @@
-#ifndef GRAPH_CORE_ORIENTED_MATRIX_GRAPH_HPP
-#define GRAPH_CORE_ORIENTED_MATRIX_GRAPH_HPP
+#pragma once
 
 #include <cassert>
 #include <algorithm>
@@ -256,4 +255,3 @@ namespace graphcpp
 		_matrix.rearrange_with_allocate(new_nums);
 	}
 }
-#endif

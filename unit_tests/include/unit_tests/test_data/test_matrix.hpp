@@ -1,5 +1,4 @@
-#ifndef UNIT_TESTS_TEST_MATRIX_HPP
-#define UNIT_TESTS_TEST_MATRIX_HPP
+#pragma once
 
 #include "core/all.hpp"
 
@@ -20,4 +19,3 @@ namespace graphcpp_testing::test_matrix
 	std::pair<msize, msize> swapped_strings();
 	std::vector<std::vector<mcontent>> expected_after_swap_matrix();
 }
-#endif

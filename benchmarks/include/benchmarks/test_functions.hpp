@@ -1,5 +1,4 @@
-#ifndef BENCHMARKS_TEST_FUNCTIONS_HPP
-#define BENCHMARKS_TEST_FUNCTIONS_HPP
+#pragma once
 
 #include <iostream>
 #include <fstream>
@@ -84,5 +83,3 @@ namespace graphcpp_bench
 		};
 	}
 }
-
-#endif
