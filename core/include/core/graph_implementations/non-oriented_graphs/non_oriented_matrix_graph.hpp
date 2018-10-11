@@ -216,7 +216,7 @@ namespace graphcpp
 	std::shared_ptr<NonOrientedGraphBase> NonOrientedMatrixGraph<T>::extract_subgraph(const std::vector<msize>& vertexes) const
 	{
 		assert(!vertexes.empty());
-		assert(std::all_of(vertexes.cbegin(), vertexes.cend(), [&](auto vertex) {return vertex < dimension(); }));
+		assert(std::all_of(vertexes.cbegin(), vertexes.cend(), [&](auto vertex) { return vertex < dimension(); }));
 
 		T result(vertexes.size());
 		for (msize i = 0; i < vertexes.size(); i++)

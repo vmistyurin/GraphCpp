@@ -142,3 +142,33 @@ void FullSymmetricMatrix::delete_last_strings(msize count)
 		}
 	}
 }
+
+std::unique_ptr<SymmetricMatrixBase> FullSymmetricMatrix::with_deleted_vertexes(const std::vector<msize>& vertexes) const
+{
+	assert(!vertexes.empty());
+	assert(std::all_of(vertexes.cbegin(), vertexes.cend(), [&](auto vertex) { return vertex < dimension(); }));
+
+	auto result = std::make_unique<FullSymmetricMatrix>(dimension() - vertexes.size());
+
+	auto new_nums = std::vector<msize>(); new_nums.reserve(dimension() - vertexes.size());
+	msize position_in_deleted = 0;
+	for (msize i = 0; i < dimension(); i++)
+	{
+		if (vertexes[position_in_deleted] == i)
+		{
+			position_in_deleted++;
+			continue;
+		}
+		new_nums.push_back(i);
+	}
+
+	for (msize i = 0; i < new_nums.size(); i++)
+	{
+		for (msize j = i + 1; j < new_nums.size(); j++)
+		{
+			result->set(i, j, at(new_nums[i], new_nums[j]));
+		}
+	}
+
+	return result;
+}

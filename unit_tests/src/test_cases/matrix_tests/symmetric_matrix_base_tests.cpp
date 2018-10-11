@@ -65,7 +65,7 @@ public:
 
 TYPED_TEST_CASE(SymmetricMatrixTests, SymmetricMatrixImplementations);
 
-TYPED_TEST(SymmetricMatrixTests, IndexatorTest)
+TYPED_TEST(SymmetricMatrixTests, GetterTest)
 {
 	msize x_first_test_index = 0, y_first_test_index = 1;
 	auto first_indexed_value = test_array[0][1];
@@ -221,4 +221,20 @@ TYPED_TEST(SymmetricMatrixTests, ReduceElementTest)
 	this->test_matrix->reduce_element(x_test_index, y_test_index, difference);
 
 	EXPECT_EQ(*this->test_matrix, *expected_after_set_matrix);
+}
+
+TYPED_TEST(SymmetricMatrixTests, WithDeletedVertexesTest)
+{
+	const std::vector<msize> deleted_vertexes = { 0, 3, 5, 8 };
+	const std::vector<std::vector<mcontent>> expected_array =
+	{ {  0, 0, 0, 10, 0 },
+	  {  0, 0, 5, 9,  40 },
+	  {  0, 5, 0, 0,  0 },
+	  { 10, 9, 0, 0,  0 },
+	  { 0, 40, 0, 0,  0 } };
+	const auto expected_matrix = GetMatrix<TypeParam>(expected_array);
+
+	auto matrix_afted_delete = this->test_matrix->with_deleted_vertexes(deleted_vertexes);
+
+	EXPECT_EQ(*matrix_afted_delete, *expected_matrix);
 }
