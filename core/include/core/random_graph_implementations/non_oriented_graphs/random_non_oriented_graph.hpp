@@ -24,9 +24,6 @@ namespace graphcpp
         void set_probability(msize index1, msize index2, double value) override;	
 
 		void delete_vertexes(const std::vector<msize>& vertexes) override;
-//        virtual void rearrange_with_permutations(const std::vector<msize>& new_nums) = 0;
-//        virtual void rearrange_with_allocate(const std::vector<msize>& new_nums) = 0;
-//        void make_rearranged(const std::vector<msize>& new_nums, RandomGraphBase& memory) const;
     };
 
     template<class GraphType, class MatrixType>
@@ -78,28 +75,4 @@ namespace graphcpp
 		_probabilities.delete_strings(vertexes);
 		_graph.delete_vertexes(vertexes);
 	}
-
-
-
-//	template<class T>
-//	const std::vector<double>& RandomGraph<T>::probabilities() const
-//	{
-//		return _probabilities;
-//	}
-
-//    template<class T>
-//    void RandomGraph<T>::rearrange_with_permutations(const std::vector<msize>& new_nums)
-//    {
-//        assert(is_permutation(new_nums));
-//        apply_permutation_with_transpositions(_probabilities, new_nums);
-//        _graph.rearrange(new_nums);
-//    }
-//
-//    template<class T>
-//    void RandomGraph<T>::rearrange_with_allocate(const std::vector<msize>& new_nums)
-//    {
-//        assert(is_permutation(new_nums));
-//        apply_permutation_alloc(_probabilities, new_nums);
-//        _graph.rearrange(new_nums);
-//    }
 }

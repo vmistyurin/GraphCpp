@@ -17,11 +17,7 @@ namespace graphcpp
 		virtual void set_probability(msize index1, msize index2, double value) = 0;
 
 		virtual void delete_vertexes(const std::vector<msize>& vertexes) = 0;
-
-//		virtual void rearrange_with_permutations(const std::vector<msize>& new_nums) = 0;
-//		virtual void rearrange_with_allocate(const std::vector<msize>& new_nums) = 0;
-		void make_rearranged(const std::vector<msize>& new_nums, RandomGraphBase& memory) const;
-				
+		
 		virtual ~RandomGraphBase() = default;
 		RandomGraphBase() = default;
 		RandomGraphBase(const RandomGraphBase&) = default;
