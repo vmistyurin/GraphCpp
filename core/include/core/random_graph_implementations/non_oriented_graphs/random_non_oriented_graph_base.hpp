@@ -10,7 +10,7 @@
 
 namespace graphcpp
 {
-	using factorize_function = std::function<void(GraphBase&&)>;
+	using factorize_function = std::function<void(GraphBase&&, double)>;
 
     class RandomNonOrientedGraphBase: public RandomGraphBase
     {

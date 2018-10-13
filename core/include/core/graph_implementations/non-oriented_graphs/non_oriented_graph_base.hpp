@@ -16,7 +16,7 @@ namespace graphcpp
 		virtual std::vector<SymmetricEdge> get_edges() const = 0;
 		virtual std::shared_ptr<SymmetricMatrixBase> get_matrix() const = 0;
 		virtual std::shared_ptr<NonOrientedGraphBase> extract_subgraph(const std::vector<msize>& vertexes) const = 0;
-		//virtual std::unique_ptr<NonOrientedGraphBase> with_deleted_vertexes(const std::vector<msize>& vertexes) const = 0;
+		virtual std::unique_ptr<NonOrientedGraphBase> with_deleted_vertexes(const std::vector<msize>& vertexes) const = 0;
 
 		virtual std::list<std::pair<msize, msize>> get_hanged_vertexes() const = 0;
 		virtual std::vector<msize> get_connected_component(msize vertex) const = 0;

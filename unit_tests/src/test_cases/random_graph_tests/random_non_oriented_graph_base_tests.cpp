@@ -33,7 +33,6 @@ TYPED_TEST(RandomNonOrientedGraphBaseTests, GetWeightTest)
     auto edges = random_non_oriented_test_graph::edges();
 	for(const auto& edge : FirstNRange(edges.begin(), 3))
 	{
-        std::cout << edge.v1() << " " << edge.v2() << " " << std::endl;
         EXPECT_EQ(this->test_graph->at(edge.v1(), edge.v2()), edge.weight());
 	}
 

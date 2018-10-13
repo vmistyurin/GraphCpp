@@ -20,18 +20,17 @@ std::vector<SymmetricRandomEdge> RandomNonOrientedGraphBase::edges() const
 
 void RandomNonOrientedGraphBase::factorize(const factorize_function& func)
 {
-	for (auto[i, j] : *this)
-	{
-		if (probability_at(i, j) != 0)
-		{
-			
-		}
-	}
+	factorize_from(0, 0, func);
 }
 
 void RandomNonOrientedGraphBase::factorize_from(msize i, msize j, const factorize_function& func)
 {
-
+	for (auto[i, j] : *this)
+	{
+		if (probability_at(i, j) != 0)
+		{
+		}
+	}
 }
 
 SymmetricMatrixIterator RandomNonOrientedGraphBase::begin() const

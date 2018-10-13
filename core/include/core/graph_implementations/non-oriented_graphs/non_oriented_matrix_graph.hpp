@@ -46,6 +46,8 @@ namespace graphcpp
 		std::vector<std::vector<msize>> get_connected_components() const override;
 
 		std::vector<msize> delete_vertexes(const std::vector<msize>& vertexes) override;
+		std::unique_ptr<NonOrientedGraphBase> with_deleted_vertexes(const std::vector<msize>& vertexes) const override;
+
 		void rearrange(const std::vector<msize>& new_nums) override;
 	};
 
@@ -253,6 +255,12 @@ namespace graphcpp
 		}
 
 		return new_nums;
+	}
+
+	template<class T>
+	std::unique_ptr<NonOrientedGraphBase> NonOrientedMatrixGraph<T>::with_deleted_vertexes(const std::vector<msize>& vertexes) const
+	{
+		return std::make_unique<NonOrientedMatrixGraph<T>>(std::move(*_matrix.with_deleted_vertexes(vertexes)));
 	}
 
 	template<class T>

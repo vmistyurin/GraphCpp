@@ -43,9 +43,9 @@ FullSymmetricMatrix::FullSymmetricMatrix(const std::vector<std::vector<mcontent>
 	fill_diagonal(_matrix, 0);
 }
 
-FullSymmetricMatrix::FullSymmetricMatrix(const SymmetricMatrixBase& matrix)
+FullSymmetricMatrix::FullSymmetricMatrix(const SymmetricMatrixBase& matrix) :
+	FullSymmetricMatrix(matrix.dimension())
 {
-	_matrix.resize(matrix.dimension());
 	for (auto[i, j] : matrix)
 	{
 		set(i, j, matrix.at(i, j));

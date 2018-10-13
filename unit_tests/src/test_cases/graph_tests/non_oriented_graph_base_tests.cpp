@@ -184,7 +184,7 @@ TYPED_TEST(NonOrientedGraphBaseTests, BridgesTest)
 	}
 }
 
-TYPED_TEST(NonOrientedGraphBaseTests, ChainsTesst)
+TYPED_TEST(NonOrientedGraphBaseTests, ChainsTest)
 {
 	std::vector<SymmetricEdge> edges = {
 		SymmetricEdge(0, 1, 4),
@@ -229,6 +229,23 @@ TYPED_TEST(NonOrientedGraphBaseTests, ChainsTesst)
 		EXPECT_TRUE(finded);
 	}
 }
+
+TYPED_TEST(NonOrientedGraphBaseTests, WithDeletedVertexesTest)
+{
+	const std::vector<msize> vertexes_to_delete = { 2, 5, 7 };
+
+	const std::vector<SymmetricEdge> expected_edges = {
+		SymmetricEdge(0, 4, 2),
+		SymmetricEdge(2, 4, 1),
+		SymmetricEdge(3, 4, 2),
+		SymmetricEdge(2, 3, 10)
+	};
+
+	const auto edges_after_delete = this->test_graph->with_deleted_vertexes(vertexes_to_delete)->get_edges();
+
+	EXPECT_TRUE(compare_vectors_without_order(edges_after_delete, expected_edges));
+}
+
 #ifdef USE_SLOW_TESTS
 	TYPED_TEST(NonOrientedGraphBaseTests, EqualityTest)
 	{
