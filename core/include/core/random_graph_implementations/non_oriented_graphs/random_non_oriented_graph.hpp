@@ -25,7 +25,7 @@ namespace graphcpp
         void set_probability(msize index1, msize index2, double value) override;	
 
 		void delete_vertexes(const std::vector<msize>& vertexes) override;
-		std::unique_ptr<RandomNonOrientedGraphBase> with_deleted_vertexes(const std::vector<msize>& vertexes) const;
+		std::unique_ptr<RandomNonOrientedGraphBase> with_deleted_vertexes(const std::vector<msize>& vertexes) const override;
     };
 
     template<class GraphType, class MatrixType>
