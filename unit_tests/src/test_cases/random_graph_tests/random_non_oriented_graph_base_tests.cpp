@@ -75,3 +75,12 @@ TYPED_TEST(RandomNonOrientedGraphBaseTests, DeleteVertexesTest)
 
 	EXPECT_TRUE(compare_vectors_without_order(edges, random_non_oriented_test_graph::edges_after_delete()));
 }
+
+TYPED_TEST(RandomNonOrientedGraphBaseTests, WithDeletedVertexesTest)
+{
+	auto graph = this->test_graph->with_deleted_vertexes(random_non_oriented_test_graph::vertexes_to_delete());
+
+	const auto edges = graph->edges();
+
+	EXPECT_TRUE(compare_vectors_without_order(edges, random_non_oriented_test_graph::edges_after_delete()));
+}

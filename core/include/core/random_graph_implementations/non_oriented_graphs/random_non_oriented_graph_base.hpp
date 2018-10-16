@@ -19,6 +19,7 @@ namespace graphcpp
 
     public:
         std::vector<SymmetricRandomEdge> edges() const;
+		virtual std::unique_ptr<RandomNonOrientedGraphBase> with_deleted_vertexes(const std::vector<msize>& vertexes) const = 0;
 
 		SymmetricMatrixIterator begin() const;
 		SymmetricMatrixIterator end() const;
