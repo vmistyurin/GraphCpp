@@ -15,16 +15,18 @@ namespace graphcpp
     class RandomNonOrientedGraphBase: public RandomGraphBase
     {
 	private:
-		void factorize_from(msize i, msize j, const factorize_function& func);
+		void factorize_from(SymmetricMatrixIterator iter, const factorize_function& func);
 
     public:
-        std::vector<SymmetricRandomEdge> edges() const;
+        std::vector<SymmetricRandomEdge> get_edges() const;
+
 		virtual std::unique_ptr<RandomNonOrientedGraphBase> with_deleted_vertexes(const std::vector<msize>& vertexes) const = 0;
+		virtual std::unique_ptr<RandomNonOrientedGraphBase> with_deleted_edge(msize i, msize j) const = 0;
+
+		void factorize(const factorize_function& func);
 
 		SymmetricMatrixIterator begin() const;
 		SymmetricMatrixIterator end() const;
-
-		void factorize(const factorize_function& func);
 
         virtual ~RandomNonOrientedGraphBase() = default;
         RandomNonOrientedGraphBase() = default;

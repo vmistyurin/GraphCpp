@@ -2,7 +2,7 @@
 
 using namespace graphcpp;
 
-std::vector<SymmetricRandomEdge> RandomNonOrientedGraphBase::edges() const
+std::vector<SymmetricRandomEdge> RandomNonOrientedGraphBase::get_edges() const
 {
 	std::vector<SymmetricRandomEdge> result;
 
@@ -20,15 +20,22 @@ std::vector<SymmetricRandomEdge> RandomNonOrientedGraphBase::edges() const
 
 void RandomNonOrientedGraphBase::factorize(const factorize_function& func)
 {
-	factorize_from(0, 0, func);
+	factorize_from(begin(), func);
 }
 
-void RandomNonOrientedGraphBase::factorize_from(msize i, msize j, const factorize_function& func)
+void RandomNonOrientedGraphBase::factorize_from(SymmetricMatrixIterator iter, const factorize_function& func)
 {
-	for (auto[i, j] : *this)
+	for (; iter != end(); ++iter)
 	{
-		if (probability_at(i, j) != 0)
+		const auto[i, j] = *iter;
+		
+		const auto vertex_probability = probability_at(i, j);
+		if (vertex_probability != 0)
 		{
+			auto deleted_branch = with_deleted_vertexes({ i });
+			deleted_branch->factorize(func);
+
+			//func(this, vertex_probability);
 		}
 	}
 }

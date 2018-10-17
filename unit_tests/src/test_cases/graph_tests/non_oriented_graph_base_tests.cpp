@@ -246,6 +246,18 @@ TYPED_TEST(NonOrientedGraphBaseTests, WithDeletedVertexesTest)
 	EXPECT_TRUE(compare_vectors_without_order(edges_after_delete, expected_edges));
 }
 
+TYPED_TEST(NonOrientedGraphBaseTests, WithDeletedEdgeTest)
+{
+	const msize first = 2;
+	const msize second = 5;
+
+	const auto with_deleted_edge = this->test_graph->with_deleted_edge(first, second);
+
+	this->test_graph->set(first, second, 0);
+
+	EXPECT_TRUE(compare_vectors_without_order(with_deleted_edge->get_edges(), this->test_graph->get_edges()));
+}
+
 #ifdef USE_SLOW_TESTS
 	TYPED_TEST(NonOrientedGraphBaseTests, EqualityTest)
 	{

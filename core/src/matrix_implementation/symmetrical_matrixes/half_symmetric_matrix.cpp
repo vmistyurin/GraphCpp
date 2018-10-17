@@ -160,3 +160,12 @@ std::unique_ptr<SymmetricMatrixBase> HalfSymmetricMatrix::with_deleted_vertexes(
 
 	return result;
 }
+
+std::unique_ptr<SymmetricMatrixBase> HalfSymmetricMatrix::with_deleted_element(msize i, msize j) const
+{
+	assert(std::max(i, j) < dimension());
+
+	auto result = std::make_unique<HalfSymmetricMatrix>(*this);
+	result->set(i, j, 0);
+	return result;
+}

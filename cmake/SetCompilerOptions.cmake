@@ -2,16 +2,15 @@ macro(set_named_compiler_options PROJECT)
     if(MSVC)
       target_compile_options(${PROJECT} 
         PRIVATE "/MT$<$<CONFIG:Debug>:d>" 
-        PRIVATE "/W4"
+        PRIVATE "/W3"
         PRIVATE "/std:c++latest"
-        PRIVATE "/openmp"
         PRIVATE "/EHsc"
+        PRIVATE "/permissive-"
       )
     else()
       target_compile_options(${PROJECT} 
         PRIVATE "-std=gnu++1z"
         PRIVATE "-Wall"
-        PRIVATE "-fopenmp"
       )
     endif()
 endmacro()

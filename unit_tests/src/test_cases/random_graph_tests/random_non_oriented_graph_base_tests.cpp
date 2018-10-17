@@ -62,7 +62,7 @@ TYPED_TEST(RandomNonOrientedGraphBaseTests, SetProbabilityTest)
 
 TYPED_TEST(RandomNonOrientedGraphBaseTests, GetEdgesTest)
 {
-	const auto edges = this->test_graph->edges();
+	const auto edges = this->test_graph->get_edges();
 
 	EXPECT_TRUE(compare_vectors_without_order(edges, random_non_oriented_test_graph::edges()));
 }
@@ -71,7 +71,7 @@ TYPED_TEST(RandomNonOrientedGraphBaseTests, DeleteVertexesTest)
 {
 	this->test_graph->delete_vertexes(random_non_oriented_test_graph::vertexes_to_delete());
 
-	const auto edges = this->test_graph->edges();
+	const auto edges = this->test_graph->get_edges();
 
 	EXPECT_TRUE(compare_vectors_without_order(edges, random_non_oriented_test_graph::edges_after_delete()));
 }
@@ -80,7 +80,20 @@ TYPED_TEST(RandomNonOrientedGraphBaseTests, WithDeletedVertexesTest)
 {
 	auto graph = this->test_graph->with_deleted_vertexes(random_non_oriented_test_graph::vertexes_to_delete());
 
-	const auto edges = graph->edges();
+	const auto edges = graph->get_edges();
 
 	EXPECT_TRUE(compare_vectors_without_order(edges, random_non_oriented_test_graph::edges_after_delete()));
+}
+
+TYPED_TEST(RandomNonOrientedGraphBaseTests, WithDeletedEdgeTest)
+{
+	const msize i = 2;
+	const msize j = 3;
+
+	const auto with_deleted_vertexes = this->test_graph->with_deleted_edge(i, j);
+
+	this->test_graph->set(i, j, 0);
+	this->test_graph->set_probability(i, j, 0);
+
+	EXPECT_TRUE(compare_vectors_without_order(with_deleted_vertexes->get_edges(), this->test_graph->get_edges()));
 }

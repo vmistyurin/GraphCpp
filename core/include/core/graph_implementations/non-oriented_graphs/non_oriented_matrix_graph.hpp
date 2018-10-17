@@ -47,6 +47,7 @@ namespace graphcpp
 
 		std::vector<msize> delete_vertexes(const std::vector<msize>& vertexes) override;
 		std::unique_ptr<NonOrientedGraphBase> with_deleted_vertexes(const std::vector<msize>& vertexes) const override;
+		std::unique_ptr<NonOrientedGraphBase> with_deleted_edge(msize i, msize j) const override;
 
 		void rearrange(const std::vector<msize>& new_nums) override;
 	};
@@ -260,7 +261,13 @@ namespace graphcpp
 	template<class T>
 	std::unique_ptr<NonOrientedGraphBase> NonOrientedMatrixGraph<T>::with_deleted_vertexes(const std::vector<msize>& vertexes) const
 	{
-		return std::make_unique<NonOrientedMatrixGraph<T>>(std::move(*_matrix.with_deleted_vertexes(vertexes)));
+		return std::make_unique<NonOrientedMatrixGraph<T>>(*_matrix.with_deleted_vertexes(vertexes));
+	}
+
+	template<class T>
+	std::unique_ptr<NonOrientedGraphBase> NonOrientedMatrixGraph<T>::with_deleted_edge(msize i, msize j) const
+	{
+		return std::make_unique<NonOrientedMatrixGraph<T>>(*_matrix.with_deleted_element(i, j));
 	}
 
 	template<class T>
@@ -289,7 +296,7 @@ namespace graphcpp
 				{
 					if (auto[it, success] = result.insert(i); success)
 					{
-						(void)it; //to prevent compiler warning
+						(void)it;
 						queue.push(i);
 					}
 				}

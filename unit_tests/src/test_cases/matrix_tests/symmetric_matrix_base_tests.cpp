@@ -238,3 +238,15 @@ TYPED_TEST(SymmetricMatrixTests, WithDeletedVertexesTest)
 
 	EXPECT_EQ(*matrix_afted_delete, *expected_matrix);
 }
+
+TYPED_TEST(SymmetricMatrixTests, WithDeletedElementTest)
+{
+	const msize x = 0;
+	const msize y = 5;
+
+	const auto with_deleted_element = this->test_matrix->with_deleted_element(x, y);
+
+	this->test_matrix->set(x, y, 0);
+
+	EXPECT_EQ(*with_deleted_element, *this->test_matrix);
+}

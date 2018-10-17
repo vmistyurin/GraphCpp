@@ -15,7 +15,9 @@ namespace graphcpp
 		bool operator!=(const SymmetricMatrixBase& rhs) const;
 
 		void make_rearranged(const std::vector<msize>& new_nums, SymmetricMatrixBase& memory) const;
+
 		virtual std::unique_ptr<SymmetricMatrixBase> with_deleted_vertexes(const std::vector<msize>& vertexes) const = 0;
+		virtual std::unique_ptr<SymmetricMatrixBase> with_deleted_element(msize i, msize j) const = 0;
 
 		SymmetricMatrixIterator begin() const;
 		SymmetricMatrixIterator end() const;

@@ -24,6 +24,8 @@ namespace graphcpp
 
 		void swap(msize str1, msize str2) override;
 		void delete_last_strings(msize count) override;
+
 		std::unique_ptr<SymmetricMatrixBase> with_deleted_vertexes(const std::vector<msize>& vertexes) const override;
+		std::unique_ptr<SymmetricMatrixBase> with_deleted_element(msize i, msize j) const override;
 	};
 }
