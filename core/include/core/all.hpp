@@ -31,3 +31,5 @@
 #include "core/random_graph_implementations/non_oriented_graphs/random_non_oriented_graph.hpp"
 
 #include "core/flow_calculators.hpp"
+
+#include "core/computations/summator.hpp"
