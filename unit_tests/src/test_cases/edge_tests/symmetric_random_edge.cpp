@@ -29,7 +29,7 @@ TEST_F(SymmetricRandomEdgeTests, GettersTest)
     EXPECT_EQ(edge->v1(), 1);
     EXPECT_EQ(edge->v2(), 10);
     EXPECT_EQ(edge->weight(), 3);
-    EXPECT_EQ(edge->probability(), 0.75);
+    EXPECT_TRUE(is_doubles_equal(edge->probability(), 0.75));
 }
 
 TEST_F(SymmetricRandomEdgeTests, EqualityEdges)

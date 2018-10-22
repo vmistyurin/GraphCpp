@@ -16,11 +16,12 @@ template<class RandomGraphType>
 class RandomNonOrientedGraphBaseTests : public ::testing::Test
 {
 protected:
+    std::unique_ptr<RandomNonOrientedGraphBase> test_graph;
+
 	RandomNonOrientedGraphBaseTests() :
 		test_graph(random_non_oriented_test_graph::get_graph<RandomGraphType>())
 	{
 	}
-	std::unique_ptr<RandomNonOrientedGraphBase> test_graph;
 };
 
 TYPED_TEST_CASE(RandomNonOrientedGraphBaseTests, RandomNonOrientedGraphImplementations);
@@ -32,7 +33,7 @@ TYPED_TEST(RandomNonOrientedGraphBaseTests, DimensionTest)
 
 TYPED_TEST(RandomNonOrientedGraphBaseTests, GetWeightTest)
 {
-    auto edges = random_non_oriented_test_graph::edges();
+    const auto edges = random_non_oriented_test_graph::edges();
 	for(const auto& edge : FirstNRange(edges.begin(), 3))
 	{
         EXPECT_EQ(this->test_graph->at(edge.v1(), edge.v2()), edge.weight());
@@ -50,16 +51,18 @@ TYPED_TEST(RandomNonOrientedGraphBaseTests, SetWeightTest)
 
 TYPED_TEST(RandomNonOrientedGraphBaseTests, GetProbabilityTest)
 {
-	for(const auto& edge : random_non_oriented_test_graph::edges())
+    const auto edges = random_non_oriented_test_graph::edges();
+	for(const auto& edge : FirstNRange(edges.begin(), 3))
 	{
-		EXPECT_EQ(this->test_graph->probability_at(edge.v1(), edge.v2()), edge.probability());
+		EXPECT_TRUE(is_doubles_equal(this->test_graph->probability_at(edge.v1(), edge.v2()), edge.probability()));
 	}
 }
 
 TYPED_TEST(RandomNonOrientedGraphBaseTests, SetProbabilityTest)
 {
-	this->test_graph->set_probability(1, 2, 0.3);
-	EXPECT_EQ(this->test_graph->probability_at(1, 2), 0.3);
+    const auto test_probability = 0.3;
+	this->test_graph->set_probability(1, 2, test_probability);
+	EXPECT_TRUE(is_doubles_equal(this->test_graph->probability_at(1, 2), test_probability));
 }
 
 TYPED_TEST(RandomNonOrientedGraphBaseTests, GetEdgesTest)
@@ -129,7 +132,7 @@ TYPED_TEST(RandomNonOrientedGraphBaseTests, FactorizeTest)
 		auto find_result = std::find_if(expected_graphs.cbegin(), expected_graphs.cend(), [&](std::pair<std::vector<SymmetricEdge>, double> result)
 		{
 			const auto[expected_edges, expected_probability] = result;
-			return abs(probability - expected_probability) < 0.00001 && compare_vectors_without_order(edges, expected_edges);
+			return is_doubles_equal(probability, expected_probability) && compare_vectors_without_order(edges, expected_edges);
 		});
 
 		if (find_result != expected_graphs.cend())

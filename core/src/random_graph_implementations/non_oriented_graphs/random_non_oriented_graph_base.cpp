@@ -1,5 +1,7 @@
 #include "core/random_graph_implementations/non_oriented_graphs/random_non_oriented_graph_base.hpp"
 
+#include "core/utils.hpp"
+
 using namespace graphcpp;
 
 std::vector<SymmetricRandomEdge> RandomNonOrientedGraphBase::get_edges() const
@@ -30,7 +32,7 @@ void RandomNonOrientedGraphBase::factorize_from(SymmetricMatrixIterator iter, co
 		const auto[i, j] = *iter;
 		
 		const auto vertex_probability = probability_at(i, j);
-		if (vertex_probability != 0 && vertex_probability != 1)
+		if (!(is_doubles_equal(vertex_probability, 0) || is_doubles_equal(vertex_probability, 1)))
 		{
 			auto deleted_branch = with_deleted_edge(i, j);
 			deleted_branch->factorize(func, probability * (1.0 - vertex_probability));

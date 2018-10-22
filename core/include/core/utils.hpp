@@ -14,7 +14,6 @@ namespace graphcpp
 	bool is_permutation(const std::vector<msize>& candidate);
 	std::vector<std::pair<msize, msize>> to_transpositions(const std::vector<msize>& permutation);
 
-
 	bool check_symmetrical_matrix(const std::vector<std::vector<mcontent>>& candidate);
 	bool is_matrix_from_graph(const SymmetricMatrixBase& matrix, const GraphBase& graph);
 	bool is_matrix_from_graph(const NonSymmetricMatrixBase& matrix, const GraphBase& graph);
@@ -54,4 +53,6 @@ namespace graphcpp
 
 		return result;
 	}
+    
+    bool is_doubles_equal(double value1, double value2);
 }

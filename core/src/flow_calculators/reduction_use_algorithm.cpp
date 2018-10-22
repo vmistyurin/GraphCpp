@@ -181,7 +181,7 @@ namespace
 			}
 			else if(new_nums[i] == msize_undefined && new_nums[j] == msize_undefined)
 			{
-				result->set(i, j, abs(right_flows[global_to_chain_number(chain, i)] - right_flows[global_to_chain_number(chain, j)]));
+                result->set(i, j, std::fabs(right_flows[global_to_chain_number(chain, i)] - right_flows[global_to_chain_number(chain, j)]));
 			}
 			else if(new_nums[i] != msize_undefined)
 			{

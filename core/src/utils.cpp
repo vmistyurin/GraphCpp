@@ -1,6 +1,7 @@
 #include "core/utils.hpp"
 
 #include <cassert>
+#include <cmath>
 #include <numeric>
 #include <algorithm>
 
@@ -85,4 +86,9 @@ bool graphcpp::is_matrix_from_graph(const NonSymmetricMatrixBase& matrix, const 
 		RETURN_IF(matrix.at(i, j) != graph.at(i, j), false);
 	}
 	return true;
+}
+
+bool graphcpp::is_doubles_equal(double value1, double value2)
+{
+    return std::fabs(value1 - value2) < 0.000000001;
 }
