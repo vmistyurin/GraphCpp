@@ -88,7 +88,7 @@ bool graphcpp::is_matrix_from_graph(const NonSymmetricMatrixBase& matrix, const 
 	return true;
 }
 
-bool graphcpp::is_doubles_equal(double value1, double value2)
+bool graphcpp::are_doubles_equal(double value1, double value2)
 {
     return std::fabs(value1 - value2) < 0.000000001;
 }

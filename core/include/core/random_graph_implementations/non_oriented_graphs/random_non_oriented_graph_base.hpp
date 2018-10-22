@@ -14,7 +14,7 @@ namespace graphcpp
     class RandomNonOrientedGraphBase: public RandomGraphBase
     {
 	public:
-		using factorize_function = std::function<void(std::unique_ptr<NonOrientedGraphBase>, double)>;
+		using factorize_function = std::function<void(std::unique_ptr<NonOrientedGraphBase>&&, double)>;
 
 	private:
 		void factorize_from(SymmetricMatrixIterator iter, const factorize_function& func, double probability);

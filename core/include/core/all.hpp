@@ -33,3 +33,5 @@
 #include "core/flow_calculators.hpp"
 
 #include "core/computations/summator.hpp"
+#include "core/computations/single_threaded/single_thread_summator.hpp"
+#include "core/computations/single_threaded/single_thread_calculator.hpp"

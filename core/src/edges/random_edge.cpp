@@ -16,7 +16,7 @@ RandomEdge::RandomEdge(Edge edge, double probability) :
 bool RandomEdge::operator==(const RandomEdge& rhs) const
 {
     RETURN_IF(this == &rhs, true);
-    return _edge == rhs._edge && is_doubles_equal(_probability, rhs._probability);
+    return _edge == rhs._edge && are_doubles_equal(_probability, rhs._probability);
 }
 
 bool RandomEdge::operator!=(const RandomEdge& rhs) const

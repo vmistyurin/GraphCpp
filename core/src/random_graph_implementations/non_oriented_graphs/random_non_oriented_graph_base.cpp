@@ -32,7 +32,7 @@ void RandomNonOrientedGraphBase::factorize_from(SymmetricMatrixIterator iter, co
 		const auto[i, j] = *iter;
 		
 		const auto vertex_probability = probability_at(i, j);
-		if (!(is_doubles_equal(vertex_probability, 0) || is_doubles_equal(vertex_probability, 1)))
+		if (!(are_doubles_equal(vertex_probability, 0) || are_doubles_equal(vertex_probability, 1)))
 		{
 			auto deleted_branch = with_deleted_edge(i, j);
 			deleted_branch->factorize(func, probability * (1.0 - vertex_probability));

@@ -54,5 +54,5 @@ namespace graphcpp
 		return result;
 	}
     
-    bool is_doubles_equal(double value1, double value2);
+    bool are_doubles_equal(double value1, double value2);
 }

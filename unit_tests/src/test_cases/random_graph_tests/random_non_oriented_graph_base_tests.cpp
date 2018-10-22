@@ -54,7 +54,7 @@ TYPED_TEST(RandomNonOrientedGraphBaseTests, GetProbabilityTest)
     const auto edges = random_non_oriented_test_graph::edges();
 	for(const auto& edge : FirstNRange(edges.begin(), 3))
 	{
-		EXPECT_TRUE(is_doubles_equal(this->test_graph->probability_at(edge.v1(), edge.v2()), edge.probability()));
+		EXPECT_TRUE(are_doubles_equal(this->test_graph->probability_at(edge.v1(), edge.v2()), edge.probability()));
 	}
 }
 
@@ -62,7 +62,7 @@ TYPED_TEST(RandomNonOrientedGraphBaseTests, SetProbabilityTest)
 {
     const auto test_probability = 0.3;
 	this->test_graph->set_probability(1, 2, test_probability);
-	EXPECT_TRUE(is_doubles_equal(this->test_graph->probability_at(1, 2), test_probability));
+	EXPECT_TRUE(are_doubles_equal(this->test_graph->probability_at(1, 2), test_probability));
 }
 
 TYPED_TEST(RandomNonOrientedGraphBaseTests, GetEdgesTest)
@@ -132,7 +132,7 @@ TYPED_TEST(RandomNonOrientedGraphBaseTests, FactorizeTest)
 		auto find_result = std::find_if(expected_graphs.cbegin(), expected_graphs.cend(), [&](std::pair<std::vector<SymmetricEdge>, double> result)
 		{
 			const auto[expected_edges, expected_probability] = result;
-			return is_doubles_equal(probability, expected_probability) && compare_vectors_without_order(edges, expected_edges);
+			return are_doubles_equal(probability, expected_probability) && compare_vectors_without_order(edges, expected_edges);
 		});
 
 		if (find_result != expected_graphs.cend())
