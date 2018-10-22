@@ -1,5 +1,7 @@
 #include "core/flow_calculators.hpp"
 
+#include <cmath>
+
 #include "core/matrix_implementations/matrix_implementations.hpp"
 #include "core/graph_implementations/non-oriented_graphs/non_oriented_matrix_graph.hpp"
 

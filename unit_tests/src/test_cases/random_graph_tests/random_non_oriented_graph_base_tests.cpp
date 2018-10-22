@@ -1,5 +1,7 @@
 #include "gtest/gtest.h"
 
+#include <cmath>
+
 #include "core/all.hpp"
 #include "unit_tests/utils/comparators.hpp"
 #include "unit_tests/macroses.hpp"
