@@ -97,3 +97,48 @@ TYPED_TEST(RandomNonOrientedGraphBaseTests, WithDeletedEdgeTest)
 
 	EXPECT_TRUE(compare_vectors_without_order(with_deleted_vertexes->get_edges(), this->test_graph->get_edges()));
 }
+
+TYPED_TEST(RandomNonOrientedGraphBaseTests, FactorizeTest)
+{
+	std::vector<SymmetricRandomEdge> edges = { SymmetricRandomEdge(SymmetricEdge(0, 1, 5), 0.3),
+											   SymmetricRandomEdge(SymmetricEdge(0, 3, 6), 0.5),
+											   SymmetricRandomEdge(SymmetricEdge(1, 3, 10), 1),
+											   SymmetricRandomEdge(SymmetricEdge(2, 3, 8), 0.2) };
+	auto graph = TypeParam(edges, 4);
+
+	std::vector<std::pair<std::vector<SymmetricEdge>, double>> expected_graphs = {
+		{ { SymmetricEdge(1, 3, 10) }, 0.28 },
+
+		{ { SymmetricEdge(1, 3, 10), SymmetricEdge(2, 3, 8) }, 0.07 },
+
+		{ { SymmetricEdge(1, 3, 10), SymmetricEdge(0, 3, 6) }, 0.28 },
+		{ { SymmetricEdge(1, 3, 10), SymmetricEdge(0, 3, 6), SymmetricEdge(2, 3, 8) }, 0.07 },
+
+		{ { SymmetricEdge(1, 3, 10), SymmetricEdge(0, 1, 5) }, 0.12 },
+		{ { SymmetricEdge(1, 3, 10), SymmetricEdge(0, 1, 5), SymmetricEdge(2, 3, 8) }, 0.03 },
+		{ { SymmetricEdge(1, 3, 10), SymmetricEdge(0, 1, 5), SymmetricEdge(0, 3, 6) }, 0.12 },
+		{ { SymmetricEdge(1, 3, 10), SymmetricEdge(0, 1, 5), SymmetricEdge(0, 3, 6), SymmetricEdge(2, 3, 8) }, 0.03 },
+	};
+
+	graph.factorize([&](std::unique_ptr<NonOrientedGraphBase> graph, double probability)
+	{
+		auto edges = graph->get_edges();
+
+		auto find_result = std::find_if(expected_graphs.cbegin(), expected_graphs.cend(), [&](std::pair<std::vector<SymmetricEdge>, double> result)
+		{
+			const auto[expected_edges, expected_probability] = result;
+			return abs(probability - expected_probability) < 0.00001 && compare_vectors_without_order(edges, expected_edges);
+		});
+
+		if (find_result != expected_graphs.cend())
+		{
+			expected_graphs.erase(find_result);
+		}
+		else
+		{
+			FAIL();
+		}
+	});
+
+	EXPECT_TRUE(expected_graphs.empty());
+}

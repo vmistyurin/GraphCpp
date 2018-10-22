@@ -27,6 +27,8 @@ namespace graphcpp
 		void delete_vertexes(const std::vector<msize>& vertexes) override;
 		std::unique_ptr<RandomNonOrientedGraphBase> with_deleted_vertexes(const std::vector<msize>& vertexes) const override;
 		std::unique_ptr<RandomNonOrientedGraphBase> with_deleted_edge(msize i, msize j) const override;
+
+		std::unique_ptr<NonOrientedGraphBase> release_graph() override;
     };
 
     template<class GraphType, class MatrixType>
@@ -102,5 +104,11 @@ namespace graphcpp
 		auto probabilities = std::unique_ptr<MatrixType>(static_cast<MatrixType*>(_probabilities.with_deleted_element(i, j).release()));
 
 		return std::make_unique<RandomNonOrientedGraph<GraphType, MatrixType>>(std::move(*graph), std::move(*probabilities));
+	}
+
+	template<class GraphType, class MatrixType>
+	std::unique_ptr<NonOrientedGraphBase> RandomNonOrientedGraph<GraphType, MatrixType>::release_graph()
+	{
+		return std::make_unique<GraphType>(std::move(_graph));
 	}
 }
