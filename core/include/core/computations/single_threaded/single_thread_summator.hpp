@@ -14,7 +14,8 @@ namespace graphcpp
 	public:
 		explicit SingleThreadSummator(SummableType&& initial);
 
-		void add(SummableType&& addend, double probability);
+        template<class SummableCompatibleType>
+		void add(SummableCompatibleType&& addend, double probability);
 
 		double current_probability() const;
 		SummableType current_sum() const;
@@ -26,9 +27,11 @@ namespace graphcpp
 	{
 	}
 
-	template<class SummableType>
-	void SingleThreadSummator<SummableType>::add(SummableType&& addend, double probability)
+    template<class SummableType>
+    template<class SummableCompatibleType>
+	void SingleThreadSummator<SummableType>::add(SummableCompatibleType&& addend, double probability)
 	{
+        addend *= probability;
 		_sum += addend;
 		_probability += probability;
 	}

@@ -18,10 +18,10 @@ namespace
 	constexpr mcontent hanged_vertex_linked = -3;
 
 
-	std::shared_ptr<SymmetricMatrixBase> remove_hanged_vertexes(const NonOrientedGraphBase& graph,
+	std::unique_ptr<SymmetricMatrixBase> remove_hanged_vertexes(const NonOrientedGraphBase& graph,
 		flow_func single_flow_calculator)
 	{
-		auto result = std::make_shared<MatrixType>(graph.dimension());
+		auto result = std::make_unique<MatrixType>(graph.dimension());
 
 		auto hanged_vertexes = graph.get_hanged_vertexes();
 
@@ -121,11 +121,11 @@ namespace
 		abort();
 	}
 
-	std::shared_ptr<SymmetricMatrixBase> shrink_chains(NonOrientedGraphBase& graph, std::vector<std::vector<msize>>& chains, flow_func single_flow_calculator)
+	std::unique_ptr<SymmetricMatrixBase> shrink_chains(NonOrientedGraphBase& graph, std::vector<std::vector<msize>>& chains, flow_func single_flow_calculator)
 	{
 		RETURN_IF(chains.empty(), remove_hanged_vertexes(graph, single_flow_calculator));
 
-		auto result = std::make_shared<MatrixType>(graph.dimension());
+		auto result = std::make_unique<MatrixType>(graph.dimension());
 
 		auto chain = std::move(chains.back());
 		chains.pop_back();
@@ -202,16 +202,16 @@ namespace
 		return result;
 	}
 
-	std::shared_ptr<SymmetricMatrixBase> parse_chains(NonOrientedGraphBase& graph, flow_func single_flow_calculator)
+	std::unique_ptr<SymmetricMatrixBase> parse_chains(NonOrientedGraphBase& graph, flow_func single_flow_calculator)
 	{
 		auto chains = graph.get_chains();
 		return shrink_chains(graph, chains, single_flow_calculator);
 	}
 }
 
-std::shared_ptr<SymmetricMatrixBase> flow_calculators::reduction_use_algorithm(const NonOrientedGraphBase& graph, flow_func single_flow_calculator)
+std::unique_ptr<SymmetricMatrixBase> flow_calculators::reduction_use_algorithm(const NonOrientedGraphBase& graph, flow_func single_flow_calculator)
 {
-	auto result = std::make_shared<MatrixType>(graph.dimension());
+	auto result = std::make_unique<MatrixType>(graph.dimension());
 
 	auto components = graph.get_connected_components();
 	for (const auto& component : components)

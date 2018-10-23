@@ -13,6 +13,8 @@ namespace graphcpp
 	public:
 		bool operator==(const SymmetricMatrixBase& rhs) const;
 		bool operator!=(const SymmetricMatrixBase& rhs) const;
+        SymmetricMatrixBase& operator+=(const SymmetricMatrixBase& rhs);
+        SymmetricMatrixBase& operator*=(double rhs);
 
 		void make_rearranged(const std::vector<msize>& new_nums, SymmetricMatrixBase& memory) const;
 

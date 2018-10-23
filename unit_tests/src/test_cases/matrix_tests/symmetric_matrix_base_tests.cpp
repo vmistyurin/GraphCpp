@@ -250,3 +250,27 @@ TYPED_TEST(SymmetricMatrixTests, WithDeletedElementTest)
 
 	EXPECT_EQ(*with_deleted_element, *this->test_matrix);
 }
+
+TYPED_TEST(SymmetricMatrixTests, OperatorPlusEqualTest)
+{
+    const std::vector<std::vector<mcontent>> added_array = {
+        { 0, 1, 0, 0, 0, 0, 0, 0, 6 },
+        { 1, 0, 2, 0, 0, 0, 0, 0, 0 },
+        { 0, 2, 0, 0, 0, 5, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 5, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0, 9 },
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+        { 6, 0, 0, 0, 0, 0, 9, 0, 0 }
+    };
+    const auto added_matrix = GetMatrix<TypeParam>(added_array);
+    const auto source_matrix = GetMatrix<TypeParam>(test_array);
+    
+    *this->test_matrix += *added_matrix;
+    
+    for (const auto[i, j] : *this->test_matrix)
+    {
+        EXPECT_EQ(this->test_matrix->at(i, j), source_matrix->at(i, j) + added_matrix->at(i, j));
+    }
+}

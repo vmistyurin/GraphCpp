@@ -25,6 +25,28 @@ bool SymmetricMatrixBase::operator!=(const SymmetricMatrixBase& rhs) const
 	return !(*this == rhs);
 }
 
+SymmetricMatrixBase& SymmetricMatrixBase::operator+=(const SymmetricMatrixBase& rhs)
+{
+    assert(dimension() == rhs.dimension());
+    
+    for (const auto[i, j] : *this)
+    {
+        set(i, j, at(i, j) + rhs.at(i, j));
+    }
+    
+    return *this;
+}
+
+SymmetricMatrixBase& SymmetricMatrixBase::operator*=(double rhs)
+{
+    for (const auto[i, j] : *this)
+    {
+        set(i, j, rhs * at(i, j));
+    }
+    
+    return *this;
+}
+
 void SymmetricMatrixBase::make_rearranged(const std::vector<msize>& new_nums, SymmetricMatrixBase& memory) const
 {
 	assert(new_nums.size() == dimension());
