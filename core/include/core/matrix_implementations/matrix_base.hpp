@@ -36,5 +36,5 @@ namespace graphcpp
 		MatrixBase& operator=(MatrixBase&&) = default;
 	}; 
 
-	std::ostream& operator<< (std::ostream& stream, const MatrixBase& matrix);
+    std::ostream& operator<<(std::ostream& stream, const MatrixBase& matrix);
 }

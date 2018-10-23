@@ -9,7 +9,7 @@ namespace graphcpp
 	{
 	private:
 		SummableType _sum;
-		double _probability;
+		double _probability = 0;
 
 	public:
 		explicit SingleThreadSummator(SummableType&& initial);
@@ -23,7 +23,7 @@ namespace graphcpp
 
 	template<class SummableType>
 	SingleThreadSummator<SummableType>::SingleThreadSummator(SummableType&& initial) :
-		_sum(std::move(initial)), _probability(0)
+		_sum(std::move(initial))
 	{
 	}
 
