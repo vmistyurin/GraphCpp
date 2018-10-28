@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cassert>
+#include <istream>
 
 #include "core/random_graph_implementations/non_oriented_graphs/random_non_oriented_graph_base.hpp"
 
@@ -16,6 +17,8 @@ namespace graphcpp
     public:
         RandomNonOrientedGraph(const std::vector<SymmetricRandomEdge>& edges, msize dimension);
 		RandomNonOrientedGraph(GraphType&& graph, MatrixType&& probabilities);
+
+		static RandomNonOrientedGraph<GraphType, MatrixType> read_from_stream(std::istream& stream);
 
         msize dimension() const override;
         mcontent at(msize index1, msize index2) const override;
@@ -47,6 +50,29 @@ namespace graphcpp
 	RandomNonOrientedGraph<GraphType, MatrixType>::RandomNonOrientedGraph(GraphType&& graph, MatrixType&& probabilities) :
 		_graph(std::move(graph)), _probabilities(std::move(probabilities))
 	{
+	}
+
+	template<class GraphType, class MatrixType>
+	RandomNonOrientedGraph<GraphType, MatrixType> RandomNonOrientedGraph<GraphType, MatrixType>::read_from_stream(std::istream& stream)
+	{
+		msize dimension, number_of_edges;
+		stream >> dimension >> number_of_edges;
+
+		RandomNonOrientedGraph<GraphType, MatrixType> graph({}, dimension);
+
+		for (msize i = 0; i < number_of_edges; i++)
+		{
+			msize v1, v2;
+			mcontent weight;
+			double probability;
+
+			stream >> v1 >> v2 >> weight >> probability;
+
+			graph.set(v1, v2, weight);
+			graph.set_probability(v1, v2, probability);
+		}
+
+		return graph;
 	}
 
     template<class GraphType, class MatrixType>

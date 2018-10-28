@@ -22,7 +22,7 @@ set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME ON)
 find_package(Boost REQUIRED)
 if(NOT Boost_FOUND)
-	message(SEND_ERROR "Failed to find boost::preprocessor")
+	message(SEND_ERROR "Failed to find boost")
 	return()
 endif()
 

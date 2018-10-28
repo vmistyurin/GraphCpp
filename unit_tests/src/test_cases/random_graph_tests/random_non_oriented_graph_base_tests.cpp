@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 
 #include <cmath>
+#include <fstream>
 
 #include "core/all.hpp"
 #include "unit_tests/utils/comparators.hpp"
@@ -8,6 +9,7 @@
 #include "unit_tests/test_data/random_non_oriented_test_graph.hpp"
 #include "unit_tests/implementations.hpp"
 #include "unit_tests/utils/first_n_range.hpp"
+#include "unit_tests/utils/filesystem.hpp"
 
 using namespace graphcpp;
 using namespace graphcpp_testing;
@@ -146,4 +148,13 @@ TYPED_TEST(RandomNonOrientedGraphBaseTests, FactorizeTest)
 	});
 
 	EXPECT_TRUE(expected_graphs.empty());
+}
+
+TYPED_TEST(RandomNonOrientedGraphBaseTests, ReadFromStreamTest)
+{
+	std::ifstream input(CURRENT_DIRECTORY.string() + "/random_graph.txt");
+	const auto graph = TypeParam::read_from_stream(input);
+
+	EXPECT_EQ(this->test_graph->dimension(), graph.dimension());
+	EXPECT_TRUE(compare_vectors_without_order(this->test_graph->get_edges(), graph.get_edges()));
 }
