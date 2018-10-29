@@ -11,25 +11,26 @@ int main(int argc, char **argv)
 	
 	RecursiveDirectoryTestRunner tester;
 
-	const fs::path path_to_tests = "../../test_generators/graphs";
+	const fs::path path_to_tests = "../../test_generators/random_graphs";
 	const fs::path first_answers = "../answers";
 	const fs::path second_answers = "../answers1";
 	const fs::path third_answers = "../answers2";
-
+    
 	tester.run_tests_in_directory(path_to_tests,
-		first_answers, 
-		reduction_use_algorithm<graphcpp::NonOrientedMatrixGraph<graphcpp::HalfSymmetricMatrix>>(graphcpp::flow_calculators::Edmonds_Karp_algorithm),
-		"Edmonds-Karp");
+		first_answers,
+        single_threaded_matrix_of_flows<
+            graphcpp::RandomNonOrientedGraph<graphcpp::NonOrientedMatrixGraph<graphcpp::HalfSymmetricMatrix>, graphcpp::HalfSymmetricMatrix>
+        >
+            (std::bind(graphcpp::flow_calculators::matrix_of_flows, std::placeholders::_1, graphcpp::flow_calculators::Edmonds_Karp_algorithm)),
+		"Single thread");
 
 	tester.run_tests_in_directory(path_to_tests, 
 		second_answers,
-		reduction_use_algorithm<graphcpp::NonOrientedMatrixGraph<graphcpp::HalfSymmetricMatrix>>(graphcpp::flow_calculators::Dinic_algorithm), 
-		"Dinic");
-
-	tester.run_tests_in_directory(path_to_tests,
-		third_answers,
-		reduction_use_algorithm<graphcpp::NonOrientedMatrixGraph<graphcpp::HalfSymmetricMatrix>>(graphcpp::flow_calculators::preflow_push_algorithm),
-		"preflow_push");
+        multi_threaded_matrix_of_flows<
+            graphcpp::RandomNonOrientedGraph<graphcpp::NonOrientedMatrixGraph<graphcpp::HalfSymmetricMatrix>, graphcpp::HalfSymmetricMatrix>
+        >
+            (std::bind(graphcpp::flow_calculators::matrix_of_flows, std::placeholders::_1, graphcpp::flow_calculators::Edmonds_Karp_algorithm)),
+        "Multi thread");
 
 	if (auto differences = tester.check_results(first_answers, second_answers); differences.empty())
 	{
@@ -44,6 +45,5 @@ int main(int argc, char **argv)
 		}
 	}
 
-	getchar();
 	return 0;
 }

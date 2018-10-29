@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <string>
+#include <ostream>
 
 #include "core/macroses.hpp"
 

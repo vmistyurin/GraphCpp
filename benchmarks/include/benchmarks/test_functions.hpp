@@ -82,4 +82,34 @@ namespace graphcpp_bench
 			return graphcpp::flow_calculators::reduction_use_algorithm(graph, base_function)->to_string();
 		};
 	}
+    
+    template<class T>
+    std::function<std::string(std::ifstream&&)> single_threaded_matrix_of_flows(graphcpp::flow_function&& base_function)
+    {
+        static_assert(std::is_base_of_v<graphcpp::RandomNonOrientedGraphBase, T>, "T must be descendant of RandomNonOrientedGraphBase");
+        
+        return [&](std::ifstream&& input)
+        {
+            auto graph = std::make_unique<T>(T::read_from_stream(input));
+            
+            auto calculator = graphcpp::SingleThreadCalculator(std::move(graph), std::move(base_function));
+            
+            return calculator.expected_value()->to_string();
+        };
+    }
+    
+    template<class T>
+    std::function<std::string(std::ifstream&&)> multi_threaded_matrix_of_flows(graphcpp::flow_function&& base_function)
+    {
+        static_assert(std::is_base_of_v<graphcpp::RandomNonOrientedGraphBase, T>, "T must be descendant of RandomNonOrientedGraphBase");
+        
+        return [&](std::ifstream&& input)
+        {
+            auto graph = std::make_unique<T>(T::read_from_stream(input));
+
+            auto calculator = graphcpp::MultiThreadCalculator(std::move(graph), std::move(base_function));
+            
+            return calculator.expected_value()->to_string();
+        };
+    }
 }

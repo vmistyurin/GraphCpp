@@ -15,7 +15,7 @@ namespace graphcpp
         SummableType _sum;
         double _probability = 0;
         mutable std::mutex _add_mutex;
-        std::promise<SummableType> _result;
+        std::promise<SummableType> _result = std::promise<SummableType>();
         
     public:
         explicit MultiThreadSummator(SummableType&& initial);

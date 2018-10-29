@@ -2,9 +2,8 @@
 
 /.vscode
 /.idea
-
+/.vs
 /cmake-build-debug
 
 /test_generators/graphs
-/test_generators/random_edges_graphs
-/.vs
+/test_generators/random_graphs
