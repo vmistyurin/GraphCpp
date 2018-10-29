@@ -1,7 +1,8 @@
 version: '1.0.{build}'
 
 image: 
-  - Ubuntu1804
+  - Visual Studio 2017
+  #- Ubuntu1804
 platform:
   - x64
   - Win32
