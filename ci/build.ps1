@@ -27,6 +27,7 @@ if ($isWindows) {
     $CMAKE_BUILD_CONFIGURATION = "-DCMAKE_BUILD_TYPE=$env:CONFIGURATION"       
     $CMAKE_CXX_FLAGS = $CMAKE_CXX_FLAGS + " -m64"
 
+    sudo apt-get update
     sudo apt-get install -y libboost-all-dev 
 } else {
     "Unknown system!"
