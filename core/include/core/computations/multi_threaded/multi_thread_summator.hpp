@@ -2,6 +2,7 @@
 
 #include <condition_variable>
 #include <mutex>
+#include <future>
 
 #include "core/utils.hpp"
 
@@ -13,11 +14,8 @@ namespace graphcpp
     private:
         SummableType _sum;
         double _probability = 0;
-        
         mutable std::mutex _add_mutex;
-        
-        mutable std::mutex _cv_mutex;
-        std::condition_variable _cv;
+        std::promise<SummableType> _result;
         
     public:
         explicit MultiThreadSummator(SummableType&& initial);
@@ -26,7 +24,7 @@ namespace graphcpp
         void add(SummableCompatibleType&& addend, double probability);
         
         double current_probability() const;
-        SummableType wait_for_result();
+        std::future<SummableType> start_compute();
     };
     
     template<class SummableType>
@@ -47,8 +45,7 @@ namespace graphcpp
         
         if (are_doubles_equal(_probability, 1))
         {
-            std::unique_lock lock(_cv_mutex);
-            _cv.notify_one();
+            _result.set_value(_sum);
         }
     }
     
@@ -59,13 +56,8 @@ namespace graphcpp
     }
     
     template<class SummableType>
-    SummableType MultiThreadSummator<SummableType>::wait_for_result()
+    std::future<SummableType> MultiThreadSummator<SummableType>::start_compute()
     {
-        std::unique_lock lock(_cv_mutex);
-        _cv.wait(lock);
-        
-        assert(are_doubles_equal(_probability, 1));
-        
-        return _sum;
+        return _result.get_future();
     }
 }

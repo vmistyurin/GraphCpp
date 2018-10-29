@@ -18,6 +18,8 @@ std::unique_ptr<SymmetricMatrixBase> MultiThreadCalculator::expected_value()
         //const auto result = std::async(std::launch::async, _flow_func, *_graph));
     });
     
-    assert(are_doubles_equal(_summator.current_probability(), 1));
-    return std::make_unique<FullSymmetricMatrix>(_summator.wait_for_result());
+    auto future = _summator.start_compute();
+    assert(future.valid());
+    
+    return std::make_unique<FullSymmetricMatrix>(future.get());
 }
