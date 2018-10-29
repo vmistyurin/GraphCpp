@@ -24,6 +24,8 @@ namespace graphcpp
         void add(SummableCompatibleType&& addend, double probability);
         
         double current_probability() const;
+        SummableType current_sum() const;
+
         std::future<SummableType> start_compute();
     };
     
@@ -53,6 +55,12 @@ namespace graphcpp
     double MultiThreadSummator<SummableType>::current_probability() const
     {
         return _probability;
+    }
+    
+    template<class SummableType>
+    SummableType MultiThreadSummator<SummableType>::current_sum() const
+    {
+        return _sum;
     }
     
     template<class SummableType>
