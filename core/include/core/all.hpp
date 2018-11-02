@@ -38,3 +38,4 @@
 #include "core/computations/multi_threaded/multi_thread_summator.hpp"
 #include "core/computations/multi_threaded/multi_thread_calculator.hpp"
 
+#include "core/utils/thread_pool.hpp"

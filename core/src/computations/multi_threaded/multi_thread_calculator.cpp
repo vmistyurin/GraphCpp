@@ -3,8 +3,6 @@
 #include <future>
 #include <iostream>
 
-#include "boost/asio/post.hpp"
-
 #include "core/utils.hpp"
 
 using namespace graphcpp;
@@ -23,7 +21,7 @@ std::unique_ptr<SymmetricMatrixBase> MultiThreadCalculator::expected_value()
     
     _graph->factorize([&](std::unique_ptr<NonOrientedGraphBase> graph, double probability)
     {
-        boost::asio::post(_thread_pool, [graph = std::move(graph), probability, this]()
+        _thread_pool.add_task([graph = std::move(graph), probability, this]
         {
             const auto flows = _flow_func(*graph);
             _summator.add(*flows, probability);
