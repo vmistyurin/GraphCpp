@@ -19,7 +19,7 @@ MultiThreadCalculator::MultiThreadCalculator(std::unique_ptr<RandomNonOrientedGr
 
 std::unique_ptr<SymmetricMatrixBase> MultiThreadCalculator::expected_value()
 {
-    std::cout << "Starting computations with " << std::thread::hardware_concurrency() << " threads" << std::endl;
+    //std::cout << "Starting computations with " << std::thread::hardware_concurrency() << " threads" << std::endl;
     
     _graph->factorize([&](std::unique_ptr<NonOrientedGraphBase> graph, double probability)
     {

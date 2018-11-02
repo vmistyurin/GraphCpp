@@ -2,7 +2,8 @@ import random
 import os
 import shutil
 
-upper_bound_of_edge_weight = 100
+lower_bound_of_edge_weight = 100
+upper_bound_of_edge_weight = 1000
 number_of_test = 20
 tests_dimension = [(13, 15)]
 test_directory_name = "random_graphs"
@@ -31,7 +32,7 @@ for test in tests_dimension:
         test_file.write("%d %d \n" % (test[0], test[1]))
         for edge in successfull_generated:
             test_file.write("%d %d %d %f \n" % (edge[0], edge[1], random.randint(
-                1, upper_bound_of_edge_weight), random.random()))
+                lower_bound_of_edge_weight, upper_bound_of_edge_weight), random.random()))
         test_file.close()
 
 print("Done")
