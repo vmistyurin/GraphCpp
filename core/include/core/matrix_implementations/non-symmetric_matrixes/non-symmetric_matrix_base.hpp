@@ -18,4 +18,4 @@ namespace graphcpp
 		NonSymmetricMatrixBase(NonSymmetricMatrixBase&&) = default;
 		NonSymmetricMatrixBase& operator=(NonSymmetricMatrixBase&&) = default;
 	};
-};
+}
