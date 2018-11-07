@@ -10,6 +10,7 @@ namespace graphcpp
 		std::vector<std::vector<mcontent>> _matrix;
 
 	public:
+		HalfSymmetricMatrix() = default;
 		explicit HalfSymmetricMatrix(msize dimension);
 		explicit HalfSymmetricMatrix(const std::vector<std::vector<mcontent>>& matrix);
 		explicit HalfSymmetricMatrix(const SymmetricMatrixBase& matrix);

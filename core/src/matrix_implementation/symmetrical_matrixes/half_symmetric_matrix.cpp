@@ -1,11 +1,10 @@
 #include "core/matrix_implementations/symmetric_matrixes/half_symmetric_matrix.hpp"
 
-#include <assert.h>
+#include <cassert>
 #include <algorithm>
 
 #include "core/macroses.hpp"
 #include "core/utils.hpp"
-
 
 using namespace graphcpp;
 

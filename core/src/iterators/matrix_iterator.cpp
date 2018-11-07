@@ -1,6 +1,6 @@
 #include "core/iterators/matrix_iterator.hpp"
 
-#include <assert.h>
+#include <cassert>
 #include <algorithm>
 
 using namespace graphcpp;

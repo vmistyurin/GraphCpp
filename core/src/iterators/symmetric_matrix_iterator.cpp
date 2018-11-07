@@ -1,6 +1,6 @@
 #include "core/iterators/symmetric_matrix_iterator.hpp"
 
-#include <assert.h>
+#include <cassert>
 
 using namespace graphcpp;
 

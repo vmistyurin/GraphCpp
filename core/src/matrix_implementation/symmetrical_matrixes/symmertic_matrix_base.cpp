@@ -1,6 +1,6 @@
 #include "core/matrix_implementations/symmetric_matrixes/symmetric_matrix_base.hpp"
 
-#include <assert.h>
+#include <cassert>
 #include <string>
 #include <algorithm>
 

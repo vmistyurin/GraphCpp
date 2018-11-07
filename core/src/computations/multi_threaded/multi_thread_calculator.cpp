@@ -1,7 +1,6 @@
 #include "core/computations/multi_threaded/multi_thread_calculator.hpp"
 
 #include <future>
-#include <iostream>
 
 #include "core/utils.hpp"
 
@@ -16,13 +15,12 @@ MultiThreadCalculator::MultiThreadCalculator(std::unique_ptr<RandomNonOrientedGr
 }
 
 std::unique_ptr<SymmetricMatrixBase> MultiThreadCalculator::expected_value()
-{
-    //std::cout << "Starting computations with " << std::thread::hardware_concurrency() << " threads" << std::endl;
-    
+{    
     _graph->factorize([&](std::unique_ptr<NonOrientedGraphBase> graph, double probability)
     {
-        _thread_pool.add_task([graph = std::move(graph), probability, this]
+        _thread_pool.add_task([graph_raw = graph.release(), probability, this]
         {
+			std::unique_ptr<NonOrientedGraphBase> graph(graph_raw); //MSVC has some problems with moving lambdas
             const auto flows = _flow_func(*graph);
             _summator.add(*flows, probability);
         });
