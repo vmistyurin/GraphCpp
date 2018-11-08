@@ -22,13 +22,14 @@ if ($isWindows) {
         $GENERATOR = $GENERATOR + " Win64"
     }
 } else { if ($isLinux) {
-    $GENERATOR = "Unix Makefiles"
+    sudo apt-get update
+    sudo apt-get install -y ninja-build
+    sudo apt-get install -y libboost-all-dev 
+
+    $GENERATOR = "Ninja"
     $CMAKE_CXX_COMPILER = "-DCMAKE_CXX_COMPILER=`"/usr/bin/g++-8`""
     $CMAKE_BUILD_CONFIGURATION = "-DCMAKE_BUILD_TYPE=$env:CONFIGURATION"       
     $CMAKE_CXX_FLAGS = $CMAKE_CXX_FLAGS + " -m64"
-
-    sudo apt-get update
-    sudo apt-get install -y libboost-all-dev 
 } else {
     "Unknown system!"
     return 1
