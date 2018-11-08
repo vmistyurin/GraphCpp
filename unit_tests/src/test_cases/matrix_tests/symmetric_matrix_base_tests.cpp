@@ -63,7 +63,7 @@ public:
 	std::unique_ptr<SymmetricMatrixBase> test_matrix;
 }; 
 
-TYPED_TEST_CASE(SymmetricMatrixTests, SymmetricMatrixImplementations);
+TYPED_TEST_CASE(SymmetricMatrixTests, SymmetricMatrixImplementations,);
 
 TYPED_TEST(SymmetricMatrixTests, GetterTest)
 {

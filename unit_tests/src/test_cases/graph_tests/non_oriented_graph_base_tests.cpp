@@ -25,7 +25,7 @@ protected:
 	std::unique_ptr<NonOrientedGraphBase> test_graph;
 };
 
-TYPED_TEST_CASE(NonOrientedGraphBaseTests, NonOrientedGraphImplementations);
+TYPED_TEST_CASE(NonOrientedGraphBaseTests, NonOrientedGraphImplementations,);
 
 TYPED_TEST(NonOrientedGraphBaseTests, DimensionTest)
 {

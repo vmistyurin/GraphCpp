@@ -31,7 +31,7 @@ public:
 	std::unique_ptr<MatrixBase> test_matrix;
 };
 
-TYPED_TEST_CASE(MatrixBaseTests, MatrixImplementations);
+TYPED_TEST_CASE(MatrixBaseTests, MatrixImplementations,);
 
 TYPED_TEST(MatrixBaseTests, IndexatorTest)
 {

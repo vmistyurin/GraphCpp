@@ -26,7 +26,7 @@ protected:
 	}
 };
 
-TYPED_TEST_CASE(RandomNonOrientedGraphBaseTests, RandomNonOrientedGraphImplementations);
+TYPED_TEST_CASE(RandomNonOrientedGraphBaseTests, RandomNonOrientedGraphImplementations,);
 
 TYPED_TEST(RandomNonOrientedGraphBaseTests, DimensionTest)
 {

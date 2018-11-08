@@ -20,7 +20,7 @@ protected:
 	std::unique_ptr<OrientedGraphBase> test_graph;
 };
 
-TYPED_TEST_CASE(OrientedGraphBaseTests, OrientedGraphImplementations);
+TYPED_TEST_CASE(OrientedGraphBaseTests, OrientedGraphImplementations,);
 
 TYPED_TEST(OrientedGraphBaseTests, DimensionTest)
 {

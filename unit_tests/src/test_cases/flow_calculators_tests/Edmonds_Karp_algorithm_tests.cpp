@@ -18,7 +18,7 @@ protected:
 	std::unique_ptr<GraphType> test_graph;
 };
 
-TYPED_TEST_CASE(EdmondsKarpAlgorithmTests, NonOrientedGraphImplementations);
+TYPED_TEST_CASE(EdmondsKarpAlgorithmTests, NonOrientedGraphImplementations,);
 
 TYPED_TEST(EdmondsKarpAlgorithmTests, SingleFlowTests)
 {

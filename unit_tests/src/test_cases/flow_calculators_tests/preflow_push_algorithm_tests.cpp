@@ -18,7 +18,7 @@ protected:
 	std::unique_ptr<GraphType> test_graph;
 };
 
-TYPED_TEST_CASE(PreflowPushAlgorithmTests, NonOrientedGraphImplementations);
+TYPED_TEST_CASE(PreflowPushAlgorithmTests, NonOrientedGraphImplementations,);
 
 TYPED_TEST(PreflowPushAlgorithmTests, SingleFlowTests)
 {
