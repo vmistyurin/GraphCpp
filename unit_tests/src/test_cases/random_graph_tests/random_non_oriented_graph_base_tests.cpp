@@ -152,7 +152,7 @@ TYPED_TEST(RandomNonOrientedGraphBaseTests, FactorizeTest)
 
 TYPED_TEST(RandomNonOrientedGraphBaseTests, ReadFromStreamTest)
 {
-	std::ifstream input(CURRENT_DIRECTORY.string() + "/random_graph.txt");
+	std::ifstream input(test_data_path.string() + "random_graph.txt");
 	const auto graph = TypeParam::read_from_stream(input);
 
 	EXPECT_EQ(this->test_graph->dimension(), graph.dimension());

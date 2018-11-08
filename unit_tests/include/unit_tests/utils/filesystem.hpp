@@ -5,6 +5,6 @@
 namespace graphcpp_testing
 {
 	namespace fs = boost::filesystem;
-
-	#define CURRENT_DIRECTORY fs::path(__FILE__).parent_path()
+    
+	const auto test_data_path = fs::path(TEST_DATA_PATH);
 }

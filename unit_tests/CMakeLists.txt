@@ -43,6 +43,8 @@ if (USE_HELPERS_TESTS)
     add_definitions(-DUSE_HELPERS_TESTS)
 endif()
 
+add_definitions(-DTEST_DATA_PATH="${CMAKE_CURRENT_SOURCE_DIR}/test_data/")
+
 set(TESTS_FILES)
 get_project_files(TESTS_FILES)
 
