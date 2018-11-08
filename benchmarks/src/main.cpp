@@ -11,7 +11,7 @@ int main(int argc, char **argv)
 	
 	RecursiveDirectoryTestRunner tester;
 
-	const fs::path path_to_tests = "../../test_generators/random_graphs";
+	const fs::path path_to_tests = "../../../test_generators/random_graphs";
 	const fs::path first_answers = "../answers";
 	const fs::path second_answers = "../answers1";
 	const fs::path third_answers = "../answers2";

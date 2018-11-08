@@ -1,6 +1,7 @@
 #include "core/computations/multi_threaded/multi_thread_calculator.hpp"
 
 #include <future>
+#include <iostream>
 
 #include "core/utils.hpp"
 
@@ -12,6 +13,9 @@ MultiThreadCalculator::MultiThreadCalculator(std::unique_ptr<RandomNonOrientedGr
     _flow_func(std::move(flow_func)),
     _thread_pool(std::thread::hardware_concurrency())
 {
+    std::call_once(_print_number_of_cores_flag, []{
+        std::cout << "Number of threads: " << std::thread::hardware_concurrency() << std::endl;
+    });
 }
 
 std::unique_ptr<SymmetricMatrixBase> MultiThreadCalculator::expected_value()

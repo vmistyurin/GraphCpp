@@ -16,6 +16,8 @@ namespace graphcpp
         const flow_function _flow_func;
         ThreadPool _thread_pool;
         
+        static inline std::once_flag _print_number_of_cores_flag;
+        
     public:
         MultiThreadCalculator(std::unique_ptr<RandomNonOrientedGraphBase>&& graph, flow_function&& flow_func);
         
