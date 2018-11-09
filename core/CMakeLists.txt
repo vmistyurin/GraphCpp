@@ -33,5 +33,6 @@ set_compiler_options()
 set_property(TARGET ${PROJECT_NAME} APPEND PROPERTY INCLUDE_DIRECTORIES 
     "${CMAKE_CURRENT_SOURCE_DIR}/include"
     "${CMAKE_CURRENT_SOURCE_DIR}/src"
+    "${CMAKE_SOURCE_DIR}/deps/gsl/include"
     "${Boost_INCLUDE_DIRS}"
 )
