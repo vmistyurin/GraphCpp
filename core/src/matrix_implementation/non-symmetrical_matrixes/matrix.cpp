@@ -3,7 +3,6 @@
 #include <cassert>
 #include <algorithm>
 
-
 #include "core/utils.hpp"
 
 using namespace graphcpp;
