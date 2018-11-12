@@ -1,5 +1,7 @@
 #include "core/matrix_implementations/symmetric_matrixes/single_vector_matrix.hpp"
 
+#include <cassert>
+
 using namespace graphcpp;
 
 SingleVectorMatrix::SingleVectorMatrix(msize dimension) :
