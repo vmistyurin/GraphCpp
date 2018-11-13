@@ -94,18 +94,6 @@ void HalfSymmetricMatrix::swap(msize str1, msize str2)
 	}
 }
 
-void HalfSymmetricMatrix::rearrange_with_permutations(const std::vector<msize>& new_nums)
-{
-	assert(new_nums.size() == dimension());
-	assert(is_permutation(new_nums));
-
-	auto transpositions = to_transpositions(new_nums);
-	for (auto[str1, str2] : transpositions)
-	{
-		swap(str1, str2);
-	}
-}
-
 void HalfSymmetricMatrix::rearrange_with_allocate(const std::vector<msize>& new_nums)
 {
 	assert(new_nums.size() == dimension());

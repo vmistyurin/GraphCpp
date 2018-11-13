@@ -59,6 +59,18 @@ void SymmetricMatrixBase::make_rearranged(const std::vector<msize>& new_nums, Sy
 	}
 }
 
+void SymmetricMatrixBase::rearrange_with_permutations(const std::vector<msize>& new_nums)
+{
+    assert(new_nums.size() == dimension());
+    assert(is_permutation(new_nums));
+    
+    auto transpositions = to_transpositions(new_nums);
+    for (auto[str1, str2] : transpositions)
+    {
+        swap(str1, str2);
+    }
+}
+
 SymmetricMatrixIterator SymmetricMatrixBase::begin() const
 {
 	return SymmetricMatrixIterator(dimension());

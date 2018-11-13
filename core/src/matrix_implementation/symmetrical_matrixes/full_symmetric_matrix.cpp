@@ -100,18 +100,6 @@ void FullSymmetricMatrix::swap(msize str1, msize str2) //Todo: optimize
 	_matrix[str2][str1] = previous_value;
 }
 
-void FullSymmetricMatrix::rearrange_with_permutations(const std::vector<msize>& new_nums)
-{
-	assert(new_nums.size() == dimension());
-	assert(is_permutation(new_nums));
-
-	auto transpositions = to_transpositions(new_nums);
-	for (auto[str1, str2] : transpositions)
-	{
-		swap(str1, str2);
-	}
-}
-
 void FullSymmetricMatrix::rearrange_with_allocate(const std::vector<msize>& new_nums)
 {
 	assert(new_nums.size() == dimension());

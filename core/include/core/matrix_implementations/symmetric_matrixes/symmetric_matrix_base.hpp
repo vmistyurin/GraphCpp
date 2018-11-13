@@ -17,6 +17,7 @@ namespace graphcpp
         SymmetricMatrixBase& operator*=(double rhs);
 
 		void make_rearranged(const std::vector<msize>& new_nums, SymmetricMatrixBase& memory) const;
+        void rearrange_with_permutations(const std::vector<msize>& new_nums) override;
 
 		virtual std::unique_ptr<SymmetricMatrixBase> with_deleted_vertexes(const std::vector<msize>& vertexes) const = 0;
 		virtual std::unique_ptr<SymmetricMatrixBase> with_deleted_element(msize i, msize j) const = 0;

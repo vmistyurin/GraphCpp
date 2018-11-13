@@ -50,6 +50,12 @@ namespace //TODO: move it to test_data
 	{
 		return std::make_unique<HalfSymmetricMatrix>(array);
 	}
+    
+    template<>
+    std::unique_ptr<SymmetricMatrixBase> GetMatrix<SingleVectorMatrix>(const std::vector<std::vector<mcontent>>& array)
+    {
+        return std::make_unique<SingleVectorMatrix>(array);
+    }
 }
 
 template<class TestMatrixType>
