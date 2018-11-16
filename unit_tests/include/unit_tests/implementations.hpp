@@ -7,8 +7,8 @@
 using MatrixImplementations = testing::Types<graphcpp::Matrix>;
 
 using SymmetricMatrixImplementations = testing::Types<
-	graphcpp::FullSymmetricMatrix,
-	graphcpp::HalfSymmetricMatrix,
+	//graphcpp::FullSymmetricMatrix,
+	//graphcpp::HalfSymmetricMatrix,
     graphcpp::SingleVectorMatrix
 >;
 

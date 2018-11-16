@@ -106,7 +106,7 @@ void FullSymmetricMatrix::rearrange_with_allocate(const std::vector<msize>& new_
 	assert(is_permutation(new_nums));
 
 	FullSymmetricMatrix result(dimension());
-	for(auto[i,j] : *this)
+	for(auto[i, j] : *this)
 	{
 		result.set(new_nums[i], new_nums[j], _matrix[i][j]);
 	}
@@ -116,7 +116,7 @@ void FullSymmetricMatrix::rearrange_with_allocate(const std::vector<msize>& new_
 
 void FullSymmetricMatrix::delete_last_strings(msize count)
 {
-	assert(count <= dimension());
+	assert(count < dimension());
 
 	for (msize i = 0; i < count; i++)
 	{

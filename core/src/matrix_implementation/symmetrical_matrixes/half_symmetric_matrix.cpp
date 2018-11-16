@@ -110,7 +110,7 @@ void HalfSymmetricMatrix::rearrange_with_allocate(const std::vector<msize>& new_
 
 void HalfSymmetricMatrix::delete_last_strings(msize count)
 {
-	assert(count <= dimension());
+	assert(count < dimension());
 
 	for (msize i = 0; i < count; i++)
 	{

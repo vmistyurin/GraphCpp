@@ -167,6 +167,10 @@ TYPED_TEST(SymmetricMatrixTests, RearrangeWithSwapTest)
 
 	this->test_matrix->rearrange_with_permutations(test_permutation);
 
+    //std::cout << std::setprecision(1) << std::fixed;
+    std::cout << *this->test_matrix << std::endl;
+    std::cout << *expected_after_rearrange_matrix << std::endl;
+
 	EXPECT_EQ(*this->test_matrix, *expected_after_rearrange_matrix);
 }
 

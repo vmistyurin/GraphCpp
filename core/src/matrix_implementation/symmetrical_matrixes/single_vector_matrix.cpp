@@ -2,14 +2,12 @@
 
 #include <cassert>
 
-#include "gsl/span"
-
 #include "core/utils.hpp"
 
 using namespace graphcpp;
 
 SingleVectorMatrix::SingleVectorMatrix(msize dimension) :
-    _dimension(dimension), _matrix(dimension * dimension)
+    _dimension(dimension), _internal_dimension(dimension), _matrix(dimension * dimension)
 {
     assert(dimension != 0);
 }
@@ -34,22 +32,22 @@ mcontent SingleVectorMatrix::at(msize index1, msize index2) const
 {
     assert(std::max(index1, index2) < dimension());
     
-    return _matrix[index1 * dimension() + index2];
+    return _matrix[index1 * _internal_dimension + index2];
 }
 
 void SingleVectorMatrix::set(msize index1, msize index2, mcontent value)
 {
     assert(std::max(index1, index2) < dimension());
     
-    _matrix[index1 * dimension() + index2] = value;
-    _matrix[index2 * dimension() + index1] = value;
+    _matrix[index1 * _internal_dimension + index2] = value;
+    _matrix[index2 * _internal_dimension + index1] = value;
 }
 
 void SingleVectorMatrix::reduce_element(msize index1, msize index2, mcontent difference)
 {
     assert(std::max(index1, index2) < dimension());
     
-    _matrix[index1 * dimension() + index2] =  _matrix[index1 * dimension() + index2] - difference;
+    _matrix[index1 * _internal_dimension + index2] =  _matrix[index1 * _internal_dimension + index2] - difference;
 }
 
 void SingleVectorMatrix::rearrange_with_allocate(const std::vector<msize>& new_nums)
@@ -58,9 +56,9 @@ void SingleVectorMatrix::rearrange_with_allocate(const std::vector<msize>& new_n
     
     SingleVectorMatrix new_matrix(_dimension);
     
-    for (auto[i,j] : *this)
+    for (auto[i, j] : *this)
     {
-        new_matrix.set(i, j, at(new_nums[i], new_nums[j]));
+        new_matrix.set(new_nums[i], new_nums[j], at(i, j));
     }
     
     _matrix = std::move(new_matrix._matrix);
@@ -77,17 +75,12 @@ void SingleVectorMatrix::swap(msize str1, msize str2)
 
     for (msize i = 0; i < dimension(); i++)
     {
-        auto prev = at(i, str1);
+        const auto prev = at(i, str1);
         set(i, str1, at(i, str2));
         set(i, str2, prev);
-        
-        prev = at(str1, i);
-        set(str1, i, at(i, str2));
-        set(str2, i, prev);
     }
 
     set(str1, str2, previous_value);
-    set(str2, str1, previous_value);
 }
 
 void SingleVectorMatrix::delete_last_strings(msize count)

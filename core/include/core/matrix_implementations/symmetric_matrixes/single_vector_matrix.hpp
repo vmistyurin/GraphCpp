@@ -8,6 +8,7 @@ namespace graphcpp
     {
     private:
         msize _dimension;
+        msize _internal_dimension;
         std::vector<mcontent> _matrix;
         
     public:
