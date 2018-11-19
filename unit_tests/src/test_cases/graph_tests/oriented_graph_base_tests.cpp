@@ -118,14 +118,11 @@ TYPED_TEST(OrientedGraphBaseTests, EqualityTest)
 	std::swap(shuffled_edges[1], shuffled_edges[3]);
 	TypeParam shuffled_edges_graph(shuffled_edges, oriented_test_graph::dimension());
 
-
 	std::vector<msize> permutation = { 1, 2, 5, 0, 4, 3 };
-	auto equal_graph = *oriented_test_graph::get_graph<TypeParam>();
-	equal_graph.rearrange(permutation);
-
-
+	auto equal_graph = oriented_test_graph::get_graph<TypeParam>();
+	equal_graph->rearrange(permutation);
+    
 	TypeParam dimensional_non_equal_graph(oriented_test_graph::get_edges(), oriented_test_graph::dimension() + 1);
-
 
 	std::vector<Edge> different_degrees_edges = {
 		Edge(0, 3, 1),
@@ -149,7 +146,7 @@ TYPED_TEST(OrientedGraphBaseTests, EqualityTest)
 	EXPECT_TRUE(this->test_graph->equal(*(this->test_graph)));
 	EXPECT_TRUE(this->test_graph->equal(same_edges_graph));
 	EXPECT_TRUE(this->test_graph->equal(shuffled_edges_graph));
-	EXPECT_TRUE(this->test_graph->equal(equal_graph));
+	EXPECT_TRUE(this->test_graph->equal(*equal_graph));
 	EXPECT_FALSE(this->test_graph->equal(dimensional_non_equal_graph));
 	EXPECT_FALSE(this->test_graph->equal(different_degrees_graph));
 	EXPECT_FALSE(this->test_graph->equal(different_edges_graph));

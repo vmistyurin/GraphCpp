@@ -270,14 +270,12 @@ TYPED_TEST(NonOrientedGraphBaseTests, WithDeletedEdgeTest)
 #ifdef USE_SLOW_TESTS
 	TYPED_TEST(NonOrientedGraphBaseTests, EqualityTest)
 	{
-		TypeParam same_edges_graph(reliable_test_graph::get_edges(), test_dimension);
+		TypeParam same_edges_graph(non_oriented_test_graph::get_edges(), test_dimension);
 
-
-		std::vector<SymmetricEdge> shuffled_edges = reliable_test_graph::get_edges();
+		std::vector<SymmetricEdge> shuffled_edges = non_oriented_test_graph::get_edges();
 		std::swap(shuffled_edges[0], shuffled_edges[4]);
 		std::swap(shuffled_edges[1], shuffled_edges[3]);
 		TypeParam shuffled_edges_graph(shuffled_edges, test_dimension);
-
 
 		std::vector<SymmetricEdge> equal_edges = {
 			SymmetricEdge(3, 6,7),
@@ -290,9 +288,7 @@ TYPED_TEST(NonOrientedGraphBaseTests, WithDeletedEdgeTest)
 		};
 		TypeParam equal_graph(equal_edges, test_dimension);
 
-
-		TypeParam dimensional_non_equal_graph(reliable_test_graph::get_edges(), test_dimension + 1);
-
+		TypeParam dimensional_non_equal_graph(non_oriented_test_graph::get_edges(), test_dimension + 1);
 
 		std::vector<SymmetricEdge> different_degrees_edges = {
 			SymmetricEdge(1, 5, 2),
@@ -303,7 +299,6 @@ TYPED_TEST(NonOrientedGraphBaseTests, WithDeletedEdgeTest)
 			SymmetricEdge(7, 1, 10)
 		};
 		TypeParam different_degrees_graph(different_degrees_edges, test_dimension);
-
 
 		std::vector<SymmetricEdge> different_edges = {
 			SymmetricEdge(0, 1, 1),
@@ -316,7 +311,7 @@ TYPED_TEST(NonOrientedGraphBaseTests, WithDeletedEdgeTest)
 		};
 		TypeParam different_edges_graph(different_edges, test_dimension);
 
-		std::vector<SymmetricEdge> different_weight_edges = reliable_test_graph::get_edges();
+		std::vector<SymmetricEdge> different_weight_edges = non_oriented_test_graph::get_edges();
 		different_weight_edges[0].weight++;
 		different_weight_edges[4].weight++;
 		TypeParam different_weight_graph(different_weight_edges, test_dimension);
