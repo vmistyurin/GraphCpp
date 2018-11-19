@@ -10,51 +10,38 @@ using namespace graphcpp;
 
 namespace //TODO: move it to test_data
 {
-	const std::vector<std::vector<mcontent>> test_array = 
-	{{ 0, 0, 0, 4, 8, 0, 0, 0, 0},
-	 { 0, 0, 0, 7, 0, 0, 10, 0, 0},
-	 { 0, 0, 0, 0, 5, 0, 9, 40, 30},
-	 { 4, 7, 0, 0, 1, 0, 0, 0, 0},
-	 { 8, 0, 5, 1, 0, 0, 0, 0, 0},
-	 { 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	 { 0, 10, 9, 0, 0, 0, 0, 0, 1},
-	 { 0, 0, 40, 0, 0, 0, 0, 0, 0},
-	 { 0, 0, 30, 0, 0, 0, 1, 0, 0} };
+	const std::vector<std::vector<mcontent>> test_array = {
+        { 0, 0, 0, 4, 8, 0, 0, 0, 0},
+        { 0, 0, 0, 7, 0, 0, 10, 0, 0},
+        { 0, 0, 0, 0, 5, 0, 9, 40, 30},
+        { 4, 7, 0, 0, 1, 0, 0, 0, 0},
+        { 8, 0, 5, 1, 0, 0, 0, 0, 0},
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0},
+        { 0, 10, 9, 0, 0, 0, 0, 0, 1},
+        { 0, 0, 40, 0, 0, 0, 0, 0, 0},
+        { 0, 0, 30, 0, 0, 0, 1, 0, 0}
+    };
 
 	const auto test_dimension = test_array.size();
 
 	const std::vector<msize> test_permutation = { 3,6,7,0,4,1,2,8,5 };
 
-	const std::vector<std::vector<mcontent>> rearranged_test_array =
-	{{ 0, 0, 0, 4, 1, 0, 7, 0, 0 },
-	 { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-	 { 0, 0, 0, 0, 0, 1, 10, 9, 0 },
-	 { 4, 0, 0, 0, 8, 0, 0, 0, 0 },
-	 { 1, 0, 0, 8, 0, 0, 0, 5, 0 },
-	 { 0, 0, 1, 0, 0, 0, 0, 30, 0 },
-	 { 7, 0, 10, 0, 0, 0, 0, 0, 0 },
-	 { 0, 0, 9, 0, 5, 30, 0, 0, 40},
-	 { 0, 0, 0, 0, 0, 0, 0, 40, 0 } };
+	const std::vector<std::vector<mcontent>> rearranged_test_array = {
+        { 0, 0, 0, 4, 1, 0, 7, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 1, 10, 9, 0 },
+        { 4, 0, 0, 0, 8, 0, 0, 0, 0 },
+        { 1, 0, 0, 8, 0, 0, 0, 5, 0 },
+        { 0, 0, 1, 0, 0, 0, 0, 30, 0 },
+        { 7, 0, 10, 0, 0, 0, 0, 0, 0 },
+        { 0, 0, 9, 0, 5, 30, 0, 0, 40},
+        { 0, 0, 0, 0, 0, 0, 0, 40, 0 }
+    };
 
-	template<class T>
-	std::unique_ptr<SymmetricMatrixBase> GetMatrix(const std::vector<std::vector<mcontent>>& array);
-
-	template<>
-	std::unique_ptr<SymmetricMatrixBase> GetMatrix<FullSymmetricMatrix>(const std::vector<std::vector<mcontent>>& array) 
-	{
-		return std::make_unique<FullSymmetricMatrix>(array);
-	}
-
-	template<>
-	std::unique_ptr<SymmetricMatrixBase> GetMatrix<HalfSymmetricMatrix>(const std::vector<std::vector<mcontent>>& array) 
-	{
-		return std::make_unique<HalfSymmetricMatrix>(array);
-	}
-    
-    template<>
-    std::unique_ptr<SymmetricMatrixBase> GetMatrix<SingleVectorMatrix>(const std::vector<std::vector<mcontent>>& array)
+	template<class MatrixType>
+	std::unique_ptr<SymmetricMatrixBase> GetMatrix(const std::vector<std::vector<mcontent>>& array)
     {
-        return std::make_unique<SingleVectorMatrix>(array);
+        return std::make_unique<MatrixType>(array);
     }
 }
 
@@ -66,6 +53,7 @@ public:
 		test_matrix(GetMatrix<TestMatrixType>(test_array))	
 	{
 	};
+    
 	std::unique_ptr<SymmetricMatrixBase> test_matrix;
 }; 
 
@@ -91,9 +79,11 @@ TYPED_TEST(SymmetricMatrixTests, DimensionTest)
 
 TYPED_TEST(SymmetricMatrixTests, EqualityTest)
 {
-	std::vector<std::vector<mcontent>> dimensional_non_equal_array = { { 1,0,0 },
-																	   { 0,1,0 },
-																	   { 0,0,1 } };
+    std::vector<std::vector<mcontent>> dimensional_non_equal_array = {
+        { 1,0,0 },
+        { 0,1,0 },
+		{ 0,0,1 }
+    };
 	std::vector<std::vector<mcontent>> content_non_equal_array(test_array);
 	content_non_equal_array[5][2]++;
 	content_non_equal_array[2][5]++;
@@ -112,8 +102,8 @@ TYPED_TEST(SymmetricMatrixTests, SwapTest)
 {
 	msize first_swapped_string = 2;
 	msize second_swapped_string = 6;
-	std::vector<std::vector<mcontent>> expected_after_swap_array
-	{ { 0, 0, 0, 4, 8, 0, 0, 0, 0 },
+	std::vector<std::vector<mcontent>> expected_after_swap_array = {
+      { 0, 0, 0, 4, 8, 0, 0, 0, 0 },
 	  { 0, 0, 10, 7, 0, 0, 0, 0, 0 },
 	  { 0, 10, 0, 0, 0, 0, 9, 0, 1 },
 	  { 4, 7, 0, 0, 1, 0, 0, 0, 0 },
@@ -121,7 +111,8 @@ TYPED_TEST(SymmetricMatrixTests, SwapTest)
 	  { 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 	  { 0, 0, 9, 0, 5, 0, 0, 40, 30 },
 	  { 0, 0, 0, 0, 0, 0, 40, 0, 0 },
-	  { 0, 0, 1, 0, 0, 0, 30, 0, 0 } };
+	  { 0, 0, 1, 0, 0, 0, 30, 0, 0 }
+    };
 	auto expected_after_swap_matrix = GetMatrix<TypeParam>(expected_after_swap_array);
 
 	this->test_matrix->swap(first_swapped_string, second_swapped_string);
@@ -166,10 +157,6 @@ TYPED_TEST(SymmetricMatrixTests, RearrangeWithSwapTest)
 	auto expected_after_rearrange_matrix = GetMatrix<TypeParam>(rearranged_test_array);
 
 	this->test_matrix->rearrange_with_permutations(test_permutation);
-
-    //std::cout << std::setprecision(1) << std::fixed;
-    std::cout << *this->test_matrix << std::endl;
-    std::cout << *expected_after_rearrange_matrix << std::endl;
 
 	EXPECT_EQ(*this->test_matrix, *expected_after_rearrange_matrix);
 }
@@ -236,12 +223,13 @@ TYPED_TEST(SymmetricMatrixTests, ReduceElementTest)
 TYPED_TEST(SymmetricMatrixTests, WithDeletedVertexesTest)
 {
 	const std::vector<msize> deleted_vertexes = { 0, 3, 5, 8 };
-	const std::vector<std::vector<mcontent>> expected_array =
-	{ {  0, 0, 0, 10, 0 },
-	  {  0, 0, 5, 9,  40 },
-	  {  0, 5, 0, 0,  0 },
-	  { 10, 9, 0, 0,  0 },
-	  { 0, 40, 0, 0,  0 } };
+	const std::vector<std::vector<mcontent>> expected_array = {
+        { 0, 0, 0, 10, 0 },
+        { 0, 0, 5, 9, 40 },
+        { 0, 5, 0, 0, 0 },
+        { 10, 9, 0, 0, 0 },
+        { 0, 40, 0, 0, 0 }
+    };
 	const auto expected_matrix = GetMatrix<TypeParam>(expected_array);
 
 	auto matrix_afted_delete = this->test_matrix->with_deleted_vertexes(deleted_vertexes);

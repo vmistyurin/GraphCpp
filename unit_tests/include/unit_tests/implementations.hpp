@@ -7,14 +7,15 @@
 using MatrixImplementations = testing::Types<graphcpp::Matrix>;
 
 using SymmetricMatrixImplementations = testing::Types<
-	//graphcpp::FullSymmetricMatrix,
-	//graphcpp::HalfSymmetricMatrix,
-    graphcpp::SingleVectorMatrix
+	graphcpp::FullSymmetricMatrix,
+	graphcpp::HalfSymmetricMatrix,
+    graphcpp::SingleVectorSymmetricMatrix
 >;
 
 using NonOrientedGraphImplementations = testing::Types<
-	graphcpp::NonOrientedMatrixGraph<graphcpp::FullSymmetricMatrix>,
-	graphcpp::NonOrientedMatrixGraph<graphcpp::HalfSymmetricMatrix>
+    graphcpp::NonOrientedMatrixGraph<graphcpp::FullSymmetricMatrix>,
+    graphcpp::NonOrientedMatrixGraph<graphcpp::HalfSymmetricMatrix>,
+    graphcpp::NonOrientedMatrixGraph<graphcpp::SingleVectorSymmetricMatrix>
 >;
 
 using OrientedGraphImplementations = testing::Types<
@@ -22,6 +23,7 @@ using OrientedGraphImplementations = testing::Types<
 >;
 
 using RandomNonOrientedGraphImplementations = testing::Types<
-	graphcpp::RandomNonOrientedGraph<graphcpp::NonOrientedMatrixGraph<graphcpp::FullSymmetricMatrix>, graphcpp::FullSymmetricMatrix>,
-	graphcpp::RandomNonOrientedGraph<graphcpp::NonOrientedMatrixGraph<graphcpp::HalfSymmetricMatrix>, graphcpp::HalfSymmetricMatrix>
+	graphcpp::RandomNonOrientedGraph<graphcpp::NonOrientedMatrixGraph<graphcpp::FullSymmetricMatrix>, graphcpp::HalfSymmetricMatrix>,
+	graphcpp::RandomNonOrientedGraph<graphcpp::NonOrientedMatrixGraph<graphcpp::HalfSymmetricMatrix>, graphcpp::SingleVectorSymmetricMatrix>,
+    graphcpp::RandomNonOrientedGraph<graphcpp::NonOrientedMatrixGraph<graphcpp::SingleVectorSymmetricMatrix>, graphcpp::SingleVectorSymmetricMatrix>
 >;

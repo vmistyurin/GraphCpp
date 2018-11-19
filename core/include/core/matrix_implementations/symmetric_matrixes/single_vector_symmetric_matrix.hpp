@@ -4,7 +4,7 @@
 
 namespace graphcpp
 {
-    class SingleVectorMatrix final: public SymmetricMatrixBase
+    class SingleVectorSymmetricMatrix final: public SymmetricMatrixBase
     {
     private:
         msize _dimension;
@@ -12,9 +12,10 @@ namespace graphcpp
         std::vector<mcontent> _matrix;
         
     public:
-        explicit SingleVectorMatrix(msize dimension);
-        explicit SingleVectorMatrix(const std::vector<std::vector<mcontent>>& matrix);
-        
+        explicit SingleVectorSymmetricMatrix(msize dimension);
+        explicit SingleVectorSymmetricMatrix(const std::vector<std::vector<mcontent>>& matrix);
+        explicit SingleVectorSymmetricMatrix(const SymmetricMatrixBase& matrix);
+
         msize dimension() const override;
         mcontent at(msize index1, msize index2) const override;
         void set(msize index1, msize index2, mcontent value) override;

@@ -7,9 +7,7 @@ using namespace graphcpp;
 class MultiThreadCalculatorTests : public ::testing::Test
 {
 protected:
-    std::unique_ptr<MultiThreadCalculator> calculator;
-    
-    void SetUp() override
+    MultiThreadCalculatorTests()
     {
         std::vector<SymmetricRandomEdge> edges = {
             SymmetricRandomEdge(SymmetricEdge(0, 1, 5), 0.3),
@@ -23,6 +21,8 @@ protected:
             std::bind(flow_calculators::matrix_of_flows, std::placeholders::_1, flow_calculators::Edmonds_Karp_algorithm)
         );
     }
+    
+    std::unique_ptr<MultiThreadCalculator> calculator;
 };
 
 TEST_F(MultiThreadCalculatorTests, ExpectedValueTest)

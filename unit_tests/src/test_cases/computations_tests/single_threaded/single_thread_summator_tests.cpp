@@ -7,13 +7,13 @@ using namespace graphcpp;
 class SingleThreadSummatorTests : public ::testing::Test
 {
 protected:
+    SingleThreadSummatorTests() :
+        summator(std::make_unique<SingleThreadSummator<double>>(double(initial_value)))
+    {
+    }
+    
     static inline double initial_value = 1;
     std::unique_ptr<SingleThreadSummator<double>> summator;
-    
-    void SetUp() override
-    {
-        summator = std::make_unique<SingleThreadSummator<double>>(double(initial_value));
-    }
 };
 
 TEST_F(SingleThreadSummatorTests, AddTest)

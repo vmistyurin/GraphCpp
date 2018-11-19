@@ -7,20 +7,22 @@ using namespace graphcpp;
 class SingleThreadCalculatorTests : public ::testing::Test
 {
 protected:
-    std::unique_ptr<SingleThreadCalculator> calculator;
-    
-    void SetUp() override
+    SingleThreadCalculatorTests()
     {
-        std::vector<SymmetricRandomEdge> edges = { SymmetricRandomEdge(SymmetricEdge(0, 1, 5), 0.3),
+        std::vector<SymmetricRandomEdge> edges = {
+            SymmetricRandomEdge(SymmetricEdge(0, 1, 5), 0.3),
             SymmetricRandomEdge(SymmetricEdge(0, 3, 6), 0.5),
             SymmetricRandomEdge(SymmetricEdge(1, 3, 10), 1),
-            SymmetricRandomEdge(SymmetricEdge(2, 3, 8), 0.2) };
+            SymmetricRandomEdge(SymmetricEdge(2, 3, 8), 0.2)
+        };
         auto graph = std::make_unique<RandomNonOrientedGraph<NonOrientedMatrixGraph<FullSymmetricMatrix>, FullSymmetricMatrix>>(edges, 4);
         
         calculator = std::make_unique<SingleThreadCalculator>(std::move(graph),
             std::bind(flow_calculators::matrix_of_flows, std::placeholders::_1, flow_calculators::Edmonds_Karp_algorithm)
         );
     }
+    
+    std::unique_ptr<SingleThreadCalculator> calculator;
 };
 
 TEST_F(SingleThreadCalculatorTests, ExpectedValueTest)

@@ -44,9 +44,3 @@ std::vector<msize> oriented_test_graph::get_degrees()
 
 	return result;
 }
-
-template<>
-std::unique_ptr<OrientedMatrixGraph<Matrix>> oriented_test_graph::get_graph<OrientedMatrixGraph<Matrix>>()
-{
-	return std::make_unique<OrientedMatrixGraph<Matrix>>(test_matrix::matrix_as_vector());
-}

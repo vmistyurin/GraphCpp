@@ -18,12 +18,12 @@ template<class RandomGraphType>
 class RandomNonOrientedGraphBaseTests : public ::testing::Test
 {
 protected:
-    std::unique_ptr<RandomNonOrientedGraphBase> test_graph;
-
 	RandomNonOrientedGraphBaseTests() :
 		test_graph(random_non_oriented_test_graph::get_graph<RandomGraphType>())
 	{
 	}
+    
+    std::unique_ptr<RandomNonOrientedGraphBase> test_graph;
 };
 
 TYPED_TEST_CASE(RandomNonOrientedGraphBaseTests, RandomNonOrientedGraphImplementations,);
@@ -107,10 +107,13 @@ TYPED_TEST(RandomNonOrientedGraphBaseTests, WithDeletedEdgeTest)
 
 TYPED_TEST(RandomNonOrientedGraphBaseTests, FactorizeTest)
 {
-	std::vector<SymmetricRandomEdge> edges = { SymmetricRandomEdge(SymmetricEdge(0, 1, 5), 0.3),
-											   SymmetricRandomEdge(SymmetricEdge(0, 3, 6), 0.5),
-											   SymmetricRandomEdge(SymmetricEdge(1, 3, 10), 1),
-											   SymmetricRandomEdge(SymmetricEdge(2, 3, 8), 0.2) };
+	std::vector<SymmetricRandomEdge> edges =
+    {
+        SymmetricRandomEdge(SymmetricEdge(0, 1, 5), 0.3),
+		SymmetricRandomEdge(SymmetricEdge(0, 3, 6), 0.5),
+		SymmetricRandomEdge(SymmetricEdge(1, 3, 10), 1),
+        SymmetricRandomEdge(SymmetricEdge(2, 3, 8), 0.2)
+    };
 	auto graph = TypeParam(edges, 4);
 
 	std::vector<std::pair<std::vector<SymmetricEdge>, double>> expected_graphs = {

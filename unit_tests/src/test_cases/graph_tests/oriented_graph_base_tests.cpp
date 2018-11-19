@@ -17,6 +17,7 @@ protected:
 		test_graph(oriented_test_graph::get_graph<TestGraphType>())
 	{
 	}
+    
 	std::unique_ptr<OrientedGraphBase> test_graph;
 };
 
@@ -79,10 +80,12 @@ TYPED_TEST(OrientedGraphBaseTests, VertexDegreeTests)
 TYPED_TEST(OrientedGraphBaseTests, DeleteVertexesTest)
 {
 	std::vector<msize> deleted_vertexes = { 3, 5 };
-	std::vector<std::vector<mcontent>> expected_matrix = { { 0, 10, 0, 0 },
-														   { 22, 0, 0, 0 },
-														   { 5, 0, 0, 8 },
-														   { 0, 0, 0, 0 }};
+	std::vector<std::vector<mcontent>> expected_matrix = {
+        { 0, 10, 0, 0 },
+        { 22, 0, 0, 0 },
+		{ 5, 0, 0, 8 },
+		{ 0, 0, 0, 0 }
+    };
 	TypeParam expected_graph(expected_matrix);
 
 	this->test_graph->delete_vertexes(deleted_vertexes);
@@ -93,9 +96,11 @@ TYPED_TEST(OrientedGraphBaseTests, DeleteVertexesTest)
 TYPED_TEST(OrientedGraphBaseTests, ExtractSubgraph)
 {
 	std::vector<msize> vertexes = { 0, 4, 5 };
-	std::vector<std::vector<mcontent>> expected_matrix = { { 0, 0, 6 },
-														   { 0, 0, 5 },
-														   { 7, 0, 0 } };
+	std::vector<std::vector<mcontent>> expected_matrix = {
+        { 0, 0, 6 },
+		{ 0, 0, 5 },
+        { 7, 0, 0 }
+    };
 	TypeParam expected_subgraph(expected_matrix);
 
 	auto extracted_graph = this->test_graph->extract_subgraph(vertexes);
@@ -108,14 +113,13 @@ TYPED_TEST(OrientedGraphBaseTests, EqualityTest)
 {
 	TypeParam same_edges_graph(oriented_test_graph::get_edges(), oriented_test_graph::dimension());
 
-
 	auto shuffled_edges = oriented_test_graph::get_edges();
 	std::swap(shuffled_edges[0], shuffled_edges[4]);
 	std::swap(shuffled_edges[1], shuffled_edges[3]);
 	TypeParam shuffled_edges_graph(shuffled_edges, oriented_test_graph::dimension());
 
 
-	std::vector<msize> permutation = { 1,2,5,0,4,3 };
+	std::vector<msize> permutation = { 1, 2, 5, 0, 4, 3 };
 	auto equal_graph = *oriented_test_graph::get_graph<TypeParam>();
 	equal_graph.rearrange(permutation);
 
@@ -123,17 +127,14 @@ TYPED_TEST(OrientedGraphBaseTests, EqualityTest)
 	TypeParam dimensional_non_equal_graph(oriented_test_graph::get_edges(), oriented_test_graph::dimension() + 1);
 
 
-	std::vector<Edge> different_degrees_edges
-	{
+	std::vector<Edge> different_degrees_edges = {
 		Edge(0, 3, 1),
 		Edge(1, 4, 1),
 		Edge(2, 5, 1),
 	};
 	TypeParam different_degrees_graph(different_degrees_edges, oriented_test_graph::dimension());
 
-
-	std::vector<Edge> different_edges
-	{
+	std::vector<Edge> different_edges = {
 		Edge(0, 3, 1),
 		Edge(1, 4, 1),
 		Edge(2, 5, 1),

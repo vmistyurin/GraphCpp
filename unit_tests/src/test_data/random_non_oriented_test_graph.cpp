@@ -7,11 +7,13 @@ using namespace graphcpp_testing;
 
 namespace
 {
-	const std::vector<SymmetricRandomEdge> edges = { SymmetricRandomEdge(SymmetricEdge(0, 2, 10), 0.5),
-                                                     SymmetricRandomEdge(SymmetricEdge(0, 3, 20), 0.7),
-                                                     SymmetricRandomEdge(SymmetricEdge(2, 3, 5), 0.1),
-                                                     SymmetricRandomEdge(SymmetricEdge(1, 2, 6), 0.2),
-                                                     SymmetricRandomEdge(SymmetricEdge(2, 4, 100), 1) };
+	const std::vector<SymmetricRandomEdge> edges = {
+        SymmetricRandomEdge(SymmetricEdge(0, 2, 10), 0.5),
+        SymmetricRandomEdge(SymmetricEdge(0, 3, 20), 0.7),
+        SymmetricRandomEdge(SymmetricEdge(2, 3, 5), 0.1),
+        SymmetricRandomEdge(SymmetricEdge(1, 2, 6), 0.2),
+        SymmetricRandomEdge(SymmetricEdge(2, 4, 100), 1)
+    };
 
 	const auto not_existed_edge = std::pair(0, 1);
 

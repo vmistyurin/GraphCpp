@@ -7,14 +7,13 @@ using namespace graphcpp;
 class SymmetricRandomEdgeTests : public ::testing::Test
 {
 protected:
-    std::unique_ptr<SymmetricRandomEdge> edge;
-
-    void SetUp() override
+    SymmetricRandomEdgeTests() :
+        edge(std::make_unique<SymmetricRandomEdge>(SymmetricEdge(1, 10, 3), 0.75))
     {
-        edge = std::make_unique<SymmetricRandomEdge>(SymmetricEdge(1, 10, 3), 0.75);
     }
+    
+    std::unique_ptr<SymmetricRandomEdge> edge;
 };
-
 
 TEST_F(SymmetricRandomEdgeTests, InvertTest)
 {

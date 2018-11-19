@@ -7,12 +7,12 @@ using namespace graphcpp;
 class EdgeTests : public ::testing::Test
 {
 protected:
-	std::unique_ptr<Edge> edge;
-
-	void SetUp() override
-	{
-		edge = std::make_unique<Edge>(1, 10, 3);
-	}
+    EdgeTests() :
+        edge(std::make_unique<Edge>(1, 10, 3))
+    {
+    }
+    
+    std::unique_ptr<Edge> edge;
 };
 
 TEST_F(EdgeTests, GettersTest)

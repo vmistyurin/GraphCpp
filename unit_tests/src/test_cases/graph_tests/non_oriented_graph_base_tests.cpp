@@ -3,7 +3,7 @@
 #include "core/all.hpp"
 #include "unit_tests/utils/comparators.hpp"
 #include "unit_tests/macroses.hpp"
-#include "unit_tests/test_data/reliable_test_graph.hpp"
+#include "unit_tests/test_data/non_oriented_test_graph.hpp"
 #include "unit_tests/implementations.hpp"
 
 using namespace graphcpp;
@@ -11,7 +11,7 @@ using namespace graphcpp_testing;
 
 namespace
 {
-	auto test_dimension = reliable_test_graph::dimension();
+	auto test_dimension = non_oriented_test_graph::dimension();
 }
 
 template<class TestGraphType>
@@ -19,9 +19,10 @@ class NonOrientedGraphBaseTests : public ::testing::Test
 {
 protected:
 	NonOrientedGraphBaseTests() :
-		test_graph(reliable_test_graph::get_graph<TestGraphType>())
+		test_graph(non_oriented_test_graph::get_graph<TestGraphType>())
 	{
 	}
+    
 	std::unique_ptr<NonOrientedGraphBase> test_graph;
 };
 
@@ -34,8 +35,8 @@ TYPED_TEST(NonOrientedGraphBaseTests, DimensionTest)
 
 TYPED_TEST(NonOrientedGraphBaseTests, GetterTest)
 {
-	EXPECT_EQ(this->test_graph->at(reliable_test_graph::get_edges()[0].v1(), reliable_test_graph::get_edges()[0].v2()), reliable_test_graph::get_edges()[0].weight);
-	EXPECT_EQ(this->test_graph->at(reliable_test_graph::get_edges()[0].v2(), reliable_test_graph::get_edges()[0].v1()), reliable_test_graph::get_edges()[0].weight);
+	EXPECT_EQ(this->test_graph->at(non_oriented_test_graph::get_edges()[0].v1(), non_oriented_test_graph::get_edges()[0].v2()), non_oriented_test_graph::get_edges()[0].weight);
+	EXPECT_EQ(this->test_graph->at(non_oriented_test_graph::get_edges()[0].v2(), non_oriented_test_graph::get_edges()[0].v1()), non_oriented_test_graph::get_edges()[0].weight);
 }
 
 TYPED_TEST(NonOrientedGraphBaseTests, SetterTest)
@@ -52,7 +53,7 @@ TYPED_TEST(NonOrientedGraphBaseTests, LinkedVertexesTest)
 {
 	msize test_vertex = 3;
 	std::vector<msize> linked_with_test_vertex;
-	for (const auto& edge : reliable_test_graph::get_edges())
+	for (const auto& edge : non_oriented_test_graph::get_edges())
 	{
 		if (edge.v1() == test_vertex)
 		{
@@ -70,12 +71,12 @@ TYPED_TEST(NonOrientedGraphBaseTests, LinkedVertexesTest)
 
 TYPED_TEST(NonOrientedGraphBaseTests, EdgesTest)
 {
-    EXPECT_TRUE(compare_vectors_without_order(reliable_test_graph::get_edges(), this->test_graph->get_edges()));
+    EXPECT_TRUE(compare_vectors_without_order(non_oriented_test_graph::get_edges(), this->test_graph->get_edges()));
 }
 
 TYPED_TEST(NonOrientedGraphBaseTests, VertexesDegreeTest)
 {
-    EXPECT_EQ(this->test_graph->get_degrees(), reliable_test_graph::get_degrees());
+    EXPECT_EQ(this->test_graph->get_degrees(), non_oriented_test_graph::get_degrees());
 }
 
 TYPED_TEST(NonOrientedGraphBaseTests, VertexDegreeTests)
@@ -83,8 +84,8 @@ TYPED_TEST(NonOrientedGraphBaseTests, VertexDegreeTests)
 	msize first_test_vertex = 0;
 	msize second_test_vertex = 6;
 
-    EXPECT_EQ(this->test_graph->get_degree(first_test_vertex), reliable_test_graph::get_degrees()[first_test_vertex]);
-    EXPECT_EQ(this->test_graph->get_degree(second_test_vertex), reliable_test_graph::get_degrees()[second_test_vertex]);
+    EXPECT_EQ(this->test_graph->get_degree(first_test_vertex), non_oriented_test_graph::get_degrees()[first_test_vertex]);
+    EXPECT_EQ(this->test_graph->get_degree(second_test_vertex), non_oriented_test_graph::get_degrees()[second_test_vertex]);
 }
 
 TYPED_TEST(NonOrientedGraphBaseTests, DeleteVertexesTest)
@@ -93,8 +94,7 @@ TYPED_TEST(NonOrientedGraphBaseTests, DeleteVertexesTest)
 	auto expected_dimension = test_dimension - deleted_vertexes.size();
 
 	std::vector<msize> expected_new_nums = { 0, 1, 2, msize_undefined, msize_undefined, 3, 4, 5, 6 };
-    std::vector<SymmetricEdge> expected_edges
-    {
+    std::vector<SymmetricEdge> expected_edges = {
 		SymmetricEdge(0, 4, 2),
 		SymmetricEdge(4, 5, 10),
 		SymmetricEdge(1, 3, 7)
@@ -103,6 +103,13 @@ TYPED_TEST(NonOrientedGraphBaseTests, DeleteVertexesTest)
 
 	auto new_nums = this->test_graph->delete_vertexes(deleted_vertexes);
 
+    auto edges = this->test_graph->get_edges();
+    
+//    for (auto& edge : )
+//    {
+//        std::cout << edge  << std::endl;
+//    }
+    
     EXPECT_TRUE(this->test_graph->equal(expected_graph));
 }
 
@@ -120,7 +127,7 @@ TYPED_TEST(NonOrientedGraphBaseTests, ConnectedComponentTest)
 
 TYPED_TEST(NonOrientedGraphBaseTests, ConnectedComponentsTest)
 {
-	std::vector<std::vector<msize>> expected_components = { { 0, 2, 3, 4, 6, 7 }, {1, 5} };
+	std::vector<std::vector<msize>> expected_components = { { 0, 2, 3, 4, 6, 7 }, { 1, 5 } };
 
 	auto components = this->test_graph->get_connected_components();
 
@@ -129,7 +136,7 @@ TYPED_TEST(NonOrientedGraphBaseTests, ConnectedComponentsTest)
 
 TYPED_TEST(NonOrientedGraphBaseTests, HangedVertexesTest)
 {
-	std::list<std::pair<msize, msize>> expected_hanged = { {0, 6}, {7, 6}, {5, 1}, {1, 5}, {2, 4} };
+	std::list<std::pair<msize, msize>> expected_hanged = { { 0, 6 }, { 7, 6 }, { 5, 1 }, { 1, 5 }, { 2, 4 } };
 
 	auto hanged = this->test_graph->get_hanged_vertexes();
 
@@ -139,10 +146,12 @@ TYPED_TEST(NonOrientedGraphBaseTests, HangedVertexesTest)
 TYPED_TEST(NonOrientedGraphBaseTests, ExtractSubgraph)
 {
 	std::vector<msize> vertexes = { 0, 3, 6, 7 };
-	std::vector<std::vector<mcontent>> expected_matrix = { {0, 10, 1, 2},
-																 {10, 0, 0, 0},
-																 {1, 0, 0, 0},
-																 {2, 0, 0, 0} };
+	std::vector<std::vector<mcontent>> expected_matrix = {
+      { 0, 10, 1, 2},
+      { 10, 0, 0, 0},
+      { 1, 0, 0, 0},
+      { 2, 0, 0, 0}
+    };
 	TypeParam expected_subgraph(expected_matrix);
 
 	auto extracted_graph = this->test_graph->extract_subgraph(vertexes);
@@ -168,7 +177,7 @@ TYPED_TEST(NonOrientedGraphBaseTests, BridgesTest)
 
 	TypeParam graph(edges, 9);
 
-	std::list<std::pair<msize, msize>> expected_bridges = { {2,3}, {2, 4} };
+	std::list<std::pair<msize, msize>> expected_bridges = { { 2, 3 }, { 2, 4 } };
 	std::vector<msize> expected_classes = { 0, 0, 0, 1, 2, 1, 2, 1, 2 };
 
 	auto[bridges, classes] = graph.get_bridges();
@@ -202,7 +211,7 @@ TYPED_TEST(NonOrientedGraphBaseTests, ChainsTest)
 
 	TypeParam graph(edges, 10);
 
-	std::vector<std::vector<msize>> expected_chains = { {4, 8, 5, 9}, {1, 3, 6, 9}, {7, 2, 9}, {1, 0, 4}};
+	std::vector<std::vector<msize>> expected_chains = { { 4, 8, 5, 9 }, { 1, 3, 6, 9 }, { 7, 2, 9 }, { 1, 0, 4 } };
 	
 	std::vector<std::vector<msize>> reversed_expected_chains;  
 	reversed_expected_chains.reserve(expected_chains.size());
@@ -220,7 +229,7 @@ TYPED_TEST(NonOrientedGraphBaseTests, ChainsTest)
 		for (msize j = 0; j < expected_chains.size(); j++)
 		{
 			finded = chains[i] == expected_chains[j] || chains[i] == reversed_expected_chains[j];
-			if(finded)
+			if (finded)
 			{
 				break;
 			}
@@ -270,8 +279,7 @@ TYPED_TEST(NonOrientedGraphBaseTests, WithDeletedEdgeTest)
 		TypeParam shuffled_edges_graph(shuffled_edges, test_dimension);
 
 
-		std::vector<SymmetricEdge> equal_edges
-		{
+		std::vector<SymmetricEdge> equal_edges = {
 			SymmetricEdge(3, 6,7),
 			SymmetricEdge(1, 5, 10),
 			SymmetricEdge(1, 4, 2),
@@ -286,8 +294,7 @@ TYPED_TEST(NonOrientedGraphBaseTests, WithDeletedEdgeTest)
 		TypeParam dimensional_non_equal_graph(reliable_test_graph::get_edges(), test_dimension + 1);
 
 
-		std::vector<SymmetricEdge> different_degrees_edges
-		{
+		std::vector<SymmetricEdge> different_degrees_edges = {
 			SymmetricEdge(1, 5, 2),
 			SymmetricEdge(4, 5, 3),
 			SymmetricEdge(1, 4, 10),
@@ -298,8 +305,7 @@ TYPED_TEST(NonOrientedGraphBaseTests, WithDeletedEdgeTest)
 		TypeParam different_degrees_graph(different_degrees_edges, test_dimension);
 
 
-		std::vector<SymmetricEdge> different_edges
-		{
+		std::vector<SymmetricEdge> different_edges = {
 			SymmetricEdge(0, 1, 1),
 			SymmetricEdge(0, 2, 1),
 			SymmetricEdge(0, 3, 1),

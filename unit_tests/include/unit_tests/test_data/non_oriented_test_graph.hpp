@@ -2,7 +2,7 @@
 
 #include "core/all.hpp"
 
-namespace graphcpp_testing::reliable_test_graph
+namespace graphcpp_testing::non_oriented_test_graph
 {
 	using namespace graphcpp;
 
@@ -11,7 +11,10 @@ namespace graphcpp_testing::reliable_test_graph
 	std::vector<msize> get_degrees();
 
 	template<class GraphType>
-	std::unique_ptr<GraphType> get_graph();
+	std::unique_ptr<NonOrientedGraphBase> get_graph()
+    {
+        return std::make_unique<GraphType>(get_edges(), dimension());
+    }
 
 	std::vector<std::vector<mcontent>> get_flows();
 }

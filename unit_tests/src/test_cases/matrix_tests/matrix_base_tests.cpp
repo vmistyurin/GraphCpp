@@ -10,14 +10,11 @@ using namespace graphcpp_testing;
 
 namespace
 {
-	template<class T>
-	std::unique_ptr<MatrixBase> GetMatrix(const std::vector<std::vector<mcontent>>& array);
-
-	template<>
-	std::unique_ptr<MatrixBase> GetMatrix<Matrix>(const std::vector<std::vector<mcontent>>& array)
-	{
-		return std::make_unique<Matrix>(array);
-	}
+	template<class GraphType>
+	std::unique_ptr<MatrixBase> GetMatrix(const std::vector<std::vector<mcontent>>& array)
+    {
+        return std::make_unique<GraphType>(array);
+    }
 }
 
 template<class TestMatrixType>
@@ -28,6 +25,7 @@ public:
 		test_matrix(GetMatrix<TestMatrixType>(test_matrix::matrix_as_vector()))
 	{
 	};
+    
 	std::unique_ptr<MatrixBase> test_matrix;
 };
 
@@ -54,9 +52,11 @@ TYPED_TEST(MatrixBaseTests, DimensionTest)
 
 TYPED_TEST(MatrixBaseTests, EqualityTest)
 {
-	std::vector<std::vector<mcontent>> dimensional_non_equal_array = { { 1,0,0 },
-																	   { 0,1,0 },
-																	   { 0,0,1 } };
+	std::vector<std::vector<mcontent>> dimensional_non_equal_array = {
+        { 1, 0, 0 },
+		{ 0, 1, 0 },
+		{ 0, 0, 1 }
+    };
 
 	std::vector<std::vector<mcontent>> content_non_equal_array(test_matrix::matrix_as_vector());
 	content_non_equal_array[5][2]++;
