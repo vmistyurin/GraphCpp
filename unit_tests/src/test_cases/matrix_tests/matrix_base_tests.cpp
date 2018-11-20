@@ -77,8 +77,13 @@ TYPED_TEST(MatrixBaseTests, SwapTest)
 	auto expected_after_swap_matrix = GetMatrix<TypeParam>(test_matrix::expected_after_swap_matrix());
 	auto[first_string, second_string] = test_matrix::swapped_strings();
 
-	this->test_matrix->swap(first_string, second_string);
+    std::cout << *this->test_matrix << std::endl;
 
+	this->test_matrix->swap(first_string, second_string);
+    
+    std::cout << *expected_after_swap_matrix << std::endl;
+    std::cout << *this->test_matrix << std::endl;
+    
 	EXPECT_EQ(*this->test_matrix, *expected_after_swap_matrix);
 }
 

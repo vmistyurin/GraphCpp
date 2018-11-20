@@ -16,6 +16,7 @@
 
 #include "core/matrix_implementations/non-symmetric_matrixes/non-symmetric_matrix_base.hpp"
 #include "core/matrix_implementations/non-symmetric_matrixes/matrix.hpp"
+#include "core/matrix_implementations/non-symmetric_matrixes/single_vector_matrix.hpp"
 
 #include "core/graph_implementations/graph_base.hpp"
 #include "core/graph_implementations/matrix_graph.hpp"

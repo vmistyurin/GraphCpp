@@ -56,14 +56,6 @@ void Matrix::reduce_element(msize index1, msize index2, mcontent difference)
 	_matrix[index1][index2] -= difference;
 }
 
-void Matrix::rearrange_with_permutations(const std::vector<msize>& new_nums)
-{
-	for (auto[str1, str2] : to_transpositions(new_nums))
-	{
-		swap(str1, str2);
-	}
-}
-
 void Matrix::rearrange_with_allocate(const std::vector<msize>& new_nums)
 {
 	Matrix result(dimension());
@@ -104,17 +96,5 @@ void Matrix::delete_last_strings(msize count)
 		{
 			_matrix[i].pop_back();
 		}
-	}
-}
-
-void Matrix::make_rearranged(const std::vector<msize>& new_nums, NonSymmetricMatrixBase& memory) const
-{
-	assert(new_nums.size() == dimension());
-	assert(is_permutation(new_nums));
-	assert(memory.dimension() == dimension());
-
-	for (auto[i, j] : *this)
-	{
-		memory.set(new_nums[i], new_nums[j], at(i, j));
 	}
 }

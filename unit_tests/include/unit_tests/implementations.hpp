@@ -4,7 +4,10 @@
 
 #include "core/all.hpp"
 
-using MatrixImplementations = testing::Types<graphcpp::Matrix>;
+using MatrixImplementations = testing::Types<
+    graphcpp::Matrix,
+    graphcpp::SingleVectorMatrix
+>;
 
 using SymmetricMatrixImplementations = testing::Types<
 	graphcpp::FullSymmetricMatrix,
@@ -19,7 +22,8 @@ using NonOrientedGraphImplementations = testing::Types<
 >;
 
 using OrientedGraphImplementations = testing::Types<
-	graphcpp::OrientedMatrixGraph<graphcpp::Matrix>
+	graphcpp::OrientedMatrixGraph<graphcpp::Matrix>,
+    graphcpp::OrientedMatrixGraph<graphcpp::SingleVectorMatrix>
 >;
 
 using RandomNonOrientedGraphImplementations = testing::Types<
