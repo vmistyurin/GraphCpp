@@ -2,6 +2,8 @@
 
 #include "core/matrix_implementations/non-symmetric_matrixes/non-symmetric_matrix_base.hpp"
 
+#include "boost/pool/pool_alloc.hpp"
+
 namespace graphcpp
 {
     class SingleVectorMatrix final: public NonSymmetricMatrixBase

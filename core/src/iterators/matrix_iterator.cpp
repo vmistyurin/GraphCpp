@@ -24,7 +24,7 @@ MatrixIterator::MatrixIterator(msize i, msize j, msize dimension)
 
 std::pair<msize, msize> MatrixIterator::operator*() const
 {
-	return std::make_pair(_i, _j);
+	return std::pair(_i, _j);
 }
 
 bool MatrixIterator::operator==(const MatrixIterator& rhs) const

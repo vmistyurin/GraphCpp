@@ -8,7 +8,7 @@
 #include "core/matrix_implementations/non-symmetric_matrixes/matrix.hpp"
 
 using namespace graphcpp;
-using MatrixType = HalfSymmetricMatrix;
+using MatrixType = SingleVectorSymmetricMatrix;
 
 namespace 
 {
@@ -62,7 +62,7 @@ mcontent flow_calculators::Edmonds_Karp_algorithm(const NonOrientedGraphBase& gr
 	assert(source != sink);
 	assert(std::max(source, sink) < graph.dimension());
 
-	Matrix current_flows(*graph.get_matrix());
+	SingleVectorMatrix current_flows(*graph.get_matrix());
 	mcontent flow = 0;
 
 	auto path = get_random_path(current_flows, source, sink);

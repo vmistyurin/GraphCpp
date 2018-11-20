@@ -5,7 +5,7 @@ import shutil
 lower_bound_of_edge_weight = 100
 upper_bound_of_edge_weight = 1000
 number_of_test = 20
-tests_dimension = [(13, 15)]
+tests_dimension = [(15, 19)]
 test_directory_name = "random_graphs"
 
 if os.path.isdir(test_directory_name):

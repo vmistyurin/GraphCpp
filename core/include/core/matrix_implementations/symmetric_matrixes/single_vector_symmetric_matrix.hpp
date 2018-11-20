@@ -2,6 +2,8 @@
 
 #include "core/matrix_implementations/symmetric_matrixes/symmetric_matrix_base.hpp"
 
+#include "boost/pool/pool_alloc.hpp"
+
 namespace graphcpp
 {
     class SingleVectorSymmetricMatrix final: public SymmetricMatrixBase
