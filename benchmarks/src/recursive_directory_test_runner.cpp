@@ -15,11 +15,17 @@ namespace
 	}
 }
 
+RecursiveDirectoryTestRunner::RecursiveDirectoryTestRunner(fs::path path_to_tests, std::ostream& logger) :
+    _path_to_tests(std::move(path_to_tests)), _logger(logger)
+{
+}
+
 std::chrono::milliseconds RecursiveDirectoryTestRunner::run_single_test(const fs::path& path_to_test, const fs::path& path_to_answer,
 	const std::function<std::string(std::ifstream&&)>& test_function, unsigned int indent)
 {
 	std::ifstream input(path_to_test.string());
 
+    _logger << get_indent_string(indent) << "Test " << path_to_test.filename() << " started ... ";
 	std::chrono::system_clock clock;
 	auto start = clock.now();
 
@@ -29,8 +35,7 @@ std::chrono::milliseconds RecursiveDirectoryTestRunner::run_single_test(const fs
 
 	auto duration = finish - start;
 	auto time = std::chrono::duration_cast<std::chrono::milliseconds>(duration);
-	std::cout << get_indent_string(indent) << "Test " << path_to_test.filename() << " ended, time = "
-		<< time.count() << "ms " << std::endl;
+	_logger << " ended, time = " << time.count() << "ms " << std::endl;
 
 	std::ofstream output(path_to_answer.string());
 	output << result;
@@ -39,22 +44,22 @@ std::chrono::milliseconds RecursiveDirectoryTestRunner::run_single_test(const fs
 	return time;
 }
 
-void RecursiveDirectoryTestRunner::run_tests_in_directory(const fs::path& path_to_directory, const fs::path& path_to_answers, 
+void RecursiveDirectoryTestRunner::run_tests_in_directory(const fs::path& path_to_answers,
 	const std::function<std::string(std::ifstream&&)>& test_function, std::string_view test_name)
 {
-	std::cout << "Test " << test_name << " started" << std::endl;
+	_logger << "Test " << test_name << " started" << std::endl;
 
 	if (fs::exists(path_to_answers))
 	{
 		fs::remove_all(fs::canonical(path_to_answers));
 	}
-	run_tests_in_directory_uncheked(path_to_directory, path_to_answers, test_function, 0);
+    run_tests_in_directory_uncheked(_path_to_tests, path_to_answers, test_function, 0);
 }
 
 void RecursiveDirectoryTestRunner::run_tests_in_directory_uncheked(const fs::path& path_to_directory, const fs::path& path_to_answers, 
 	const std::function<std::string(std::ifstream&&)>& test_function, unsigned int indent)
 {
-	std::cout << get_indent_string(indent) << "Tests for directory " << path_to_directory.filename() << " started" << std::endl;
+	_logger << get_indent_string(indent) << "Tests for directory " << path_to_directory.filename() << " started" << std::endl;
 	fs::create_directory(path_to_answers);
 
 	unsigned int count = 0;
@@ -75,12 +80,12 @@ void RecursiveDirectoryTestRunner::run_tests_in_directory_uncheked(const fs::pat
 		}
 	}
 
-	std::cout << get_indent_string(indent) << "Tests for directory " << path_to_directory.filename() << " ended ";
+	_logger << get_indent_string(indent) << "Tests for directory " << path_to_directory.filename() << " ended";
 	if (count > 0)
 	{
-		std::cout << ", average time = " << time.count() / count << "ms";
+		_logger << ", average time = " << time.count() / count << "ms";
 	}
-	std::cout << std::endl;
+	_logger << std::endl;
 }
 
 std::list<fs::path> RecursiveDirectoryTestRunner::check_results(const fs::path& first_answers, const fs::path& second_answers)
@@ -116,4 +121,20 @@ std::list<fs::path> RecursiveDirectoryTestRunner::check_results(const fs::path& 
 	}
 	
 	return result;
+}
+
+void RecursiveDirectoryTestRunner::print_check_result(const fs::path& first_answers, const fs::path& second_answers)
+{
+    if (auto differences = check_results(first_answers, second_answers); differences.empty())
+    {
+        _logger << "No differences" << std::endl;
+    }
+    else
+    {
+        _logger << "There are " << differences.size() << " differences" << std::endl;
+        for (const auto& path : differences)
+        {
+            _logger << path.string() << std::endl;
+        }
+    }
 }
