@@ -11,23 +11,24 @@ namespace graphcpp_bench
 	class RecursiveDirectoryTestRunner final 
 	{
     private:
-        fs::path _path_to_tests;
+        const fs::path _path_to_tests;
+        const fs::path _result_path;
         std::ostream& _logger;
+        std::list<std::string> _runned_tests;
         
 	public:
-        explicit RecursiveDirectoryTestRunner(fs::path path_to_tests, std::ostream& logger);
+        explicit RecursiveDirectoryTestRunner(fs::path path_to_tests, fs::path result_path, std::ostream& logger);
         
-		std::chrono::milliseconds run_single_test(const fs::path& path_to_test, const fs::path& path_to_answer,
-			const std::function<std::string(std::ifstream&&)>& test_function, unsigned int indent = 0);
-
-		void run_tests_in_directory(const fs::path& path_to_answers, 
-			const std::function<std::string(std::ifstream&&)>& test_function, std::string_view test_name);
-
-		std::list<fs::path> check_results(const fs::path& first_answers, const fs::path& second_answers);
-        void print_check_result(const fs::path& first_answers, const fs::path& second_answers);
+		void run_tests(std::function<std::string(std::ifstream&&)> test_function, std::string_view test_name);
+        void print_check_result();
 
 	private:
-		void run_tests_in_directory_uncheked(const fs::path& path_to_directory, const fs::path& path_to_answers, 
+        std::list<fs::path> check_results(const fs::path& first_answers, const fs::path& second_answers);
+
+        std::chrono::milliseconds run_single_test(const fs::path& path_to_test, const fs::path& result_path,
+            const std::function<std::string(std::ifstream&&)>& test_function, unsigned int indent = 0);
+        
+		void run_tests_in_directory_uncheked(const fs::path& path_to_directory, const fs::path& result_path,
 			const std::function<std::string(std::ifstream&&)>& test_function, unsigned int indent);
 	};
 }
