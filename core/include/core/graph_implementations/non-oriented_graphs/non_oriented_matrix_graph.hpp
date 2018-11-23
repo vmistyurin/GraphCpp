@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <numeric>
 
-#include "core/utils.hpp"
+#include "core/utils/numeric.hpp"
 #include "core/graph_implementations/non-oriented_graphs/non_oriented_graph_base.hpp"
 #include "core/edges/symmetric_edge.hpp"
 
@@ -32,8 +32,8 @@ namespace graphcpp
 		void set(msize v1, msize v2, mcontent value) override;
 
 		std::vector<SymmetricEdge> get_edges() const override;
-		std::shared_ptr<SymmetricMatrixBase> get_matrix() const override;
-		std::shared_ptr<NonOrientedGraphBase> extract_subgraph(const std::vector<msize>& vertexes) const override;
+		std::unique_ptr<SymmetricMatrixBase> get_matrix() const override;
+		std::unique_ptr<NonOrientedGraphBase> extract_subgraph(const std::vector<msize>& vertexes) const override;
 
 		bool equal(const GraphBase& rhs) const override;
 
@@ -148,9 +148,9 @@ namespace graphcpp
 	}
 
 	template<class T> 
-	std::shared_ptr<SymmetricMatrixBase> NonOrientedMatrixGraph<T>::get_matrix() const
+	std::unique_ptr<SymmetricMatrixBase> NonOrientedMatrixGraph<T>::get_matrix() const
 	{
-		return std::make_shared<T>(_matrix);
+		return std::make_unique<T>(_matrix);
 	}
 
 	template<class T>
@@ -216,7 +216,7 @@ namespace graphcpp
 	}
 
 	template<class T>
-	std::shared_ptr<NonOrientedGraphBase> NonOrientedMatrixGraph<T>::extract_subgraph(const std::vector<msize>& vertexes) const
+	std::unique_ptr<NonOrientedGraphBase> NonOrientedMatrixGraph<T>::extract_subgraph(const std::vector<msize>& vertexes) const
 	{
 		assert(!vertexes.empty());
 		assert(std::all_of(vertexes.cbegin(), vertexes.cend(), [&](auto vertex) { return vertex < dimension(); }));
@@ -230,7 +230,7 @@ namespace graphcpp
 			}
 		}
 
-		return std::make_shared<NonOrientedMatrixGraph<T>>(std::move(result));
+		return std::make_unique<NonOrientedMatrixGraph<T>>(std::move(result));
 	}
 
 	template<class T>

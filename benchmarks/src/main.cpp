@@ -18,17 +18,17 @@ int main(int argc, char** argv)
         RecursiveDirectoryTestRunner tester(path_to_tests, result_path, std::cout);
         
         tester.run_tests(
-            single_threaded_matrix_of_flows<
+            multi_threaded_matrix_of_flows<
                 RandomNonOrientedGraph<NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>, SingleVectorSymmetricMatrix>
             >(flow_calculators::Edmonds_Karp_algorithm),
-            "Single thread"
+            "Multi thread Edmons-Karp"
         );
         
         tester.run_tests(
             multi_threaded_matrix_of_flows<
                 RandomNonOrientedGraph<NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>, SingleVectorSymmetricMatrix>
-            >(flow_calculators::Edmonds_Karp_algorithm),
-            "Multi thread"
+            >(std::bind(flow_calculators::reduction_use_algorithm, std::placeholders::_1, flow_calculators::Edmonds_Karp_algorithm)),
+            "Multi thread reduction use"
         );
         
         tester.print_check_result();

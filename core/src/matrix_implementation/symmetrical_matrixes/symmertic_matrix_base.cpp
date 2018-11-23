@@ -4,7 +4,7 @@
 #include <string>
 #include <algorithm>
 
-#include "core/utils.hpp"
+#include "core/utils/numeric.hpp"
 
 using namespace graphcpp;
 

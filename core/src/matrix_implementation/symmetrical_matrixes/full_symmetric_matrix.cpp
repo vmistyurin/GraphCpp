@@ -3,7 +3,7 @@
 #include <cassert>
 #include <algorithm>
 
-#include "core/utils.hpp"
+#include "core/utils/numeric.hpp"
 #include "core/iterators/matrix_iterator.hpp"
 
 using namespace graphcpp;

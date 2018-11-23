@@ -1,6 +1,6 @@
 #pragma once
 
-#include "core/utils.hpp"
+#include "core/utils/numeric.hpp"
 
 namespace graphcpp
 {

@@ -8,7 +8,11 @@
 #include "core/graph_implementations/oriented_graphs/oriented_matrix_graph.hpp"
 
 using namespace graphcpp;
-using MatrixType = HalfSymmetricMatrix;
+
+using MatrixType = SingleVectorMatrix;
+using SymmetricMatrixType = SingleVectorSymmetricMatrix;
+
+using GraphType = OrientedMatrixGraph<MatrixType>;
 
 mcontent flow_calculators::preflow_push_algorithm(const NonOrientedGraphBase& graph, msize source, msize sink)
 {
@@ -24,7 +28,7 @@ mcontent flow_calculators::preflow_push_algorithm(const NonOrientedGraphBase& gr
 		excesses[i] = graph.at(source, i);
 	}
 
-	OrientedMatrixGraph<Matrix> flows(graph.dimension());
+	GraphType flows(graph.dimension());
 
 	for(msize i = 0; i < flows.dimension(); i++)
 	{
@@ -95,45 +99,6 @@ mcontent flow_calculators::preflow_push_algorithm(const NonOrientedGraphBase& gr
 			break;
 		}
 	}
-	/*while (excessed_vertex != sink)
-	{
-		msize vertex_to_push;	
-		for (vertex_to_push = 0; vertex_to_push < graph.dimension(); vertex_to_push++)
-		{
-			if (graph.at(excessed_vertex, vertex_to_push) - flows.at(excessed_vertex, vertex_to_push) > 0 &&
-				heights[excessed_vertex] == heights[vertex_to_push] + 1)
-			{
-				break;
-			}
-		}
-
-		if (vertex_to_push == graph.dimension())
-		{//lift
-			auto new_height = msize_undefined;
-			for (msize i = 0; i < graph.dimension(); i++)
-			{
-				if (graph.at(excessed_vertex, i) - flows.at(excessed_vertex, i) > 0)
-				{
-					new_height = std::min(new_height, heights[i]);
-				}
-			}
-
-			assert(new_height != msize_undefined);
-			heights[excessed_vertex] = new_height + 1;
-		}
-		else
-		{//push
-			const auto flow_to_push = std::min(excesses[excessed_vertex], 
-				graph.at(excessed_vertex, vertex_to_push) - flows.at(excessed_vertex, vertex_to_push));
-			flows.set(excessed_vertex, vertex_to_push, flows.at(excessed_vertex, vertex_to_push) + flow_to_push);
-			flows.set(vertex_to_push, excessed_vertex, - flows.at(excessed_vertex, vertex_to_push));
-
-			excesses[excessed_vertex] -= flow_to_push;
-			excesses[vertex_to_push] += flow_to_push;
-		}
-
-		excessed_vertex = get_excess_vertex(excesses, sink);
-	}*/
 
 	mcontent flow = 0;
 	for (msize i = 0; i < graph.dimension(); i++)

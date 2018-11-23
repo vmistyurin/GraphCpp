@@ -4,7 +4,7 @@
 #include <mutex>
 #include <future>
 
-#include "core/utils.hpp"
+#include "core/utils/numeric.hpp"
 
 namespace graphcpp
 {

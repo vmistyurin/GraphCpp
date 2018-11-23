@@ -1,6 +1,6 @@
 #include "core/random_graph_implementations/non_oriented_graphs/random_non_oriented_graph_base.hpp"
 
-#include "core/utils.hpp"
+#include "core/utils/numeric.hpp"
 
 using namespace graphcpp;
 

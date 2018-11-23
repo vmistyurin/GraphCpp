@@ -6,7 +6,7 @@
 #include <set>
 #include <queue>
 
-#include "core/utils.hpp"
+#include "core/utils/numeric.hpp"
 #include "core/edges/edge.hpp"
 #include "core/graph_implementations/oriented_graphs/oriented_graph_base.hpp"
 
@@ -26,8 +26,8 @@ namespace graphcpp
 		explicit OrientedMatrixGraph(std::vector<std::vector<mcontent>> matrix);
 
 		std::vector<Edge> get_edges() const override;
-		std::shared_ptr<MatrixBase> get_matrix() const override;
-		std::shared_ptr<OrientedGraphBase> extract_subgraph(const std::vector<msize>& vertexes) const override;
+		std::unique_ptr<MatrixBase> get_matrix() const override;
+		std::unique_ptr<OrientedGraphBase> extract_subgraph(const std::vector<msize>& vertexes) const override;
 
 		msize dimension() const override;
 		mcontent at(msize v1, msize v2) const override;
@@ -144,9 +144,9 @@ namespace graphcpp
 	}
 
 	template<class T>
-	std::shared_ptr<MatrixBase> OrientedMatrixGraph<T>::get_matrix() const
+	std::unique_ptr<MatrixBase> OrientedMatrixGraph<T>::get_matrix() const
 	{
-		return std::make_shared<T>(_matrix);
+		return std::make_unique<T>(_matrix);
 	}
 
 	template<class T>
@@ -195,7 +195,7 @@ namespace graphcpp
 	}
 
 	template<class T>
-	std::shared_ptr<OrientedGraphBase> OrientedMatrixGraph<T>::extract_subgraph(const std::vector<msize>& vertexes) const
+	std::unique_ptr<OrientedGraphBase> OrientedMatrixGraph<T>::extract_subgraph(const std::vector<msize>& vertexes) const
 	{
 		assert(!vertexes.empty());
 		assert(std::all_of(vertexes.cbegin(), vertexes.cend(), [&](auto vertex) {return vertex < dimension(); }));
@@ -209,7 +209,7 @@ namespace graphcpp
 			}
 		}
 
-		return std::make_shared<OrientedMatrixGraph<T>>(std::move(result));
+		return std::make_unique<OrientedMatrixGraph<T>>(std::move(result));
 	}
 
 	template<class T>

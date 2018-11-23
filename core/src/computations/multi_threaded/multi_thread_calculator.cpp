@@ -3,7 +3,7 @@
 #include <future>
 #include <iostream>
 
-#include "core/utils.hpp"
+#include "core/utils/numeric.hpp"
 
 using namespace graphcpp;
 
@@ -13,7 +13,8 @@ MultiThreadCalculator::MultiThreadCalculator(std::unique_ptr<RandomNonOrientedGr
     _flow_func(std::move(flow_func)),
     _thread_pool(std::thread::hardware_concurrency())
 {
-    std::call_once(_print_number_of_cores_flag, []{
+    std::call_once(_print_number_of_cores_flag, []
+    {
         std::cout << "Number of threads: " << std::thread::hardware_concurrency() << std::endl;
     });
 }

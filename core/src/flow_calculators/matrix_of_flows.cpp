@@ -4,12 +4,12 @@
 
 using namespace graphcpp;
 
-using MatrixType = HalfSymmetricMatrix;
+using SymmetricMatrixType = HalfSymmetricMatrix;
 
 std::unique_ptr<SymmetricMatrixBase> flow_calculators::matrix_of_flows(const NonOrientedGraphBase& graph,
 	const std::function<mcontent(const NonOrientedGraphBase&, msize, msize)>& single_flow_calculator)
 {
-	auto result = std::make_unique<MatrixType>(graph.dimension());
+	auto result = std::make_unique<SymmetricMatrixType>(graph.dimension());
 
 	for (auto[i, j] : graph)
 	{

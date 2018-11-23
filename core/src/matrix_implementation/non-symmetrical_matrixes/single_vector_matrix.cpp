@@ -1,6 +1,6 @@
 #include "core/matrix_implementations/non-symmetric_matrixes/single_vector_matrix.hpp"
 
-#include "core/utils.hpp"
+#include "core/utils/numeric.hpp"
 
 using namespace graphcpp;
 

@@ -2,7 +2,7 @@
 
 #include <cassert>
 
-#include "core/utils.hpp"
+#include "core/utils/numeric.hpp"
 
 using namespace graphcpp;
 

@@ -29,12 +29,10 @@ namespace graphcpp
     
     template<class FunctionType>
     void ThreadPool::add_task(FunctionType&& f)
-    {
-        auto task = std::make_shared<std::function<void()>>(std::forward<FunctionType>(f));
-        
+    {        
         std::lock_guard lock(_mutex);
 
-		_tasks.emplace([task] { (*task)(); });
+        _tasks.push(std::forward<FunctionType>(f));
         _cv.notify_one();
     }
 }

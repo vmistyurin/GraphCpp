@@ -6,8 +6,9 @@
 #include "core/graph_implementations/non-oriented_graphs/non_oriented_matrix_graph.hpp"
 
 using namespace graphcpp;
-using MatrixType = FullSymmetricMatrix;
-using GraphType = NonOrientedMatrixGraph<HalfSymmetricMatrix>;
+
+using SymmetricMatrixType = SingleVectorSymmetricMatrix;
+using NonOrientedGraphType = NonOrientedMatrixGraph<SingleVectorMatrix>;
 
 using flow_func = const std::function<mcontent(const NonOrientedGraphBase&, msize, msize)>&;
 
@@ -21,7 +22,7 @@ namespace
 	std::unique_ptr<SymmetricMatrixBase> remove_hanged_vertexes(const NonOrientedGraphBase& graph,
 		flow_func single_flow_calculator)
 	{
-		auto result = std::make_unique<MatrixType>(graph.dimension());
+		auto result = std::make_unique<SymmetricMatrixType>(graph.dimension());
 
 		auto hanged_vertexes = graph.get_hanged_vertexes();
 
@@ -125,7 +126,7 @@ namespace
 	{
 		RETURN_IF(chains.empty(), remove_hanged_vertexes(graph, single_flow_calculator));
 
-		auto result = std::make_unique<MatrixType>(graph.dimension());
+		auto result = std::make_unique<SymmetricMatrixType>(graph.dimension());
 
 		auto chain = std::move(chains.back());
 		chains.pop_back();
@@ -173,7 +174,7 @@ namespace
 
 		auto subgraph_flows = shrink_chains(graph, chains, single_flow_calculator);
 
-		for(auto[i,j] : *result)
+		for(auto[i, j] : *result)
 		{
 			if (new_nums[i] != msize_undefined && new_nums[j] != msize_undefined)
 			{
@@ -211,7 +212,7 @@ namespace
 
 std::unique_ptr<SymmetricMatrixBase> flow_calculators::reduction_use_algorithm(const NonOrientedGraphBase& graph, flow_func single_flow_calculator)
 {
-	auto result = std::make_unique<MatrixType>(graph.dimension());
+	auto result = std::make_unique<SymmetricMatrixType>(graph.dimension());
 
 	auto components = graph.get_connected_components();
 	for (const auto& component : components)

@@ -4,8 +4,8 @@ import shutil
 
 lower_bound_of_edge_weight = 100
 upper_bound_of_edge_weight = 1000
-number_of_test = 20
-tests_dimension = [(10, 12)]
+number_of_tests = 10
+tests_dimension = [(19, 20)]
 test_directory_name = "random_graphs"
 
 if os.path.isdir(test_directory_name):
@@ -15,7 +15,7 @@ os.mkdir(test_directory_name)
 for test in tests_dimension:
     current_test_directory = "%s/(%d,%d)" % (test_directory_name, test[0], test[1])
     os.mkdir(current_test_directory)
-    for count_of_test in range(0, number_of_test):
+    for count_of_test in range(0, number_of_tests):
         successfull_generated = []
         while len(successfull_generated) < test[1]:
             new_edge = (random.randint(0, test[0] - 1), random.randint(0, test[0] - 1))

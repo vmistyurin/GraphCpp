@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/macroses.hpp"
-#include "core/utils.hpp"
+#include "core/utils/numeric.hpp"
 
 #include "core/edges/edge.hpp"
 #include "core/edges/symmetric_edge.hpp"
@@ -19,7 +19,6 @@
 #include "core/matrix_implementations/non-symmetric_matrixes/single_vector_matrix.hpp"
 
 #include "core/graph_implementations/graph_base.hpp"
-#include "core/graph_implementations/matrix_graph.hpp"
 
 #include "core/graph_implementations/non-oriented_graphs/non_oriented_graph_base.hpp"
 #include "core/graph_implementations/non-oriented_graphs/non_oriented_matrix_graph.hpp"
@@ -33,7 +32,6 @@
 
 #include "core/flow_calculators.hpp"
 
-#include "core/computations/summator.hpp"
 #include "core/computations/single_threaded/single_thread_summator.hpp"
 #include "core/computations/single_threaded/single_thread_calculator.hpp"
 #include "core/computations/multi_threaded/multi_thread_summator.hpp"

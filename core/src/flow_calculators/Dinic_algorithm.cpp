@@ -11,7 +11,11 @@
 #include "core/graph_implementations/oriented_graphs/oriented_matrix_graph.hpp"
 
 using namespace graphcpp;
-using MatrixType = FullSymmetricMatrix;
+
+using MatrixType = SingleVectorMatrix;
+using SymmetricMatrixType = SingleVectorSymmetricMatrix;
+
+using GraphType = OrientedMatrixGraph<MatrixType>;
 
 namespace
 {
@@ -115,12 +119,12 @@ mcontent flow_calculators::Dinic_algorithm(const NonOrientedGraphBase& graph, ms
 
 	mcontent flow = 0;
 
-	OrientedMatrixGraph<Matrix> matrix_graph(graph);
+	GraphType matrix_graph(graph);
 	auto layers = get_layers(matrix_graph, source);
 
 	while (layers[sink] != msize_undefined)
 	{
-		auto layered_network = get_layered_network<OrientedMatrixGraph<Matrix>>(matrix_graph, layers, source);
+		auto layered_network = get_layered_network<GraphType>(matrix_graph, layers, source);
 
 		auto path = get_path(layered_network, source, sink);
 		while (!path.empty())

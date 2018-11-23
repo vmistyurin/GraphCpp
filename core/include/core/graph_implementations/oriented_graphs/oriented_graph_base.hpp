@@ -13,8 +13,8 @@ namespace graphcpp
 	{
 	public:
 		virtual std::vector<Edge> get_edges() const = 0;
-		virtual std::shared_ptr<MatrixBase> get_matrix() const = 0;
-		virtual std::shared_ptr<OrientedGraphBase> extract_subgraph(const std::vector<msize>& vertexes) const = 0;
+		virtual std::unique_ptr<MatrixBase> get_matrix() const = 0;
+		virtual std::unique_ptr<OrientedGraphBase> extract_subgraph(const std::vector<msize>& vertexes) const = 0;
 
 		MatrixIterator begin() const;
 		MatrixIterator end() const;
