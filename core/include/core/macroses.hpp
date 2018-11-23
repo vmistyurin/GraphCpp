@@ -6,6 +6,14 @@
 #define RETURN_IF(condition, value) if(condition) return value;
 #define MINMAX(value1, value2) if(value1 > value2) std::swap(value1, value2)
 
+#define ABSTRACT_CLASS_OPERATIONS(ClassName) \
+    virtual ~ClassName() = default; \
+    ClassName() = default; \
+    ClassName(const ClassName&) = default; \
+    ClassName& operator=(const ClassName&) = default; \
+    ClassName(ClassName&&) = default; \
+    ClassName& operator=(ClassName&&) = default;
+
 namespace graphcpp
 {
 	using msize = size_t;

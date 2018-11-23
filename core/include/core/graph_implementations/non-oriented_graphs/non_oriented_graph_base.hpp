@@ -30,11 +30,6 @@ namespace graphcpp
 		SymmetricMatrixIterator begin() const;
 		SymmetricMatrixIterator end() const;
 
-		virtual ~NonOrientedGraphBase() = default;
-		NonOrientedGraphBase() = default;
-		NonOrientedGraphBase(const NonOrientedGraphBase&) = default;
-		NonOrientedGraphBase& operator=(const NonOrientedGraphBase&) = default;
-		NonOrientedGraphBase(NonOrientedGraphBase&&) = default;
-		NonOrientedGraphBase& operator=(NonOrientedGraphBase&&) = default;
+        ABSTRACT_CLASS_OPERATIONS(NonOrientedGraphBase);
 	};
 }
