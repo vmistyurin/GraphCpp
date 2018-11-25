@@ -29,12 +29,7 @@ namespace graphcpp
 
 		std::string to_string() const;
 
-		virtual ~MatrixBase() = default;
-		MatrixBase() = default;
-		MatrixBase(const MatrixBase&) = default;
-		MatrixBase& operator=(const MatrixBase&) = default;
-		MatrixBase(MatrixBase&&) = default;
-		MatrixBase& operator=(MatrixBase&&) = default;
+		ABSTRACT_CLASS_OPERATIONS(MatrixBase);
 	}; 
 
     std::ostream& operator<<(std::ostream& stream, const MatrixBase& matrix);

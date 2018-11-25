@@ -10,7 +10,7 @@ using namespace graphcpp;
 using SymmetricMatrixType = SingleVectorSymmetricMatrix;
 using NonOrientedGraphType = NonOrientedMatrixGraph<SingleVectorMatrix>;
 
-using flow_func = const std::function<mcontent(const NonOrientedGraphBase&, msize, msize)>&;
+//using flow_func = const std::function<mcontent(const NonOrientedGraphBase&, msize, msize)>&;
 
 namespace
 {
@@ -18,9 +18,8 @@ namespace
 	constexpr mcontent hanged_vertex_not_linked = -2;
 	constexpr mcontent hanged_vertex_linked = -3;
 
-
 	std::unique_ptr<SymmetricMatrixBase> remove_hanged_vertexes(const NonOrientedGraphBase& graph,
-		flow_func single_flow_calculator)
+		const single_flow_function& single_flow_calculator)
 	{
 		auto result = std::make_unique<SymmetricMatrixType>(graph.dimension());
 
@@ -122,7 +121,7 @@ namespace
 		abort();
 	}
 
-	std::unique_ptr<SymmetricMatrixBase> shrink_chains(NonOrientedGraphBase& graph, std::vector<std::vector<msize>>& chains, flow_func single_flow_calculator)
+	std::unique_ptr<SymmetricMatrixBase> shrink_chains(NonOrientedGraphBase& graph, std::vector<std::vector<msize>>& chains, const single_flow_function& single_flow_calculator)
 	{
 		RETURN_IF(chains.empty(), remove_hanged_vertexes(graph, single_flow_calculator));
 
@@ -203,14 +202,14 @@ namespace
 		return result;
 	}
 
-	std::unique_ptr<SymmetricMatrixBase> parse_chains(NonOrientedGraphBase& graph, flow_func single_flow_calculator)
+	std::unique_ptr<SymmetricMatrixBase> parse_chains(NonOrientedGraphBase& graph, const single_flow_function& single_flow_calculator)
 	{
 		auto chains = graph.get_chains();
 		return shrink_chains(graph, chains, single_flow_calculator);
 	}
 }
 
-std::unique_ptr<SymmetricMatrixBase> flow_calculators::reduction_use_algorithm(const NonOrientedGraphBase& graph, flow_func single_flow_calculator)
+std::unique_ptr<SymmetricMatrixBase> flow_calculators::reduction_use_algorithm(const NonOrientedGraphBase& graph, const single_flow_function& single_flow_calculator)
 {
 	auto result = std::make_unique<SymmetricMatrixType>(graph.dimension());
 

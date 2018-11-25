@@ -25,11 +25,6 @@ namespace graphcpp
 		SymmetricMatrixIterator begin() const;
 		SymmetricMatrixIterator end() const;
 
-		virtual ~SymmetricMatrixBase() = default;
-		SymmetricMatrixBase() = default;
-		SymmetricMatrixBase(const SymmetricMatrixBase&) = default;
-		SymmetricMatrixBase& operator=(const SymmetricMatrixBase&) = default;
-		SymmetricMatrixBase(SymmetricMatrixBase&&) = default;
-		SymmetricMatrixBase& operator=(SymmetricMatrixBase&&) = default;
+		ABSTRACT_CLASS_OPERATIONS(SymmetricMatrixBase);
 	}; 
 }

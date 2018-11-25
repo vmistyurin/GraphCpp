@@ -4,7 +4,7 @@
 
 namespace graphcpp
 {
-	class Matrix : public NonSymmetricMatrixBase
+	class Matrix final: public NonSymmetricMatrixBase
 	{
 	private:
 		std::vector<std::vector<mcontent>> _matrix;

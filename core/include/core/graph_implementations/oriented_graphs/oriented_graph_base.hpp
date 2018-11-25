@@ -19,11 +19,6 @@ namespace graphcpp
 		MatrixIterator begin() const;
 		MatrixIterator end() const;
 
-		virtual ~OrientedGraphBase() = default;
-		OrientedGraphBase() = default;
-		OrientedGraphBase(const OrientedGraphBase&) = default;
-		OrientedGraphBase& operator=(const OrientedGraphBase&) = default;
-		OrientedGraphBase(OrientedGraphBase&&) = default;
-		OrientedGraphBase& operator=(OrientedGraphBase&&) = default;
+		ABSTRACT_CLASS_OPERATIONS(OrientedGraphBase);
 	};
 }

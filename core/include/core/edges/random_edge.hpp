@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/macroses.hpp"
-#include "edge.hpp"
+#include "core/edges/edge.hpp"
 
 namespace graphcpp
 {

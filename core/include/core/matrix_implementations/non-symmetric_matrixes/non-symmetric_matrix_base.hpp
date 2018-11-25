@@ -14,11 +14,6 @@ namespace graphcpp
 		MatrixIterator begin() const;
 		MatrixIterator end() const;
         
-		virtual ~NonSymmetricMatrixBase() = default;
-		NonSymmetricMatrixBase() = default;
-		NonSymmetricMatrixBase(const NonSymmetricMatrixBase&) = default;
-		NonSymmetricMatrixBase& operator=(const NonSymmetricMatrixBase&) = default;
-		NonSymmetricMatrixBase(NonSymmetricMatrixBase&&) = default;
-		NonSymmetricMatrixBase& operator=(NonSymmetricMatrixBase&&) = default;
+		ABSTRACT_CLASS_OPERATIONS(NonSymmetricMatrixBase);
 	};
 }

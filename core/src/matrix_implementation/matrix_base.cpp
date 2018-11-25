@@ -15,7 +15,7 @@ namespace
 		return std::to_string(number).length();
 	}
 
-	std::string get_aligned_string(mcontent number, mcontent len)
+	std::string get_aligned_string(mcontent number, unsigned int len)
 	{
 		assert(get_len(number) <= len);
 		return std::to_string(number) + std::string(len - get_len(number) + 1, ' ');
@@ -82,12 +82,12 @@ void MatrixBase::delete_strings(const std::vector<msize>& strings)
 
 std::string MatrixBase::to_string() const
 {
-	mcontent max_len = 0;
+	unsigned int max_len = 0;
 	for (msize i = 0; i < dimension(); i++)
 	{
 		for (msize j = 0; j < dimension(); j++)
 		{
-			max_len = std::max(max_len, static_cast<mcontent>(get_len(at(i, j))));
+			max_len = std::max(max_len, static_cast<unsigned int>(get_len(at(i, j))));
 		}
 	}
 

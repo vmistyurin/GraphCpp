@@ -18,11 +18,6 @@ namespace graphcpp
 
 		virtual void delete_vertexes(const std::vector<msize>& vertexes) = 0;
 		
-		virtual ~RandomGraphBase() = default;
-		RandomGraphBase() = default;
-		RandomGraphBase(const RandomGraphBase&) = default;
-		RandomGraphBase& operator=(const RandomGraphBase&) = default;
-		RandomGraphBase(RandomGraphBase&&) = default;
-		RandomGraphBase& operator=(RandomGraphBase&&) = default;
+		ABSTRACT_CLASS_OPERATIONS(RandomGraphBase);
 	};
 }
