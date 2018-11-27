@@ -60,7 +60,7 @@ TYPED_TEST(OrientedGraphBaseTests, LinkedVertexesTest)
 
 TYPED_TEST(OrientedGraphBaseTests, EdgesTest)
 {
-	EXPECT_TRUE(compare_vectors_without_order(oriented_test_graph::get_edges(), this->test_graph->get_edges()));
+	EXPECT_TRUE(compare_without_order(oriented_test_graph::get_edges(), this->test_graph->get_edges()));
 }
 
 TYPED_TEST(OrientedGraphBaseTests, VertexesDegreeTest)

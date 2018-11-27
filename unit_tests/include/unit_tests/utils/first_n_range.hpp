@@ -8,8 +8,8 @@ class FirstNRange
 private:
     IteratorType _begin;
     IteratorType _end;
+    
 public:
-
     FirstNRange(IteratorType begin, size_t N) :
         _begin(begin), _end(std::next(begin, N))
     {

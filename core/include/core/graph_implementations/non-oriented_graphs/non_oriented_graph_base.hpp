@@ -20,6 +20,8 @@ namespace graphcpp
 		virtual std::list<std::pair<msize, msize>> get_hanged_vertexes() const = 0;
 		virtual std::vector<msize> get_connected_component(msize vertex) const = 0;
 		virtual std::vector<std::vector<msize>> get_connected_components() const = 0;
+        
+        virtual std::list<std::vector<msize>> get_connected_trees() const = 0;
 
 		std::pair<std::list<std::pair<msize, msize>>, std::vector<msize>> get_bridges() const;
 		std::vector<std::vector<msize>> get_chains() const;

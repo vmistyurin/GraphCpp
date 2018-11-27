@@ -71,7 +71,7 @@ TYPED_TEST(RandomNonOrientedGraphBaseTests, GetEdgesTest)
 {
 	const auto edges = this->test_graph->get_edges();
 
-	EXPECT_TRUE(compare_vectors_without_order(edges, random_non_oriented_test_graph::edges()));
+	EXPECT_TRUE(compare_without_order(edges, random_non_oriented_test_graph::edges()));
 }
 
 TYPED_TEST(RandomNonOrientedGraphBaseTests, DeleteVertexesTest)
@@ -80,7 +80,7 @@ TYPED_TEST(RandomNonOrientedGraphBaseTests, DeleteVertexesTest)
 
 	const auto edges = this->test_graph->get_edges();
 
-	EXPECT_TRUE(compare_vectors_without_order(edges, random_non_oriented_test_graph::edges_after_delete()));
+	EXPECT_TRUE(compare_without_order(edges, random_non_oriented_test_graph::edges_after_delete()));
 }
 
 TYPED_TEST(RandomNonOrientedGraphBaseTests, WithDeletedVertexesTest)
@@ -89,7 +89,7 @@ TYPED_TEST(RandomNonOrientedGraphBaseTests, WithDeletedVertexesTest)
 
 	const auto edges = graph->get_edges();
 
-	EXPECT_TRUE(compare_vectors_without_order(edges, random_non_oriented_test_graph::edges_after_delete()));
+	EXPECT_TRUE(compare_without_order(edges, random_non_oriented_test_graph::edges_after_delete()));
 }
 
 TYPED_TEST(RandomNonOrientedGraphBaseTests, WithDeletedEdgeTest)
@@ -102,7 +102,7 @@ TYPED_TEST(RandomNonOrientedGraphBaseTests, WithDeletedEdgeTest)
 	this->test_graph->set(i, j, 0);
 	this->test_graph->set_probability(i, j, 0);
 
-	EXPECT_TRUE(compare_vectors_without_order(with_deleted_vertexes->get_edges(), this->test_graph->get_edges()));
+	EXPECT_TRUE(compare_without_order(with_deleted_vertexes->get_edges(), this->test_graph->get_edges()));
 }
 
 TYPED_TEST(RandomNonOrientedGraphBaseTests, FactorizeTest)
@@ -137,7 +137,7 @@ TYPED_TEST(RandomNonOrientedGraphBaseTests, FactorizeTest)
 		auto find_result = std::find_if(expected_graphs.cbegin(), expected_graphs.cend(), [&](std::pair<std::vector<SymmetricEdge>, double> result)
 		{
 			const auto[expected_edges, expected_probability] = result;
-			return are_doubles_equal(probability, expected_probability) && compare_vectors_without_order(edges, expected_edges);
+			return are_doubles_equal(probability, expected_probability) && compare_without_order(edges, expected_edges);
 		});
 
 		if (find_result != expected_graphs.cend())
@@ -159,5 +159,5 @@ TYPED_TEST(RandomNonOrientedGraphBaseTests, ReadFromStreamTest)
 	const auto graph = TypeParam::read_from_stream(input);
 
 	EXPECT_EQ(this->test_graph->dimension(), graph.dimension());
-	EXPECT_TRUE(compare_vectors_without_order(this->test_graph->get_edges(), graph.get_edges()));
+	EXPECT_TRUE(compare_without_order(this->test_graph->get_edges(), graph.get_edges()));
 }

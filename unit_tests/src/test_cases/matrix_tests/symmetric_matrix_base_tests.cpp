@@ -80,9 +80,9 @@ TYPED_TEST(SymmetricMatrixTests, DimensionTest)
 TYPED_TEST(SymmetricMatrixTests, EqualityTest)
 {
     std::vector<std::vector<mcontent>> dimensional_non_equal_array = {
-        { 1,0,0 },
-        { 0,1,0 },
-		{ 0,0,1 }
+        { 1, 0, 0 },
+        { 0, 1, 0 },
+		{ 0, 0, 1 }
     };
 	std::vector<std::vector<mcontent>> content_non_equal_array(test_array);
 	content_non_equal_array[5][2]++;

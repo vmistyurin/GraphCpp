@@ -71,7 +71,7 @@ TYPED_TEST(NonOrientedGraphBaseTests, LinkedVertexesTest)
 
 TYPED_TEST(NonOrientedGraphBaseTests, EdgesTest)
 {
-    EXPECT_TRUE(compare_vectors_without_order(non_oriented_test_graph::get_edges(), this->test_graph->get_edges()));
+    EXPECT_TRUE(compare_without_order(non_oriented_test_graph::get_edges(), this->test_graph->get_edges()));
 }
 
 TYPED_TEST(NonOrientedGraphBaseTests, VertexesDegreeTest)
@@ -105,11 +105,6 @@ TYPED_TEST(NonOrientedGraphBaseTests, DeleteVertexesTest)
 
     auto edges = this->test_graph->get_edges();
     
-//    for (auto& edge : )
-//    {
-//        std::cout << edge  << std::endl;
-//    }
-    
     EXPECT_TRUE(this->test_graph->equal(expected_graph));
 }
 
@@ -140,17 +135,17 @@ TYPED_TEST(NonOrientedGraphBaseTests, HangedVertexesTest)
 
 	auto hanged = this->test_graph->get_hanged_vertexes();
 
-	EXPECT_TRUE(compare_lists_without_order(hanged, expected_hanged));
+	EXPECT_TRUE(compare_without_order(hanged, expected_hanged));
 }
 
 TYPED_TEST(NonOrientedGraphBaseTests, ExtractSubgraph)
 {
 	std::vector<msize> vertexes = { 0, 3, 6, 7 };
 	std::vector<std::vector<mcontent>> expected_matrix = {
-      { 0, 10, 1, 2},
-      { 10, 0, 0, 0},
-      { 1, 0, 0, 0},
-      { 2, 0, 0, 0}
+      { 0, 10, 1, 2 },
+      { 10, 0, 0, 0 },
+      { 1, 0, 0, 0 },
+      { 2, 0, 0, 0 }
     };
 	TypeParam expected_subgraph(expected_matrix);
 
@@ -182,7 +177,7 @@ TYPED_TEST(NonOrientedGraphBaseTests, BridgesTest)
 
 	auto[bridges, classes] = graph.get_bridges();
 
-	ASSERT_TRUE(compare_lists_without_order(bridges, expected_bridges));
+	ASSERT_TRUE(compare_without_order(bridges, expected_bridges));
 
 	for(msize i = 0; i < expected_classes.size(); i++)
 	{
@@ -239,6 +234,28 @@ TYPED_TEST(NonOrientedGraphBaseTests, ChainsTest)
 	}
 }
 
+TYPED_TEST(NonOrientedGraphBaseTests, ConnectedTreesTest)
+{
+    std::vector<SymmetricEdge> edges = {
+        SymmetricEdge(0, 7, 1),
+        SymmetricEdge(0, 2, 1),
+        SymmetricEdge(0, 1, 1),
+        SymmetricEdge(1, 2, 1),
+        SymmetricEdge(1, 8, 1),
+        SymmetricEdge(4, 8, 1),
+        SymmetricEdge(6, 8, 1),
+        SymmetricEdge(3, 6, 1),
+        SymmetricEdge(5, 6, 1),
+    };
+    TypeParam graph(edges, 9);
+    
+    std::list<std::vector<msize>> expected_trees = { { 0, 7 }, { 1, 8, 4, 6, 3, 5 } }; //TODO : start ignore vertexes order
+    
+    const auto trees = graph.get_connected_trees();
+    
+    EXPECT_TRUE(compare_without_order(trees, expected_trees));
+}
+
 TYPED_TEST(NonOrientedGraphBaseTests, WithDeletedVertexesTest)
 {
 	const std::vector<msize> vertexes_to_delete = { 2, 5, 7 };
@@ -252,7 +269,7 @@ TYPED_TEST(NonOrientedGraphBaseTests, WithDeletedVertexesTest)
 
 	const auto edges_after_delete = this->test_graph->with_deleted_vertexes(vertexes_to_delete)->get_edges();
 
-	EXPECT_TRUE(compare_vectors_without_order(edges_after_delete, expected_edges));
+	EXPECT_TRUE(compare_without_order(edges_after_delete, expected_edges));
 }
 
 TYPED_TEST(NonOrientedGraphBaseTests, WithDeletedEdgeTest)
@@ -264,7 +281,7 @@ TYPED_TEST(NonOrientedGraphBaseTests, WithDeletedEdgeTest)
 
 	this->test_graph->set(first, second, 0);
 
-	EXPECT_TRUE(compare_vectors_without_order(with_deleted_edge->get_edges(), this->test_graph->get_edges()));
+	EXPECT_TRUE(compare_without_order(with_deleted_edge->get_edges(), this->test_graph->get_edges()));
 }
 
 #ifdef USE_SLOW_TESTS

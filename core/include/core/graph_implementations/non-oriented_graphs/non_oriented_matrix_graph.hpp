@@ -21,7 +21,7 @@ namespace graphcpp
 	public:
 		NonOrientedMatrixGraph();
 		NonOrientedMatrixGraph(const std::vector<SymmetricEdge>& edges, msize dimension);
-		explicit NonOrientedMatrixGraph(const NonOrientedGraphBase& other);
+		explicit NonOrientedMatrixGraph(const NonOrientedGraphBase& rhs);
 		explicit NonOrientedMatrixGraph(const SymmetricMatrixBase& rhs);
 
 		template<class SymmetricMatrixTypeForwarded>
@@ -44,6 +44,7 @@ namespace graphcpp
 		std::list<std::pair<msize, msize>> get_hanged_vertexes() const override;
 		std::vector<msize> get_connected_component(msize vertex) const override;
 		std::vector<std::vector<msize>> get_connected_components() const override;
+        std::list<std::vector<msize>> get_connected_trees() const override;
 
 		std::vector<msize> delete_vertexes(const std::vector<msize>& vertexes) override;
 		std::unique_ptr<NonOrientedGraphBase> with_deleted_vertexes(const std::vector<msize>& vertexes) const override;
@@ -306,7 +307,7 @@ namespace graphcpp
 		return std::vector<msize>(result.cbegin(), result.cend());
 	}
 
-	template<class T> inline
+	template<class T>
 	std::vector<std::vector<msize>> NonOrientedMatrixGraph<T>::get_connected_components() const
 	{
 		std::vector<std::vector<msize>> result;
@@ -330,4 +331,93 @@ namespace graphcpp
 
 		return result;
 	}
+    
+    template<class T>
+    std::list<std::vector<msize>> NonOrientedMatrixGraph<T>::get_connected_trees() const
+    {
+        std::vector<msize> parents(dimension(), msize_undefined);
+        
+        std::queue<msize> to_watch;
+        for (msize i = 0; i < dimension(); to_watch.push(i++));
+        
+        while (!to_watch.empty())
+        {
+            auto vertex = to_watch.front();
+            to_watch.pop();
+            
+            auto connected_with = msize_undefined;
+            auto is_hanged = true;
+            
+            for (msize j = 0; j < dimension(); j++)
+            {
+                if (at(vertex, j) > 0 && parents[j] == msize_undefined)
+                {
+                    if (connected_with != msize_undefined)
+                    {
+                        is_hanged = false;
+                        break;
+                    }
+                    connected_with = j;
+                }
+            }
+            
+            if (is_hanged && connected_with != msize_undefined)
+            {
+                parents[vertex] = connected_with;
+                to_watch.emplace(connected_with);
+            }
+        }
+        
+        std::list<std::vector<msize>> result;
+        std::vector<msize> trees(dimension(), msize_undefined);
+        
+        for (msize i = 0; i < parents.size(); i++)
+        {
+            if (parents[i] == msize_undefined)
+            {
+                bool is_tree = false;
+
+                std::queue<msize> childs; childs.push(i);
+                trees[i] = i;
+
+                while (!childs.empty())
+                {
+                    auto vertex = childs.front();
+                    childs.pop();
+                    
+                    for (msize j = 0; j < dimension(); j++)
+                    {
+                        if (parents[j] == vertex)
+                        {
+                            if (!is_tree)
+                            {
+                                result.emplace_back();
+                                result.back().push_back(vertex);
+                                is_tree = true;
+                            }
+                            
+                            result.back().push_back(j);
+                            trees[j] = i;
+                            childs.push(j);
+                        }
+                    }
+//                    if (parents[vertex] != msize_undefined && trees[parents[vertex]] == i && trees[vertex] != i)
+//                    {
+//                        if (!is_tree)
+//                        {
+//                            result.emplace_back();
+//                            result.back().push_back(i);
+//                            is_tree = true;
+//                        }
+//
+//                        result.back().push_back(vertex);
+//                        trees[vertex] = i;
+//                        childs.push(vertex);
+//                    }
+                }
+            }
+        }
+        
+        return result;
+    }
 }

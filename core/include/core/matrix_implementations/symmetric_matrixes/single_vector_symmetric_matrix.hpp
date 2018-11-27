@@ -18,6 +18,9 @@ namespace graphcpp
         explicit SingleVectorSymmetricMatrix(const std::vector<std::vector<mcontent>>& matrix);
         explicit SingleVectorSymmetricMatrix(const SymmetricMatrixBase& matrix);
 
+        SingleVectorSymmetricMatrix(const SingleVectorSymmetricMatrix& rhs);
+        SingleVectorSymmetricMatrix& operator=(const SingleVectorSymmetricMatrix& rhs);
+
         msize dimension() const override;
         mcontent at(msize index1, msize index2) const override;
         void set(msize index1, msize index2, mcontent value) override;
