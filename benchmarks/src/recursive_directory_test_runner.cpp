@@ -40,6 +40,8 @@ void RecursiveDirectoryTestRunner::run_tests(std::function<std::string(std::ifst
     _runned_tests.emplace_back(test_name);
     
     run_tests_in_directory_uncheked(_path_to_tests, _result_path / _runned_tests.back(), test_function, 0);
+    
+    _logger << std::endl;
 }
 
 void RecursiveDirectoryTestRunner::run_tests_in_directory_uncheked(const fs::path& path_to_directory, const fs::path& result_path,
@@ -61,8 +63,11 @@ void RecursiveDirectoryTestRunner::run_tests_in_directory_uncheked(const fs::pat
         }
         else
         {
-            time += run_single_test(file, result_path / filename, test_function, indent + 1);
-            count++;
+            if (const auto test_name = file.path().filename(); test_name.string()[0] != '.')
+            {
+                time += run_single_test(file, result_path / filename, test_function, indent + 1);
+                count++;
+            }
         }
     }
     
