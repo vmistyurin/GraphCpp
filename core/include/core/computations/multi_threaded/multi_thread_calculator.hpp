@@ -3,7 +3,7 @@
 #include "core/matrix_implementations/symmetric_matrixes/full_symmetric_matrix.hpp"
 #include "core/random_graph_implementations/non_oriented_graphs/random_non_oriented_graph.hpp"
 #include "core/computations/multi_threaded/multi_thread_summator.hpp"
-#include "core/flow_calculators.hpp"
+#include "core/flow_calculators/flow_calculators.hpp"
 #include "core/utils/thread_pool.hpp"
 
 namespace graphcpp

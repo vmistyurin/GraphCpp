@@ -1,4 +1,4 @@
-#include "core/flow_calculators.hpp"
+#include "core/flow_calculators/flow_calculators.hpp"
 
 #include <cmath>
 #include <algorithm>
@@ -240,7 +240,9 @@ namespace
                     childs.insert(childs.cend(), next_childs.cbegin(), next_childs.cend());
                     
                     subtrees.emplace_back(std::move(next_childs));
-                } else {
+                }
+                else
+                {
                     subtrees.emplace_back();
                 }
                 

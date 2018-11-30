@@ -1,4 +1,4 @@
-#include "core/flow_calculators.hpp"
+#include "core/flow_calculators/flow_calculators.hpp"
 
 #include <cassert>
 #include <queue>

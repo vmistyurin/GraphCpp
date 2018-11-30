@@ -1,4 +1,4 @@
-#include "core/flow_calculators.hpp"
+#include "core/flow_calculators/flow_calculators.hpp"
 
 #include "core/matrix_implementations/symmetric_matrixes/half_symmetric_matrix.hpp"
 

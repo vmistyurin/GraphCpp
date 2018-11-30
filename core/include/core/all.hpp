@@ -30,7 +30,8 @@
 #include "core/random_graph_implementations/non_oriented_graphs/random_non_oriented_graph_base.hpp"
 #include "core/random_graph_implementations/non_oriented_graphs/random_non_oriented_graph.hpp"
 
-#include "core/flow_calculators.hpp"
+#include "core/flow_calculators/flow_calculators.hpp"
+#include "core/flow_calculators/flow_helpers.hpp"
 
 #include "core/computations/single_threaded/single_thread_summator.hpp"
 #include "core/computations/single_threaded/single_thread_calculator.hpp"
