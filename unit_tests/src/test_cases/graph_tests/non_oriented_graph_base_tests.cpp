@@ -74,6 +74,11 @@ TYPED_TEST(NonOrientedGraphBaseTests, EdgesTest)
     EXPECT_TRUE(compare_without_order(non_oriented_test_graph::get_edges(), this->test_graph->get_edges()));
 }
 
+TYPED_TEST(NonOrientedGraphBaseTests, NumberOfEdgesTest)
+{
+    EXPECT_EQ(non_oriented_test_graph::get_edges().size(), this->test_graph->get_number_of_edges());
+}
+
 TYPED_TEST(NonOrientedGraphBaseTests, VertexesDegreeTest)
 {
     EXPECT_EQ(this->test_graph->get_degrees(), non_oriented_test_graph::get_degrees());
@@ -282,6 +287,41 @@ TYPED_TEST(NonOrientedGraphBaseTests, WithDeletedEdgeTest)
 	this->test_graph->set(first, second, 0);
 
 	EXPECT_TRUE(compare_without_order(with_deleted_edge->get_edges(), this->test_graph->get_edges()));
+}
+
+TYPED_TEST(NonOrientedGraphBaseTests, IsTreeTest)
+{
+    const std::vector<SymmetricEdge> tree_edges = {
+        SymmetricEdge(0, 1, 2),
+        SymmetricEdge(1, 5, 1),
+        SymmetricEdge(1, 3, 2),
+        SymmetricEdge(2, 3, 10),
+        SymmetricEdge(3, 4, 1)
+    };
+    TypeParam tree(tree_edges, 6);
+    
+    const std::vector<SymmetricEdge> not_tree_edges = {
+        SymmetricEdge(0, 1, 2),
+        SymmetricEdge(1, 5, 1),
+        SymmetricEdge(1, 3, 2),
+        SymmetricEdge(2, 3, 10),
+        SymmetricEdge(3, 4, 1),
+        SymmetricEdge(2, 4, 5)
+    };
+    TypeParam not_tree(not_tree_edges, 6);
+    
+    const std::vector<SymmetricEdge> disconnected_edges = {
+        SymmetricEdge(1, 5, 1),
+        SymmetricEdge(1, 3, 2),
+        SymmetricEdge(2, 3, 10),
+        SymmetricEdge(3, 4, 1),
+        SymmetricEdge(2, 4, 5)
+    };
+    TypeParam disconnected_graph(disconnected_edges, 6);
+
+    EXPECT_TRUE(tree.is_tree());
+    EXPECT_FALSE(not_tree.is_tree());
+    EXPECT_FALSE(disconnected_graph.is_tree());
 }
 
 #ifdef USE_SLOW_TESTS

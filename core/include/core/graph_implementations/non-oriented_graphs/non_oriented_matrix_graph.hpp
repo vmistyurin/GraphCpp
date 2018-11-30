@@ -32,6 +32,8 @@ namespace graphcpp
 		void set(msize v1, msize v2, mcontent value) override;
 
 		std::vector<SymmetricEdge> get_edges() const override;
+        msize get_number_of_edges() const override;
+        
 		std::unique_ptr<SymmetricMatrixBase> get_matrix() const override;
 		std::unique_ptr<NonOrientedGraphBase> extract_subgraph(const std::vector<msize>& vertexes) const override;
 
@@ -147,6 +149,22 @@ namespace graphcpp
 
 		return result;
 	}
+
+    template<class T>
+    msize NonOrientedMatrixGraph<T>::get_number_of_edges() const
+    {
+        msize result = 0;
+        
+        for(auto[i, j] : *this)
+        {
+            if (at(i, j) > 0)
+            {
+                result++;
+            }
+        }
+        
+        return result;
+    }
 
 	template<class T> 
 	std::unique_ptr<SymmetricMatrixBase> NonOrientedMatrixGraph<T>::get_matrix() const

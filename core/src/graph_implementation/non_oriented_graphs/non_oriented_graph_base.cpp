@@ -112,7 +112,7 @@ std::vector<std::vector<msize>> NonOrientedGraphBase::get_chains() const
 
 bool NonOrientedGraphBase::is_tree() const
 {
-    return get_connected_components().size() == 1 && get_edges().size() == dimension() - 1;
+    return get_connected_component(0).size() == dimension() && get_number_of_edges() == dimension() - 1;
 }
 
 SymmetricMatrixIterator NonOrientedGraphBase::begin() const

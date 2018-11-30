@@ -14,6 +14,8 @@ namespace graphcpp
 	{
 	public:
 		virtual std::vector<SymmetricEdge> get_edges() const = 0;
+        virtual msize get_number_of_edges() const = 0;
+        
 		virtual std::unique_ptr<SymmetricMatrixBase> get_matrix() const = 0;
 		virtual std::unique_ptr<NonOrientedGraphBase> extract_subgraph(const std::vector<msize>& vertexes) const = 0;
 
