@@ -13,11 +13,11 @@ namespace
 		times[vertex] = timer;
 		min_times[vertex] = timer++;
 
-		for(msize i = 0; i < graph.dimension(); i++)
+		for (msize i = 0; i < graph.dimension(); i++)
 		{
-			if(graph.at(vertex, i) > 0 && i != ancestor)
+			if (graph.at(vertex, i) > 0 && i != ancestor)
 			{
-				if(used[i])
+				if (used[i])
 				{
 					min_times[vertex] = std::min(min_times[vertex], times[i]);
 				}
@@ -37,7 +37,7 @@ namespace
 	void get_chain(const NonOrientedGraphBase& graph, msize vertex, std::vector<msize>& chain)
 	{
 		auto linked_with = graph.get_linked_vertexes(vertex);
-		if(linked_with.size() != 2)
+		if (linked_with.size() != 2)
 		{
 			chain.push_back(vertex);
 			return;
@@ -61,7 +61,7 @@ std::pair<std::list<std::pair<msize, msize>>, std::vector<msize>> NonOrientedGra
 
 	msize timer = 0;
 
-	for(msize i = 0; i < used.size(); i++)
+	for (msize i = 0; i < used.size(); i++)
 	{
 		if (!used[i])
 		{
@@ -78,7 +78,7 @@ std::vector<std::vector<msize>> NonOrientedGraphBase::get_chains() const
 	std::vector<msize> chain_components(dimension());
 	msize chain_counter = 0;
 
-	for(msize i = 0; i < dimension(); i++)
+	for (msize i = 0; i < dimension(); i++)
 	{
 		if (chain_components[i] != 0)
 		{
@@ -98,7 +98,7 @@ std::vector<std::vector<msize>> NonOrientedGraphBase::get_chains() const
 		std::reverse(chain.begin(), chain.end());
 		get_chain(*this, linked_with[1], chain);
 
-		for(auto vertex : chain)
+		for (auto vertex : chain)
 		{
 			chain_components[vertex] = chain_counter;
 		}
@@ -108,6 +108,11 @@ std::vector<std::vector<msize>> NonOrientedGraphBase::get_chains() const
 	}
 
 	return result;
+}
+
+bool NonOrientedGraphBase::is_tree() const
+{
+    return get_connected_components().size() == 1 && get_edges().size() == dimension() - 1;
 }
 
 SymmetricMatrixIterator NonOrientedGraphBase::begin() const

@@ -401,19 +401,6 @@ namespace graphcpp
                             childs.push(j);
                         }
                     }
-//                    if (parents[vertex] != msize_undefined && trees[parents[vertex]] == i && trees[vertex] != i)
-//                    {
-//                        if (!is_tree)
-//                        {
-//                            result.emplace_back();
-//                            result.back().push_back(i);
-//                            is_tree = true;
-//                        }
-//
-//                        result.back().push_back(vertex);
-//                        trees[vertex] = i;
-//                        childs.push(vertex);
-//                    }
                 }
             }
         }
