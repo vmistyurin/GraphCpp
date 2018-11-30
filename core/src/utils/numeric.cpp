@@ -92,3 +92,39 @@ bool graphcpp::are_doubles_equal(double value1, double value2)
 {
     return std::fabs(value1 - value2) < 0.0000000000001;
 }
+
+std::vector<msize> graphcpp::find_addition(const std::vector<msize>& numbers, msize length)
+{
+    assert(!numbers.empty());
+    assert(std::all_of(numbers.cbegin(), numbers.cend(), [&](auto number) { return number < length; } ));
+    
+    std::vector<msize> result;
+    result.reserve(length - numbers.size());
+    
+    for (msize i = 0; i < length; i++)
+    {
+        if (!contains(numbers, i))
+        {
+            result.push_back(i);
+        }
+    }
+    
+    return result;
+}
+
+std::vector<msize> graphcpp::reduce_vertexes_numbers(const std::vector<msize>& current_vertexes, const std::vector<msize>& missing_vertexes)
+{
+    std::vector<msize> result;
+    result.reserve(missing_vertexes.size());
+    
+    for (msize i = 0; i < current_vertexes.size(); i++)
+    {
+        result.push_back(current_vertexes[i] - std::count_if(missing_vertexes.cbegin(), missing_vertexes.cend(), [&](auto vertex)
+        {
+            return vertex < current_vertexes[i];
+        }));
+    }
+    
+    return result;
+}
+

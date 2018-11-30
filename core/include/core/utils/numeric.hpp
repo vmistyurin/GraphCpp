@@ -55,4 +55,8 @@ namespace graphcpp
 	}
     
     bool are_doubles_equal(double value1, double value2);
+    
+    std::vector<msize> find_addition(const std::vector<msize>& numbers, msize length);
+    
+    std::vector<msize> reduce_vertexes_numbers(const std::vector<msize>& current_vertexes, const std::vector<msize>& missing_vertexes);
 }
