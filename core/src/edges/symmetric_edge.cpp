@@ -34,6 +34,6 @@ msize SymmetricEdge::v2() const
 
 std::ostream& graphcpp::operator<< (std::ostream& stream, const SymmetricEdge& edge)
 {
-	stream << edge.v1() << " " << edge.v2() << edge.weight << std::endl;
+	stream << edge.v1() << " " << edge.v2() << " " << edge.weight;
 	return stream;
 }
