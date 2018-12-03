@@ -6,6 +6,7 @@
 
 #include "core/matrix_implementations/matrix_implementations.hpp"
 #include "core/graph_implementations/non-oriented_graphs/non_oriented_matrix_graph.hpp"
+#include "core/flow_calculators/flow_helpers.hpp"
 
 using namespace graphcpp;
 
@@ -211,13 +212,6 @@ namespace
 
 namespace
 {
-    
-    std::unique_ptr<SymmetricMatrixBase> flow_in_tree(const NonOrientedGraphBase& graph, single_flow_function flow_calc)
-    {
-        assert(graph.is_tree());
-        return flow_calculators::matrix_of_flows(graph, flow_calc);
-    }
-    
     std::vector<msize> process_subtree(NonOrientedGraphBase& graph, SymmetricMatrixType& result, std::vector<msize>& tree, msize vertex)
     {
         std::vector<msize> childs;
@@ -272,7 +266,6 @@ namespace
                                                                 const single_flow_function& flow_calc)
     {
         RETURN_IF(trees.empty(), remove_hanged_vertexes(graph, flow_calc))
-        auto treeeees = graph.get_connected_trees();
         
         auto result = std::make_unique<SymmetricMatrixType>(graph.dimension());
         
@@ -347,7 +340,7 @@ std::unique_ptr<SymmetricMatrixBase> flow_calculators::reduction_use_algorithm(c
         
         if (auto subgraph = graph.extract_subgraph(component); subgraph->is_tree())
         {
-            subgraph_flows = flow_in_tree(*subgraph, single_flow_calculator);
+            subgraph_flows = calculate_flows_in_tree(*subgraph);
         }
         else
         {
