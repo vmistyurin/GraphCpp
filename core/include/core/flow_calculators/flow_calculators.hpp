@@ -1,16 +1,7 @@
 #pragma once
 
-#include <functional>
-
-#include "core/matrix_implementations/symmetric_matrixes/symmetric_matrix_base.hpp"
-#include "core/graph_implementations/non-oriented_graphs/non_oriented_graph_base.hpp"
-#include "core/graph_implementations/graph_base.hpp"
-
-namespace graphcpp
-{
-    using flow_function = std::function<std::unique_ptr<SymmetricMatrixBase>(const NonOrientedGraphBase&)>;
-    using single_flow_function = std::function<mcontent(const NonOrientedGraphBase&, msize, msize)>;
-}
+#include "core/flow_calculators/definitions.hpp"
+#include "core/flow_calculators/internal/reduction_use_algorithm_impl.hpp"
 
 namespace graphcpp::flow_calculators
 {
@@ -22,6 +13,12 @@ namespace graphcpp::flow_calculators
 
 	std::unique_ptr<SymmetricMatrixBase> reduction_use_algorithm(const NonOrientedGraphBase& graph,
 		const std::function<mcontent(const NonOrientedGraphBase&, msize, msize)>& single_flow_calculator);
+    
+    template<class GraphType, class MatrixType>
+    std::unique_ptr<SymmetricMatrixBase> reduction_use_algorithm_de(const NonOrientedGraphBase& graph, single_flow_function flow_calc)
+    {
+        return internal::ReductionUseAlgorithmImpl<GraphType, MatrixType>(graph, std::move(flow_calc)).get_flow().first;
+    }
 
 	std::unique_ptr<SymmetricMatrixBase> matrix_of_flows(const NonOrientedGraphBase& graph,
 		const std::function<mcontent(const NonOrientedGraphBase&, msize, msize)>& single_flow_calculator);

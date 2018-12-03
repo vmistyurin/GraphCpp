@@ -15,8 +15,8 @@ using NonOrientedGraphType = NonOrientedMatrixGraph<SingleVectorMatrix>;
 
 namespace
 {
-	constexpr mcontent flow_to_compute = -1;
-	constexpr mcontent hanged_vertex_not_linked = -2;
+//    constexpr mcontent flow_to_compute = -1;
+//    constexpr mcontent hanged_vertex_not_linked = -2;
 	//constexpr mcontent hanged_vertex_linked = -3;
 
 	std::unique_ptr<SymmetricMatrixBase> remove_hanged_vertexes(const NonOrientedGraphBase& graph,

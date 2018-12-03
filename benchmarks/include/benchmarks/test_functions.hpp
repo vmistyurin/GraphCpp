@@ -14,13 +14,11 @@ namespace graphcpp_bench
     {
         static_assert(std::is_base_of_v<graphcpp::RandomNonOrientedGraphBase, RandomGraphType>, "T must be descendant of RandomNonOrientedGraphBase");
         
-        return [base_function = std::move(base_function)](std::ifstream&& input)
+        return [base_function = std::move(base_function)](std::ifstream&& input) mutable
         {
-            auto function = std::move(base_function);
-
             auto graph = std::make_unique<RandomGraphType>(RandomGraphType::read_from_stream(input));
             
-            auto calculator = graphcpp::SingleThreadCalculator(std::move(graph), std::move(function));
+            auto calculator = graphcpp::SingleThreadCalculator(std::move(graph), std::move(base_function));
             
             return calculator.expected_value()->to_string();
         };
@@ -40,13 +38,11 @@ namespace graphcpp_bench
     {
         static_assert(std::is_base_of_v<graphcpp::RandomNonOrientedGraphBase, RandomGraphType>, "T must be descendant of RandomNonOrientedGraphBase");
         
-        return [base_function = std::move(base_function)](std::ifstream&& input)
+        return [base_function = std::move(base_function)](std::ifstream&& input) mutable
         {
-            auto function = std::move(base_function);
-            
             auto graph = std::make_unique<RandomGraphType>(RandomGraphType::read_from_stream(input));
 
-            auto calculator = graphcpp::MultiThreadCalculator(std::move(graph), std::move(function));
+            auto calculator = graphcpp::MultiThreadCalculator(std::move(graph), std::move(base_function));
             
             return calculator.expected_value()->to_string();
         };

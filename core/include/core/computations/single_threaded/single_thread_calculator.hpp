@@ -17,7 +17,7 @@ namespace graphcpp
         flow_function _flow_func;
 
 	public:
-        SingleThreadCalculator(std::unique_ptr<RandomNonOrientedGraphBase>&& graph, flow_function&& flow_func);
+        SingleThreadCalculator(std::unique_ptr<RandomNonOrientedGraphBase>&& graph, flow_function flow_func);
 		
 		std::unique_ptr<SymmetricMatrixBase> expected_value();
 	};
