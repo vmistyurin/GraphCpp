@@ -203,11 +203,11 @@ namespace
 		return result;
 	}
 
-	std::unique_ptr<SymmetricMatrixBase> parse_chains(NonOrientedGraphBase& graph, const single_flow_function& single_flow_calculator)
-	{
-		auto chains = graph.get_chains();
-		return shrink_chains(graph, chains, single_flow_calculator);
-	}
+//    std::unique_ptr<SymmetricMatrixBase> parse_chains(NonOrientedGraphBase& graph, const single_flow_function& single_flow_calculator)
+//    {
+//        auto chains = graph.get_chains();
+//        return shrink_chains(graph, chains, single_flow_calculator);
+//    }
 }
 
 namespace

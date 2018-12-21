@@ -7,7 +7,7 @@
 
 using namespace graphcpp;
 
-MultiThreadCalculator::MultiThreadCalculator(std::unique_ptr<RandomNonOrientedGraphBase>&& graph, flow_function&& flow_func) :
+MultiThreadCalculator::MultiThreadCalculator(std::unique_ptr<RandomNonOrientedGraphBase>&& graph, flow_function flow_func) :
     _graph(std::move(graph)),
     _summator(FullSymmetricMatrix(_graph->dimension())),
     _flow_func(std::move(flow_func)),
