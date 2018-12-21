@@ -14,6 +14,13 @@
     ClassName(ClassName&&) = default; \
     ClassName& operator=(ClassName&&) = default;
 
+#define CRTP_CLASS_OPERATIONS(ClassName) \
+    ClassName() = default; \
+    ClassName(const ClassName&) = default; \
+    ClassName& operator=(const ClassName&) = default; \
+    ClassName(ClassName&&) = default; \
+    ClassName& operator=(ClassName&&) = default;
+
 namespace graphcpp
 {
 	using msize = size_t;

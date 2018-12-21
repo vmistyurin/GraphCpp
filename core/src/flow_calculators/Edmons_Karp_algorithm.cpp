@@ -29,7 +29,8 @@ namespace
 		return result;
 	}
 
-	std::vector<msize> get_random_path(MatrixBase& matrix, msize start, msize finish)
+    template<class MatrixImpl>
+	std::vector<msize> get_random_path(MatrixImpl& matrix, msize start, msize finish)
 	{
 		assert(std::max(start, finish) < matrix.dimension());
 

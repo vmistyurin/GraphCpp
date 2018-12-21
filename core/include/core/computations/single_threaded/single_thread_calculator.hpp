@@ -13,12 +13,12 @@ namespace graphcpp
 	{
 	private:
 		std::unique_ptr<RandomNonOrientedGraphBase> _graph;
-		SingleThreadSummator<FullSymmetricMatrix> _summator;
-        flow_function _flow_func;
+		SingleThreadSummator<SingleVectorSymmetricMatrix> _summator;
+        flow_function<SingleVectorSymmetricMatrix> _flow_func;
 
 	public:
-        SingleThreadCalculator(std::unique_ptr<RandomNonOrientedGraphBase>&& graph, flow_function flow_func);
+        SingleThreadCalculator(std::unique_ptr<RandomNonOrientedGraphBase>&& graph, flow_function<SingleVectorSymmetricMatrix> flow_func);
 		
-		std::unique_ptr<SymmetricMatrixBase> expected_value();
+		std::unique_ptr<SingleVectorSymmetricMatrix> expected_value();
 	};
 }

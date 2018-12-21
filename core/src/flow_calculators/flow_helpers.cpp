@@ -1,13 +1,12 @@
 #include "core/flow_calculators/flow_helpers.hpp"
-#include "core/matrix_implementations/symmetric_matrixes/single_vector_symmetric_matrix.hpp"
+#include "core/matrix_implementations/matrix_implementations.hpp"
 
 using namespace graphcpp;
 
-using SymmetricMatrixType = SingleVectorSymmetricMatrix;
-
 namespace
 {
-    std::vector<msize> process_subtree(const NonOrientedGraphBase& graph, SymmetricMatrixType& result, msize vertex)
+    template<class SymMatrixType>
+    std::vector<msize> process_subtree(const NonOrientedGraphBase& graph, SymMatrixType& result, msize vertex)
     {
         std::vector<msize> childs;
         std::vector<std::vector<msize>> subtrees;
@@ -57,13 +56,23 @@ namespace
     }
 }
 
-std::unique_ptr<SymmetricMatrixBase> flow_calculators::calculate_flows_in_tree(const NonOrientedGraphBase& graph)
+template<class SymMatrixType>
+std::unique_ptr<SymMatrixType> flow_calculators::calculate_flows_in_tree(const NonOrientedGraphBase& graph)
 {
     assert(graph.is_tree());
     
-    auto result = std::make_unique<SymmetricMatrixType>(graph.dimension());
+    auto result = std::make_unique<SymMatrixType>(graph.dimension());
     
     process_subtree(graph, *result, 0);
     
     return result;
 }
+
+template<>
+std::unique_ptr<SingleVectorSymmetricMatrix> flow_calculators::calculate_flows_in_tree(const NonOrientedGraphBase& graph);
+
+template<>
+std::unique_ptr<FullSymmetricMatrix> flow_calculators::calculate_flows_in_tree(const NonOrientedGraphBase& graph);
+
+template<>
+std::unique_ptr<HalfSymmetricMatrix> flow_calculators::calculate_flows_in_tree(const NonOrientedGraphBase& graph);

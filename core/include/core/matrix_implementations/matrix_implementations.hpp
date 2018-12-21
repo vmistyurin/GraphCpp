@@ -8,4 +8,5 @@
 #include "core/matrix_implementations/non-symmetric_matrixes/single_vector_matrix.hpp"
 #include "core/matrix_implementations/non-symmetric_matrixes/matrix.hpp"
 
-#define MATRIX_IMPLEMENTATIONS_SEQ (graphcpp::FullSymmetricMatrix) (graphcpp::HalfSymmetricMatrix) (graphcpp::SingleVectorSymmetricMatrix)
+#define MATRIX_IMPLEMENTATIONS_SEQ (graphcpp::FullSymmetricMatrix) (graphcpp::Matrix) (graphcpp::SingleVectorMatrix)
+#define SYM_MATRIX_IMPLEMENTATIONS_SEQ (graphcpp::FullSymmetricMatrix) (graphcpp::HalfSymmetricMatrix) (graphcpp::SingleVectorSymmetricMatrix)

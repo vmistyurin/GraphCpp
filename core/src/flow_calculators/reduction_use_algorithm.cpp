@@ -19,7 +19,7 @@ namespace
 //    constexpr mcontent hanged_vertex_not_linked = -2;
 	//constexpr mcontent hanged_vertex_linked = -3;
 
-	std::unique_ptr<SymmetricMatrixBase> remove_hanged_vertexes(const NonOrientedGraphBase& graph,
+	std::unique_ptr<SymmetricMatrixType> remove_hanged_vertexes(const NonOrientedGraphBase& graph,
 		const single_flow_function& single_flow_calculator)
 	{
 		auto result = std::make_unique<SymmetricMatrixType>(graph.dimension());
@@ -28,7 +28,7 @@ namespace
 
 		if (hanged_vertexes.empty() || graph.dimension() < 4)
 		{
-			return flow_calculators::matrix_of_flows(graph, single_flow_calculator);
+			return flow_calculators::matrix_of_flows<SymmetricMatrixType>(graph, single_flow_calculator);
 		}
 
 		for (auto current = hanged_vertexes.cbegin(); !hanged_vertexes.empty() && current != hanged_vertexes.cend(); ++current)
@@ -122,7 +122,7 @@ namespace
 		abort();
 	}
 
-	std::unique_ptr<SymmetricMatrixBase> shrink_chains(NonOrientedGraphBase& graph, std::vector<std::vector<msize>>& chains, const single_flow_function& single_flow_calculator)
+	std::unique_ptr<SymmetricMatrixType> shrink_chains(NonOrientedGraphBase& graph, std::vector<std::vector<msize>>& chains, const single_flow_function& single_flow_calculator)
 	{
 		RETURN_IF(chains.empty(), remove_hanged_vertexes(graph, single_flow_calculator));
 
@@ -261,7 +261,7 @@ namespace
         return childs;
     }
     
-    std::unique_ptr<SymmetricMatrixBase> reduce_connected_trees(NonOrientedGraphBase& graph,
+    std::unique_ptr<SymmetricMatrixType> reduce_connected_trees(NonOrientedGraphBase& graph,
                                                                 std::list<std::vector<msize>>& trees,
                                                                 const single_flow_function& flow_calc)
     {
@@ -305,7 +305,7 @@ namespace
         return result;
     }
     
-    std::unique_ptr<SymmetricMatrixBase> reduce_connected_trees(NonOrientedGraphBase& graph, const single_flow_function& flow_calc)
+    std::unique_ptr<SymmetricMatrixType> reduce_connected_trees(NonOrientedGraphBase& graph, const single_flow_function& flow_calc)
     {
         auto connected_trees = graph.get_connected_trees();
         decltype(connected_trees) filtered_trees;
@@ -324,7 +324,7 @@ namespace
     }
 }
 
-std::unique_ptr<SymmetricMatrixBase> flow_calculators::reduction_use_algorithm(const NonOrientedGraphBase& graph, const single_flow_function& single_flow_calculator)
+std::unique_ptr<SingleVectorSymmetricMatrix> flow_calculators::reduction_use_algorithm(const NonOrientedGraphBase& graph, const single_flow_function& single_flow_calculator)
 {
 	auto result = std::make_unique<SymmetricMatrixType>(graph.dimension());
 
@@ -336,11 +336,11 @@ std::unique_ptr<SymmetricMatrixBase> flow_calculators::reduction_use_algorithm(c
 			continue;
 		}
 
-        std::unique_ptr<SymmetricMatrixBase> subgraph_flows;
+        std::unique_ptr<SymmetricMatrixType> subgraph_flows;
         
         if (auto subgraph = graph.extract_subgraph(component); subgraph->is_tree())
         {
-            subgraph_flows = calculate_flows_in_tree(*subgraph);
+            subgraph_flows = calculate_flows_in_tree<SymmetricMatrixType>(*subgraph);
         }
         else
         {

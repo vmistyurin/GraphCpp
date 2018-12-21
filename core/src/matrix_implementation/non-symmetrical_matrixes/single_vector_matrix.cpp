@@ -19,14 +19,7 @@ SingleVectorMatrix::SingleVectorMatrix(const std::vector<std::vector<mcontent>>&
     }
 }
 
-SingleVectorMatrix::SingleVectorMatrix(const MatrixBase& rhs) :
-    SingleVectorMatrix(rhs.dimension())
-{
-    for(auto[i, j] : *this)
-    {
-        set(i, j, rhs.at(i, j));
-    }
-}
+
 
 SingleVectorMatrix::SingleVectorMatrix(const SingleVectorMatrix& rhs) :
     _dimension(rhs.dimension()), _internal_dimension(rhs.dimension()), _matrix(_dimension * _dimension)

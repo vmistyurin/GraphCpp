@@ -2,12 +2,17 @@
 
 using namespace graphcpp;
 
-SingleThreadCalculator::SingleThreadCalculator(std::unique_ptr<RandomNonOrientedGraphBase>&& graph, flow_function flow_func) :
-    _graph(std::move(graph)), _summator(FullSymmetricMatrix(_graph->dimension())), _flow_func(std::move(flow_func))
+SingleThreadCalculator::SingleThreadCalculator(
+    std::unique_ptr<RandomNonOrientedGraphBase>&& graph,
+    flow_function<SingleVectorSymmetricMatrix> flow_func
+) :
+    _graph(std::move(graph)),
+    _summator(SingleVectorSymmetricMatrix(_graph->dimension())),
+    _flow_func(std::move(flow_func))
 {
 }
 
-std::unique_ptr<SymmetricMatrixBase> SingleThreadCalculator::expected_value()
+std::unique_ptr<SingleVectorSymmetricMatrix> SingleThreadCalculator::expected_value()
 {
 	_graph->factorize([&](std::unique_ptr<NonOrientedGraphBase> graph, double probability)
 	{
@@ -16,5 +21,5 @@ std::unique_ptr<SymmetricMatrixBase> SingleThreadCalculator::expected_value()
 	});
 
 	assert(are_doubles_equal(_summator.current_probability(), 1));
-	return std::make_unique<FullSymmetricMatrix>(_summator.current_sum());
+	return std::make_unique<SingleVectorSymmetricMatrix>(_summator.current_sum());
 }

@@ -6,7 +6,7 @@
 
 namespace graphcpp
 {
-    class SingleVectorSymmetricMatrix final: public SymmetricMatrixBase
+    class SingleVectorSymmetricMatrix final: public SymmetricMatrixBase<SingleVectorSymmetricMatrix>
     {
     private:
         msize _dimension;
@@ -16,22 +16,37 @@ namespace graphcpp
     public:
         explicit SingleVectorSymmetricMatrix(msize dimension);
         explicit SingleVectorSymmetricMatrix(const std::vector<std::vector<mcontent>>& matrix);
-        explicit SingleVectorSymmetricMatrix(const SymmetricMatrixBase& matrix);
+        
+        template<class SymMatrixImpl>
+        explicit SingleVectorSymmetricMatrix(const SymMatrixImpl& matrix);
 
         SingleVectorSymmetricMatrix(const SingleVectorSymmetricMatrix& rhs);
         SingleVectorSymmetricMatrix& operator=(const SingleVectorSymmetricMatrix& rhs);
 
-        msize dimension() const override;
-        mcontent at(msize index1, msize index2) const override;
-        void set(msize index1, msize index2, mcontent value) override;
-        void reduce_element(msize index1, msize index2, mcontent difference) override;
+        SingleVectorSymmetricMatrix& operator+=(const SingleVectorSymmetricMatrix& rhs);
+        SingleVectorSymmetricMatrix& operator*=(double multiplier);
         
-        void rearrange_with_allocate(const std::vector<msize>& new_nums) override;
+        msize dimension() const;
+        mcontent at(msize index1, msize index2) const;
+        void set(msize index1, msize index2, mcontent value);
+        void reduce_element(msize index1, msize index2, mcontent difference);
         
-        void swap(msize str1, msize str2) override;
-        void delete_last_strings(msize count) override;
+        void rearrange_with_allocate(const std::vector<msize>& new_nums);
         
-        std::unique_ptr<SymmetricMatrixBase> with_deleted_vertexes(const std::vector<msize>& vertexes) const override;
-        std::unique_ptr<SymmetricMatrixBase> with_deleted_element(msize i, msize j) const override;
+        void swap(msize str1, msize str2);
+        void delete_last_strings(msize count);
+        
+        std::unique_ptr<SingleVectorSymmetricMatrix> with_deleted_vertexes(const std::vector<msize>& vertexes) const;
+        std::unique_ptr<SingleVectorSymmetricMatrix> with_deleted_element(msize i, msize j) const;
     };
+    
+    template<class SymMatrixImpl>
+    SingleVectorSymmetricMatrix::SingleVectorSymmetricMatrix(const SymMatrixImpl& matrix) :
+        SingleVectorSymmetricMatrix(matrix.dimension())
+    {
+        for (auto[i, j] : *this)
+        {
+            set(i, j, matrix.at(i, j));
+        }
+    }
 }

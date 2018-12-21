@@ -21,15 +21,6 @@ Matrix::Matrix(std::vector<std::vector<mcontent>> matrix) :
 {
 }
 
-Matrix::Matrix(const MatrixBase& rhs) :
-	Matrix(rhs.dimension())
-{
-	for (const auto&[i, j] : *this)
-	{
-		_matrix[i][j] = rhs.at(i, j);	
-	}
-}
-
 msize Matrix::dimension() const
 {
 	return _matrix.size();

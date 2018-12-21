@@ -1,15 +1,14 @@
 #include "core/flow_calculators/flow_calculators.hpp"
 
-#include "core/matrix_implementations/symmetric_matrixes/half_symmetric_matrix.hpp"
+#include "core/matrix_implementations/matrix_implementations.hpp"
 
 using namespace graphcpp;
 
-using SymmetricMatrixType = HalfSymmetricMatrix;
-
-std::unique_ptr<SymmetricMatrixBase> flow_calculators::matrix_of_flows(const NonOrientedGraphBase& graph,
+template<class SymMatrixType>
+std::unique_ptr<SymMatrixType> flow_calculators::matrix_of_flows(const NonOrientedGraphBase& graph,
 	const std::function<mcontent(const NonOrientedGraphBase&, msize, msize)>& single_flow_calculator)
 {
-	auto result = std::make_unique<SymmetricMatrixType>(graph.dimension());
+	auto result = std::make_unique<SymMatrixType>(graph.dimension());
 
 	for (auto[i, j] : graph)
 	{
@@ -18,3 +17,15 @@ std::unique_ptr<SymmetricMatrixBase> flow_calculators::matrix_of_flows(const Non
 
 	return result;
 }
+
+template<>
+std::unique_ptr<SingleVectorSymmetricMatrix> flow_calculators::matrix_of_flows(const NonOrientedGraphBase& graph,
+    const std::function<mcontent(const NonOrientedGraphBase&, msize, msize)>& single_flow_calculator);
+
+template<>
+std::unique_ptr<FullSymmetricMatrix> flow_calculators::matrix_of_flows(const NonOrientedGraphBase& graph,
+    const std::function<mcontent(const NonOrientedGraphBase&, msize, msize)>& single_flow_calculator);
+
+template<>
+std::unique_ptr<HalfSymmetricMatrix> flow_calculators::matrix_of_flows(const NonOrientedGraphBase& graph,
+    const std::function<mcontent(const NonOrientedGraphBase&, msize, msize)>& single_flow_calculator);

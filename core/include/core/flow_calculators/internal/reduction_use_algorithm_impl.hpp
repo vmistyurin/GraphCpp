@@ -17,7 +17,8 @@ namespace
 
 namespace graphcpp::flow_calculators
 {
-    std::unique_ptr<SymmetricMatrixBase> matrix_of_flows(const NonOrientedGraphBase& graph,
+    template<class SymMatrixType>
+    std::unique_ptr<SymMatrixType> matrix_of_flows(const NonOrientedGraphBase& graph,
         const std::function<mcontent(const NonOrientedGraphBase&, msize, msize)>& single_flow_calculator);
 }
 
@@ -227,7 +228,7 @@ namespace graphcpp::internal
                 continue;
             }
             
-            std::unique_ptr<SymmetricMatrixBase> subgraph_flows;
+            std::unique_ptr<SymmetricMatrixType> subgraph_flows;
             
             if (auto subgraph = graph.extract_subgraph(component); subgraph->is_tree())
             {

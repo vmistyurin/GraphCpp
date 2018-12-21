@@ -22,11 +22,14 @@ namespace graphcpp
 		explicit OrientedMatrixGraph(msize dimension);
 		OrientedMatrixGraph(const std::vector<Edge>& edges, msize dimension);
 		explicit OrientedMatrixGraph(const NonOrientedGraphBase& rhs);
-		explicit OrientedMatrixGraph(const NonSymmetricMatrixBase& rhs);
+        
+        template<class MatrixImpl>
+		explicit OrientedMatrixGraph(const MatrixImpl& rhs);
+        
 		explicit OrientedMatrixGraph(std::vector<std::vector<mcontent>> matrix);
 
 		std::vector<Edge> get_edges() const override;
-		std::unique_ptr<MatrixBase> get_matrix() const override;
+		std::unique_ptr<SingleVectorMatrix> get_matrix() const override;
 		std::unique_ptr<OrientedGraphBase> extract_subgraph(const std::vector<msize>& vertexes) const override;
 
 		msize dimension() const override;
@@ -72,7 +75,8 @@ namespace graphcpp
 	}
 
 	template<class T>
-	OrientedMatrixGraph<T>::OrientedMatrixGraph(const NonSymmetricMatrixBase& rhs) :
+    template<class MatrixImpl>
+	OrientedMatrixGraph<T>::OrientedMatrixGraph(const MatrixImpl& rhs) :
 		_matrix(rhs)
 	{
 	}
@@ -122,7 +126,8 @@ namespace graphcpp
 		do
 		{
 			_matrix.make_rearranged(permutation, this_copy);
-			RETURN_IF(is_matrix_from_graph(this_copy, rhs), true);
+            return false; //TODO: fix
+			//RETURN_IF(is_matrix_from_graph(this_copy, rhs), true);
 		} while (std::next_permutation(permutation.begin(), permutation.end()));
 
 		return false;
@@ -144,9 +149,9 @@ namespace graphcpp
 	}
 
 	template<class T>
-	std::unique_ptr<MatrixBase> OrientedMatrixGraph<T>::get_matrix() const
+	std::unique_ptr<SingleVectorMatrix> OrientedMatrixGraph<T>::get_matrix() const
 	{
-		return std::make_unique<T>(_matrix);
+		return std::make_unique<SingleVectorMatrix>(_matrix);
 	}
 
 	template<class T>

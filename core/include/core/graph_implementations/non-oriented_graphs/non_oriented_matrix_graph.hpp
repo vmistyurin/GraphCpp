@@ -22,7 +22,9 @@ namespace graphcpp
 		NonOrientedMatrixGraph();
 		NonOrientedMatrixGraph(const std::vector<SymmetricEdge>& edges, msize dimension);
 		explicit NonOrientedMatrixGraph(const NonOrientedGraphBase& rhs);
-		explicit NonOrientedMatrixGraph(const SymmetricMatrixBase& rhs);
+        
+        template<class SymMatrixImpl>
+		explicit NonOrientedMatrixGraph(const SymmetricMatrixBase<SymMatrixImpl>& rhs);
 
 		template<class SymmetricMatrixTypeForwarded>
 		explicit NonOrientedMatrixGraph(SymmetricMatrixTypeForwarded&& matrix);
@@ -34,7 +36,8 @@ namespace graphcpp
 		std::vector<SymmetricEdge> get_edges() const override;
         msize get_number_of_edges() const override;
         
-		std::unique_ptr<SymmetricMatrixBase> get_matrix() const override;
+		std::unique_ptr<SingleVectorSymmetricMatrix> get_matrix() const override;
+        
 		std::unique_ptr<NonOrientedGraphBase> extract_subgraph(const std::vector<msize>& vertexes) const override;
 
 		bool equal(const GraphBase& rhs) const override;
@@ -79,7 +82,8 @@ namespace graphcpp
 	}
 
 	template<class T>
-	NonOrientedMatrixGraph<T>::NonOrientedMatrixGraph(const SymmetricMatrixBase& rhs) :
+    template<class SymMatrixImpl>
+	NonOrientedMatrixGraph<T>::NonOrientedMatrixGraph(const SymmetricMatrixBase<SymMatrixImpl>& rhs) :
 		_matrix(rhs)
 	{	
 	}
@@ -166,10 +170,10 @@ namespace graphcpp
         return result;
     }
 
-	template<class T> 
-	std::unique_ptr<SymmetricMatrixBase> NonOrientedMatrixGraph<T>::get_matrix() const
+	template<class T>
+	std::unique_ptr<SingleVectorSymmetricMatrix> NonOrientedMatrixGraph<T>::get_matrix() const
 	{
-		return std::make_unique<T>(_matrix);
+		return std::make_unique<SingleVectorSymmetricMatrix>(_matrix);
 	}
 
 	template<class T>

@@ -3,28 +3,109 @@
 #include <memory>
 
 #include "core/macroses.hpp"
+#include "core/utils/numeric.hpp"
 #include "core/matrix_implementations/matrix_base.hpp"
 #include "core/iterators/symmetric_matrix_iterator.hpp"
 
 namespace graphcpp
 {
-	class SymmetricMatrixBase : public MatrixBase
+    template<class ImplType>
+	class SymmetricMatrixBase : public MatrixBase<ImplType>
 	{
 	public:
-		bool operator==(const SymmetricMatrixBase& rhs) const;
-		bool operator!=(const SymmetricMatrixBase& rhs) const;
-        SymmetricMatrixBase& operator+=(const SymmetricMatrixBase& rhs);
-        SymmetricMatrixBase& operator*=(double rhs);
+        template<class RhsImplType>
+		bool operator==(const RhsImplType& rhs) const;
+        
+        template<class RhsImplType>
+        bool operator!=(const RhsImplType& rhs) const;
 
-		void make_rearranged(const std::vector<msize>& new_nums, SymmetricMatrixBase& memory) const;
-        void rearrange_with_permutations(const std::vector<msize>& new_nums) override;
-
-		virtual std::unique_ptr<SymmetricMatrixBase> with_deleted_vertexes(const std::vector<msize>& vertexes) const = 0;
-		virtual std::unique_ptr<SymmetricMatrixBase> with_deleted_element(msize i, msize j) const = 0;
+        template<class RhsImplType>
+		void make_rearranged(const std::vector<msize>& new_nums, RhsImplType& memory) const;
+        
+        void rearrange_with_permutations(const std::vector<msize>& new_nums);
 
 		SymmetricMatrixIterator begin() const;
 		SymmetricMatrixIterator end() const;
 
-		ABSTRACT_CLASS_OPERATIONS(SymmetricMatrixBase);
-	}; 
+        CRTP_CLASS_OPERATIONS(SymmetricMatrixBase);
+        
+    protected:
+        ~SymmetricMatrixBase() = default;
+        
+    private:
+        ImplType* self();
+        const ImplType* cself() const;
+	};
+    
+    template<class ImplType>
+    template<class RhsImplType>
+    bool SymmetricMatrixBase<ImplType>::operator==(const RhsImplType& rhs) const
+    {
+        RETURN_IF(this == &rhs, true);
+        RETURN_IF(rhs.dimension() != self()->dimension(), false);
+        
+        for (auto[i, j] : *this)
+        {
+            RETURN_IF(at(i, j) != rhs.at(i, j), false);
+        }
+        return true;
+    }
+    
+    template<class ImplType>
+    template<class RhsImplType>
+    bool SymmetricMatrixBase<ImplType>::operator!=(const RhsImplType& rhs) const
+    {
+        return !(*this == rhs);
+    }
+    
+    template<class ImplType>
+    template<class RhsImplType>
+    void SymmetricMatrixBase<ImplType>::make_rearranged(const std::vector<msize>& new_nums, RhsImplType& memory) const
+    {
+        assert(new_nums.size() == cself()->dimension());
+        assert(is_permutation(new_nums));
+        assert(memory.dimension() == cself()->dimension());
+        
+        for (auto[i, j] : *this)
+        {
+            memory.set(new_nums[i], new_nums[j], cself()->at(i, j));
+        }
+    }
+    
+    template<class ImplType>
+    void SymmetricMatrixBase<ImplType>::rearrange_with_permutations(const std::vector<msize>& new_nums)
+    {
+        assert(new_nums.size() == self()->dimension());
+        assert(is_permutation(new_nums));
+        
+        auto transpositions = to_transpositions(new_nums);
+        for (auto[str1, str2] : transpositions)
+        {
+            self()->swap(str1, str2);
+        }
+    }
+    
+    template<class ImplType>
+    SymmetricMatrixIterator SymmetricMatrixBase<ImplType>::begin() const
+    {
+        return SymmetricMatrixIterator(cself()->dimension());
+    }
+    
+    template<class ImplType>
+    SymmetricMatrixIterator SymmetricMatrixBase<ImplType>::end() const
+    {
+        return SymmetricMatrixIterator();
+    }
+    
+    template<class ImplType>
+    ImplType* SymmetricMatrixBase<ImplType>::self()
+    {
+        return static_cast<ImplType*>(this);
+    }
+    
+    template<class ImplType>
+    const ImplType* SymmetricMatrixBase<ImplType>::cself() const
+    {
+        return static_cast<const ImplType*>(this);
+    }
 }

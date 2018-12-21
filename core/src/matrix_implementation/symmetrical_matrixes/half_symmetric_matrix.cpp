@@ -30,15 +30,6 @@ HalfSymmetricMatrix::HalfSymmetricMatrix(const std::vector<std::vector<mcontent>
 	}
 }
 
-HalfSymmetricMatrix::HalfSymmetricMatrix(const SymmetricMatrixBase& matrix) :
-	HalfSymmetricMatrix(matrix.dimension())
-{
-	for (auto[i, j] : *this)
-	{
-		set(i, j, matrix.at(i, j));
-	}
-}
-
 msize HalfSymmetricMatrix::dimension() const
 {
 	return _matrix.size() + 1;
@@ -118,7 +109,7 @@ void HalfSymmetricMatrix::delete_last_strings(msize count)
 	}
 }
 
-std::unique_ptr<SymmetricMatrixBase> HalfSymmetricMatrix::with_deleted_vertexes(const std::vector<msize>& vertexes) const
+std::unique_ptr<HalfSymmetricMatrix> HalfSymmetricMatrix::with_deleted_vertexes(const std::vector<msize>& vertexes) const
 {
 	assert(!vertexes.empty());
 	assert(std::all_of(vertexes.cbegin(), vertexes.cend(), [&](auto vertex) { return vertex < dimension(); }));
@@ -148,7 +139,7 @@ std::unique_ptr<SymmetricMatrixBase> HalfSymmetricMatrix::with_deleted_vertexes(
 	return result;
 }
 
-std::unique_ptr<SymmetricMatrixBase> HalfSymmetricMatrix::with_deleted_element(msize i, msize j) const
+std::unique_ptr<HalfSymmetricMatrix> HalfSymmetricMatrix::with_deleted_element(msize i, msize j) const
 {
 	assert(std::max(i, j) < dimension());
 

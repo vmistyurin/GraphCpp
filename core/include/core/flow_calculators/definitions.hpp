@@ -8,7 +8,9 @@
 
 namespace graphcpp
 {
-    using flow_function = std::function<std::unique_ptr<SymmetricMatrixBase>(const NonOrientedGraphBase&)>;
+    template<class MatrixType>
+    using flow_function = std::function<std::unique_ptr<MatrixType>(const NonOrientedGraphBase&)>;
+    
     using single_flow_function = std::function<mcontent(const NonOrientedGraphBase&, msize, msize)>;
     
     struct ReductionStatistic final

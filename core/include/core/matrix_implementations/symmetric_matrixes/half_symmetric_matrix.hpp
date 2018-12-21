@@ -4,7 +4,7 @@
 
 namespace graphcpp
 {
-	class HalfSymmetricMatrix final: public SymmetricMatrixBase
+	class HalfSymmetricMatrix final: public SymmetricMatrixBase<HalfSymmetricMatrix>
 	{
 	private:
 		std::vector<std::vector<mcontent>> _matrix;
@@ -13,19 +13,32 @@ namespace graphcpp
 		HalfSymmetricMatrix() = default;
 		explicit HalfSymmetricMatrix(msize dimension);
 		explicit HalfSymmetricMatrix(const std::vector<std::vector<mcontent>>& matrix);
-		explicit HalfSymmetricMatrix(const SymmetricMatrixBase& matrix);
+        
+        template<class SymMatrixImpl>
+		explicit HalfSymmetricMatrix(const SymmetricMatrixBase<SymMatrixImpl>& matrix);
 
-		msize dimension() const override;
-		mcontent at(msize index1, msize index2) const override;
-		void set(msize index1, msize index2, mcontent value) override;
-		void reduce_element(msize index1, msize index2, mcontent difference) override;
+		msize dimension() const;
+		mcontent at(msize index1, msize index2) const;
+		void set(msize index1, msize index2, mcontent value);
+		void reduce_element(msize index1, msize index2, mcontent difference);
 
-		void rearrange_with_allocate(const std::vector<msize>& new_nums) override;
+		void rearrange_with_allocate(const std::vector<msize>& new_nums);
 
-		void swap(msize str1, msize str2) override;
-		void delete_last_strings(msize count) override;
+		void swap(msize str1, msize str2);
+		void delete_last_strings(msize count);
 
-		std::unique_ptr<SymmetricMatrixBase> with_deleted_vertexes(const std::vector<msize>& vertexes) const override;
-		std::unique_ptr<SymmetricMatrixBase> with_deleted_element(msize i, msize j) const override;
+		std::unique_ptr<HalfSymmetricMatrix> with_deleted_vertexes(const std::vector<msize>& vertexes) const;
+		std::unique_ptr<HalfSymmetricMatrix> with_deleted_element(msize i, msize j) const;
 	};
+    
+    
+    template <class SymMatrixImpl>
+    HalfSymmetricMatrix::HalfSymmetricMatrix(const SymmetricMatrixBase<SymMatrixImpl>& matrix) :
+        HalfSymmetricMatrix(matrix.dimension())
+    {
+        for (auto[i, j] : *this)
+        {
+            set(i, j, matrix.at(i, j));
+        }
+    }
 }

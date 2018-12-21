@@ -10,7 +10,6 @@
 
 namespace graphcpp
 {
-
     class RandomNonOrientedGraphBase: public RandomGraphBase
     {
 	public:

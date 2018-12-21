@@ -18,7 +18,7 @@ protected:
         auto graph = std::make_unique<RandomNonOrientedGraph<NonOrientedMatrixGraph<FullSymmetricMatrix>, FullSymmetricMatrix>>(edges, 4);
         
         calculator = std::make_unique<MultiThreadCalculator>(std::move(graph),
-            std::bind(flow_calculators::matrix_of_flows, std::placeholders::_1, flow_calculators::Edmonds_Karp_algorithm)
+            std::bind(flow_calculators::matrix_of_flows<SingleVectorSymmetricMatrix>, std::placeholders::_1, flow_calculators::Edmonds_Karp_algorithm)
         );
     }
     

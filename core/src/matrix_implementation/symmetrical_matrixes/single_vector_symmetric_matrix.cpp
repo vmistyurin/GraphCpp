@@ -23,15 +23,6 @@ SingleVectorSymmetricMatrix::SingleVectorSymmetricMatrix(const std::vector<std::
     }
 }
 
-SingleVectorSymmetricMatrix::SingleVectorSymmetricMatrix(const SymmetricMatrixBase& matrix) :
-    SingleVectorSymmetricMatrix(matrix.dimension())
-{
-    for (auto[i, j] : *this)
-    {
-        set(i, j, matrix.at(i, j));
-    }
-}
-
 SingleVectorSymmetricMatrix::SingleVectorSymmetricMatrix(const SingleVectorSymmetricMatrix& rhs) :
     _dimension(rhs.dimension()), _internal_dimension(rhs.dimension()), _matrix(_dimension * _dimension)
 {
@@ -52,6 +43,16 @@ SingleVectorSymmetricMatrix& SingleVectorSymmetricMatrix::operator=(const Single
         set(i, j, rhs.at(i, j));
     }
 
+    return *this;
+}
+
+SingleVectorSymmetricMatrix& SingleVectorSymmetricMatrix::operator+=(const SingleVectorSymmetricMatrix& rhs)
+{
+    return *this;
+}
+
+SingleVectorSymmetricMatrix& SingleVectorSymmetricMatrix::operator*=(double multiplier)
+{
     return *this;
 }
 
@@ -125,7 +126,7 @@ void SingleVectorSymmetricMatrix::delete_last_strings(msize count)
     }
 }
 
-std::unique_ptr<SymmetricMatrixBase> SingleVectorSymmetricMatrix::with_deleted_vertexes(const std::vector<msize>& vertexes) const
+std::unique_ptr<SingleVectorSymmetricMatrix> SingleVectorSymmetricMatrix::with_deleted_vertexes(const std::vector<msize>& vertexes) const
 {
     assert(!vertexes.empty());
     assert(std::all_of(vertexes.cbegin(), vertexes.cend(), [&](auto vertex) { return vertex < dimension(); }));
@@ -155,7 +156,7 @@ std::unique_ptr<SymmetricMatrixBase> SingleVectorSymmetricMatrix::with_deleted_v
     return result;
 }
 
-std::unique_ptr<SymmetricMatrixBase> SingleVectorSymmetricMatrix::with_deleted_element(msize i, msize j) const
+std::unique_ptr<SingleVectorSymmetricMatrix> SingleVectorSymmetricMatrix::with_deleted_element(msize i, msize j) const
 {
     assert(std::max(i, j) < dimension());
     

@@ -6,7 +6,7 @@
 #include "core/graph_implementations/graph_base.hpp"
 #include "core/iterators/symmetric_matrix_iterator.hpp"
 #include "core/edges/symmetric_edge.hpp"
-#include "core/matrix_implementations/symmetric_matrixes/symmetric_matrix_base.hpp"
+#include "core/matrix_implementations/matrix_implementations.hpp" // TODO: remove
 
 namespace graphcpp
 {
@@ -16,7 +16,8 @@ namespace graphcpp
 		virtual std::vector<SymmetricEdge> get_edges() const = 0;
         virtual msize get_number_of_edges() const = 0;
         
-		virtual std::unique_ptr<SymmetricMatrixBase> get_matrix() const = 0;
+		virtual std::unique_ptr<SingleVectorSymmetricMatrix> get_matrix() const = 0;
+        
 		virtual std::unique_ptr<NonOrientedGraphBase> extract_subgraph(const std::vector<msize>& vertexes) const = 0;
 
 		virtual std::list<std::pair<msize, msize>> get_hanged_vertexes() const = 0;

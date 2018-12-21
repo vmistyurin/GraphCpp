@@ -43,15 +43,6 @@ FullSymmetricMatrix::FullSymmetricMatrix(const std::vector<std::vector<mcontent>
 	fill_diagonal(_matrix, 0);
 }
 
-FullSymmetricMatrix::FullSymmetricMatrix(const SymmetricMatrixBase& matrix) :
-	FullSymmetricMatrix(matrix.dimension())
-{
-	for (auto[i, j] : matrix)
-	{
-		set(i, j, matrix.at(i, j));
-	}
-}
-
 msize FullSymmetricMatrix::dimension() const
 {
 	return _matrix.size();
@@ -131,7 +122,7 @@ void FullSymmetricMatrix::delete_last_strings(msize count)
 	}
 }
 
-std::unique_ptr<SymmetricMatrixBase> FullSymmetricMatrix::with_deleted_vertexes(const std::vector<msize>& vertexes) const
+std::unique_ptr<FullSymmetricMatrix> FullSymmetricMatrix::with_deleted_vertexes(const std::vector<msize>& vertexes) const
 {
 	assert(!vertexes.empty());
 	assert(std::all_of(vertexes.cbegin(), vertexes.cend(), [&](auto vertex) { return vertex < dimension(); }));
@@ -161,7 +152,7 @@ std::unique_ptr<SymmetricMatrixBase> FullSymmetricMatrix::with_deleted_vertexes(
 	return result;
 }
 
-std::unique_ptr<SymmetricMatrixBase> FullSymmetricMatrix::with_deleted_element(msize i, msize j) const
+std::unique_ptr<FullSymmetricMatrix> FullSymmetricMatrix::with_deleted_element(msize i, msize j) const
 {
 	assert(std::max(i, j) < dimension());
 

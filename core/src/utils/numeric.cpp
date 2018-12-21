@@ -70,24 +70,6 @@ bool graphcpp::check_symmetrical_matrix(const std::vector<std::vector<mcontent>>
 	return true;
 }
 
-bool graphcpp::is_matrix_from_graph(const SymmetricMatrixBase& matrix, const GraphBase& graph)
-{
-	for (auto[i, j] : matrix)
-	{
-		RETURN_IF(matrix.at(i, j) != graph.at(i, j), false);
-	}
-	return true;
-}
-
-bool graphcpp::is_matrix_from_graph(const NonSymmetricMatrixBase& matrix, const GraphBase& graph)
-{
-	for (auto[i, j] : matrix)
-	{
-		RETURN_IF(matrix.at(i, j) != graph.at(i, j), false);
-	}
-	return true;
-}
-
 bool graphcpp::are_doubles_equal(double value1, double value2)
 {
     return std::fabs(value1 - value2) < 0.0000000000001;
