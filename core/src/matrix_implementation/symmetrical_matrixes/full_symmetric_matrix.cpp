@@ -43,6 +43,21 @@ FullSymmetricMatrix::FullSymmetricMatrix(const std::vector<std::vector<mcontent>
 	fill_diagonal(_matrix, 0);
 }
 
+FullSymmetricMatrix& FullSymmetricMatrix::operator+=(const FullSymmetricMatrix& rhs)
+{
+	assert(dimension == rhs.dimension);
+
+	for (msize i = 0; i < dimension(); i++)
+	{
+		for (msize j = 0; j < dimension(); j++)
+		{
+			_matrix[i][j] += rhs._matrix[i][j];
+		}
+	}
+
+	return *this;
+}
+
 msize FullSymmetricMatrix::dimension() const
 {
 	return _matrix.size();

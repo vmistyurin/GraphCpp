@@ -30,6 +30,18 @@ HalfSymmetricMatrix::HalfSymmetricMatrix(const std::vector<std::vector<mcontent>
 	}
 }
 
+HalfSymmetricMatrix& HalfSymmetricMatrix::operator+=(const HalfSymmetricMatrix& rhs)
+{
+	assert(dimension() == rhs.dimension());
+
+	for (auto[i, j] : *this)
+	{
+		_matrix[i][j] += rhs._matrix[i][j];
+	}
+
+	return *this;
+}
+
 msize HalfSymmetricMatrix::dimension() const
 {
 	return _matrix.size() + 1;

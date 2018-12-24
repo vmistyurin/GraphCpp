@@ -17,6 +17,8 @@ namespace graphcpp
         template<class SymMatrixImpl>
 		explicit HalfSymmetricMatrix(const SymmetricMatrixBase<SymMatrixImpl>& matrix);
 
+		HalfSymmetricMatrix& operator+=(const HalfSymmetricMatrix& rhs);
+
 		msize dimension() const;
 		mcontent at(msize index1, msize index2) const;
 		void set(msize index1, msize index2, mcontent value);

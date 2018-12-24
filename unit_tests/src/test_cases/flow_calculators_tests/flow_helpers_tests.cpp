@@ -39,7 +39,7 @@ TYPED_TEST(FlowHelpersTests, FlowsInTreeTest)
         { 5, 10, 20, 5, 10, 3, 1, 0 }
     });
     
-    auto flows = flow_calculators::calculate_flows_in_tree(tree);
+    auto flows = flow_calculators::calculate_flows_in_tree<FullSymmetricMatrix>(tree);
 
     EXPECT_EQ(*flows, expected_flows);
 }

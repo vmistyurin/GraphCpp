@@ -14,6 +14,7 @@ namespace graphcpp
         std::vector<mcontent> _matrix;
         
     public:
+		SingleVectorSymmetricMatrix();
         explicit SingleVectorSymmetricMatrix(msize dimension);
         explicit SingleVectorSymmetricMatrix(const std::vector<std::vector<mcontent>>& matrix);
         

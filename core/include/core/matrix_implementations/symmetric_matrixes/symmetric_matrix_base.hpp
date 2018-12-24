@@ -41,12 +41,16 @@ namespace graphcpp
     template<class RhsImplType>
     bool SymmetricMatrixBase<ImplType>::operator==(const RhsImplType& rhs) const
     {
-        RETURN_IF(this == &rhs, true);
-        RETURN_IF(rhs.dimension() != self()->dimension(), false);
+		if constexpr (std::is_same_v<ImplType, RhsImplType>) 
+		{
+			RETURN_IF(this == &rhs, true);
+		}
+
+        RETURN_IF(rhs.dimension() != cself()->dimension(), false);
         
         for (auto[i, j] : *this)
         {
-            RETURN_IF(at(i, j) != rhs.at(i, j), false);
+            RETURN_IF(cself()->at(i, j) != rhs.at(i, j), false);
         }
         return true;
     }

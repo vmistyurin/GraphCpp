@@ -10,10 +10,10 @@ using namespace graphcpp_testing;
 
 namespace
 {
-	template<class GraphType>
-	std::unique_ptr<MatrixBase> GetMatrix(const std::vector<std::vector<mcontent>>& array)
+	template<class MatrixType>
+	std::unique_ptr<MatrixType> GetMatrix(const std::vector<std::vector<mcontent>>& array)
     {
-        return std::make_unique<GraphType>(array);
+        return std::make_unique<MatrixType>(array);
     }
 }
 
@@ -26,7 +26,7 @@ public:
 	{
 	};
     
-	std::unique_ptr<MatrixBase> test_matrix;
+	std::unique_ptr<TestMatrixType> test_matrix;
 };
 
 TYPED_TEST_CASE(MatrixBaseTests, MatrixImplementations,);

@@ -15,8 +15,10 @@ namespace graphcpp
 		explicit FullSymmetricMatrix(const std::vector<std::vector<mcontent>>& matrix);
         
         template<class RhsImplType>
-		explicit FullSymmetricMatrix(const SymmetricMatrixBase<RhsImplType>& rhs);
+		explicit FullSymmetricMatrix(const RhsImplType& rhs);
 		
+		FullSymmetricMatrix& operator+=(const FullSymmetricMatrix& rhs);
+
 		msize dimension() const;
 		mcontent at(msize index1, msize index2) const;
 		void set(msize index1, msize index2, mcontent value);
@@ -32,7 +34,7 @@ namespace graphcpp
 	};
     
     template<class RhsImplType>
-    FullSymmetricMatrix::FullSymmetricMatrix(const SymmetricMatrixBase<RhsImplType>& rhs) :
+    FullSymmetricMatrix::FullSymmetricMatrix(const RhsImplType& rhs) :
         FullSymmetricMatrix(rhs.dimension())
     {
         for (auto[i, j] : rhs)

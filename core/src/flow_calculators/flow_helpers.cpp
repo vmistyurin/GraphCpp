@@ -38,7 +38,7 @@ namespace
             }
         }
         
-        for (decltype(subtrees)::size_type i = 0; i < subtrees.size(); i++)
+        for (typename decltype(subtrees)::size_type i = 0; i < subtrees.size(); i++)
         {
             for (decltype(i) j = i + 1; j < subtrees.size(); j++)
             {
@@ -68,11 +68,11 @@ std::unique_ptr<SymMatrixType> flow_calculators::calculate_flows_in_tree(const N
     return result;
 }
 
-template<>
+template
 std::unique_ptr<SingleVectorSymmetricMatrix> flow_calculators::calculate_flows_in_tree(const NonOrientedGraphBase& graph);
 
-template<>
+template
 std::unique_ptr<FullSymmetricMatrix> flow_calculators::calculate_flows_in_tree(const NonOrientedGraphBase& graph);
 
-template<>
+template
 std::unique_ptr<HalfSymmetricMatrix> flow_calculators::calculate_flows_in_tree(const NonOrientedGraphBase& graph);

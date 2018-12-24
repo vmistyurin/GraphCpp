@@ -15,9 +15,9 @@ namespace graphcpp
 	{
 	public:
         template<class RhsImplType>
-        bool operator==(const MatrixBase<RhsImplType>& rhs) const;
+        bool operator==(const RhsImplType& rhs) const;
         template<class RhsImplType>
-		bool operator!=(const MatrixBase<RhsImplType>& rhs) const;
+		bool operator!=(const RhsImplType& rhs) const;
 
         template<class RhsImplType>
 		void make_rearranged(const std::vector<msize>& new_nums, MatrixBase<RhsImplType>& memory) const;
@@ -38,9 +38,9 @@ namespace graphcpp
     
     template<class ImplType>
     template<class RhsImplType>
-    bool MatrixBase<ImplType>::operator==(const MatrixBase<RhsImplType>& rhs) const
+    bool MatrixBase<ImplType>::operator==(const RhsImplType& rhs) const
     {
-        RETURN_IF(self()->dimension() != rhs.dimension(), false);
+        RETURN_IF(cself()->dimension() != rhs.dimension(), false);
         
         for (msize i = 0; i < cself()->dimension(); i++)
         {
@@ -54,7 +54,7 @@ namespace graphcpp
     
     template<class ImplType>
     template<class RhsImplType>
-    bool MatrixBase<ImplType>::operator!=(const MatrixBase<RhsImplType>& rhs) const
+    bool MatrixBase<ImplType>::operator!=(const RhsImplType& rhs) const
     {
         return !(*this == rhs);
     }
@@ -140,7 +140,7 @@ namespace graphcpp
     template<class ImplType>
     const ImplType* MatrixBase<ImplType>::cself() const
     {
-        return static_cast<ImplType*>(this);
+        return static_cast<const ImplType*>(this);
     }
 
     template<class ImplType>

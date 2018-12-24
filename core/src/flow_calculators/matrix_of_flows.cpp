@@ -18,14 +18,14 @@ std::unique_ptr<SymMatrixType> flow_calculators::matrix_of_flows(const NonOrient
 	return result;
 }
 
-template<>
-std::unique_ptr<SingleVectorSymmetricMatrix> flow_calculators::matrix_of_flows(const NonOrientedGraphBase& graph,
+template
+std::unique_ptr<SingleVectorSymmetricMatrix> flow_calculators::matrix_of_flows<SingleVectorSymmetricMatrix>(const NonOrientedGraphBase& graph,
     const std::function<mcontent(const NonOrientedGraphBase&, msize, msize)>& single_flow_calculator);
 
-template<>
-std::unique_ptr<FullSymmetricMatrix> flow_calculators::matrix_of_flows(const NonOrientedGraphBase& graph,
+template
+std::unique_ptr<FullSymmetricMatrix> flow_calculators::matrix_of_flows<FullSymmetricMatrix>(const NonOrientedGraphBase& graph,
     const std::function<mcontent(const NonOrientedGraphBase&, msize, msize)>& single_flow_calculator);
 
-template<>
-std::unique_ptr<HalfSymmetricMatrix> flow_calculators::matrix_of_flows(const NonOrientedGraphBase& graph,
+template
+std::unique_ptr<HalfSymmetricMatrix> flow_calculators::matrix_of_flows<HalfSymmetricMatrix>(const NonOrientedGraphBase& graph,
     const std::function<mcontent(const NonOrientedGraphBase&, msize, msize)>& single_flow_calculator);

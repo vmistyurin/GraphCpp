@@ -6,10 +6,14 @@
 
 using namespace graphcpp;
 
+SingleVectorSymmetricMatrix::SingleVectorSymmetricMatrix() :
+	_dimension(0), _internal_dimension(0)
+{
+}
+
 SingleVectorSymmetricMatrix::SingleVectorSymmetricMatrix(msize dimension) :
     _dimension(dimension), _internal_dimension(dimension), _matrix(dimension * dimension)
 {
-    assert(dimension != 0);
 }
 
 SingleVectorSymmetricMatrix::SingleVectorSymmetricMatrix(const std::vector<std::vector<mcontent>>& matrix) :
@@ -48,11 +52,23 @@ SingleVectorSymmetricMatrix& SingleVectorSymmetricMatrix::operator=(const Single
 
 SingleVectorSymmetricMatrix& SingleVectorSymmetricMatrix::operator+=(const SingleVectorSymmetricMatrix& rhs)
 {
+	assert(dimension() == rhs.dimension());
+
+	for (msize i = 0; i < _internal_dimension * _internal_dimension; i++)
+	{
+		_matrix[i] += rhs._matrix[i];
+	}
+
     return *this;
 }
 
 SingleVectorSymmetricMatrix& SingleVectorSymmetricMatrix::operator*=(double multiplier)
 {
+	for (msize i = 0; i < _internal_dimension; i++)
+	{
+		_matrix[i] *= multiplier;
+	}
+
     return *this;
 }
 

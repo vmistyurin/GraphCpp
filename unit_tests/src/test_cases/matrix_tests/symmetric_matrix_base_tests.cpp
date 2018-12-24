@@ -38,23 +38,23 @@ namespace //TODO: move it to test_data
         { 0, 0, 0, 0, 0, 0, 0, 40, 0 }
     };
 
-	template<class MatrixType>
-	std::unique_ptr<SymmetricMatrixBase> GetMatrix(const std::vector<std::vector<mcontent>>& array)
+	template<class SymMatrixType>
+	std::unique_ptr<SymMatrixType> GetMatrix(const std::vector<std::vector<mcontent>>& array)
     {
-        return std::make_unique<MatrixType>(array);
+        return std::make_unique<SymMatrixType>(array);
     }
 }
 
-template<class TestMatrixType>
+template<class SymMatrixType>
 class SymmetricMatrixTests: public testing::Test
 {
 public:
 	SymmetricMatrixTests() : 
-		test_matrix(GetMatrix<TestMatrixType>(test_array))	
+		test_matrix(GetMatrix<SymMatrixType>(test_array))
 	{
 	};
     
-	std::unique_ptr<SymmetricMatrixBase> test_matrix;
+	std::unique_ptr<SymMatrixType> test_matrix;
 }; 
 
 TYPED_TEST_CASE(SymmetricMatrixTests, SymmetricMatrixImplementations,);
