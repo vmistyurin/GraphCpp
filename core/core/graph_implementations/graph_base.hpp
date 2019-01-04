@@ -22,6 +22,6 @@ namespace graphcpp
 		virtual std::vector<msize> delete_vertexes(const std::vector<msize>& vertexes) = 0;
 		virtual void rearrange(const std::vector<msize>& new_nums) = 0;
 
-		ABSTRACT_CLASS_OPERATIONS(GraphBase);
+		ABSTRACT_CLASS_OPERATIONS(GraphBase)
 	};
 }

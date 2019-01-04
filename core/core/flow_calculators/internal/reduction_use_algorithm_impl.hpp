@@ -325,7 +325,7 @@ namespace graphcpp::internal
 
         if (hanged_vertexes.empty() || graph.dimension() < 4)
         {
-            return std::make_unique<SymmetricMatrixType>(*flow_calculators::matrix_of_flows(graph, _flow_calc));
+            return std::make_unique<SymmetricMatrixType>(*flow_calculators::matrix_of_flows<SymmetricMatrixType>(graph, _flow_calc));
         }
 
         for (auto current = hanged_vertexes.cbegin(); !hanged_vertexes.empty() && current != hanged_vertexes.cend(); ++current)

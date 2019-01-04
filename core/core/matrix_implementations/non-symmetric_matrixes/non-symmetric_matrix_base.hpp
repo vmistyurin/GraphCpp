@@ -18,7 +18,7 @@ namespace graphcpp
 		MatrixIterator begin() const;
 		MatrixIterator end() const;
         
-		CRTP_CLASS_OPERATIONS(NonSymmetricMatrixBase);
+		CRTP_CLASS_OPERATIONS(NonSymmetricMatrixBase)
         
     protected:
         ~NonSymmetricMatrixBase() = default;

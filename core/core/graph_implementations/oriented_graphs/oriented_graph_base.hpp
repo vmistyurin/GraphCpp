@@ -20,6 +20,6 @@ namespace graphcpp
 		MatrixIterator begin() const;
 		MatrixIterator end() const;
 
-		ABSTRACT_CLASS_OPERATIONS(OrientedGraphBase);
+		ABSTRACT_CLASS_OPERATIONS(OrientedGraphBase)
 	};
 }

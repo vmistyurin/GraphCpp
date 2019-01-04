@@ -26,7 +26,7 @@ namespace graphcpp
 
 		std::string to_string() const;
         
-        CRTP_CLASS_OPERATIONS(MatrixBase);
+        CRTP_CLASS_OPERATIONS(MatrixBase)
         
     protected:
         ~MatrixBase() = default;

@@ -24,12 +24,12 @@ namespace graphcpp_bench
         };
     }
     
-    template<class RandomGraphType>
+    template<class RandomGraphType, class ResultSymMatrixType>
     std::function<std::string(std::ifstream&&)> single_threaded_matrix_of_flows(graphcpp::single_flow_function base_function)
     {
         return single_threaded_matrix_of_flows<RandomGraphType>([base_function = std::move(base_function)](const graphcpp::NonOrientedGraphBase& graph)
         {
-            return graphcpp::flow_calculators::matrix_of_flows(graph, base_function);
+            return graphcpp::flow_calculators::matrix_of_flows<ResultSymMatrixType>(graph, base_function);
         });
     }
     
@@ -48,12 +48,12 @@ namespace graphcpp_bench
         };
     }
     
-    template<class RandomGraphType>
+    template<class RandomGraphType, class ResultSymMatrixType>
     std::function<std::string(std::ifstream&&)> multi_threaded_matrix_of_flows(graphcpp::single_flow_function base_function)
     {
         return multi_threaded_matrix_of_flows<RandomGraphType>([base_function = std::move(base_function)](const graphcpp::NonOrientedGraphBase& graph)
         {
-            return graphcpp::flow_calculators::matrix_of_flows(graph, base_function);
+            return graphcpp::flow_calculators::matrix_of_flows<ResultSymMatrixType>(graph, base_function);
         });
     }
 }

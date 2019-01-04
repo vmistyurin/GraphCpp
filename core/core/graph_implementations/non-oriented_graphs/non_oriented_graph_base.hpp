@@ -37,6 +37,6 @@ namespace graphcpp
 		SymmetricMatrixIterator begin() const;
 		SymmetricMatrixIterator end() const;
 
-        ABSTRACT_CLASS_OPERATIONS(NonOrientedGraphBase);
+        ABSTRACT_CLASS_OPERATIONS(NonOrientedGraphBase)
 	};
 }

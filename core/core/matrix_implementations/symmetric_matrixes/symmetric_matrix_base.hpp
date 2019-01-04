@@ -27,7 +27,7 @@ namespace graphcpp
 		SymmetricMatrixIterator begin() const;
 		SymmetricMatrixIterator end() const;
 
-        CRTP_CLASS_OPERATIONS(SymmetricMatrixBase);
+        CRTP_CLASS_OPERATIONS(SymmetricMatrixBase)
         
     protected:
         ~SymmetricMatrixBase() = default;
