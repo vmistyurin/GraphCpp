@@ -29,5 +29,5 @@ TYPED_TEST(PreflowPushAlgorithmTests, SingleFlowTests)
 
 TYPED_TEST(PreflowPushAlgorithmTests, FlowsMatrixTests)
 {
-	EXPECT_EQ(*flow_calculators::matrix_of_flows(*this->test_graph, flow_calculators::preflow_push_algorithm), FullSymmetricMatrix(non_oriented_test_graph::get_flows()));
+	EXPECT_EQ(*flow_calculators::matrix_of_flows<FullSymmetricMatrix>(*this->test_graph, flow_calculators::preflow_push_algorithm), FullSymmetricMatrix(non_oriented_test_graph::get_flows()));
 }

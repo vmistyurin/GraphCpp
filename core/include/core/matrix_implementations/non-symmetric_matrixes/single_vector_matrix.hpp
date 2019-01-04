@@ -18,7 +18,7 @@ namespace graphcpp
         explicit SingleVectorMatrix(const std::vector<std::vector<mcontent>>& matrix);
         
         template<class MatrixImpl>
-        explicit SingleVectorMatrix(const MatrixBase<MatrixImpl>& rhs);
+        explicit SingleVectorMatrix(const MatrixImpl& rhs);
         
         SingleVectorMatrix(const SingleVectorMatrix& rhs);
         SingleVectorMatrix& operator=(const SingleVectorMatrix& rhs);
@@ -35,12 +35,12 @@ namespace graphcpp
     };
     
     template<class MatrixImpl>
-    SingleVectorMatrix::SingleVectorMatrix(const MatrixBase<MatrixImpl>& rhs) //:
-       // SingleVectorMatrix(rhs.dimension())
+    SingleVectorMatrix::SingleVectorMatrix(const MatrixImpl& rhs) :
+		SingleVectorMatrix(rhs.dimension())
     {
-//        for(auto[i, j] : *this)
-//        {
-//            set(i, j, rhs.at(i, j));
-//        }
+        for(auto[i, j] : *this)
+        {
+            set(i, j, rhs.at(i, j));
+        }
     }
 }

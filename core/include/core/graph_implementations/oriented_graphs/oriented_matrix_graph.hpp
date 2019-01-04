@@ -126,8 +126,7 @@ namespace graphcpp
 		do
 		{
 			_matrix.make_rearranged(permutation, this_copy);
-            return false; //TODO: fix
-			//RETURN_IF(is_matrix_from_graph(this_copy, rhs), true);
+			RETURN_IF(is_matrix_from_graph(this_copy, rhs), true);
 		} while (std::next_permutation(permutation.begin(), permutation.end()));
 
 		return false;
@@ -203,7 +202,7 @@ namespace graphcpp
 	std::unique_ptr<OrientedGraphBase> OrientedMatrixGraph<T>::extract_subgraph(const std::vector<msize>& vertexes) const
 	{
 		assert(!vertexes.empty());
-		assert(std::all_of(vertexes.cbegin(), vertexes.cend(), [&](auto vertex) {return vertex < dimension(); }));
+		assert(std::all_of(vertexes.cbegin(), vertexes.cend(), [&](auto vertex) { return vertex < dimension(); }));
 
 		T result(vertexes.size());
 		for (msize i = 0; i < vertexes.size(); i++)

@@ -45,7 +45,7 @@ FullSymmetricMatrix::FullSymmetricMatrix(const std::vector<std::vector<mcontent>
 
 FullSymmetricMatrix& FullSymmetricMatrix::operator+=(const FullSymmetricMatrix& rhs)
 {
-	assert(dimension == rhs.dimension);
+	assert(dimension() == rhs.dimension());
 
 	for (msize i = 0; i < dimension(); i++)
 	{

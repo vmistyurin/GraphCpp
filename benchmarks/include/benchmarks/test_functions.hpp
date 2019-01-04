@@ -9,8 +9,8 @@
 
 namespace graphcpp_bench
 {
-    template<class RandomGraphType>
-    std::function<std::string(std::ifstream&&)> single_threaded_matrix_of_flows(graphcpp::flow_function base_function)
+    template<class RandomGraphType, class ResultSymMatrixType>
+    std::function<std::string(std::ifstream&&)> single_threaded_matrix_of_flows(graphcpp::flow_function<ResultSymMatrixType> base_function)
     {
         static_assert(std::is_base_of_v<graphcpp::RandomNonOrientedGraphBase, RandomGraphType>, "T must be descendant of RandomNonOrientedGraphBase");
         
@@ -33,8 +33,8 @@ namespace graphcpp_bench
         });
     }
     
-    template<class RandomGraphType>
-    std::function<std::string(std::ifstream&&)> multi_threaded_matrix_of_flows(graphcpp::flow_function base_function)
+    template<class RandomGraphType, class ResultSymMatrixType>
+    std::function<std::string(std::ifstream&&)> multi_threaded_matrix_of_flows(graphcpp::flow_function<ResultSymMatrixType> base_function)
     {
         static_assert(std::is_base_of_v<graphcpp::RandomNonOrientedGraphBase, RandomGraphType>, "T must be descendant of RandomNonOrientedGraphBase");
         

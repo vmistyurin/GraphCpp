@@ -36,7 +36,7 @@ HalfSymmetricMatrix& HalfSymmetricMatrix::operator+=(const HalfSymmetricMatrix& 
 
 	for (auto[i, j] : *this)
 	{
-		_matrix[i][j] += rhs._matrix[i][j];
+		set(i, j, at(i, j) + rhs.at(i, j));
 	}
 
 	return *this;

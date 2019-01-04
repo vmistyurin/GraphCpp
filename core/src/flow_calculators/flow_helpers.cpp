@@ -76,3 +76,30 @@ std::unique_ptr<FullSymmetricMatrix> flow_calculators::calculate_flows_in_tree(c
 
 template
 std::unique_ptr<HalfSymmetricMatrix> flow_calculators::calculate_flows_in_tree(const NonOrientedGraphBase& graph);
+
+
+template<class SymMatrixType>
+std::unique_ptr<SymMatrixType> flow_calculators::matrix_of_flows(const NonOrientedGraphBase& graph,
+	const std::function<mcontent(const NonOrientedGraphBase&, msize, msize)>& single_flow_calculator)
+{
+	auto result = std::make_unique<SymMatrixType>(graph.dimension());
+
+	for (auto[i, j] : graph)
+	{
+		result->set(i, j, single_flow_calculator(graph, i, j));
+	}
+
+	return result;
+}
+
+template
+std::unique_ptr<SingleVectorSymmetricMatrix> flow_calculators::matrix_of_flows<SingleVectorSymmetricMatrix>(const NonOrientedGraphBase& graph,
+	const std::function<mcontent(const NonOrientedGraphBase&, msize, msize)>& single_flow_calculator);
+
+template
+std::unique_ptr<FullSymmetricMatrix> flow_calculators::matrix_of_flows<FullSymmetricMatrix>(const NonOrientedGraphBase& graph,
+	const std::function<mcontent(const NonOrientedGraphBase&, msize, msize)>& single_flow_calculator);
+
+template
+std::unique_ptr<HalfSymmetricMatrix> flow_calculators::matrix_of_flows<HalfSymmetricMatrix>(const NonOrientedGraphBase& graph,
+	const std::function<mcontent(const NonOrientedGraphBase&, msize, msize)>& single_flow_calculator);

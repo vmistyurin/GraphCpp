@@ -20,6 +20,4 @@ namespace graphcpp::flow_calculators
 //        return internal::ReductionUseAlgorithmImpl<GraphType, MatrixType>(graph, std::move(flow_calc)).get_flow().first;
 //    }
 //
-    std::unique_ptr<SingleVectorSymmetricMatrix> matrix_of_flows(const NonOrientedGraphBase& graph,
-        const std::function<mcontent(const NonOrientedGraphBase&, msize, msize)>& single_flow_calculator);
 }

@@ -10,5 +10,9 @@ namespace graphcpp::flow_calculators
 {
     template<class SymMatrixType>
     std::unique_ptr<SymMatrixType> calculate_flows_in_tree(const NonOrientedGraphBase& graph);
+
+	template<class SymMatrixtype>
+	std::unique_ptr<SymMatrixtype> matrix_of_flows(const NonOrientedGraphBase& graph,
+		const std::function<mcontent(const NonOrientedGraphBase&, msize, msize)>& single_flow_calculator);
 }
 

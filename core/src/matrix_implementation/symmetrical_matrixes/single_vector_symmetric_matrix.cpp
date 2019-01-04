@@ -64,7 +64,7 @@ SingleVectorSymmetricMatrix& SingleVectorSymmetricMatrix::operator+=(const Singl
 
 SingleVectorSymmetricMatrix& SingleVectorSymmetricMatrix::operator*=(double multiplier)
 {
-	for (msize i = 0; i < _internal_dimension; i++)
+	for (msize i = 0; i < _internal_dimension * _internal_dimension; i++)
 	{
 		_matrix[i] *= multiplier;
 	}
