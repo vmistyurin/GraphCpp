@@ -33,7 +33,7 @@ if (USE_SLOW_TESTS)
     add_definitions(-DUSE_SLOW_TESTS)
 endif()
 
-option(USE_UTILS_TESTS "Use utils tests, like checgh_symmetrical_matrix" OFF)
+option(USE_UTILS_TESTS "Use utils tests, like check_symmetrical_matrix" OFF)
 if (USE_UTILS_TESTS)
     add_definitions(-DUSE_UTILS_TESTS)
 endif()
@@ -55,10 +55,8 @@ set_compiler_options()
 target_compile_definitions(${PROJECT_NAME} PUBLIC GTEST_LANG_CXX11)
 
 set_property(TARGET ${PROJECT_NAME} APPEND PROPERTY INCLUDE_DIRECTORIES
-    "${CMAKE_CURRENT_SOURCE_DIR}/include"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src"
-    "${CMAKE_SOURCE_DIR}/core/include"
-    "${CMAKE_SOURCE_DIR}/core/src"
+    "${CMAKE_CURRENT_SOURCE_DIR}"
+    "${CMAKE_SOURCE_DIR}/core"
     "${CMAKE_SOURCE_DIR}/deps/googletest/include"
     "${Boost_INCLUDE_DIRS}"
 )

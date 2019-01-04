@@ -7,7 +7,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 add_subdirectory("${CMAKE_SOURCE_DIR}/core")
 add_subdirectory("${CMAKE_SOURCE_DIR}/deps/googletest")
-add_subdirectory("${CMAKE_SOURCE_DIR}/deps/gsl")
 add_subdirectory("${CMAKE_SOURCE_DIR}/unit_tests")
 add_subdirectory("${CMAKE_SOURCE_DIR}/benchmarks")
 
