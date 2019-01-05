@@ -8,19 +8,55 @@
 
 namespace graphcpp
 {
+	template<class SymMatrixType, class NonOrientedGraphType, class RandomNonOrientedGraphType>
     class MultiThreadCalculator final
     {
     private:
-        std::unique_ptr<RandomNonOrientedGraphBase> _graph;
-        MultiThreadSummator<SingleVectorSymmetricMatrix> _summator;
-        const flow_function<SingleVectorSymmetricMatrix> _flow_func;
+		RandomNonOrientedGraphType _graph;
+        MultiThreadSummator<SymMatrixType> _summator;
+        const flow_function<SymMatrixType, NonOrientedGraphType> _flow_func;
         ThreadPool _thread_pool;
         
         static inline std::once_flag _print_number_of_cores_flag;
         
     public:
-        MultiThreadCalculator(std::unique_ptr<RandomNonOrientedGraphBase>&& graph, flow_function<SingleVectorSymmetricMatrix> flow_func);
+        MultiThreadCalculator(RandomNonOrientedGraphType graph, flow_function<SymMatrixType, NonOrientedGraphType> flow_func);
         
-        std::unique_ptr<SingleVectorMatrix> expected_value();
+		SymMatrixType expected_value();
     };
+	
+	template<class SymMatrixType, class NonOrientedGraphType, class RandomNonOrientedGraphType>
+	MultiThreadCalculator<SymMatrixType, NonOrientedGraphType, RandomNonOrientedGraphType>::MultiThreadCalculator(
+		RandomNonOrientedGraphType graph,
+		flow_function<SymMatrixType, NonOrientedGraphType> flow_func
+	) :
+		_graph(std::move(graph)),
+		_summator(SymMatrixType(_graph->dimension())),
+		_flow_func(std::move(flow_func)),
+		_thread_pool(std::thread::hardware_concurrency())
+	{
+		std::call_once(_print_number_of_cores_flag, []
+		{
+			std::cout << "Number of threads: " << std::thread::hardware_concurrency() << std::endl;
+		});
+	}
+
+	template<class SymMatrixType, class NonOrientedGraphType, class RandomNonOrientedGraphType>
+	SymMatrixType MultiThreadCalculator<SymMatrixType, NonOrientedGraphType, RandomNonOrientedGraphType>::expected_value()
+	{
+		_graph.factorize([&](std::unique_ptr<NonOrientedGraphType> graph, double probability)
+		{
+			_thread_pool.add_task([graph_raw = graph.release(), probability, this]
+				{
+					std::unique_ptr<NonOrientedGraphType> graph(graph_raw); //MSVC has some problems with moving lambdas
+					const auto flows = _flow_func(*graph);
+					_summator.add(*flows, probability);
+				});
+		});
+
+		auto future = _summator.start_compute();
+		assert(future.valid());
+
+		return future.get();
+	}
 }

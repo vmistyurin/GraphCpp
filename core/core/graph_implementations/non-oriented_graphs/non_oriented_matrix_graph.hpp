@@ -52,8 +52,8 @@ namespace graphcpp
         std::list<std::vector<msize>> get_connected_trees() const override;
 
 		std::vector<msize> delete_vertexes(const std::vector<msize>& vertexes) override;
-		std::unique_ptr<NonOrientedGraphBase> with_deleted_vertexes(const std::vector<msize>& vertexes) const override;
-		std::unique_ptr<NonOrientedGraphBase> with_deleted_edge(msize i, msize j) const override;
+		/*std::unique_ptr<NonOrientedGraphBase> with_deleted_vertexes(const std::vector<msize>& vertexes) const override;
+		std::unique_ptr<NonOrientedGraphBase> with_deleted_edge(msize i, msize j) const override;*/
 
 		void rearrange(const std::vector<msize>& new_nums) override;
 	};
@@ -279,18 +279,6 @@ namespace graphcpp
 		}
 
 		return new_nums;
-	}
-
-	template<class T>
-	std::unique_ptr<NonOrientedGraphBase> NonOrientedMatrixGraph<T>::with_deleted_vertexes(const std::vector<msize>& vertexes) const
-	{
-		return std::make_unique<NonOrientedMatrixGraph<T>>(*_matrix.with_deleted_vertexes(vertexes));
-	}
-
-	template<class T>
-	std::unique_ptr<NonOrientedGraphBase> NonOrientedMatrixGraph<T>::with_deleted_edge(msize i, msize j) const
-	{
-		return std::make_unique<NonOrientedMatrixGraph<T>>(*_matrix.with_deleted_element(i, j));
 	}
 
 	template<class T>

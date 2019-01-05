@@ -31,12 +31,27 @@ namespace graphcpp
 
         bool is_tree() const;
         
-		virtual std::unique_ptr<NonOrientedGraphBase> with_deleted_vertexes(const std::vector<msize>& vertexes) const = 0;
-		virtual std::unique_ptr<NonOrientedGraphBase> with_deleted_edge(msize i, msize j) const = 0;
+		template<class NonOrientedGraphType>
+		std::unique_ptr<NonOrientedGraphType> with_deleted_vertexes(const std::vector<msize>& vertexes) const;
+
+		template<class NonOrientedGraphType>
+		std::unique_ptr<NonOrientedGraphType> with_deleted_edge(msize i, msize j) const;
 
 		SymmetricMatrixIterator begin() const;
 		SymmetricMatrixIterator end() const;
 
         ABSTRACT_CLASS_OPERATIONS(NonOrientedGraphBase)
 	};
+
+	template<class NonOrientedGraphType>
+	std::unique_ptr<NonOrientedGraphType> NonOrientedGraphBase::with_deleted_vertexes(const std::vector<msize>& vertexes) const
+	{
+		return std::make_unique<NonOrientedGraphType>(*_matrix.with_deleted_vertexes(vertexes));
+	}
+
+	template<class NonOrientedGraphType>
+	std::unique_ptr<NonOrientedGraphType> NonOrientedGraphBase::with_deleted_edge(msize i, msize j) const
+	{
+		return std::make_unique<NonOrientedGraphType>(*_matrix.with_deleted_element(i, j));
+	}
 }

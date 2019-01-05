@@ -28,9 +28,6 @@ namespace graphcpp
 
 		void swap(msize str1, msize str2);
 		void delete_last_strings(msize count);
-
-		std::unique_ptr<FullSymmetricMatrix> with_deleted_vertexes(const std::vector<msize>& vertexes) const;
-		std::unique_ptr<FullSymmetricMatrix> with_deleted_element(msize i, msize j) const;
 	};
     
     template<class RhsImplType>

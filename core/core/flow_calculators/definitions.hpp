@@ -8,10 +8,11 @@
 
 namespace graphcpp
 {
-    template<class MatrixType>
-    using flow_function = std::function<std::unique_ptr<MatrixType>(const NonOrientedGraphBase&)>;
+    template<class SymMatrixType, class NonOrientedGraphType>
+    using flow_function = std::function<std::unique_ptr<SymMatrixType>(const NonOrientedGraphType&)>;
     
-    using single_flow_function = std::function<mcontent(const NonOrientedGraphBase&, msize, msize)>;
+	template<class NonOrientedGraphType>
+    using single_flow_function = std::function<mcontent(const NonOrientedGraphType&, msize, msize)>;
     
     struct ReductionStatistic final
     {

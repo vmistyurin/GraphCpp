@@ -40,6 +40,6 @@ TEST_F(SingleThreadCalculatorTests, ExpectedValueTest)
     
     for (const auto[i, j] : *result)
     {
-        EXPECT_TRUE(are_doubles_equal(result->at(i, j), expected_matrix.at(i, j)));
+        EXPECT_TRUE(are_doubles_equal(result.at(i, j), expected_matrix.at(i, j)));
     }
 }
