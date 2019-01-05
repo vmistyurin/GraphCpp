@@ -31,10 +31,8 @@ add_executable(${PROJECT_NAME} ${FUNCTIONAL_TESTS_FILES})
 set_compiler_options()
 
 set_property(TARGET ${PROJECT_NAME} APPEND PROPERTY INCLUDE_DIRECTORIES
-    "${CMAKE_CURRENT_SOURCE_DIR}/include"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src"
-    "${CMAKE_SOURCE_DIR}/core/include"
-    "${CMAKE_SOURCE_DIR}/core/src"
+    "${CMAKE_CURRENT_SOURCE_DIR}"
+    "${CMAKE_SOURCE_DIR}/core"
     "${Boost_INCLUDE_DIRS}"
 )
 
