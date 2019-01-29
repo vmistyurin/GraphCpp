@@ -1,6 +1,7 @@
 #include "core/flow_calculators/flow_helpers.hpp"
 
 #include <cassert>
+#include <algorithm>
 
 #include "core/graphs/non_oriented_graphs/non_oriented_graph_base.hpp"
 #include "core/matrices/symmetric_matrices/single_vector_symmetric_matrix.hpp"
