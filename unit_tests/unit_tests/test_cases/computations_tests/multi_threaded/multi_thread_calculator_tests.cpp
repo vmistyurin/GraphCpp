@@ -1,6 +1,8 @@
 #include "gtest/gtest.h"
 
-#include "core/all.hpp"
+#include "core/random_graphs/non_oriented_graphs/random_non_oriented_graph.hpp"
+#include "core/flow_calculators/flow_calculators.hpp"
+#include "core/computations/multi_threaded/multi_thread_calculator.hpp"
 
 using namespace graphcpp;
 
@@ -15,7 +17,7 @@ protected:
             SymmetricRandomEdge(SymmetricEdge(1, 3, 10), 1),
             SymmetricRandomEdge(SymmetricEdge(2, 3, 8), 0.2)
         };
-        auto graph = std::make_unique<RandomNonOrientedGraph<NonOrientedMatrixGraph<FullSymmetricMatrix>, FullSymmetricMatrix>>(edges, 4);
+        auto graph = std::make_unique<RandomNonOrientedGraph<NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>, SingleVectorSymmetricMatrix>>(edges, 4);
         
         calculator = std::make_unique<MultiThreadCalculator>(std::move(graph),
             std::bind(flow_calculators::matrix_of_flows, std::placeholders::_1, flow_calculators::Edmonds_Karp_algorithm)
@@ -34,7 +36,7 @@ TEST_F(MultiThreadCalculatorTests, ExpectedValueTest)
         { 4.5,  10.75, 1.6, 0 }
     };
     
-    const FullSymmetricMatrix expected_matrix(expected_result);
+    const SingleVectorSymmetricMatrix expected_matrix(expected_result);
     
     const auto result = this->calculator->expected_value();
     

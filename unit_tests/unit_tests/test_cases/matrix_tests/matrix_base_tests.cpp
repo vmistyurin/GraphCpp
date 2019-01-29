@@ -1,7 +1,5 @@
 #include "gtest/gtest.h"
 
-#include "core/all.hpp"
-#include "unit_tests/macroses.hpp"
 #include "unit_tests/implementations.hpp"
 #include "unit_tests/test_data/test_matrix.hpp"
 
@@ -10,17 +8,17 @@ using namespace graphcpp_testing;
 
 namespace
 {
-	template<class GraphType>
+	template<class MatrixType>
 	std::unique_ptr<MatrixBase> GetMatrix(const std::vector<std::vector<mcontent>>& array)
     {
-        return std::make_unique<GraphType>(array);
+        return std::make_unique<MatrixType>(array);
     }
 }
 
 template<class TestMatrixType>
 class MatrixBaseTests : public testing::Test
 {
-public:
+protected:
 	MatrixBaseTests() :
 		test_matrix(GetMatrix<TestMatrixType>(test_matrix::matrix_as_vector()))
 	{

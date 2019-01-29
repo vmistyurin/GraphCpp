@@ -1,6 +1,14 @@
 #pragma once
 
-#include "core/all.hpp"
+#include <vector>
+#include <memory>
+
+#include "core/edges/symmetric_edge.hpp"
+
+namespace graphcpp
+{
+	class NonOrientedGraphBase; 	
+} 
 
 namespace graphcpp_testing::non_oriented_test_graph
 {

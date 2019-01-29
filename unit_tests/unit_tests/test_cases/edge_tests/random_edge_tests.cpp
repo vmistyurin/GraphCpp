@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 
-#include "core/all.hpp"
+#include "core/edges/random_edge.hpp"
+#include "core/utils/numeric.hpp"
 
 using namespace graphcpp;
 

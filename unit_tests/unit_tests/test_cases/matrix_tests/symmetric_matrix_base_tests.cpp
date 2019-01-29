@@ -2,11 +2,10 @@
 
 #include "gtest/gtest.h"
 
-#include "core/all.hpp"
-#include "unit_tests/macroses.hpp"
 #include "unit_tests/implementations.hpp"
 
 using namespace graphcpp;
+using namespace graphcpp_testing;
 
 namespace //TODO: move it to test_data
 {

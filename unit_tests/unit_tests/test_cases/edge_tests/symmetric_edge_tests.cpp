@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "core/all.hpp"
+#include "core/edges/symmetric_edge.hpp"
 
 using namespace graphcpp;
 

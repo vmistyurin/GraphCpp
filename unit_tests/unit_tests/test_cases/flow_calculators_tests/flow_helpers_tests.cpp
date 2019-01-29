@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 
-#include "core/all.hpp"
-#include "unit_tests/macroses.hpp"
+#include "core/flow_calculators/flow_calculators.hpp"
+
 #include "unit_tests/utils/comparators.hpp"
 #include "unit_tests/implementations.hpp"
 

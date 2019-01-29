@@ -1,9 +1,11 @@
 #include "core/utils/numeric.hpp"
 
-#include <cassert>
 #include <cmath>
 #include <numeric>
-#include <algorithm>
+
+#include "core/matrices/non_symmetric_matrices/non_symmetric_matrix_base.hpp"
+#include "core/matrices/symmetric_matrices/symmetric_matrix_base.hpp"
+#include "core/graphs/graph_base.hpp"
 
 using namespace graphcpp;
 

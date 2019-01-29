@@ -2,10 +2,12 @@
 
 #include <iostream>
 #include <fstream>
-#include <string>
 #include <functional>
 
-#include "core/all.hpp"
+#include "core/flow_calculators/definitions.hpp"
+#include "core/random_graphs/non_oriented_graphs/random_non_oriented_graph.hpp"
+#include "core/computations/single_threaded/single_thread_calculator.hpp"
+#include "core/computations/multi_threaded/multi_thread_calculator.hpp"
 
 namespace graphcpp_bench
 {

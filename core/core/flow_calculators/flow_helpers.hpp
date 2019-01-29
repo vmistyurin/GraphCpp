@@ -1,10 +1,13 @@
 #pragma once
 
 #include <functional>
+#include <memory>
 
-#include "core/matrix_implementations/symmetric_matrixes/symmetric_matrix_base.hpp"
-#include "core/graph_implementations/non-oriented_graphs/non_oriented_graph_base.hpp"
-#include "core/graph_implementations/graph_base.hpp"
+namespace graphcpp
+{
+    class SymmetricMatrixBase;
+    class NonOrientedGraphBase;
+}
 
 namespace graphcpp::flow_calculators
 {

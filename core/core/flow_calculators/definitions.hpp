@@ -3,8 +3,14 @@
 #include <atomic>
 #include <functional>
 
-#include "core/matrix_implementations/symmetric_matrixes/symmetric_matrix_base.hpp"
-#include "core/graph_implementations/non-oriented_graphs/non_oriented_graph_base.hpp"
+#include "core/macroses.hpp"
+#include "core/matrices/symmetric_matrices/symmetric_matrix_base.hpp"
+
+namespace graphcpp
+{
+    class NonOrientedGraphBase;
+    class SymmetricMatrixBase;
+}
 
 namespace graphcpp
 {

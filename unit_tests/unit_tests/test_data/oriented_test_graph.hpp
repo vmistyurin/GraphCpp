@@ -1,6 +1,14 @@
 #pragma once
 
-#include "core/all.hpp"
+#include <vector>
+#include <memory>
+
+#include "core/edges/edge.hpp"
+
+namespace graphcpp
+{
+	class OrientedGraphBase;
+}
 
 namespace graphcpp_testing::oriented_test_graph
 {

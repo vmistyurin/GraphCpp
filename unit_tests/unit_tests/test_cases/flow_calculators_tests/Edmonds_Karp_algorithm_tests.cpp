@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 
-#include "core/all.hpp"
+#include "core/flow_calculators/flow_calculators.hpp"
+
 #include "unit_tests/test_data/non_oriented_test_graph.hpp"
 #include "unit_tests/implementations.hpp"
 

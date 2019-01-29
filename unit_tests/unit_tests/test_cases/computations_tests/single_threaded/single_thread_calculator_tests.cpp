@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 
-#include "core/all.hpp"
+#include "core/random_graphs/non_oriented_graphs/random_non_oriented_graph.hpp"
+#include "core/computations/single_threaded/single_thread_calculator.hpp"
 
 using namespace graphcpp;
 

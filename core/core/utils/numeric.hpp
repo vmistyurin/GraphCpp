@@ -5,9 +5,13 @@
 #include <algorithm>
 
 #include "core/macroses.hpp"
-#include "core/graph_implementations/graph_base.hpp"
-#include "core/matrix_implementations/symmetric_matrixes/symmetric_matrix_base.hpp"
-#include "core/matrix_implementations/non-symmetric_matrixes/non-symmetric_matrix_base.hpp"
+
+namespace graphcpp
+{
+	class SymmetricMatrixBase;
+	class NonSymmetricMatrixBase;
+	class GraphBase;
+}
 
 namespace graphcpp
 {

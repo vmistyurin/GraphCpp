@@ -1,11 +1,8 @@
 #include "gtest/gtest.h"
 
-#include "core/all.hpp"
-#include "unit_tests/macroses.hpp"
-#include "unit_tests/utils/comparators.hpp"
+#include "core/utils/numeric.hpp"
 
 using namespace graphcpp;
-using namespace graphcpp_testing;
 
 #ifdef USE_UTILS_TESTS
 TEST(UtilsTests, ReduceVertexesNumberTest)

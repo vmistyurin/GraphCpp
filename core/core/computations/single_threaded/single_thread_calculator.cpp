@@ -1,9 +1,13 @@
 #include "core/computations/single_threaded/single_thread_calculator.hpp"
 
+#include "core/random_graphs/non_oriented_graphs/random_non_oriented_graph.hpp"
+
 using namespace graphcpp;
 
 SingleThreadCalculator::SingleThreadCalculator(std::unique_ptr<RandomNonOrientedGraphBase>&& graph, flow_function flow_func) :
-    _graph(std::move(graph)), _summator(FullSymmetricMatrix(_graph->dimension())), _flow_func(std::move(flow_func))
+    _graph(std::move(graph)), 
+	_summator(FullSymmetricMatrix(_graph->dimension())), 
+	_flow_func(std::move(flow_func))
 {
 }
 

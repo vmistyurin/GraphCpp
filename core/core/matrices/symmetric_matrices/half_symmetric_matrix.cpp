@@ -1,0 +1,157 @@
+#include "core/matrices/symmetric_matrices/half_symmetric_matrix.hpp"
+
+#include <cassert>
+#include <algorithm>
+
+#include "core/utils/numeric.hpp"
+
+using namespace graphcpp;
+
+HalfSymmetricMatrix::HalfSymmetricMatrix::HalfSymmetricMatrix(msize dimension)
+{
+	assert(dimension != 0);
+
+	_matrix.resize(dimension - 1);
+	for (msize i = 0; i < dimension - 1; i++)
+	{
+		_matrix[i].resize(i + 1);
+	}
+}
+
+HalfSymmetricMatrix::HalfSymmetricMatrix(const std::vector<std::vector<mcontent>>& matrix) :
+	HalfSymmetricMatrix(matrix.size())
+{
+	assert(check_symmetrical_matrix(matrix));
+
+	for(auto[i,j] : *this)
+	{
+		set(i, j, matrix[i][j]);
+	}
+}
+
+HalfSymmetricMatrix::HalfSymmetricMatrix(const SymmetricMatrixBase& matrix) :
+	HalfSymmetricMatrix(matrix.dimension())
+{
+	for (auto[i, j] : *this)
+	{
+		set(i, j, matrix.at(i, j));
+	}
+}
+
+msize HalfSymmetricMatrix::dimension() const
+{
+	return _matrix.size() + 1;
+}
+
+mcontent HalfSymmetricMatrix::at(msize index1, msize index2) const
+{
+	MINMAX(index1, index2);
+	assert(index2 < dimension());
+
+	RETURN_IF(index1 == index2, 0);
+
+	return _matrix[index2 - 1][index1];
+}
+
+void HalfSymmetricMatrix::set(msize index1, msize index2, mcontent value)
+{
+	MINMAX(index1, index2);
+	assert(index1 != index2);
+	assert(index2 < dimension());
+
+	_matrix[index2 - 1][index1] = value;
+}
+
+void HalfSymmetricMatrix::reduce_element(msize index1, msize index2, mcontent difference)
+{
+	MINMAX(index1, index2);
+	assert(index1 != index2);
+	assert(index2 < dimension());
+
+	_matrix[index2 - 1][index1] -= difference;
+}
+
+void HalfSymmetricMatrix::swap(msize str1, msize str2)
+{
+	MINMAX(str1, str2);
+	assert(str1 != str2);
+	assert(str2 < dimension());
+
+	for (msize i = 0; i < str1; i++)
+	{
+		std::swap(_matrix[str1 - 1][i], _matrix[str2 - 1][i]);
+	}
+
+	for (msize i = str1 + 1; i < str2; i++)
+	{
+		std::swap(_matrix[i - 1][str1], _matrix[str2 - 1][i]);
+	}
+
+	for (msize i = str2 + 1; i < dimension(); i++)
+	{
+		std::swap(_matrix[i - 1][str1], _matrix[i - 1][str2]);
+	}
+}
+
+void HalfSymmetricMatrix::rearrange_with_allocate(const std::vector<msize>& new_nums)
+{
+	assert(new_nums.size() == dimension());
+	assert(is_permutation(new_nums));
+
+	HalfSymmetricMatrix result(dimension());
+	for(auto[i,j] : *this)
+	{
+		result.set(new_nums[i], new_nums[j], at(i, j));
+	}
+
+	_matrix = std::move(result._matrix);
+}
+
+void HalfSymmetricMatrix::delete_last_strings(msize count)
+{
+	assert(count < dimension());
+
+	for (msize i = 0; i < count; i++)
+	{
+		_matrix.pop_back();
+	}
+}
+
+std::unique_ptr<SymmetricMatrixBase> HalfSymmetricMatrix::with_deleted_vertexes(const std::vector<msize>& vertexes) const
+{
+	assert(!vertexes.empty());
+	assert(std::all_of(vertexes.cbegin(), vertexes.cend(), [&](auto vertex) { return vertex < dimension(); }));
+
+	auto result = std::make_unique<HalfSymmetricMatrix>(dimension() - vertexes.size());
+
+	auto new_nums = std::vector<msize>(); new_nums.reserve(dimension() - vertexes.size());
+	msize position_in_deleted = 0;
+	for (msize i = 0; i < dimension(); i++)
+	{
+		if (vertexes[position_in_deleted] == i)
+		{
+			position_in_deleted++;
+			continue;
+		}
+		new_nums.push_back(i);
+	}
+
+	for (msize i = 0; i < new_nums.size(); i++)
+	{
+		for (msize j = i + 1; j < new_nums.size(); j++)
+		{
+			result->set(i, j, at(new_nums[i], new_nums[j]));
+		}
+	}
+
+	return result;
+}
+
+std::unique_ptr<SymmetricMatrixBase> HalfSymmetricMatrix::with_deleted_element(msize i, msize j) const
+{
+	assert(std::max(i, j) < dimension());
+
+	auto result = std::make_unique<HalfSymmetricMatrix>(*this);
+	result->set(i, j, 0);
+	return result;
+}

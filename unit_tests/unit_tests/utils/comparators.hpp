@@ -2,6 +2,8 @@
 
 #include <algorithm>
 
+#include "core/macroses.hpp"
+
 namespace graphcpp_testing
 {
     template<class ContainerType>

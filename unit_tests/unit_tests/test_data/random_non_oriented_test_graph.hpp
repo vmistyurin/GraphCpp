@@ -1,6 +1,14 @@
 #pragma once
 
-#include "core/all.hpp"
+#include <vector>
+#include <memory>
+
+#include "core/edges/symmetric_random_edge.hpp"
+
+namespace graphcpp
+{
+	class RandomNonOrientedGraphBase;
+}
 
 namespace graphcpp_testing::random_non_oriented_test_graph
 {

@@ -25,7 +25,9 @@ endif()
 
 option(USE_ALL_TESTS "Use all tests, included slow, helpers and utils tests" OFF)
 if (USE_ALL_TESTS)
-    add_definitions(-DUSE_ALL_TESTS)
+    add_definitions(-DUSE_SLOW_TESTS)
+    add_definitions(-DUSE_UTILS_TESTS)
+    add_definitions(-DUSE_HELPERS_TESTS)
 endif()
 
 option(USE_SLOW_TESTS "Use very slow tests, like graph equality test" OFF)

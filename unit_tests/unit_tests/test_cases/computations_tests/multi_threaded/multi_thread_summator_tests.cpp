@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "core/all.hpp"
+#include "core/computations/multi_threaded/multi_thread_summator.hpp"
 
 using namespace graphcpp;
 

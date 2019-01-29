@@ -1,10 +1,13 @@
 #pragma once
 
 #include <cmath>
+#include <list>
 
 #include "core/utils/numeric.hpp"
+#include "core/graphs/non_oriented_graphs/non_oriented_matrix_graph.hpp"
 #include "core/flow_calculators/definitions.hpp"
 #include "core/flow_calculators/flow_helpers.hpp"
+#include "core/matrices/symmetric_matrices/symmetric_matrix_base.hpp"
 
 using namespace graphcpp;
 

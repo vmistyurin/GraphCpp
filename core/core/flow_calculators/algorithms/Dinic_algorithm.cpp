@@ -3,12 +3,9 @@
 #include <cassert>
 #include <queue>
 
-#include "boost/preprocessor.hpp"
-
-#include "core/matrix_implementations/matrix_implementations.hpp"
-#include "core/matrix_implementations/non-symmetric_matrixes/matrix.hpp"
-#include "core/graph_implementations/graph_implementations.hpp"
-#include "core/graph_implementations/oriented_graphs/oriented_matrix_graph.hpp"
+#include "core/matrices/non_symmetric_matrices/single_vector_matrix.hpp"
+#include "core/matrices/symmetric_matrices/single_vector_symmetric_matrix.hpp"
+#include "core/graphs/oriented_graphs/oriented_matrix_graph.hpp"
 
 using namespace graphcpp;
 

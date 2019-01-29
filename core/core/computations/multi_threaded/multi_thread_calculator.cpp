@@ -3,13 +3,15 @@
 #include <future>
 #include <iostream>
 
+#include "core/random_graphs/non_oriented_graphs/random_non_oriented_graph_base.hpp"
+
 #include "core/utils/numeric.hpp"
 
 using namespace graphcpp;
 
 MultiThreadCalculator::MultiThreadCalculator(std::unique_ptr<RandomNonOrientedGraphBase>&& graph, flow_function flow_func) :
     _graph(std::move(graph)),
-    _summator(FullSymmetricMatrix(_graph->dimension())),
+    _summator(SingleVectorSymmetricMatrix(_graph->dimension())),
     _flow_func(std::move(flow_func)),
     _thread_pool(std::thread::hardware_concurrency())
 {
@@ -34,5 +36,5 @@ std::unique_ptr<SymmetricMatrixBase> MultiThreadCalculator::expected_value()
     auto future = _summator.start_compute();
     assert(future.valid());
     
-    return std::make_unique<FullSymmetricMatrix>(future.get());
+    return std::make_unique<SingleVectorSymmetricMatrix>(future.get());
 }

@@ -1,7 +1,5 @@
 #include "unit_tests/test_data/random_non_oriented_test_graph.hpp"
 
-#include <type_traits>
-
 using namespace graphcpp;
 using namespace graphcpp_testing;
 

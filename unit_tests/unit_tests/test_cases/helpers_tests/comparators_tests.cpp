@@ -1,8 +1,9 @@
+#include <list>
+
 #include "gtest/gtest.h"
 
-#include "core/all.hpp"
+#include "core/edges/edge.hpp"
 
-#include "unit_tests/macroses.hpp"
 #include "unit_tests/utils/comparators.hpp"
 
 using namespace graphcpp;
@@ -66,6 +67,7 @@ using namespace graphcpp_testing;
 		EXPECT_FALSE(compare_without_order(test_vector, more_edges));
 		EXPECT_FALSE(compare_without_order(test_vector, less_edges));
 	}
+
 
 	TEST(HelpersTests, CompareListsWithoutOrder)
 	{

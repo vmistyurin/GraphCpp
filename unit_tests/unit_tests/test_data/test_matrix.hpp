@@ -1,11 +1,14 @@
 #pragma once
 
-#include "core/all.hpp"
+#include <vector>
+#include <memory>
+
+#include "core/macroses.hpp"
 
 namespace graphcpp_testing::test_matrix
 {
 	using namespace graphcpp;
-
+	
 	msize dimension();
 
 	template<class MatrixType>

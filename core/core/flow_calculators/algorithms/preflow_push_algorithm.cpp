@@ -2,10 +2,9 @@
 
 #include <cassert>
 
-#include "core/matrix_implementations/matrix_implementations.hpp"
-#include "core/matrix_implementations/non-symmetric_matrixes/matrix.hpp"
-#include "core/graph_implementations/graph_implementations.hpp"
-#include "core/graph_implementations/oriented_graphs/oriented_matrix_graph.hpp"
+#include "core/matrices/symmetric_matrices/single_vector_symmetric_matrix.hpp"
+#include "core/matrices/non_symmetric_matrices/single_vector_matrix.hpp"
+#include "core/graphs/oriented_graphs/oriented_matrix_graph.hpp"
 
 using namespace graphcpp;
 
@@ -30,18 +29,18 @@ mcontent flow_calculators::preflow_push_algorithm(const NonOrientedGraphBase& gr
 
 	GraphType flows(graph.dimension());
 
-	for(msize i = 0; i < flows.dimension(); i++)
+	for (msize i = 0; i < flows.dimension(); i++)
 	{
 		flows.set(source, i, graph.at(source, i));
 		flows.set(i, source, - graph.at(source, i));
 	}
 	
-	while(true)
+	while (true)
 	{
 		auto moved = false;
-		for(msize i = 0; i < graph.dimension(); i++)
+		for (msize i = 0; i < graph.dimension(); i++)
 		{
-			if(excesses[i] > 0 && i != sink && i != source)
+			if (excesses[i] > 0 && i != sink && i != source)
 			{
 				auto pushed = false;
 				for (msize j = 0; j < graph.dimension(); j++)
@@ -61,7 +60,7 @@ mcontent flow_calculators::preflow_push_algorithm(const NonOrientedGraphBase& gr
 					}
 				}
 
-				if(pushed)
+				if (pushed)
 				{
 					break;
 				}
@@ -70,9 +69,9 @@ mcontent flow_calculators::preflow_push_algorithm(const NonOrientedGraphBase& gr
 				auto can_lift = true;
 				for(msize j = 0; j < graph.dimension(); j++)
 				{
-					if(graph.at(i, j) - flows.at(i, j) > 0)
+					if (graph.at(i, j) - flows.at(i, j) > 0)
 					{ 
-						if(heights[i] <= heights[j])
+						if (heights[i] <= heights[j])
 						{
 							new_height = std::min(new_height, heights[j]);
 						}
@@ -84,7 +83,7 @@ mcontent flow_calculators::preflow_push_algorithm(const NonOrientedGraphBase& gr
 					}
 				}
 
-				if(can_lift)
+				if (can_lift)
 				{
 					heights[i] = new_height + 1;
 					moved = true;
@@ -94,7 +93,7 @@ mcontent flow_calculators::preflow_push_algorithm(const NonOrientedGraphBase& gr
 			}
 		}
 
-		if(!moved)
+		if (!moved)
 		{
 			break;
 		}

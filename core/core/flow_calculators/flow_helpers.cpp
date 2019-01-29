@@ -1,5 +1,9 @@
 #include "core/flow_calculators/flow_helpers.hpp"
-#include "core/matrix_implementations/symmetric_matrixes/single_vector_symmetric_matrix.hpp"
+
+#include <cassert>
+
+#include "core/graphs/non_oriented_graphs/non_oriented_graph_base.hpp"
+#include "core/matrices/symmetric_matrices/single_vector_symmetric_matrix.hpp"
 
 using namespace graphcpp;
 

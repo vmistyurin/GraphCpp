@@ -1,11 +1,9 @@
-#include "gtest/gtest.h"
-
 #include <cmath>
 #include <fstream>
 
-#include "core/all.hpp"
+#include "gtest/gtest.h"
+
 #include "unit_tests/utils/comparators.hpp"
-#include "unit_tests/macroses.hpp"
 #include "unit_tests/test_data/random_non_oriented_test_graph.hpp"
 #include "unit_tests/implementations.hpp"
 #include "unit_tests/utils/first_n_range.hpp"

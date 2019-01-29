@@ -1,5 +1,7 @@
 #include "unit_tests/test_data/test_matrix.hpp"
 
+#include "core/matrices/non_symmetric_matrices/matrix.hpp"
+
 using namespace graphcpp;
 using namespace graphcpp_testing;
 

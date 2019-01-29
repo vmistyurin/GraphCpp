@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 
-#include "core/all.hpp"
-#include "unit_tests/macroses.hpp"
+#include "core/utils/numeric.hpp"
+
 #include "unit_tests/utils/comparators.hpp"
 
 using namespace graphcpp;
