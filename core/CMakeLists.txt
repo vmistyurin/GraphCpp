@@ -3,7 +3,6 @@ project(graph_core)
 
 include(GetProjectFiles)
 include(SetCompilerOptions)
-include(Cotire)
 
 set(CORE_FILES)
 get_project_files(CORE_FILES)
@@ -30,8 +29,6 @@ endif()
 add_library(${PROJECT_NAME} STATIC ${CORE_FILES})
 
 set_compiler_options()
-
-cotire(${PROJECT_NAME})
 
 set_property(TARGET ${PROJECT_NAME} APPEND PROPERTY INCLUDE_DIRECTORIES 
     "${CMAKE_CURRENT_SOURCE_DIR}"
