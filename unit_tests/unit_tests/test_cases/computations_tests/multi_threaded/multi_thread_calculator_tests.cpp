@@ -8,6 +8,11 @@ using namespace graphcpp;
 
 class MultiThreadCalculatorTests : public ::testing::Test
 {
+private:
+    using MatrixType = SingleVectorSymmetricMatrix;
+    using GraphType = NonOrientedMatrixGraph<MatrixType>;
+    using RandomGraphType = RandomNonOrientedGraph<GraphType, MatrixType>;
+
 protected:
     MultiThreadCalculatorTests()
     {
@@ -17,14 +22,14 @@ protected:
             SymmetricRandomEdge(SymmetricEdge(1, 3, 10), 1),
             SymmetricRandomEdge(SymmetricEdge(2, 3, 8), 0.2)
         };
-        auto graph = std::make_unique<RandomNonOrientedGraph<NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>, SingleVectorSymmetricMatrix>>(edges, 4);
+        auto graph = std::make_unique<RandomGraphType>(edges, 4);
         
-        calculator = std::make_unique<MultiThreadCalculator>(std::move(graph),
-            std::bind(flow_calculators::matrix_of_flows, std::placeholders::_1, flow_calculators::Edmonds_Karp_algorithm)
+        calculator = std::make_unique<MultiThreadCalculator<MatrixType, GraphType>>(std::move(graph),
+            std::bind(flow_calculators::matrix_of_flows<MatrixType, GraphType>, std::placeholders::_1, flow_calculators::Edmonds_Karp_algorithm)
         );
     }
     
-    std::unique_ptr<MultiThreadCalculator> calculator;
+    std::unique_ptr<MultiThreadCalculator<>> calculator;
 };
 
 TEST_F(MultiThreadCalculatorTests, ExpectedValueTest)

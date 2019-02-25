@@ -10,16 +10,13 @@ namespace graphcpp::flow_calculators
 	mcontent Dinic_algorithm(const NonOrientedGraphBase& graph, msize source, msize sink);
 
 	mcontent preflow_push_algorithm(const NonOrientedGraphBase& graph, msize source, msize sink);
-
-	std::unique_ptr<SymmetricMatrixBase> reduction_use_algorithm(const NonOrientedGraphBase& graph,
-		const std::function<mcontent(const NonOrientedGraphBase&, msize, msize)>& single_flow_calculator);
     
-    template<class GraphType, class MatrixType>
-    std::unique_ptr<SymmetricMatrixBase> reduction_use_algorithm_de(const NonOrientedGraphBase& graph, single_flow_function flow_calc)
-    {
-        return internal::ReductionUseAlgorithmImpl<GraphType, MatrixType>(graph, std::move(flow_calc)).get_flow().first;
-    }
+    template<class NorGraphType, class SymMatrixType>
+    SymMatrixType reduction_use_algorithm_de(const NorGraphType& graph, single_flow_function flow_calc)
+    {		
+        IS_NOR_GRAPH_IMPL(NorGraphType);
+        IS_SYM_MATRIX_IMPL(SymMatrixType);
 
-	std::unique_ptr<SymmetricMatrixBase> matrix_of_flows(const NonOrientedGraphBase& graph,
-		const single_flow_function& single_flow_calculator);
+        return graphcpp::internal::ReductionUseAlgorithmImpl<NorGraphType, SymMatrixType>(graph, std::move(flow_calc)).get_flow().first;
+    }
 }

@@ -231,9 +231,9 @@ TYPED_TEST(SymmetricMatrixTests, WithDeletedVertexesTest)
     };
 	const auto expected_matrix = GetMatrix<TypeParam>(expected_array);
 
-	auto matrix_afted_delete = this->test_matrix->with_deleted_vertexes(deleted_vertexes);
+	auto matrix_afted_delete = this->test_matrix->template with_deleted_vertexes<TypeParam>(deleted_vertexes);
 
-	EXPECT_EQ(*matrix_afted_delete, *expected_matrix);
+	EXPECT_EQ(matrix_afted_delete, *expected_matrix);
 }
 
 TYPED_TEST(SymmetricMatrixTests, WithDeletedElementTest)
@@ -241,11 +241,11 @@ TYPED_TEST(SymmetricMatrixTests, WithDeletedElementTest)
 	const msize x = 0;
 	const msize y = 5;
 
-	const auto with_deleted_element = this->test_matrix->with_deleted_element(x, y);
+	const auto with_deleted_element = this->test_matrix->template with_deleted_element<TypeParam>(x, y);
 
 	this->test_matrix->set(x, y, 0);
 
-	EXPECT_EQ(*with_deleted_element, *this->test_matrix);
+	EXPECT_EQ(with_deleted_element, *this->test_matrix);
 }
 
 TYPED_TEST(SymmetricMatrixTests, OperatorPlusEqualTest)

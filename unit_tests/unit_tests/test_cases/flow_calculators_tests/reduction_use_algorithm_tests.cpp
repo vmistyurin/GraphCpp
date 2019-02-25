@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 
 #include "core/flow_calculators/flow_calculators.hpp"
+#include "core/flow_calculators/flow_helpers.hpp"
 
 #include "unit_tests/test_data/non_oriented_test_graph.hpp"
 #include "unit_tests/implementations.hpp"
@@ -13,26 +14,43 @@ class ReductionUseAlgorithmTests : public ::testing::Test
 {
 protected:
 	ReductionUseAlgorithmTests() :
-		test_graph(non_oriented_test_graph::get_graph<GraphType>())
+		test_graph(*non_oriented_test_graph::get_graph<GraphType>()),
+		expected_flows(non_oriented_test_graph::get_flows())
 	{
 	}
     
-	std::unique_ptr<NonOrientedGraphBase> test_graph;
+	GraphType test_graph;
+	FullSymmetricMatrix expected_flows;
 };
 
 TYPED_TEST_CASE(ReductionUseAlgorithmTests, NonOrientedGraphImplementations,);
 
 TYPED_TEST(ReductionUseAlgorithmTests, WithEdmondsKarpAlgorithm)
 {
-	EXPECT_EQ(*flow_calculators::reduction_use_algorithm(*this->test_graph, flow_calculators::Edmonds_Karp_algorithm), FullSymmetricMatrix(non_oriented_test_graph::get_flows()));
+	const auto actual_flows = flow_calculators::reduction_use_algorithm_de<TypeParam, SingleVectorSymmetricMatrix>(
+		this->test_graph,
+		flow_calculators::Edmonds_Karp_algorithm
+	);
+	
+	EXPECT_EQ(this->expected_flows, actual_flows);
 }
 
 TYPED_TEST(ReductionUseAlgorithmTests, WithDinicAlgorithm)
 {
-	EXPECT_EQ(*flow_calculators::reduction_use_algorithm(*this->test_graph, flow_calculators::Dinic_algorithm), FullSymmetricMatrix(non_oriented_test_graph::get_flows()));
+	const auto actual_flows = flow_calculators::reduction_use_algorithm_de<TypeParam, FullSymmetricMatrix>(
+		this->test_graph, 
+		flow_calculators::Dinic_algorithm
+	);
+
+	EXPECT_EQ(this->expected_flows, actual_flows);
 }
 
 TYPED_TEST(ReductionUseAlgorithmTests, WithPreflowPushAlgorithm)
 {
-	EXPECT_EQ(*flow_calculators::reduction_use_algorithm(*this->test_graph, flow_calculators::preflow_push_algorithm), FullSymmetricMatrix(non_oriented_test_graph::get_flows()));
+	const auto actual_flows = flow_calculators::reduction_use_algorithm_de<TypeParam, HalfSymmetricMatrix>(
+		this->test_graph, 
+		flow_calculators::preflow_push_algorithm
+	);
+	
+	EXPECT_EQ(this->expected_flows, actual_flows);
 }

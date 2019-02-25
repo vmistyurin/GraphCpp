@@ -8,6 +8,8 @@
 using namespace graphcpp;
 using namespace graphcpp_testing;
 
+using SymMatrixType = FullSymmetricMatrix;
+
 template<class GraphType>
 class EdmondsKarpAlgorithmTests : public ::testing::Test
 {
@@ -17,7 +19,7 @@ protected:
 	{
 	}
     
-	std::unique_ptr<NonOrientedGraphBase> test_graph;
+	std::unique_ptr<GraphType> test_graph;
 };
 
 TYPED_TEST_CASE(EdmondsKarpAlgorithmTests, NonOrientedGraphImplementations,);
@@ -30,5 +32,8 @@ TYPED_TEST(EdmondsKarpAlgorithmTests, SingleFlowTests)
 
 TYPED_TEST(EdmondsKarpAlgorithmTests, FlowsMatrixTests)
 {
-	EXPECT_EQ(*flow_calculators::matrix_of_flows(*this->test_graph, flow_calculators::Edmonds_Karp_algorithm), FullSymmetricMatrix(non_oriented_test_graph::get_flows()));
+	const auto actual_flows = flow_calculators::matrix_of_flows<SymMatrixType, TypeParam>(*this->test_graph, flow_calculators::Edmonds_Karp_algorithm); 
+	const auto expected_flows = SymMatrixType(non_oriented_test_graph::get_flows());
+ 
+	EXPECT_EQ(actual_flows, expected_flows);
 }

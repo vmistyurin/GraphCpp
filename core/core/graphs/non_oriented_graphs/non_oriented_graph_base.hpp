@@ -33,9 +33,6 @@ namespace graphcpp
 		std::vector<std::vector<msize>> get_chains() const;
 
         bool is_tree() const;
-        
-		virtual std::unique_ptr<NonOrientedGraphBase> with_deleted_vertexes(const std::vector<msize>& vertexes) const = 0;
-		virtual std::unique_ptr<NonOrientedGraphBase> with_deleted_edge(msize i, msize j) const = 0;
 
 		SymmetricMatrixIterator begin() const;
 		SymmetricMatrixIterator end() const;

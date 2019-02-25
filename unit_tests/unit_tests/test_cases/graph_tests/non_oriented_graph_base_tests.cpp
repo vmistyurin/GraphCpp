@@ -21,7 +21,7 @@ protected:
 	{
 	}
     
-	std::unique_ptr<NonOrientedGraphBase> test_graph;
+	std::unique_ptr<TestGraphType> test_graph;
 };
 
 TYPED_TEST_CASE(NonOrientedGraphBaseTests, NonOrientedGraphImplementations,);
@@ -270,7 +270,7 @@ TYPED_TEST(NonOrientedGraphBaseTests, WithDeletedVertexesTest)
 		SymmetricEdge(2, 3, 10)
 	};
 
-	const auto edges_after_delete = this->test_graph->with_deleted_vertexes(vertexes_to_delete)->get_edges();
+	const auto edges_after_delete = this->test_graph->template with_deleted_vertexes<TypeParam, FullSymmetricMatrix>(vertexes_to_delete).get_edges();
 
 	EXPECT_TRUE(compare_without_order(edges_after_delete, expected_edges));
 }
@@ -280,11 +280,11 @@ TYPED_TEST(NonOrientedGraphBaseTests, WithDeletedEdgeTest)
 	const msize first = 2;
 	const msize second = 5;
 
-	const auto with_deleted_edge = this->test_graph->with_deleted_edge(first, second);
+	const auto with_deleted_edge = this->test_graph->template with_deleted_edge<TypeParam, FullSymmetricMatrix>(first, second);
 
 	this->test_graph->set(first, second, 0);
 
-	EXPECT_TRUE(compare_without_order(with_deleted_edge->get_edges(), this->test_graph->get_edges()));
+	EXPECT_TRUE(compare_without_order(with_deleted_edge.get_edges(), this->test_graph->get_edges()));
 }
 
 TYPED_TEST(NonOrientedGraphBaseTests, IsTreeTest)

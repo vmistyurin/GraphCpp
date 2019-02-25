@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 
 #include "core/flow_calculators/flow_calculators.hpp"
+#include "core/flow_calculators/flow_helpers.hpp"
 
 #include "unit_tests/utils/comparators.hpp"
 #include "unit_tests/implementations.hpp"
@@ -39,8 +40,8 @@ TYPED_TEST(FlowHelpersTests, FlowsInTreeTest)
         { 5, 10, 20, 5, 10, 3, 1, 0 }
     });
     
-    auto flows = flow_calculators::calculate_flows_in_tree(tree);
+    auto flows = flow_calculators::calculate_flows_in_tree<FullSymmetricMatrix>(tree);
 
-    EXPECT_EQ(*flows, expected_flows);
+    EXPECT_EQ(flows, expected_flows);
 }
 

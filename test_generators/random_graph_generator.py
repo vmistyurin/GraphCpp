@@ -5,7 +5,7 @@ import shutil
 lower_bound_of_edge_weight = 1
 upper_bound_of_edge_weight = 100
 number_of_tests = 10
-tests_dimension = [(14, 16)]
+tests_dimension = [(12, 13)]
 test_directory_name = "random_graphs"
 
 if os.path.isdir(test_directory_name):
@@ -28,7 +28,7 @@ for test in tests_dimension:
                 if unique:
                     successfull_generated.append(new_edge)
         test_file = open(current_test_directory + "/%d.txt" %
-                         (count_of_test), "w")
+                        (count_of_test), "w")
         test_file.write("%d %d \n" % (test[0], test[1]))
         for edge in successfull_generated:
             test_file.write("%d %d %d %f \n" % (edge[0], edge[1], random.randint(

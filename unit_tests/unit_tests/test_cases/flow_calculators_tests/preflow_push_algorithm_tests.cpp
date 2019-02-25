@@ -1,12 +1,15 @@
 #include "gtest/gtest.h"
 
 #include "core/flow_calculators/flow_calculators.hpp"
+#include "core/flow_calculators/flow_helpers.hpp"
 
 #include "unit_tests/test_data/non_oriented_test_graph.hpp"
 #include "unit_tests/implementations.hpp"
 
 using namespace graphcpp;
 using namespace graphcpp_testing;
+
+using SymMatrixType = FullSymmetricMatrix;
 
 template<class GraphType>
 class PreflowPushAlgorithmTests : public ::testing::Test
@@ -17,7 +20,7 @@ protected:
 	{
 	}
     
-	std::unique_ptr<NonOrientedGraphBase> test_graph;
+	std::unique_ptr<GraphType> test_graph;
 };
 
 TYPED_TEST_CASE(PreflowPushAlgorithmTests, NonOrientedGraphImplementations,);
@@ -30,5 +33,8 @@ TYPED_TEST(PreflowPushAlgorithmTests, SingleFlowTests)
 
 TYPED_TEST(PreflowPushAlgorithmTests, FlowsMatrixTests)
 {
-	EXPECT_EQ(*flow_calculators::matrix_of_flows(*this->test_graph, flow_calculators::preflow_push_algorithm), FullSymmetricMatrix(non_oriented_test_graph::get_flows()));
+	const auto actual_flows = flow_calculators::matrix_of_flows<SymMatrixType, TypeParam>(*this->test_graph, flow_calculators::preflow_push_algorithm); 
+	const auto expected_flows = SymMatrixType(non_oriented_test_graph::get_flows());
+ 
+	EXPECT_EQ(actual_flows, expected_flows);
 }

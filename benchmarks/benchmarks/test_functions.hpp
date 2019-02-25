@@ -11,10 +11,12 @@
 
 namespace graphcpp_bench
 {
-    template<class RandomGraphType>
-    std::function<std::string(std::ifstream&&)> single_threaded_matrix_of_flows(graphcpp::flow_function base_function)
+    template<class MatrixType, class GraphType, class RandomGraphType = RandomNonOrientedGraph<GraphType, MatrixType>>
+    std::function<std::string(std::ifstream&&)> single_threaded_matrix_of_flows(flow_func_t<MatrixType, GraphType> base_function)
     {
-        static_assert(std::is_base_of_v<graphcpp::RandomNonOrientedGraphBase, RandomGraphType>, "T must be descendant of RandomNonOrientedGraphBase");
+        IS_NOR_RANDOM_GRAPH_IMPL(RandomGraphType);
+        IS_NOR_GRAPH_IMPL(GraphType);
+        IS_SYM_MATRIX_IMPL(MatrixType);
         
         return [base_function = std::move(base_function)](std::ifstream&& input)
         {
@@ -26,36 +28,61 @@ namespace graphcpp_bench
         };
     }
     
-    template<class RandomGraphType>
+    template<class RandomGraphType, class GraphType = NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>, class MatrixType = SingleVectorSymmetricMatrix>
     std::function<std::string(std::ifstream&&)> single_threaded_matrix_of_flows(graphcpp::single_flow_function base_function)
     {
-        return single_threaded_matrix_of_flows<RandomGraphType>([base_function = std::move(base_function)](const graphcpp::NonOrientedGraphBase& graph)
+        IS_NOR_RANDOM_GRAPH_IMPL(RandomGraphType);
+        IS_NOR_GRAPH_IMPL(GraphType);
+        IS_SYM_MATRIX_IMPL(MatrixType);
+
+        return single_threaded_matrix_of_flows<RandomGraphType>([base_function = std::move(base_function)](const GraphType& graph)
         {
-            return graphcpp::flow_calculators::matrix_of_flows(graph, base_function);
+            return graphcpp::flow_calculators::matrix_of_flows<MatrixType, GraphType>(graph, base_function);
         });
     }
     
-    template<class RandomGraphType>
-    std::function<std::string(std::ifstream&&)> multi_threaded_matrix_of_flows(graphcpp::flow_function base_function)
+    // template<class RandomGraphType>
+    // std::function<std::string(std::ifstream&&)> multi_threaded_matrix_of_flows(graphcpp::flow_function base_function)
+    // {
+    //     IS_NOR_RANDOM_GRAPH_IMPL(RandomGraphType);
+        
+    //     return [base_function = std::move(base_function)](std::ifstream&& input)
+    //     {
+    //         auto graph = std::make_unique<RandomGraphType>(RandomGraphType::read_from_stream(input));
+
+    //         auto calculator = graphcpp::MultiThreadCalculator(std::move(graph), base_function);
+            
+    //         return calculator.expected_value()->to_string();
+    //     };
+    // }
+
+    template<class MatrixType, class GraphType, class RandomGraphType = RandomNonOrientedGraph<GraphType, MatrixType>>
+    std::function<std::string(std::ifstream&&)> multi_threaded_matrix_of_flows(flow_func_t<MatrixType, GraphType> base_function)
     {
-        static_assert(std::is_base_of_v<graphcpp::RandomNonOrientedGraphBase, RandomGraphType>, "T must be descendant of RandomNonOrientedGraphBase");
+        IS_NOR_RANDOM_GRAPH_IMPL(RandomGraphType);
+        IS_NOR_GRAPH_IMPL(GraphType);
+        IS_SYM_MATRIX_IMPL(MatrixType);
         
         return [base_function = std::move(base_function)](std::ifstream&& input)
         {
             auto graph = std::make_unique<RandomGraphType>(RandomGraphType::read_from_stream(input));
 
-            auto calculator = graphcpp::MultiThreadCalculator(std::move(graph), base_function);
+            auto calculator = graphcpp::MultiThreadCalculator<MatrixType, GraphType>(std::move(graph), base_function);
             
             return calculator.expected_value()->to_string();
         };
     }
-    
-    template<class RandomGraphType>
+
+    template<class RandomGraphType, class GraphType = NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>, class MatrixType = SingleVectorSymmetricMatrix>
     std::function<std::string(std::ifstream&&)> multi_threaded_matrix_of_flows(graphcpp::single_flow_function base_function)
     {
-        return multi_threaded_matrix_of_flows<RandomGraphType>([base_function = std::move(base_function)](const graphcpp::NonOrientedGraphBase& graph)
+        IS_NOR_RANDOM_GRAPH_IMPL(RandomGraphType);
+        IS_NOR_GRAPH_IMPL(GraphType);
+        IS_SYM_MATRIX_IMPL(MatrixType);
+
+        return multi_threaded_matrix_of_flows<MatrixType, GraphType, RandomGraphType>([base_function = std::move(base_function)](const GraphType& graph)
         {
-            return graphcpp::flow_calculators::matrix_of_flows(graph, base_function);
+            return graphcpp::flow_calculators::matrix_of_flows<MatrixType, GraphType>(graph, base_function);
         });
     }
 }

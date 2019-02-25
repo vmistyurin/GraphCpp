@@ -15,13 +15,12 @@ namespace
 {
     constexpr mcontent flow_to_compute = -1;
     constexpr mcontent hanged_vertex_not_linked = -2;
-    //constexpr mcontent hanged_vertex_linked = -3;
 }
 
 namespace graphcpp::flow_calculators
 {
-    std::unique_ptr<SymmetricMatrixBase> matrix_of_flows(const NonOrientedGraphBase& graph,
-        const std::function<mcontent(const NonOrientedGraphBase&, msize, msize)>& single_flow_calculator);
+    // std::unique_ptr<SymmetricMatrixBase> matrix_of_flows(const NonOrientedGraphBase& graph,
+    //     const std::function<mcontent(const NonOrientedGraphBase&, msize, msize)>& single_flow_calculator);
 }
 
 //namespace
@@ -192,35 +191,35 @@ namespace graphcpp::internal
         ReductionStatistic _stats;
         
     public:
-        ReductionUseAlgorithmImpl(const NonOrientedGraphBase& graph, single_flow_function _flow_calc);
+        ReductionUseAlgorithmImpl(GraphType graph, single_flow_function _flow_calc);
         
-        std::pair<std::unique_ptr<SymmetricMatrixType>, ReductionStatistic> get_flow();
+        std::pair<SymmetricMatrixType, ReductionStatistic> get_flow();
     
     private:
-        std::unique_ptr<SymmetricMatrixType> reduction_use_algorithm(const GraphType& graph);
+        SymmetricMatrixType reduction_use_algorithm(const GraphType& graph);
         
-        std::unique_ptr<SymmetricMatrixType> reduce_connected_trees(NonOrientedGraphBase& graph, std::list<std::vector<msize>>& trees);
-        std::unique_ptr<SymmetricMatrixType> reduce_connected_trees(NonOrientedGraphBase& graph);
+        SymmetricMatrixType reduce_connected_trees(GraphType& graph, std::list<std::vector<msize>>& trees);
+        SymmetricMatrixType reduce_connected_trees(GraphType& graph);
         
-        std::unique_ptr<SymmetricMatrixType> remove_hanged_vertexes(const NonOrientedGraphBase& graph);
+        SymmetricMatrixType remove_hanged_vertexes(const GraphType& graph);
     };
     
     template<class GraphType, class SymmetricMatrixType>
-    ReductionUseAlgorithmImpl<GraphType, SymmetricMatrixType>::ReductionUseAlgorithmImpl(const NonOrientedGraphBase& graph, single_flow_function flow_calc) :
-        _graph(std::move(*graph.get_matrix())), _flow_calc(std::move(flow_calc))
+    ReductionUseAlgorithmImpl<GraphType, SymmetricMatrixType>::ReductionUseAlgorithmImpl(GraphType graph, single_flow_function flow_calc) :
+        _graph(std::move(graph)), _flow_calc(std::move(flow_calc))
     {
     }
     
     template<class GraphType, class SymmetricMatrixType>
-    std::pair<std::unique_ptr<SymmetricMatrixType>, ReductionStatistic> ReductionUseAlgorithmImpl<GraphType, SymmetricMatrixType>::get_flow()
+    std::pair<SymmetricMatrixType, ReductionStatistic> ReductionUseAlgorithmImpl<GraphType, SymmetricMatrixType>::get_flow()
     {
-        return std::pair(reduction_use_algorithm(_graph), _stats);
+        return std::make_pair(SymmetricMatrixType(reduction_use_algorithm(_graph)), _stats);
     }
     
     template<class GraphType, class SymmetricMatrixType>
-    std::unique_ptr<SymmetricMatrixType> ReductionUseAlgorithmImpl<GraphType, SymmetricMatrixType>::reduction_use_algorithm(const GraphType& graph)
+    SymmetricMatrixType ReductionUseAlgorithmImpl<GraphType, SymmetricMatrixType>::reduction_use_algorithm(const GraphType& graph)
     {
-        auto result = std::make_unique<SymmetricMatrixType>(graph.dimension());
+        auto result = SymmetricMatrixType(graph.dimension());
         
         auto components = graph.get_connected_components();
         for (const auto& component : components)
@@ -230,23 +229,23 @@ namespace graphcpp::internal
                 continue;
             }
             
-            std::unique_ptr<SymmetricMatrixBase> subgraph_flows;
+            SymmetricMatrixType subgraph_flows;
             
-            if (auto subgraph = graph.extract_subgraph(component); subgraph->is_tree())
+            if (auto subgraph = graph.template extract_subgraph<GraphType>(component); subgraph.is_tree())
             {
-                subgraph_flows = flow_calculators::calculate_flows_in_tree(*subgraph);
+                subgraph_flows = flow_calculators::calculate_flows_in_tree<SymmetricMatrixType>(subgraph);
             }
             else
             {
-                subgraph_flows = reduce_connected_trees(*subgraph);
-                assert(subgraph_flows->dimension() == component.size());
+                subgraph_flows = reduce_connected_trees(subgraph);
+                assert(subgraph_flows.dimension() == component.size());
             }
             
             for (msize i = 1; i < component.size(); i++)
             {
                 for (msize j = 0; j < i; j++)
                 {
-                    result->set(component[i], component[j], subgraph_flows->at(i, j));
+                    result.set(component[i], component[j], subgraph_flows.at(i, j));
                 }
             }
         }
@@ -255,13 +254,14 @@ namespace graphcpp::internal
     }
     
     template<class GraphType, class SymmetricMatrixType>
-    std::unique_ptr<SymmetricMatrixType> ReductionUseAlgorithmImpl<GraphType, SymmetricMatrixType>::reduce_connected_trees(
-                                                                    NonOrientedGraphBase& graph,
-                                                                    std::list<std::vector<msize>>& trees)
+    SymmetricMatrixType ReductionUseAlgorithmImpl<GraphType, SymmetricMatrixType>::reduce_connected_trees(
+            GraphType& graph,
+            std::list<std::vector<msize>>& trees
+        )
         {
             RETURN_IF(trees.empty(), remove_hanged_vertexes(graph));
             
-            auto result = std::make_unique<SymmetricMatrixType>(graph.dimension());
+            auto result = SymmetricMatrixType(graph.dimension());
             
             auto tree = std::move(trees.back());
             trees.pop_back();
@@ -275,24 +275,25 @@ namespace graphcpp::internal
                 other_tree = reduce_vertexes_numbers(other_tree, tree);
             }
             
-            process_subtree(graph, *result, tree, root);
+            process_subtree(graph, result, tree, root);
             
             auto addition = find_addition(tree, graph.dimension());
-            
-            auto subgraph_flows = reduce_connected_trees(*graph.extract_subgraph(addition), trees);
-            for (auto[i, j] : *subgraph_flows)
+            auto addition_subgraph = graph.template extract_subgraph<GraphType>(addition);
+
+            auto subgraph_flows = reduce_connected_trees(addition_subgraph, trees);
+            for (auto[i, j] : subgraph_flows)
             {
-                result->set(addition[i], addition[j], subgraph_flows->at(i, j));
+                result.set(addition[i], addition[j], subgraph_flows.at(i, j));
             }
             
             addition.erase(std::find(addition.cbegin(), addition.cend(), root));
             
             for (auto rest_vertex : addition)
             {
-                const auto flow_to_root = result->at(rest_vertex, root);
+                const auto flow_to_root = result.at(rest_vertex, root);
                 for (auto tree_vertex : tree)
                 {
-                    result->set(tree_vertex, rest_vertex, std::min(flow_to_root, result->at(root, tree_vertex)));
+                    result.set(tree_vertex, rest_vertex, std::min(flow_to_root, result.at(root, tree_vertex)));
                 }
             }
             
@@ -300,11 +301,11 @@ namespace graphcpp::internal
         }
     
     template<class GraphType, class SymmetricMatrixType>
-    std::unique_ptr<SymmetricMatrixType> ReductionUseAlgorithmImpl<GraphType, SymmetricMatrixType>::reduce_connected_trees(NonOrientedGraphBase& graph)
+    SymmetricMatrixType ReductionUseAlgorithmImpl<GraphType, SymmetricMatrixType>::reduce_connected_trees(GraphType& graph)
     {
         auto connected_trees = graph.get_connected_trees();
         decltype(connected_trees) filtered_trees;
-        
+
         for (auto& tree : connected_trees)
         {
             if (tree.size() > 3)
@@ -319,15 +320,15 @@ namespace graphcpp::internal
     }
     
     template<class GraphType, class SymmetricMatrixType>
-    std::unique_ptr<SymmetricMatrixType> ReductionUseAlgorithmImpl<GraphType, SymmetricMatrixType>::remove_hanged_vertexes(const NonOrientedGraphBase& graph)
+    SymmetricMatrixType ReductionUseAlgorithmImpl<GraphType, SymmetricMatrixType>::remove_hanged_vertexes(const GraphType& graph)
     {
-        auto result = std::make_unique<SymmetricMatrixType>(graph.dimension());
+        auto result = SymmetricMatrixType(graph.dimension());
 
         auto hanged_vertexes = graph.get_hanged_vertexes();
 
         if (hanged_vertexes.empty() || graph.dimension() < 4)
         {
-            return std::make_unique<SymmetricMatrixType>(*flow_calculators::matrix_of_flows(graph, _flow_calc));
+            return flow_calculators::matrix_of_flows<SymmetricMatrixType, GraphType>(graph, _flow_calc);
         }
 
         for (auto current = hanged_vertexes.cbegin(); !hanged_vertexes.empty() && current != hanged_vertexes.cend(); ++current)
@@ -337,7 +338,7 @@ namespace graphcpp::internal
             {
                 if (current->first == suspect->second)
                 {
-                    result->set(current->first, current->second, graph.at(current->first, current->second));
+                    result.set(current->first, current->second, graph.at(current->first, current->second));
                     hanged_vertexes.erase(suspect);
                     current = hanged_vertexes.erase(current);
                     is_standalone_pair = true;
@@ -353,13 +354,13 @@ namespace graphcpp::internal
                 continue;
             }
 
-            result->set(current->first, current->second, graph.at(current->first, current->second));
+            result.set(current->first, current->second, graph.at(current->first, current->second));
 
             for (msize j = 0; j < graph.dimension(); j++)
             {
-                if (result->at(current->first, j) == 0 && j != current->first)
+                if (result.at(current->first, j) == 0 && j != current->first)
                 {
-                    result->set(current->first, j, hanged_vertex_not_linked);
+                    result.set(current->first, j, hanged_vertex_not_linked);
                 }
             }
         }
@@ -381,26 +382,26 @@ namespace graphcpp::internal
                     addition.push_back(i);
                 }
             }
-            auto subgraph_flows = remove_hanged_vertexes(*graph.extract_subgraph(addition));
+            auto subgraph_flows = remove_hanged_vertexes(graph.template extract_subgraph<GraphType>(addition));
 
-            for (auto[i, j] : *subgraph_flows)
+            for (auto[i, j] : subgraph_flows)
             {
-                result->set(addition[i], addition[j], subgraph_flows->at(i, j));
+                result.set(addition[i], addition[j], subgraph_flows.at(i, j));
             }
         }
 
-        for (const auto&[hanged, support] : hanged_vertexes)
+        for (auto[hanged, support] : hanged_vertexes)
         {
             for (msize i = 0; i < graph.dimension(); i++)
             {
-                if (result->at(hanged, i) != 0 && support != i)// && result->at(support, i) != hanged_vertex_not_linked)
+                if (result.at(hanged, i) != 0 && support != i)
                 {
-                    auto flow_from_support_to_i = result->at(i, support);
+                    auto flow_from_support_to_i = result.at(i, support);
                     assert(flow_from_support_to_i != flow_to_compute);
 
                     auto flow_from_support_to_hanged = graph.at(hanged, support);
 
-                    result->set(hanged, i, std::min(flow_from_support_to_hanged, flow_from_support_to_i));
+                    result.set(hanged, i, std::min(flow_from_support_to_hanged, flow_from_support_to_i));
                 }
             }
         }

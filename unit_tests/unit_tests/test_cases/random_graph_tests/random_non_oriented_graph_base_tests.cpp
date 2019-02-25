@@ -128,7 +128,7 @@ TYPED_TEST(RandomNonOrientedGraphBaseTests, FactorizeTest)
 		{ { SymmetricEdge(1, 3, 10), SymmetricEdge(0, 1, 5), SymmetricEdge(0, 3, 6), SymmetricEdge(2, 3, 8) }, 0.03 },
 	};
 
-	graph.factorize([&](std::unique_ptr<NonOrientedGraphBase> graph, double probability)
+	graph.template factorize<NonOrientedMatrixGraph<FullSymmetricMatrix>>([&](std::unique_ptr<NonOrientedMatrixGraph<FullSymmetricMatrix>> graph, double probability)
 	{
 		auto edges = graph->get_edges();
 

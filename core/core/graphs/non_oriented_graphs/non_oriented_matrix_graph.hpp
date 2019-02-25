@@ -10,20 +10,20 @@
 
 namespace graphcpp
 {
-	template<class SymmetricalMatrixType>
+	template<class SymmetricMatrixType>
 	class NonOrientedMatrixGraph : public NonOrientedGraphBase
 	{
 	protected:
-		SymmetricalMatrixType _matrix;
+		SymmetricMatrixType _matrix;
 
 	public:
-		NonOrientedMatrixGraph();
+		NonOrientedMatrixGraph(msize dimension = 0);
 		NonOrientedMatrixGraph(const std::vector<SymmetricEdge>& edges, msize dimension);
 		explicit NonOrientedMatrixGraph(const NonOrientedGraphBase& rhs);
 		explicit NonOrientedMatrixGraph(const SymmetricMatrixBase& rhs);
 
-		template<class SymmetricMatrixTypeForwarded>
-		explicit NonOrientedMatrixGraph(SymmetricMatrixTypeForwarded&& matrix);
+		template<class MatrixType, class Enable = std::enable_if_t<std::is_constructible_v<SymmetricMatrixType, MatrixType>>>
+		NonOrientedMatrixGraph(MatrixType&& matrix);
 
 		msize dimension() const override;
 		mcontent at(msize v1, msize v2) const override;
@@ -33,7 +33,11 @@ namespace graphcpp
         msize get_number_of_edges() const override;
         
 		std::unique_ptr<SymmetricMatrixBase> get_matrix() const override;
+
 		std::unique_ptr<NonOrientedGraphBase> extract_subgraph(const std::vector<msize>& vertexes) const override;
+
+		template<class GraphType>
+		GraphType extract_subgraph(const std::vector<msize>& vertexes) const;
 
 		bool equal(const GraphBase& rhs) const override;
 
@@ -47,15 +51,19 @@ namespace graphcpp
         std::list<std::vector<msize>> get_connected_trees() const override;
 
 		std::vector<msize> delete_vertexes(const std::vector<msize>& vertexes) override;
-		std::unique_ptr<NonOrientedGraphBase> with_deleted_vertexes(const std::vector<msize>& vertexes) const override;
-		std::unique_ptr<NonOrientedGraphBase> with_deleted_edge(msize i, msize j) const override;
 
 		void rearrange(const std::vector<msize>& new_nums) override;
+
+		template<class GraphType, class MatrixType>
+		GraphType with_deleted_vertexes(const std::vector<msize>& vertexes) const;
+
+		template<class GraphType, class MatrixType>
+		GraphType with_deleted_edge(msize i, msize j) const;
 	};
 
 	template<class T>
-	NonOrientedMatrixGraph<T>::NonOrientedMatrixGraph() : 
-		_matrix(0)
+	NonOrientedMatrixGraph<T>::NonOrientedMatrixGraph(msize dimension) : 
+		_matrix(dimension)
 	{
 	}
 
@@ -72,7 +80,7 @@ namespace graphcpp
 
 	template<class T>
 	NonOrientedMatrixGraph<T>::NonOrientedMatrixGraph(const NonOrientedGraphBase& other) :
-		_matrix(other.get_matrix())
+		_matrix(*other.get_matrix())
 	{
 	}
 
@@ -82,9 +90,10 @@ namespace graphcpp
 	{	
 	}
 
-	template<class T> template<class SymmetricMatrixTypeForwarded>
-	NonOrientedMatrixGraph<T>::NonOrientedMatrixGraph(SymmetricMatrixTypeForwarded&& matrix) :
-		_matrix(std::forward<SymmetricMatrixTypeForwarded>(matrix))
+	template<class T>
+	template<class MatrixType, class Enable>
+	NonOrientedMatrixGraph<T>::NonOrientedMatrixGraph(MatrixType&& matrix) :
+		_matrix(std::forward<MatrixType>(matrix))
 	{
 	}
 
@@ -233,12 +242,19 @@ namespace graphcpp
 	}
 
 	template<class T>
-	std::unique_ptr<NonOrientedGraphBase> NonOrientedMatrixGraph<T>::extract_subgraph(const std::vector<msize>& vertexes) const
+	std::unique_ptr<NonOrientedGraphBase> NonOrientedMatrixGraph<T>::extract_subgraph(const std::vector<msize>& vertexes) const //TODO: delete
+	{
+		return std::make_unique<NonOrientedMatrixGraph<T>>(extract_subgraph<NonOrientedMatrixGraph<T>>(vertexes));
+	}
+
+	template<class T>
+	template<class GraphType>
+	GraphType NonOrientedMatrixGraph<T>::extract_subgraph(const std::vector<msize>& vertexes) const
 	{
 		assert(!vertexes.empty());
 		assert(std::all_of(vertexes.cbegin(), vertexes.cend(), [&](auto vertex) { return vertex < dimension(); }));
 
-		T result(vertexes.size());
+		GraphType result(vertexes.size());
 		for (msize i = 0; i < vertexes.size(); i++)
 		{
 			for (msize j = 0; j < i; j++)
@@ -247,7 +263,7 @@ namespace graphcpp
 			}
 		}
 
-		return std::make_unique<NonOrientedMatrixGraph<T>>(std::move(result));
+		return result;
 	}
 
 	template<class T>
@@ -273,18 +289,6 @@ namespace graphcpp
 		}
 
 		return new_nums;
-	}
-
-	template<class T>
-	std::unique_ptr<NonOrientedGraphBase> NonOrientedMatrixGraph<T>::with_deleted_vertexes(const std::vector<msize>& vertexes) const
-	{
-		return std::make_unique<NonOrientedMatrixGraph<T>>(*_matrix.with_deleted_vertexes(vertexes));
-	}
-
-	template<class T>
-	std::unique_ptr<NonOrientedGraphBase> NonOrientedMatrixGraph<T>::with_deleted_edge(msize i, msize j) const
-	{
-		return std::make_unique<NonOrientedMatrixGraph<T>>(*_matrix.with_deleted_element(i, j));
 	}
 
 	template<class T>
@@ -423,4 +427,18 @@ namespace graphcpp
         
         return result;
     }
+
+	template<class InternalMatrixType>
+	template<class GraphType, class MatrixType>
+	GraphType NonOrientedMatrixGraph<InternalMatrixType>::with_deleted_vertexes(const std::vector<msize>& vertexes) const
+	{
+		return GraphType(_matrix.template with_deleted_vertexes<MatrixType>(vertexes));	
+	}
+		
+	template<class InternalMatrixType>
+	template<class GraphType, class MatrixType>
+	GraphType NonOrientedMatrixGraph<InternalMatrixType>::with_deleted_edge(msize i, msize j) const
+	{
+		return GraphType(_matrix.template with_deleted_element<MatrixType>(i, j));
+	}
 }

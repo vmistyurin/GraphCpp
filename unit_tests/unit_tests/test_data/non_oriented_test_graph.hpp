@@ -19,7 +19,7 @@ namespace graphcpp_testing::non_oriented_test_graph
 	std::vector<msize> get_degrees();
 
 	template<class GraphType>
-	std::unique_ptr<NonOrientedGraphBase> get_graph()
+	std::unique_ptr<GraphType> get_graph()
     {
         return std::make_unique<GraphType>(get_edges(), dimension());
     }
