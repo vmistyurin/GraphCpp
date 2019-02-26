@@ -48,7 +48,7 @@ namespace graphcpp::flow_calculators
                 }
             }
             
-            for (decltype(subtrees)::size_type i = 0; i < subtrees.size(); i++)
+            for (typename decltype(subtrees)::size_type i = 0; i < subtrees.size(); i++)
             {
                 for (decltype(i) j = i + 1; j < subtrees.size(); j++)
                 {
