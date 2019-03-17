@@ -1,6 +1,7 @@
 #include "benchmarks/recursive_directory_test_runner.hpp"	
 #include "benchmarks/test_functions.hpp"
 
+#include "core/utils/system_info.hpp"
 #include "core/matrices/symmetric_matrices/single_vector_symmetric_matrix.hpp"
 #include "core/graphs/non_oriented_graphs/non_oriented_matrix_graph.hpp"
 #include "core/flow_calculators/algorithms.hpp"
@@ -11,6 +12,7 @@ using namespace graphcpp::bench;
 
 int main(int argc, char** argv)
 {
+    std::cout << graphcpp::system_info() << std::endl;
 	std::cout << "Current_path: " << fs::current_path() << std::endl;
     
     #ifdef _WIN32

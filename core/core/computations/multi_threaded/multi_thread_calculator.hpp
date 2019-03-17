@@ -1,9 +1,10 @@
 #pragma once
 
+#include "core/utils/system_info.hpp"
+#include "core/utils/thread_pool.hpp"
 #include "core/matrices/symmetric_matrices/single_vector_symmetric_matrix.hpp"
 #include "core/computations/multi_threaded/multi_thread_summator.hpp"
 #include "core/flow_calculators/definitions.hpp"
-#include "core/utils/thread_pool.hpp"
 
 namespace graphcpp
 {
@@ -21,8 +22,6 @@ namespace graphcpp
         const flow_func_t<MatrixType, GraphType> _flow_function;
         ThreadPool _thread_pool;
         
-        static inline std::once_flag _print_number_of_cores_flag;
-        
     public:
         MultiThreadCalculator(std::unique_ptr<RandomNonOrientedGraphBase> graph, flow_func_t<MatrixType, GraphType> flow_function);
         
@@ -34,12 +33,8 @@ namespace graphcpp
         _graph(std::move(graph)),
         _summator(SingleVectorSymmetricMatrix(_graph->dimension())),
         _flow_function(std::move(flow_function)),
-        _thread_pool(std::thread::hardware_concurrency())
+        _thread_pool(number_of_threads())
     {
-        std::call_once(_print_number_of_cores_flag, []
-        {
-            std::cout << "Number of threads: " << std::thread::hardware_concurrency() << std::endl;
-        });
     }
 
     template<class MatrixType, class GraphType>
