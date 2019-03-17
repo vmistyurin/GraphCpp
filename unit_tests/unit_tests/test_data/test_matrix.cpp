@@ -3,7 +3,7 @@
 #include "core/matrices/non_symmetric_matrices/matrix.hpp"
 
 using namespace graphcpp;
-using namespace graphcpp_testing;
+using namespace graphcpp::testing;
 
 namespace
 {

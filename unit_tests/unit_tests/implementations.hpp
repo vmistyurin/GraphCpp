@@ -11,33 +11,33 @@
 #include "core/graphs/oriented_graphs/oriented_matrix_graph.hpp"
 #include "core/random_graphs/non_oriented_graphs/random_non_oriented_graph.hpp"
 
-namespace graphcpp_testing
+namespace graphcpp::testing
 {
-    using MatrixImplementations = testing::Types<
-        graphcpp::Matrix,
-        graphcpp::SingleVectorMatrix
+    using MatrixImplementations = ::testing::Types<
+        Matrix,
+        SingleVectorMatrix
     >;
 
-    using SymmetricMatrixImplementations = testing::Types<
-        graphcpp::FullSymmetricMatrix,
-        graphcpp::HalfSymmetricMatrix,
-        graphcpp::SingleVectorSymmetricMatrix
+    using SymmetricMatrixImplementations = ::testing::Types<
+        FullSymmetricMatrix,
+        HalfSymmetricMatrix,
+        SingleVectorSymmetricMatrix
     >;
 
-    using NonOrientedGraphImplementations = testing::Types<
-        graphcpp::NonOrientedMatrixGraph<graphcpp::FullSymmetricMatrix>,
-        graphcpp::NonOrientedMatrixGraph<graphcpp::HalfSymmetricMatrix>,
-        graphcpp::NonOrientedMatrixGraph<graphcpp::SingleVectorSymmetricMatrix>
+    using NonOrientedGraphImplementations = ::testing::Types<
+        NonOrientedMatrixGraph<FullSymmetricMatrix>,
+        NonOrientedMatrixGraph<HalfSymmetricMatrix>,
+        NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>
     >;
 
-    using OrientedGraphImplementations = testing::Types<
-        graphcpp::OrientedMatrixGraph<graphcpp::Matrix>,
-        graphcpp::OrientedMatrixGraph<graphcpp::SingleVectorMatrix>
+    using OrientedGraphImplementations = ::testing::Types<
+        OrientedMatrixGraph<Matrix>,
+        OrientedMatrixGraph<SingleVectorMatrix>
     >;
 
-    using RandomNonOrientedGraphImplementations = testing::Types<
-        graphcpp::RandomNonOrientedGraph<graphcpp::NonOrientedMatrixGraph<graphcpp::FullSymmetricMatrix>, graphcpp::HalfSymmetricMatrix>,
-        graphcpp::RandomNonOrientedGraph<graphcpp::NonOrientedMatrixGraph<graphcpp::HalfSymmetricMatrix>, graphcpp::SingleVectorSymmetricMatrix>,
-        graphcpp::RandomNonOrientedGraph<graphcpp::NonOrientedMatrixGraph<graphcpp::SingleVectorSymmetricMatrix>, graphcpp::SingleVectorSymmetricMatrix>
+    using RandomNonOrientedGraphImplementations = ::testing::Types<
+        RandomNonOrientedGraph<NonOrientedMatrixGraph<FullSymmetricMatrix>, HalfSymmetricMatrix>,
+        RandomNonOrientedGraph<NonOrientedMatrixGraph<HalfSymmetricMatrix>, SingleVectorSymmetricMatrix>,
+        RandomNonOrientedGraph<NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>, SingleVectorSymmetricMatrix>
     >;
 }

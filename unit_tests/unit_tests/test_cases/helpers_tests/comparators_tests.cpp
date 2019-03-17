@@ -6,9 +6,8 @@
 
 #include "unit_tests/utils/comparators.hpp"
 
-using namespace graphcpp;
-using namespace graphcpp_testing;
-
+namespace graphcpp::testing
+{
 #ifdef USE_HELPERS_TESTS
 	TEST(HelpersTests, CompareVectorsOfIntWithoutOrder)
 	{
@@ -82,4 +81,4 @@ using namespace graphcpp_testing;
 		EXPECT_FALSE(compare_without_order(test_list, different_content));
 	}
 #endif // USE_HELPERS_TESTS
-
+}

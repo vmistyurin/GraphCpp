@@ -10,7 +10,7 @@ namespace graphcpp
 	class NonOrientedGraphBase; 	
 } 
 
-namespace graphcpp_testing::non_oriented_test_graph
+namespace graphcpp::testing::non_oriented_test_graph
 {
 	using namespace graphcpp;
 

@@ -5,7 +5,7 @@
 
 #include "core/macroses.hpp"
 
-namespace graphcpp_testing::test_matrix
+namespace graphcpp::testing::test_matrix
 {
 	using namespace graphcpp;
 	

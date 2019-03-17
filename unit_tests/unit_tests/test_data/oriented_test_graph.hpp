@@ -10,7 +10,7 @@ namespace graphcpp
 	class OrientedGraphBase;
 }
 
-namespace graphcpp_testing::oriented_test_graph
+namespace graphcpp::testing::oriented_test_graph
 {
 	using namespace graphcpp;
 
@@ -19,7 +19,7 @@ namespace graphcpp_testing::oriented_test_graph
 	std::vector<msize> get_degrees();
 
 	template<class OrientedGraphType>
-	std::unique_ptr<OrientedGraphBase> get_graph()
+	std::unique_ptr<OrientedGraphType> get_graph()
     {
         return std::make_unique<OrientedGraphType>(get_edges(), dimension());
     }

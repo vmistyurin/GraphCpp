@@ -1,7 +1,7 @@
 #include "unit_tests/test_data/non_oriented_test_graph.hpp"
 
 using namespace graphcpp;
-using namespace graphcpp_testing;
+using namespace graphcpp::testing;
 
 namespace
 {

@@ -4,7 +4,7 @@
 
 #include <boost/filesystem.hpp>
 
-namespace graphcpp_bench
+namespace graphcpp::bench
 {
 	namespace fs = boost::filesystem;
 

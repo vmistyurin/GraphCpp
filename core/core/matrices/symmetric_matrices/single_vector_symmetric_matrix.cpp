@@ -32,28 +32,28 @@ SingleVectorSymmetricMatrix::SingleVectorSymmetricMatrix(const SymmetricMatrixBa
     }
 }
 
-SingleVectorSymmetricMatrix::SingleVectorSymmetricMatrix(const SingleVectorSymmetricMatrix& rhs) :
-    _dimension(rhs.dimension()), _internal_dimension(rhs.dimension()), _matrix(_dimension * _dimension)
-{
-    for(auto[i, j] : *this)
-    {
-        set(i, j, rhs.at(i, j));
-    }
-}
+// SingleVectorSymmetricMatrix::SingleVectorSymmetricMatrix(const SingleVectorSymmetricMatrix& rhs) :
+//     _dimension(rhs.dimension()), _internal_dimension(rhs.dimension()), _matrix(_dimension * _dimension)
+// {
+//     for(auto[i, j] : *this)
+//     {
+//         set(i, j, rhs.at(i, j));
+//     }
+// }
 
-SingleVectorSymmetricMatrix& SingleVectorSymmetricMatrix::operator=(const SingleVectorSymmetricMatrix& rhs)
-{
-    _dimension = rhs.dimension();
-    _internal_dimension = rhs.dimension();
-    _matrix = std::vector<mcontent>(); _matrix.resize(_dimension * _dimension);
+// SingleVectorSymmetricMatrix& SingleVectorSymmetricMatrix::operator=(const SingleVectorSymmetricMatrix& rhs)
+// {
+//     _dimension = rhs.dimension();
+//     _internal_dimension = rhs.dimension();
+//     _matrix = std::vector<mcontent>(); _matrix.resize(_dimension * _dimension);
     
-    for(auto[i, j] : *this)
-    {
-        set(i, j, rhs.at(i, j));
-    }
+//     for(auto[i, j] : *this)
+//     {
+//         set(i, j, rhs.at(i, j));
+//     }
 
-    return *this;
-}
+//     return *this;
+// }
 
 msize SingleVectorSymmetricMatrix::dimension() const
 {

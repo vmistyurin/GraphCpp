@@ -2,7 +2,7 @@
 
 #include <string_view>
 
-using namespace graphcpp_bench;
+using namespace graphcpp::bench;
 
 namespace 
 {

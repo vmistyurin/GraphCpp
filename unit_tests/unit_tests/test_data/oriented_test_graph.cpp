@@ -3,7 +3,7 @@
 #include "unit_tests/test_data/test_matrix.hpp"
 
 using namespace graphcpp;
-using namespace graphcpp_testing;
+using namespace graphcpp::testing;
 
 msize oriented_test_graph::dimension()
 {

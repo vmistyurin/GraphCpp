@@ -2,7 +2,7 @@
 
 #include "boost/filesystem.hpp"
 
-namespace graphcpp_testing
+namespace graphcpp::testing
 {
 	namespace fs = boost::filesystem;
     

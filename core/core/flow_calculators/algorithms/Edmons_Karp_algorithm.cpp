@@ -1,4 +1,4 @@
-#include "core/flow_calculators/flow_calculators.hpp"
+#include "core/flow_calculators/algorithms.hpp"
 
 #include <cassert>
 #include <queue>
@@ -6,6 +6,7 @@
 
 #include "core/matrices/symmetric_matrices/single_vector_symmetric_matrix.hpp"
 #include "core/matrices/non_symmetric_matrices/single_vector_matrix.hpp"
+#include "core/graphs/non_oriented_graphs/non_oriented_graph_base.hpp"
 #include "core/graphs/non_oriented_graphs/non_oriented_graph_base.hpp"
 
 using namespace graphcpp;

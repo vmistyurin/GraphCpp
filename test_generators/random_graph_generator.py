@@ -5,14 +5,14 @@ import shutil
 lower_bound_of_edge_weight = 1
 upper_bound_of_edge_weight = 100
 number_of_tests = 10
-tests_dimension = [(12, 13)]
+test_dimensions = [(15, 18)]
 test_directory_name = "random_graphs"
 
 if os.path.isdir(test_directory_name):
     shutil.rmtree(test_directory_name, ignore_errors=False, onerror=None)
 os.mkdir(test_directory_name)
 
-for test in tests_dimension:
+for test in test_dimensions:
     current_test_directory = "%s/(%d,%d)" % (test_directory_name, test[0], test[1])
     os.mkdir(current_test_directory)
     for count_of_test in range(0, number_of_tests):
