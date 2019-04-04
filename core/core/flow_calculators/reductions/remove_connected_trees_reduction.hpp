@@ -5,6 +5,7 @@
 #include "core/macroses.hpp"
 #include "core/utils/numeric.hpp"
 #include "core/flow_calculators/definitions.hpp"
+#include "core/flow_calculators/reduction_stats.hpp"
 
 namespace graphcpp::flow_calculators::reductors::internal 
 {
@@ -62,8 +63,8 @@ namespace graphcpp::flow_calculators::reductors::internal
     SymMatrixType apply_remove_connected_trees(
         NorGraphType graph, 
         std::list<std::vector<msize>>& trees,
-        std::shared_ptr<ReductionStatistic> stats,
-        std::function<SymMatrixType(NorGraphType, std::shared_ptr<ReductionStatistic>)> calculator
+        ReductionStats* stats,
+        std::function<SymMatrixType(NorGraphType, ReductionStats*)> calculator
     )
     {
         RETURN_IF(trees.empty(), calculator(graph, stats));
@@ -113,12 +114,17 @@ namespace graphcpp::flow_calculators::reductors
     template<class SymMatrixType, class NorGraphType>
     SymMatrixType remove_connected_trees(
         NorGraphType graph,
-        std::shared_ptr<ReductionStatistic> stats,
-        std::function<SymMatrixType(NorGraphType, std::shared_ptr<ReductionStatistic>)> next_reductor
+        ReductionStats* stats,
+        std::function<SymMatrixType(NorGraphType, ReductionStats*)> next_reductor
     )
     {
         IS_SYM_MATRIX_IMPL(SymMatrixType);
         IS_NOR_GRAPH_IMPL(NorGraphType);
+
+        if (auto small_graph_result = calculate_if_small_graph<SymMatrixType>(graph, stats); small_graph_result) 
+        {
+             return small_graph_result.value();
+        }
 
         auto trees = graph.get_connected_trees();
         return internal::apply_remove_connected_trees(std::move(graph), trees, stats, next_reductor);

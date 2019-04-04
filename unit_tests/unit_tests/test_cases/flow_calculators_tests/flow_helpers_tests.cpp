@@ -1,6 +1,5 @@
 #include "gtest/gtest.h"
 
-#include "core/flow_calculators/flow_calculators.hpp"
 #include "core/flow_calculators/flow_helpers.hpp"
 
 #include "unit_tests/utils/comparators.hpp"

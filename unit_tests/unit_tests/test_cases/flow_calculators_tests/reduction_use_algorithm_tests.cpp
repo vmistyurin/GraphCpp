@@ -2,7 +2,7 @@
 
 #include "core/flow_calculators/algorithms.hpp"
 #include "core/flow_calculators/flow_helpers.hpp"
-#include "core/flow_calculators/flow_calculators.hpp"
+#include "core/flow_calculators/reduction_use_algorithm.hpp"
 
 #include "unit_tests/test_data/non_oriented_test_graph.hpp"
 #include "unit_tests/implementations.hpp"
@@ -27,9 +27,10 @@ namespace graphcpp::testing
 
 	TYPED_TEST(ReductionUseAlgorithmTests, WithEdmondsKarpAlgorithm)
 	{
-		const auto actual_flows = flow_calculators::reduction_use_algorithm_d<TypeParam, SingleVectorSymmetricMatrix>(
+		const auto actual_flows = flow_calculators::reduction_use_algorithm<TypeParam, SingleVectorSymmetricMatrix>(
 			this->test_graph,
-			flow_calculators::Edmonds_Karp_algorithm
+			flow_calculators::Edmonds_Karp_algorithm,
+			nullptr
 		);
 		
 		EXPECT_EQ(this->expected_flows, actual_flows);
@@ -37,9 +38,10 @@ namespace graphcpp::testing
 
 	TYPED_TEST(ReductionUseAlgorithmTests, WithDinicAlgorithm)
 	{
-		const auto actual_flows = flow_calculators::reduction_use_algorithm_d<TypeParam, FullSymmetricMatrix>(
+		const auto actual_flows = flow_calculators::reduction_use_algorithm<TypeParam, FullSymmetricMatrix>(
 			this->test_graph, 
-			flow_calculators::Dinic_algorithm
+			flow_calculators::Dinic_algorithm,
+			nullptr
 		);
 
 		EXPECT_EQ(this->expected_flows, actual_flows);
@@ -47,9 +49,10 @@ namespace graphcpp::testing
 
 	TYPED_TEST(ReductionUseAlgorithmTests, WithPreflowPushAlgorithm)
 	{
-		const auto actual_flows = flow_calculators::reduction_use_algorithm_d<TypeParam, HalfSymmetricMatrix>(
+		const auto actual_flows = flow_calculators::reduction_use_algorithm<TypeParam, HalfSymmetricMatrix>(
 			this->test_graph, 
-			flow_calculators::preflow_push_algorithm
+			flow_calculators::preflow_push_algorithm,
+			nullptr
 		);
 		
 		EXPECT_EQ(this->expected_flows, actual_flows);

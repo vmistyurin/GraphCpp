@@ -2,6 +2,7 @@
 
 #include "core/macroses.hpp"
 #include "core/flow_calculators/definitions.hpp"
+#include "core/flow_calculators/reduction_stats.hpp"
 
 namespace graphcpp::flow_calculators::reductors::internal 
 {
@@ -11,8 +12,8 @@ namespace graphcpp::flow_calculators::reductors::internal
     template<class SymMatrixType, class NorGraphType>
     SymMatrixType remove_hanged_vertexes(
         NorGraphType graph,
-        std::shared_ptr<ReductionStatistic> stats,
-        std::function<SymMatrixType(NorGraphType, std::shared_ptr<ReductionStatistic>)> calculator
+        ReductionStats* stats,
+        std::function<SymMatrixType(NorGraphType, ReductionStats*)> calculator
     )
     {
         auto result = SymMatrixType(graph.dimension());
@@ -45,6 +46,11 @@ namespace graphcpp::flow_calculators::reductors::internal
                     break;
                 }
                 continue;
+            }
+
+            if (stats != nullptr)
+            {
+                stats->increase_hanged_vertexes_counter(hanged_vertexes.size());
             }
 
             result.set(current->first, current->second, graph.at(current->first, current->second));
@@ -108,8 +114,8 @@ namespace graphcpp::flow_calculators::reductors
     template<class SymMatrixType, class NorGraphType>
     SymMatrixType remove_hanged_vertexes(
         NorGraphType graph,
-        std::shared_ptr<ReductionStatistic> stats,
-        std::function<SymMatrixType(NorGraphType, std::shared_ptr<ReductionStatistic>)> next_reductor
+        ReductionStats* stats,
+        std::function<SymMatrixType(NorGraphType, ReductionStats*)> next_reductor
     )
     {
         IS_SYM_MATRIX_IMPL(SymMatrixType);

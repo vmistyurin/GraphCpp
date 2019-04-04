@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core/flow_calculators/definitions.hpp"
-#include "core/flow_calculators/internal/reduction_use_algorithm_impl.hpp"
+#include "core/flow_calculators/reduction_stats.hpp"
 
 #include "core/flow_calculators/reductions/calculate_if_tree.hpp"
 #include "core/flow_calculators/reductions/remove_connected_trees_reduction.hpp"
@@ -13,13 +13,11 @@ namespace graphcpp::flow_calculators
     #define MAKE_REDUCTOR(function_name, next_reductor) std::bind(function_name<SymMatrixType, NorGraphType>, std::placeholders::_1, std::placeholders::_2, next_reductor) 
 
     template<class NorGraphType, class SymMatrixType>
-    SymMatrixType reduction_use_algorithm_d(const NorGraphType& graph, single_flow_function flow_calc)
+    SymMatrixType reduction_use_algorithm(const NorGraphType& graph, single_flow_function flow_calc, ReductionStats* stats)
     {		
         using namespace graphcpp::flow_calculators::reductors;
-        using reductor_type = std::function<SymMatrixType(NorGraphType, std::shared_ptr<ReductionStatistic>)>;
-
-        auto stats = std::make_shared<ReductionStatistic>();
- 
+        using reductor_type = std::function<SymMatrixType(NorGraphType, ReductionStats*)>;
+         
         const reductor_type matrix_of_flows = std::bind(flow_calculators::matrix_of_flows<SymMatrixType, NorGraphType>, std::placeholders::_1, flow_calc);
         const reductor_type reduce_hanged_vertexes = MAKE_REDUCTOR(remove_hanged_vertexes, matrix_of_flows);
         const reductor_type reduce_connected_trees = MAKE_REDUCTOR(remove_connected_trees, reduce_hanged_vertexes); 

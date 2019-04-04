@@ -2,14 +2,15 @@
 
 #include "core/macroses.hpp"
 #include "core/flow_calculators/definitions.hpp"
+#include "core/flow_calculators/reduction_stats.hpp"
 
 namespace graphcpp::flow_calculators::reductors
 {
     template<class SymMatrixType, class NorGraphType>
     SymMatrixType split_to_components(
         NorGraphType graph,
-        std::shared_ptr<ReductionStatistic> stats,
-        std::function<SymMatrixType(NorGraphType, std::shared_ptr<ReductionStatistic>)> next_reductor
+        ReductionStats* stats,
+        std::function<SymMatrixType(NorGraphType, ReductionStats*)> next_reductor
     )
     {
         IS_SYM_MATRIX_IMPL(SymMatrixType);
@@ -20,9 +21,9 @@ namespace graphcpp::flow_calculators::reductors
         auto components = graph.get_connected_components();
         for (const auto& component : components)
         {
-            if (component.size() == 1)
+            if (auto small_graph_result = calculate_if_small_graph<SymMatrixType>(graph, stats); small_graph_result) 
             {
-                continue;
+                return small_graph_result.value();
             }
             
             SymMatrixType subgraph_flows;

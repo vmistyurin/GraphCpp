@@ -4,7 +4,6 @@
 
 #include "core/matrices/symmetric_matrices/single_vector_symmetric_matrix.hpp"
 #include "core/computations/single_threaded/single_thread_summator.hpp"
-#include "core/flow_calculators/flow_calculators.hpp"
 
 namespace graphcpp
 {

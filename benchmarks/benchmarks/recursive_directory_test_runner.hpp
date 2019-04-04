@@ -17,7 +17,7 @@ namespace graphcpp::bench
         std::list<std::string> _runned_tests;
         
 	public:
-        explicit RecursiveDirectoryTestRunner(fs::path path_to_tests, fs::path result_path, std::ostream& logger);
+        RecursiveDirectoryTestRunner(fs::path path_to_tests, fs::path result_path, std::ostream& logger);
         
 		void run_tests(std::function<std::string(std::ifstream&&)> test_function, std::string_view test_name);
         void print_check_result();

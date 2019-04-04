@@ -2,8 +2,8 @@
 
 #include "core/graphs/non_oriented_graphs/non_oriented_matrix_graph.hpp"
 #include "core/random_graphs/non_oriented_graphs/random_non_oriented_graph.hpp"
+#include "core/flow_calculators/flow_helpers.hpp"
 #include "core/flow_calculators/algorithms.hpp"
-#include "core/flow_calculators/flow_calculators.hpp"
 #include "core/computations/multi_threaded/multi_thread_calculator.hpp"
 
 namespace graphcpp::testing
@@ -26,9 +26,9 @@ namespace graphcpp::testing
             };
             auto graph = std::make_unique<RandomGraphType>(edges, 4);
             
-            calculator = std::make_unique<MultiThreadCalculator<MatrixType, GraphType>>(std::move(graph),
-                std::bind(flow_calculators::matrix_of_flows<MatrixType, GraphType>, std::placeholders::_1, flow_calculators::Edmonds_Karp_algorithm)
-            );
+            const flow_func_t<MatrixType, GraphType> flow_function = std::bind(flow_calculators::matrix_of_flows<MatrixType, GraphType>, std::placeholders::_1, flow_calculators::Edmonds_Karp_algorithm);
+
+            calculator = std::make_unique<MultiThreadCalculator<MatrixType, GraphType>>(std::move(graph), flow_function);
         }
         
         std::unique_ptr<MultiThreadCalculator<>> calculator;

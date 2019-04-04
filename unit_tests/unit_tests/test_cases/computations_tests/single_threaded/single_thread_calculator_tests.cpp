@@ -4,7 +4,7 @@
 #include "core/graphs/non_oriented_graphs/non_oriented_matrix_graph.hpp"
 #include "core/random_graphs/non_oriented_graphs/random_non_oriented_graph.hpp"
 #include "core/flow_calculators/algorithms.hpp"
-#include "core/flow_calculators/flow_calculators.hpp"
+#include "core/flow_calculators/reduction_use_algorithm.hpp"
 #include "core/computations/single_threaded/single_thread_calculator.hpp"
 
 namespace graphcpp::testing
