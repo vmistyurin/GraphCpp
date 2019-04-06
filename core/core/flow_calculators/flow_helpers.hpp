@@ -76,7 +76,7 @@ namespace graphcpp::flow_calculators::internal
         {
             if (it != i && it != j) 
             {
-                if (k != -1)
+                if (k == -1)
                 {
                     k = it;
                 } 
@@ -146,7 +146,7 @@ namespace graphcpp::flow_calculators
 
         if (graph.dimension() == 1) 
         {
-            return SymMatrixType({0});
+			return SymMatrixType(1);
         }
 
         if (graph.dimension() == 2)
@@ -174,6 +174,8 @@ namespace graphcpp::flow_calculators
             {
                 result.set(i, j, internal::flow_in_4d_graph(graph, i, j)); 
             }
+
+			return result;
         }
 
         abort();

@@ -1,6 +1,7 @@
 #include "core/flow_calculators/reduction_stats.hpp"
 
 #include <cassert>
+#include <string>
 
 using namespace graphcpp;
 using namespace graphcpp::flow_calculators;
