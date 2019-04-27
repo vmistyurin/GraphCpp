@@ -21,8 +21,7 @@ namespace graphcpp
         virtual msize get_number_of_edges() const = 0;
         
 		virtual std::unique_ptr<SymmetricMatrixBase> get_matrix() const = 0;
-		virtual std::unique_ptr<NonOrientedGraphBase> extract_subgraph(const std::vector<msize>& vertexes) const = 0;
-
+		
 		virtual std::list<std::pair<msize, msize>> get_hanged_vertexes() const = 0;
 		virtual std::vector<msize> get_connected_component(msize vertex) const = 0;
 		virtual std::vector<std::vector<msize>> get_connected_components() const = 0;

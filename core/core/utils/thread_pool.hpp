@@ -22,6 +22,8 @@ namespace graphcpp
     public:
         ThreadPool(unsigned number_of_threads = std::thread::hardware_concurrency());
         ~ThreadPool();
+
+        static ThreadPool& shared();
         
         template<class FunctionType>
         void add_task(FunctionType&& task);

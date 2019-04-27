@@ -29,5 +29,7 @@ namespace graphcpp
         
         void swap(msize str1, msize str2) override;
         void delete_last_strings(msize count) override;
+
+        SingleVectorSymmetricMatrix extract_matrix(const std::vector<msize>& rows);
     };
 }

@@ -49,8 +49,8 @@ namespace
 	}
 }
 
-//http://e-maxx.ru/algo/bridge_searching
-//return edge-bridges and classes
+// http://e-maxx.ru/algo/bridge_searching
+// returns edge-bridges and classes
 std::pair<std::list<std::pair<msize, msize>>, std::vector<msize>> NonOrientedGraphBase::get_bridges() const
 {
 	std::list<std::pair<msize, msize>> result;
@@ -69,7 +69,7 @@ std::pair<std::list<std::pair<msize, msize>>, std::vector<msize>> NonOrientedGra
 		}
 	}
 
-	return std::make_pair(result, min_times);
+	return std::pair(result, min_times);
 }
 
 std::vector<std::vector<msize>> NonOrientedGraphBase::get_chains() const

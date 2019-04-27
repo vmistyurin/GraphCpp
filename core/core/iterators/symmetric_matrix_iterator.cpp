@@ -15,11 +15,11 @@ SymmetricMatrixIterator::SymmetricMatrixIterator(msize dimension) :
 }
 
 SymmetricMatrixIterator::SymmetricMatrixIterator(msize i, msize j, msize dimension) :
-	_i(i), _j(j), _dimension(dimension)
+	_i(i), _j(j), _dimension(dimension == 1 ? msize_undefined : dimension)
 {
-	assert(i < j);
-	assert(j < dimension);
-	assert(dimension > 1);
+	assert(_dimension > 1);
+	assert(_i < _j);
+	assert(_j < _dimension);
 }
 
 std::pair<msize, msize> SymmetricMatrixIterator::operator*() const
@@ -42,6 +42,7 @@ bool SymmetricMatrixIterator::operator!=(const SymmetricMatrixIterator& rhs) con
 SymmetricMatrixIterator& SymmetricMatrixIterator::operator++()
 {
 	assert(_dimension != msize_undefined);
+
 	if (_i == _j - 1)
 	{
 		if (_j == _dimension - 1)

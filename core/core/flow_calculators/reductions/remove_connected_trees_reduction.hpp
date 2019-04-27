@@ -86,7 +86,7 @@ namespace graphcpp::flow_calculators::reductors::internal
         process_subtree(graph, result, tree, root);
         
         auto addition = find_addition(tree, graph.dimension());
-        auto addition_subgraph = graph.template extract_subgraph<NorGraphType>(addition);
+        auto addition_subgraph = graph.extract_subgraph(addition);
 
         auto subgraph_flows = apply_remove_connected_trees<SymMatrixType, NorGraphType>(std::move(addition_subgraph), trees, stats, calculator);
         for (auto[i, j] : subgraph_flows)

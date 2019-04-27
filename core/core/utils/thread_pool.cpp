@@ -23,6 +23,12 @@ ThreadPool::~ThreadPool()
     std::for_each(_threads.begin(), _threads.end(), std::mem_fn(&std::thread::join));
 }
 
+ThreadPool& ThreadPool::shared()
+{
+    static auto threadPool = ThreadPool();
+    return threadPool;
+}
+
 void ThreadPool::thread_work()
 {
     while (true)

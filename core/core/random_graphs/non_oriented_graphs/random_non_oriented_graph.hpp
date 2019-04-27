@@ -7,21 +7,25 @@
 
 namespace graphcpp
 {
-    template<class GraphType, class MatrixType>
+    template<class NorGraphType, class SymMatrixType>
     class RandomNonOrientedGraph final: public RandomNonOrientedGraphBase
     {
-		IS_NOR_GRAPH_IMPL(GraphType);
-		IS_SYM_MATRIX_IMPL(MatrixType);
+	public:
+		IS_NOR_GRAPH_IMPL(NorGraphType);
+		IS_SYM_MATRIX_IMPL(SymMatrixType);
+
+		using GraphType = NorGraphType;
+		using MatrixType = SymMatrixType;
 		
     private:
-        GraphType _graph;
-        MatrixType _probabilities;
+        NorGraphType _graph;
+        SymMatrixType _probabilities;
 
     public:
         RandomNonOrientedGraph(const std::vector<SymmetricRandomEdge>& edges, msize dimension);
-		RandomNonOrientedGraph(GraphType&& graph, MatrixType&& probabilities);
+		RandomNonOrientedGraph(NorGraphType&& graph, SymMatrixType&& probabilities);
 
-		static RandomNonOrientedGraph<GraphType, MatrixType> read_from_stream(std::istream& stream);
+		static RandomNonOrientedGraph<NorGraphType, SymMatrixType> read_from_stream(std::istream& stream);
 
         msize dimension() const override;
         mcontent at(msize index1, msize index2) const override;
@@ -31,14 +35,19 @@ namespace graphcpp
         void set_probability(msize index1, msize index2, double value) override;	
 
 		void delete_vertexes(const std::vector<msize>& vertexes) override;
-		std::unique_ptr<RandomNonOrientedGraphBase> with_deleted_vertexes(const std::vector<msize>& vertexes) const override;
-		std::unique_ptr<RandomNonOrientedGraphBase> with_deleted_edge(msize i, msize j) const override;
+		RandomNonOrientedGraph<NorGraphType, SymMatrixType> with_deleted_vertexes(const std::vector<msize>& vertexes) const;
+		RandomNonOrientedGraph<NorGraphType, SymMatrixType> with_deleted_edge(msize i, msize j) const;
 
 		std::unique_ptr<NonOrientedGraphBase> release_graph() override;
+
+		const NorGraphType& graph() const;
+		const SymMatrixType& probabilities() const;
+
+		RandomNonOrientedGraph extract_subgraph(const std::vector<msize>& vertexes) const;
     };
 
-    template<class GraphType, class MatrixType>
-    RandomNonOrientedGraph<GraphType, MatrixType>::RandomNonOrientedGraph(const std::vector<SymmetricRandomEdge>& edges, msize dimension) :
+    template<class NorGraphType, class SymMatrixType>
+    RandomNonOrientedGraph<NorGraphType, SymMatrixType>::RandomNonOrientedGraph(const std::vector<SymmetricRandomEdge>& edges, msize dimension) :
 		_graph(dimension), _probabilities(dimension)
     {
         for (const auto& edge : edges) 
@@ -49,19 +58,19 @@ namespace graphcpp
         }
     }
 
-	template<class GraphType, class MatrixType>
-	RandomNonOrientedGraph<GraphType, MatrixType>::RandomNonOrientedGraph(GraphType&& graph, MatrixType&& probabilities) :
+	template<class NorGraphType, class SymMatrixType>
+	RandomNonOrientedGraph<NorGraphType, SymMatrixType>::RandomNonOrientedGraph(NorGraphType&& graph, SymMatrixType&& probabilities) :
 		_graph(std::move(graph)), _probabilities(std::move(probabilities))
 	{
 	}
 
-	template<class GraphType, class MatrixType>
-	RandomNonOrientedGraph<GraphType, MatrixType> RandomNonOrientedGraph<GraphType, MatrixType>::read_from_stream(std::istream& stream)
+	template<class NorGraphType, class SymMatrixType>
+	RandomNonOrientedGraph<NorGraphType, SymMatrixType> RandomNonOrientedGraph<NorGraphType, SymMatrixType>::read_from_stream(std::istream& stream)
 	{
 		msize dimension, number_of_edges;
 		stream >> dimension >> number_of_edges;
 
-		RandomNonOrientedGraph<GraphType, MatrixType> graph({}, dimension);
+		RandomNonOrientedGraph<NorGraphType, SymMatrixType> graph({}, dimension);
 
 		for (msize i = 0; i < number_of_edges; i++)
 		{
@@ -78,66 +87,88 @@ namespace graphcpp
 		return graph;
 	}
 
-    template<class GraphType, class MatrixType>
-    msize RandomNonOrientedGraph<GraphType, MatrixType>::dimension() const
+    template<class NorGraphType, class SymMatrixType>
+    msize RandomNonOrientedGraph<NorGraphType, SymMatrixType>::dimension() const
     {
         return _graph.dimension();
     }
 
-    template<class GraphType, class MatrixType>
-    mcontent RandomNonOrientedGraph<GraphType, MatrixType>::at(msize index1, msize index2) const
+    template<class NorGraphType, class SymMatrixType>
+    mcontent RandomNonOrientedGraph<NorGraphType, SymMatrixType>::at(msize index1, msize index2) const
     {
         assert(std::max(index1, index2) < dimension());
         return _graph.at(index1, index2);
     }
 
-    template<class GraphType, class MatrixType>
-    void RandomNonOrientedGraph<GraphType, MatrixType>::set(msize index1, msize index2, mcontent value)
+    template<class NorGraphType, class SymMatrixType>
+    void RandomNonOrientedGraph<NorGraphType, SymMatrixType>::set(msize index1, msize index2, mcontent value)
     {
         assert(std::max(index1, index2) < dimension());
         _graph.set(index1, index2, value);
     }
 
-    template<class GraphType, class MatrixType>
-    double RandomNonOrientedGraph<GraphType, MatrixType>::probability_at(msize index1, msize index2) const
+    template<class NorGraphType, class SymMatrixType>
+    double RandomNonOrientedGraph<NorGraphType, SymMatrixType>::probability_at(msize index1, msize index2) const
     {
         return _probabilities.at(index1, index2);
     }
 
-    template<class GraphType, class MatrixType>
-    void RandomNonOrientedGraph<GraphType, MatrixType>::set_probability(msize index1, msize index2, double value)
+    template<class NorGraphType, class SymMatrixType>
+    void RandomNonOrientedGraph<NorGraphType, SymMatrixType>::set_probability(msize index1, msize index2, double value)
     {
         _probabilities.set(index1, index2, value);
     }
 
-	template<class GraphType, class MatrixType>
-	void RandomNonOrientedGraph<GraphType, MatrixType>::delete_vertexes(const std::vector<msize>& vertexes)
+	template<class NorGraphType, class SymMatrixType>
+	void RandomNonOrientedGraph<NorGraphType, SymMatrixType>::delete_vertexes(const std::vector<msize>& vertexes)
 	{
 		_probabilities.delete_strings(vertexes);
 		_graph.delete_vertexes(vertexes);
 	}
 
-	template<class GraphType, class MatrixType>
-	std::unique_ptr<RandomNonOrientedGraphBase> RandomNonOrientedGraph<GraphType, MatrixType>::with_deleted_vertexes(const std::vector<msize>& vertexes) const
+	template<class NorGraphType, class SymMatrixType>
+	RandomNonOrientedGraph<NorGraphType, SymMatrixType> RandomNonOrientedGraph<NorGraphType, SymMatrixType>::with_deleted_vertexes(const std::vector<msize>& vertexes) const
 	{
-		auto probabilities = _probabilities.template with_deleted_vertexes<MatrixType>(vertexes);
-		auto graph = _graph.template with_deleted_vertexes<GraphType, MatrixType>(vertexes);
+		auto probabilities = _probabilities.template with_deleted_vertexes<SymMatrixType>(vertexes);
+		auto graph = _graph.template with_deleted_vertexes<NorGraphType, SymMatrixType>(vertexes);
 
-		return std::make_unique<RandomNonOrientedGraph<GraphType, MatrixType>>(std::move(graph), std::move(probabilities));
+		return RandomNonOrientedGraph<NorGraphType, SymMatrixType>(std::move(graph), std::move(probabilities));
 	}
 
-	template<class GraphType, class MatrixType>
-	std::unique_ptr<RandomNonOrientedGraphBase> RandomNonOrientedGraph<GraphType, MatrixType>::with_deleted_edge(msize i, msize j) const
+	template<class NorGraphType, class SymMatrixType>
+	RandomNonOrientedGraph<NorGraphType, SymMatrixType> RandomNonOrientedGraph<NorGraphType, SymMatrixType>::with_deleted_edge(msize i, msize j) const
 	{
-		auto probabilities = _probabilities.template with_deleted_element<MatrixType>(i, j);
-		auto graph = _graph.template with_deleted_edge<GraphType, MatrixType>(i, j);
+		auto probabilities = _probabilities.template with_deleted_element<SymMatrixType>(i, j);
+		auto graph = _graph.template with_deleted_edge<NorGraphType, SymMatrixType>(i, j);
 
-		return std::make_unique<RandomNonOrientedGraph<GraphType, MatrixType>>(std::move(graph), std::move(probabilities));
+		return RandomNonOrientedGraph<NorGraphType, SymMatrixType>(std::move(graph), std::move(probabilities));
 	}
 
-	template<class GraphType, class MatrixType>
-	std::unique_ptr<NonOrientedGraphBase> RandomNonOrientedGraph<GraphType, MatrixType>::release_graph()
+	template<class NorGraphType, class SymMatrixType>
+	std::unique_ptr<NonOrientedGraphBase> RandomNonOrientedGraph<NorGraphType, SymMatrixType>::release_graph()
 	{		
-		return std::make_unique<GraphType>(std::move(_graph));
+		return std::make_unique<NorGraphType>(std::move(_graph));
 	}
+
+	template<class NorGraphType, class SymMatrixType>
+	const NorGraphType& RandomNonOrientedGraph<NorGraphType, SymMatrixType>::graph() const
+	{		
+		return _graph;
+	}
+
+	template<class NorGraphType, class SymMatrixType>
+	const SymMatrixType& RandomNonOrientedGraph<NorGraphType, SymMatrixType>::probabilities() const
+	{		
+		return _probabilities;
+	}
+
+	template<class NorGraphType, class SymMatrixType>
+	RandomNonOrientedGraph<NorGraphType, SymMatrixType> RandomNonOrientedGraph<NorGraphType, SymMatrixType>::extract_subgraph(const std::vector<msize>& vertexes) const
+	{		
+		return RandomNonOrientedGraph<NorGraphType, SymMatrixType>(
+			_graph.extract_subgraph(vertexes),
+			_probabilities.extract_matrix(vertexes)
+		);
+	}
+
 }

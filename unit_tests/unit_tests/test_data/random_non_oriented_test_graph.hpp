@@ -19,7 +19,7 @@ namespace graphcpp::testing::random_non_oriented_test_graph
     std::pair<msize, msize> not_existed_edge();
 
 	template<class RandomGraphType>
-	std::unique_ptr<RandomNonOrientedGraphBase> get_graph()
+	std::unique_ptr<RandomGraphType> get_graph()
     {
 	    return std::make_unique<RandomGraphType>(edges(), dimension());
     }

@@ -42,4 +42,73 @@ namespace graphcpp::testing
 
         EXPECT_EQ(flows, expected_flows);
     }
+
+    TYPED_TEST(FlowHelpersTests, OneDimensionGraphFlowsTest)
+    {
+        TypeParam graph({}, 1);
+        
+        FullSymmetricMatrix expected_flows({
+            { 0 }
+        });
+
+        auto flows = flow_calculators::calculate_for_small_graph<FullSymmetricMatrix>(graph);
+
+            std::cout << "123" << std::endl;
+
+        EXPECT_EQ(flows, expected_flows);
+    }
+
+    TYPED_TEST(FlowHelpersTests, TwoDimensionGraphFlowsTest)
+    {
+        TypeParam graph({ SymmetricEdge(0, 1, 5) }, 2);
+        
+        FullSymmetricMatrix expected_flows({
+            { 0, 5 },
+            { 5, 0 }
+        });
+        
+        auto flows = flow_calculators::calculate_for_small_graph<FullSymmetricMatrix>(graph);
+
+        EXPECT_EQ(flows, expected_flows);
+    }
+
+    TYPED_TEST(FlowHelpersTests, ThreeDimensionGraphFlowsTest)
+    {
+        const std::vector<SymmetricEdge> edges = {
+            SymmetricEdge(0, 1, 5),
+            SymmetricEdge(0, 2, 7),
+            SymmetricEdge(1, 2, 3)
+        };
+        TypeParam graph(edges, 3);
+
+        FullSymmetricMatrix expected_flows({
+            { 0, 8, 10 },
+            { 8, 0, 8 },
+            { 10, 8, 0 }
+        });
+        
+        auto flows = flow_calculators::calculate_for_small_graph<FullSymmetricMatrix>(graph);
+
+        EXPECT_EQ(flows, expected_flows);
+    }
+
+    // TYPED_TEST(FlowHelpersTests, FourDimensionGraphFlowsTest) // TODO: Add test for 4 dimensional matrix
+    // {
+    //     const std::vector<SymmetricEdge> edges = {
+    //         SymmetricEdge(0, 1, 5),
+    //         SymmetricEdge(0, 2, 7),
+    //         SymmetricEdge(1, 2, 3)
+    //     };
+    //     TypeParam graph(edges, 3);
+
+    //     FullSymmetricMatrix expected_flows({
+    //         { 0, 8, 10 },
+    //         { 8, 0, 8 },
+    //         { 10, 8, 0 }
+    //     });
+        
+    //     auto flows = flow_calculators::calculate_for_small_graph<FullSymmetricMatrix>(graph);
+
+    //     EXPECT_EQ(flows, expected_flows);
+    // }
 }

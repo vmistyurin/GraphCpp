@@ -18,7 +18,7 @@ namespace graphcpp
         std::promise<SummableType> _result = std::promise<SummableType>();
         
     public:
-        explicit MultiThreadSummator(SummableType&& initial);
+        explicit MultiThreadSummator(SummableType&& initial = SummableType());
         
         template<class SummableCompatibleType>
         void add(SummableCompatibleType&& addend, double probability);

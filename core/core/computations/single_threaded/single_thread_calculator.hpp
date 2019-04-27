@@ -1,5 +1,6 @@
 #pragma once
 
+#include <future>
 #include <memory>
 
 #include "core/matrices/symmetric_matrices/single_vector_symmetric_matrix.hpp"
@@ -12,39 +13,41 @@ namespace graphcpp
 
 namespace graphcpp
 {
-	template<class MatrixType = SingleVectorSymmetricMatrix, class GraphType = NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>> 
-	class SingleThreadCalculator final
-	{
-	private:
-		std::unique_ptr<RandomNonOrientedGraphBase> _graph;
-		SingleThreadSummator<SingleVectorSymmetricMatrix> _summator;
-        const flow_func_t<MatrixType, GraphType> _flow_func;
+	template<class NorGraphType, class SymMatrixType>
+    class SingleThreadCalculator final
+    {
+        IS_SYM_MATRIX_IMPL(SymMatrixType);
+        IS_NOR_GRAPH_IMPL(NorGraphType);
 
-	public:
-        SingleThreadCalculator(std::unique_ptr<RandomNonOrientedGraphBase> graph, flow_func_t<MatrixType, GraphType> flow_func);
-		
-		std::unique_ptr<SymmetricMatrixBase> expected_value();
-	};
+    private:
+        flow_func_t<SymMatrixType, NorGraphType> _flow_function;
+        SingleThreadSummator<SymMatrixType> _summator = SingleThreadSummator<SymMatrixType>();
 
+    public:
+        SingleThreadCalculator(flow_func_t<SymMatrixType, NorGraphType> flow_function);
 
-	template<class MatrixType, class GraphType> 
-	SingleThreadCalculator<MatrixType, GraphType>::SingleThreadCalculator(std::unique_ptr<RandomNonOrientedGraphBase> graph, flow_func_t<MatrixType, GraphType> flow_func) :
-		_graph(std::move(graph)), 
-		_summator(SingleVectorSymmetricMatrix(_graph->dimension())), 
-		_flow_func(std::move(flow_func))
-	{
-	}
+        void calculate(NorGraphType graph, double probability);
+        std::future<SymMatrixType> get_result();
+    };
 
-	template<class MatrixType, class GraphType> 
-	std::unique_ptr<SymmetricMatrixBase> SingleThreadCalculator<MatrixType, GraphType>::SingleThreadCalculator::expected_value()
-	{
-		_graph->factorize<GraphType>([&](std::unique_ptr<GraphType> graph, double probability)
-		{
-			auto flows = _flow_func(*graph);
-			_summator.add(flows, probability);
-		});
+    template<class NorGraphType, class SymMatrixType>
+    SingleThreadCalculator<NorGraphType, SymMatrixType>::SingleThreadCalculator(flow_func_t<SymMatrixType, NorGraphType> flow_function) :
+        _flow_function(std::move(flow_function))
+    {
+        assert(!flow_function.is_empty());
+    }
 
-		assert(are_doubles_equal(_summator.current_probability(), 1));
-		return std::make_unique<SingleVectorSymmetricMatrix>(_summator.current_sum());
-}
+    template<class NorGraphType, class SymMatrixType>
+    void SingleThreadCalculator<NorGraphType, SymMatrixType>::calculate(NorGraphType graph, double probability)
+    {
+		auto flows = _flow_function(graph);
+		this->_summator.add(std::move(flows, probability));
+    }
+
+    template<class NorGraphType, class SymMatrixType>
+    std::future<SymMatrixType> SingleThreadCalculator<NorGraphType, SymMatrixType>::get_result()
+    {
+		assert(are_doubles_equal(_summator.current_probability, 1));
+        return std::future<SymMatrixType>(_summator.current_sum());
+    }
 }

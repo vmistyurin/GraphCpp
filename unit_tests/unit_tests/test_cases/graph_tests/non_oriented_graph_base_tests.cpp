@@ -137,22 +137,6 @@ namespace graphcpp::testing
 		EXPECT_TRUE(compare_without_order(hanged, expected_hanged));
 	}
 
-	TYPED_TEST(NonOrientedGraphBaseTests, ExtractSubgraph)
-	{
-		std::vector<msize> vertexes = { 0, 3, 6, 7 };
-		std::vector<std::vector<mcontent>> expected_matrix = {
-		{ 0, 10, 1, 2 },
-		{ 10, 0, 0, 0 },
-		{ 1, 0, 0, 0 },
-		{ 2, 0, 0, 0 }
-		};
-		TypeParam expected_subgraph(expected_matrix);
-
-		auto extracted_graph = this->test_graph->extract_subgraph(vertexes);
-
-		EXPECT_TRUE(extracted_graph->equal(expected_subgraph));
-	}
-
 	TYPED_TEST(NonOrientedGraphBaseTests, BridgesTest)
 	{
 		std::vector<SymmetricEdge> edges = {
@@ -178,9 +162,9 @@ namespace graphcpp::testing
 
 		ASSERT_TRUE(compare_without_order(bridges, expected_bridges));
 
-		for(msize i = 0; i < expected_classes.size(); i++)
+		for (msize i = 0; i < expected_classes.size(); i++)
 		{
-			for(msize j = 0; j < expected_classes.size(); j++)
+			for (msize j = 0; j < expected_classes.size(); j++)
 			{
 				EXPECT_EQ(classes[i] == classes[j], expected_classes[i] == expected_classes[j]);
 			}

@@ -17,6 +17,7 @@ bool SymmetricMatrixBase::operator==(const SymmetricMatrixBase& rhs) const
 	{
 		RETURN_IF(at(i, j) != rhs.at(i, j), false);
 	}
+    
 	return true;
 }
 

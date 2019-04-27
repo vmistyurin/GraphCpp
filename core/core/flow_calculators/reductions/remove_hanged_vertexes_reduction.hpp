@@ -81,7 +81,7 @@ namespace graphcpp::flow_calculators::reductors::internal
                     addition.push_back(i);
                 }
             }
-            auto subgraph_flows = remove_hanged_vertexes(graph.template extract_subgraph<NorGraphType>(addition), stats, std::move(calculator));
+            auto subgraph_flows = remove_hanged_vertexes(graph.extract_subgraph(addition), stats, std::move(calculator));
 
             for (auto[i, j] : subgraph_flows)
             {

@@ -1,34 +1,35 @@
 #pragma once
 
+#include <functional>
+
 #include "core/macroses.hpp"
-#include "core/flow_calculators/definitions.hpp"
 #include "core/flow_calculators/reduction_stats.hpp"
 
-namespace graphcpp::flow_calculators::reductors
+namespace graphcpp::flow_calculators::reductions
 {
-    template<class SymMatrixType, class NorGraphType>
+    template<class RandomGraphType, class SymMatrixType>
     SymMatrixType split_to_components(
-        NorGraphType graph,
+        RandomGraphType random_graph,
         ReductionStats* stats,
-        std::function<SymMatrixType(NorGraphType, ReductionStats*)> next_reductor
+        std::function<SymMatrixType(RandomGraphType, ReductionStats*)> next_reductor
     )
     {
         IS_SYM_MATRIX_IMPL(SymMatrixType);
-        IS_NOR_GRAPH_IMPL(NorGraphType);
+        IS_NOR_RANDOM_GRAPH_IMPL(RandomGraphType);
 
-        auto result = SymMatrixType(graph.dimension());
+        auto result = SymMatrixType(random_graph.graph().dimension());
         
-        auto components = graph.get_connected_components();
+        const auto components = random_graph.graph().get_connected_components();
         for (const auto& component : components)
         {
-            if (auto small_graph_result = calculate_if_small_graph<SymMatrixType>(graph, stats); small_graph_result) 
+            if (component.size() == 1) 
             {
-                return small_graph_result.value();
-            }
-            
+                continue;
+            }   
+
             SymMatrixType subgraph_flows;
 
-            subgraph_flows = next_reductor(graph.extract_subgraph(component), stats);
+            subgraph_flows = next_reductor(random_graph.graph().extract_subgraph(component), stats);
             assert(subgraph_flows.dimension() == component.size());
             
             for (msize i = 1; i < component.size(); i++)

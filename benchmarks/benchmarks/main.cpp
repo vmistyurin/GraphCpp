@@ -27,17 +27,17 @@ int main(int argc, char** argv)
         //     multi_threaded_matrix_of_flows<
         //         RandomNonOrientedGraph<NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>, SingleVectorSymmetricMatrix>
         //     >(flow_calculators::Edmonds_Karp_algorithm),
-        //     "Multi thread Edmons-Karp"
+        //     "Multi thread Edmonds-Karp"
         // );
 
-        std::function<SingleVectorSymmetricMatrix(NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>, ReductionStats*)> func_d = std::bind(flow_calculators::reduction_use_algorithm<
-            NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>, SingleVectorSymmetricMatrix
-        >, std::placeholders::_1, flow_calculators::Edmonds_Karp_algorithm, std::placeholders::_2);
+        // std::function<SingleVectorSymmetricMatrix(const NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>&, ReductionStats*)> func_d = std::bind(flow_calculators::reduction_use_algorithm<
+        //     NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>, SingleVectorSymmetricMatrix
+        // >, std::placeholders::_1, flow_calculators::Edmonds_Karp_algorithm, std::placeholders::_2);
 
-        tester.run_tests(
-            multi_threaded_matrix_of_flows(std::move(func_d)),
-            "Multi thread reduction use functional"
-        );
+        // tester.run_tests(
+        //     multi_threaded_matrix_of_flows(std::move(func_d)),
+        //     "Multi thread reduction use functional"
+        // );
         
         tester.print_check_result();
     }

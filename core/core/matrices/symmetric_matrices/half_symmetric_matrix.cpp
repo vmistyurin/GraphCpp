@@ -116,3 +116,20 @@ void HalfSymmetricMatrix::delete_last_strings(msize count)
 		_matrix.pop_back();
 	}
 }
+
+HalfSymmetricMatrix HalfSymmetricMatrix::extract_matrix(const std::vector<msize>& rows)
+{
+	assert(!rows.empty());
+	assert(std::all_of(rows.cbegin(), rows.cend(), [&](auto vertex) { return vertex < dimension(); }));
+
+	HalfSymmetricMatrix result(rows.size());
+	for (msize i = 0; i < rows.size(); i++)
+	{
+		for (msize j = 0; j < i; j++)
+		{
+			result.set(i, j, _matrix[rows[i]][rows[j]]);
+		}
+	}
+
+	return result;
+}

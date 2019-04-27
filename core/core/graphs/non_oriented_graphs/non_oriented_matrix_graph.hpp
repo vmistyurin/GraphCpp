@@ -34,10 +34,7 @@ namespace graphcpp
         
 		std::unique_ptr<SymmetricMatrixBase> get_matrix() const override;
 
-		std::unique_ptr<NonOrientedGraphBase> extract_subgraph(const std::vector<msize>& vertexes) const override;
-
-		template<class GraphType>
-		GraphType extract_subgraph(const std::vector<msize>& vertexes) const;
+		NonOrientedMatrixGraph<SymmetricMatrixType> extract_subgraph(const std::vector<msize>& vertexes) const;
 
 		bool equal(const GraphBase& rhs) const override;
 
@@ -242,19 +239,12 @@ namespace graphcpp
 	}
 
 	template<class T>
-	std::unique_ptr<NonOrientedGraphBase> NonOrientedMatrixGraph<T>::extract_subgraph(const std::vector<msize>& vertexes) const //TODO: delete
-	{
-		return std::make_unique<NonOrientedMatrixGraph<T>>(extract_subgraph<NonOrientedMatrixGraph<T>>(vertexes));
-	}
-
-	template<class T>
-	template<class GraphType>
-	GraphType NonOrientedMatrixGraph<T>::extract_subgraph(const std::vector<msize>& vertexes) const
+	NonOrientedMatrixGraph<T> NonOrientedMatrixGraph<T>::extract_subgraph(const std::vector<msize>& vertexes) const
 	{
 		assert(!vertexes.empty());
 		assert(std::all_of(vertexes.cbegin(), vertexes.cend(), [&](auto vertex) { return vertex < dimension(); }));
 
-		GraphType result(vertexes.size());
+		NonOrientedMatrixGraph<T> result(vertexes.size());
 		for (msize i = 0; i < vertexes.size(); i++)
 		{
 			for (msize j = 0; j < i; j++)
