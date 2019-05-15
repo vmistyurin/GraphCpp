@@ -81,6 +81,16 @@ void FullSymmetricMatrix::reduce_element(msize index1, msize index2, mcontent di
 	_matrix[index2][index1] -= difference;
 }
 
+void FullSymmetricMatrix::add_string()
+{
+	for (msize i = 0; i < _matrix.size(); i++)
+	{
+		_matrix[i].push_back(0);
+	}
+
+	_matrix.emplace_back(dimension() + 1);
+}
+
 void FullSymmetricMatrix::swap(msize str1, msize str2) //Todo: optimize
 {
 	assert(str1 != str2);
@@ -130,7 +140,7 @@ void FullSymmetricMatrix::delete_last_strings(msize count)
 	}
 }
 
-FullSymmetricMatrix FullSymmetricMatrix::extract_matrix(const std::vector<msize>& rows)
+FullSymmetricMatrix FullSymmetricMatrix::extract_matrix(const std::vector<msize>& rows) const
 {
 	assert(!rows.empty());
 	assert(std::all_of(rows.cbegin(), rows.cend(), [&](auto vertex) { return vertex < dimension(); }));

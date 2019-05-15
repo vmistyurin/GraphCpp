@@ -118,23 +118,23 @@ namespace graphcpp::flow_calculators
         return result;
     }
 
-    template<class SymMatrixType, class GraphType>
+	template<class SymMatrixType, class GraphType>
 	SymMatrixType matrix_of_flows(
-        const GraphType& graph,
-		const single_flow_function& single_flow_calculator
-    )
-    {
-        IS_SYM_MATRIX_IMPL(SymMatrixType);
+		const GraphType& graph,
+		const single_flow_function_t<GraphType> single_flow_calculator
+	)
+	{
+		IS_SYM_MATRIX_IMPL(SymMatrixType);
 
-        SymMatrixType result(graph.dimension());
+		SymMatrixType result(graph.dimension());
 
-        for (auto[i, j] : graph)
-        {
-            result.set(i, j, single_flow_calculator(graph, i, j));
-        }
+		for (auto [i, j] : graph)
+		{
+			result.set(i, j, single_flow_calculator(graph, i, j));
+		}
 
-        return result;
-    }
+		return result;
+	}
 
     template<class SymMatrixType, class NorGraphType>
 	SymMatrixType calculate_for_small_graph(const NorGraphType& graph) 
@@ -151,8 +151,10 @@ namespace graphcpp::flow_calculators
 
         if (graph.dimension() == 2)
         {
-            return SymMatrixType({ { 0, graph.at(0, 1) },
-                                   { graph.at(0, 1), 0 } });
+            return SymMatrixType({
+				{ 0, graph.at(0, 1) },
+                { graph.at(0, 1), 0 } 
+			});
         }
 
         if (graph.dimension() == 3)

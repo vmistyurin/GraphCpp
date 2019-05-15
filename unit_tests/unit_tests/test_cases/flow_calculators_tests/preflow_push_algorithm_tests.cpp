@@ -30,7 +30,7 @@ namespace graphcpp::testing
 
 	TYPED_TEST(PreflowPushAlgorithmTests, FlowsMatrixTests)
 	{
-		const auto actual_flows = flow_calculators::matrix_of_flows<SingleVectorSymmetricMatrix, TypeParam>(*this->test_graph, flow_calculators::preflow_push_algorithm); 
+		const auto actual_flows = flow_calculators::matrix_of_flows<SingleVectorSymmetricMatrix, TypeParam>(*this->test_graph, flow_calculators::preflow_push_algorithm<TypeParam>); 
 		const auto expected_flows = SingleVectorSymmetricMatrix(non_oriented_test_graph::get_flows());
 	
 		EXPECT_EQ(actual_flows, expected_flows);

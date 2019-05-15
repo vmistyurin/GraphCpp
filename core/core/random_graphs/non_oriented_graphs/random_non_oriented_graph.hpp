@@ -23,7 +23,7 @@ namespace graphcpp
 
     public:
         RandomNonOrientedGraph(const std::vector<SymmetricRandomEdge>& edges, msize dimension);
-		RandomNonOrientedGraph(NorGraphType&& graph, SymMatrixType&& probabilities);
+		RandomNonOrientedGraph(NorGraphType graph, SymMatrixType probabilities);
 
 		static RandomNonOrientedGraph<NorGraphType, SymMatrixType> read_from_stream(std::istream& stream);
 
@@ -43,7 +43,7 @@ namespace graphcpp
 		const NorGraphType& graph() const;
 		const SymMatrixType& probabilities() const;
 
-		RandomNonOrientedGraph extract_subgraph(const std::vector<msize>& vertexes) const;
+		RandomNonOrientedGraph<NorGraphType, SymMatrixType> extract_subgraph(const std::vector<msize>& vertexes) const;
     };
 
     template<class NorGraphType, class SymMatrixType>
@@ -59,7 +59,7 @@ namespace graphcpp
     }
 
 	template<class NorGraphType, class SymMatrixType>
-	RandomNonOrientedGraph<NorGraphType, SymMatrixType>::RandomNonOrientedGraph(NorGraphType&& graph, SymMatrixType&& probabilities) :
+	RandomNonOrientedGraph<NorGraphType, SymMatrixType>::RandomNonOrientedGraph(NorGraphType graph, SymMatrixType probabilities) :
 		_graph(std::move(graph)), _probabilities(std::move(probabilities))
 	{
 	}
@@ -165,10 +165,9 @@ namespace graphcpp
 	template<class NorGraphType, class SymMatrixType>
 	RandomNonOrientedGraph<NorGraphType, SymMatrixType> RandomNonOrientedGraph<NorGraphType, SymMatrixType>::extract_subgraph(const std::vector<msize>& vertexes) const
 	{		
-		return RandomNonOrientedGraph<NorGraphType, SymMatrixType>(
+		return RandomNonOrientedGraph(
 			_graph.extract_subgraph(vertexes),
 			_probabilities.extract_matrix(vertexes)
 		);
 	}
-
 }

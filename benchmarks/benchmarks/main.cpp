@@ -23,21 +23,44 @@ int main(int argc, char** argv)
     {
         RecursiveDirectoryTestRunner tester(path_to_tests, result_path, std::cout);
         
-        // tester.run_tests(
-        //     multi_threaded_matrix_of_flows<
-        //         RandomNonOrientedGraph<NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>, SingleVectorSymmetricMatrix>
-        //     >(flow_calculators::Edmonds_Karp_algorithm),
-        //     "Multi thread Edmonds-Karp"
-        // );
+		single_flow_function_t<NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>> func = Edmonds_Karp_algorithm<NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>>;
+		single_flow_function_t<NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>> dinic_func = Dinic_algorithm<NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>>;
+		single_flow_function_t<NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>> preflow_func = preflow_push_algorithm<NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>>;
 
-        // std::function<SingleVectorSymmetricMatrix(const NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>&, ReductionStats*)> func_d = std::bind(flow_calculators::reduction_use_algorithm<
-        //     NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>, SingleVectorSymmetricMatrix
-        // >, std::placeholders::_1, flow_calculators::Edmonds_Karp_algorithm, std::placeholders::_2);
+        tester.run_tests(
+			factorization<
+                RandomNonOrientedGraph<NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>, SingleVectorSymmetricMatrix>
+            >(func, false),
+            "Factorization Edmonds-Karp"
+        );
 
-        // tester.run_tests(
-        //     multi_threaded_matrix_of_flows(std::move(func_d)),
-        //     "Multi thread reduction use functional"
-        // );
+		tester.run_tests(
+			factorization<
+			RandomNonOrientedGraph<NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>, SingleVectorSymmetricMatrix>
+			>(func, true),
+			"Factorization parallel Edmonds-Karp"
+		);
+
+		//tester.run_tests(
+		//	factorization<
+		//	RandomNonOrientedGraph<NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>, SingleVectorSymmetricMatrix>
+		//	>(dinic_func, true),
+		//	"Factorization Dinic"
+		//);
+
+		//tester.run_tests(
+		//	factorization<
+		//	RandomNonOrientedGraph<NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>, SingleVectorSymmetricMatrix>
+		//	>(preflow_func, true),
+		//	"Factorization preflow_push"
+		//);
+
+		/*tester.run_tests(
+			reduction_use_algorithm<
+				RandomNonOrientedGraph<NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>, SingleVectorSymmetricMatrix>
+			>(func, true),
+			"Factorization with reductions Edmonds-Karp"
+		);*/
         
         tester.print_check_result();
     }

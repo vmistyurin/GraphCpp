@@ -302,6 +302,18 @@ namespace graphcpp::testing
 		EXPECT_FALSE(disconnected_graph.is_tree());
 	}
 
+	TYPED_TEST(NonOrientedGraphBaseTests, AddVertexTest)
+	{
+		TypeParam increased_copy = *this->test_graph;
+		increased_copy.add_vertex();
+
+		ASSERT_EQ(increased_copy.dimension(), this->test_graph->dimension() + 1);
+		for (const auto[i, j] : *this->test_graph)
+		{
+			EXPECT_EQ(this->test_graph->at(i, j), increased_copy.at(i, j));
+		}
+	}
+
 	#ifdef USE_SLOW_TESTS
 		TYPED_TEST(NonOrientedGraphBaseTests, EqualityTest)
 		{

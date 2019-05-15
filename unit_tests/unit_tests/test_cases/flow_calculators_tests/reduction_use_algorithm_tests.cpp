@@ -29,7 +29,7 @@ namespace graphcpp::testing
 	{
 		const auto actual_flows = flow_calculators::reduction_use_algorithm<TypeParam, SingleVectorSymmetricMatrix>(
 			this->test_graph,
-			flow_calculators::Edmonds_Karp_algorithm,
+			flow_calculators::Edmonds_Karp_algorithm<TypeParam>,
 			nullptr
 		);
 		
@@ -40,7 +40,7 @@ namespace graphcpp::testing
 	{
 		const auto actual_flows = flow_calculators::reduction_use_algorithm<TypeParam, FullSymmetricMatrix>(
 			this->test_graph, 
-			flow_calculators::Dinic_algorithm,
+			flow_calculators::Dinic_algorithm<TypeParam>,
 			nullptr
 		);
 
@@ -51,7 +51,7 @@ namespace graphcpp::testing
 	{
 		const auto actual_flows = flow_calculators::reduction_use_algorithm<TypeParam, HalfSymmetricMatrix>(
 			this->test_graph, 
-			flow_calculators::preflow_push_algorithm,
+			flow_calculators::preflow_push_algorithm<TypeParam>,
 			nullptr
 		);
 		

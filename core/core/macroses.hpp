@@ -22,8 +22,15 @@ namespace graphcpp
 
 	constexpr static auto msize_undefined = std::numeric_limits<msize>::max();
 	constexpr static auto mcontent_undefined = std::numeric_limits<mcontent>::max();
+}
 
-    #define IS_SYM_MATRIX_IMPL(MatrixType) static_assert(std::is_base_of_v<SymmetricMatrixBase, MatrixType> && !std::is_abstract_v<MatrixType>)
-    #define IS_NOR_GRAPH_IMPL(GraphType) static_assert(std::is_base_of_v<NonOrientedGraphBase, GraphType> && !std::is_abstract_v<GraphType>)
-    #define IS_NOR_RANDOM_GRAPH_IMPL(RandomGraphType) static_assert(std::is_base_of_v<RandomNonOrientedGraphBase, RandomGraphType> && !std::is_abstract_v<RandomGraphType>)
+namespace graphcpp
+{
+	class SymmetricMatrixBase;
+	class NonOrientedGraphBase;
+	class RandomNonOrientedGraphBase;
+
+	#define IS_SYM_MATRIX_IMPL(MatrixType) static_assert(std::is_base_of_v<SymmetricMatrixBase, MatrixType> && !std::is_abstract_v<MatrixType>)
+	#define IS_NOR_GRAPH_IMPL(GraphType) static_assert(std::is_base_of_v<NonOrientedGraphBase, GraphType> && !std::is_abstract_v<GraphType>)
+	#define IS_NOR_RANDOM_GRAPH_IMPL(RandomGraphType) static_assert(std::is_base_of_v<RandomNonOrientedGraphBase, RandomGraphType> && !std::is_abstract_v<RandomGraphType>)
 }

@@ -11,7 +11,7 @@
 namespace graphcpp
 {
 	template<class SymmetricMatrixType>
-	class NonOrientedMatrixGraph : public NonOrientedGraphBase
+	class NonOrientedMatrixGraph final: public NonOrientedGraphBase
 	{
 	protected:
 		SymmetricMatrixType _matrix;
@@ -28,6 +28,7 @@ namespace graphcpp
 		msize dimension() const override;
 		mcontent at(msize v1, msize v2) const override;
 		void set(msize v1, msize v2, mcontent value) override;
+		void add_vertex() override;
 
 		std::vector<SymmetricEdge> get_edges() const override;
         msize get_number_of_edges() const override;
@@ -37,10 +38,6 @@ namespace graphcpp
 		NonOrientedMatrixGraph<SymmetricMatrixType> extract_subgraph(const std::vector<msize>& vertexes) const;
 
 		bool equal(const GraphBase& rhs) const override;
-
-		std::vector<msize> get_linked_vertexes(msize vertex) const override;
-		std::vector<msize> get_degrees() const override;
-		msize get_degree(msize vertex) const override;
 
 		std::list<std::pair<msize, msize>> get_hanged_vertexes() const override;
 		std::vector<msize> get_connected_component(msize vertex) const override;
@@ -117,6 +114,12 @@ namespace graphcpp
 	}
 
 	template<class T>
+	void NonOrientedMatrixGraph<T>::add_vertex()
+	{
+		_matrix.add_string();
+	}
+
+	template<class T>
 	bool NonOrientedMatrixGraph<T>::equal(const GraphBase& rhs) const //TODO: Optimize, maybe add weight check
 	{
 		RETURN_IF(this == &rhs, true);
@@ -177,22 +180,6 @@ namespace graphcpp
 	}
 
 	template<class T>
-	std::vector<msize> NonOrientedMatrixGraph<T>::get_linked_vertexes(msize vertex) const
-	{
-		assert(vertex < dimension());
-
-		std::vector<msize> result;
-		for (msize i = 0; i < dimension(); i++)
-		{
-			if (_matrix.at(vertex, i) > 0)
-			{
-				result.push_back(i);
-			}
-		}
-		return result;
-	}
-
-	template<class T>
 	std::list<std::pair<msize, msize>> NonOrientedMatrixGraph<T>::get_hanged_vertexes() const
 	{
 		std::list<std::pair<msize, msize>> result;
@@ -206,35 +193,6 @@ namespace graphcpp
 			}
 		}
 
-		return result;
-	}
-
-	template<class T>
-	std::vector<msize> NonOrientedMatrixGraph<T>::get_degrees() const
-	{
-		std::vector<msize> result(dimension());
-
-		for (msize i = 0; i < dimension(); i++)
-		{
-			result[i] = get_degree(i);
-		}
-
-		return result;
-	}
-
-	template<class T>
-	msize NonOrientedMatrixGraph<T>::get_degree(msize vertex) const
-	{
-		assert(vertex < dimension());
-
-		msize result = 0;
-		for (msize i = 0; i < dimension(); i++)
-		{
-			if (_matrix.at(vertex, i) > 0)
-			{
-				result++;
-			}
-		}
 		return result;
 	}
 

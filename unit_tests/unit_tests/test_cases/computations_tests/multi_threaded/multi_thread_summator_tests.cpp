@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "core/computations/multi_threaded/multi_thread_summator.hpp"
+#include "core/flow_calculators/computations/multi_threaded/multi_thread_summator.hpp"
 
 namespace graphcpp::testing 
 {

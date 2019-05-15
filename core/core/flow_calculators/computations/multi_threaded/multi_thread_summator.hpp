@@ -1,10 +1,6 @@
 #pragma once
 
-#include <condition_variable>
 #include <mutex>
-#include <future>
-
-#include "core/utils/numeric.hpp"
 
 namespace graphcpp
 {
@@ -15,7 +11,6 @@ namespace graphcpp
         SummableType _sum;
         double _probability = 0;
         mutable std::mutex _add_mutex;
-        std::promise<SummableType> _result = std::promise<SummableType>();
         
     public:
         explicit MultiThreadSummator(SummableType&& initial = SummableType());
@@ -25,8 +20,6 @@ namespace graphcpp
         
         double current_probability() const;
         SummableType current_sum() const;
-
-        std::future<SummableType> start_compute();
     };
     
     template<class SummableType>
@@ -44,11 +37,6 @@ namespace graphcpp
         addend *= probability;
         _sum += addend;
         _probability += probability;
-        
-        if (are_doubles_equal(_probability, 1))
-        {
-            _result.set_value(_sum);
-        }
     }
     
     template<class SummableType>
@@ -61,11 +49,5 @@ namespace graphcpp
     SummableType MultiThreadSummator<SummableType>::current_sum() const
     {
         return _sum;
-    }
-    
-    template<class SummableType>
-    std::future<SummableType> MultiThreadSummator<SummableType>::start_compute()
-    {
-        return _result.get_future();
     }
 }

@@ -11,9 +11,9 @@
 namespace graphcpp
 {
 	template<class MatrixType>
-	class OrientedMatrixGraph : public OrientedGraphBase
+	class OrientedMatrixGraph final: public OrientedGraphBase
 	{
-	protected:
+	private:
 		MatrixType _matrix;
 
 	public:
@@ -30,12 +30,9 @@ namespace graphcpp
 		msize dimension() const override;
 		mcontent at(msize v1, msize v2) const override;
 		void set(msize v1, msize v2, mcontent value) override;
+		void add_vertex();
 
 		bool equal(const GraphBase& rhs) const override;
-
-		std::vector<msize> get_linked_vertexes(msize vertex) const override;
-		std::vector<msize> get_degrees() const override;
-		msize get_degree(msize vertex) const override;
 
 		std::vector<msize> delete_vertexes(const std::vector<msize>& vertexes) override;
 		void rearrange(const std::vector<msize>& new_nums) override;
@@ -104,6 +101,12 @@ namespace graphcpp
 	}
 
 	template<class T>
+	void OrientedMatrixGraph<T>::add_vertex()
+	{
+		_matrix.add_string();
+	}
+
+	template<class T>
 	bool OrientedMatrixGraph<T>::equal(const GraphBase& rhs) const //TODO: Optimize, maybe add weight check
 	{
 		RETURN_IF(this == &rhs, true);
@@ -145,51 +148,6 @@ namespace graphcpp
 	std::unique_ptr<MatrixBase> OrientedMatrixGraph<T>::get_matrix() const
 	{
 		return std::make_unique<T>(_matrix);
-	}
-
-	template<class T>
-	std::vector<msize> OrientedMatrixGraph<T>::get_linked_vertexes(msize vertex) const
-	{
-		assert(vertex < dimension());
-
-		std::vector<msize> result;
-		for (msize i = 0; i < dimension(); i++)
-		{
-			if (_matrix.at(vertex, i) > 0)
-			{
-				result.push_back(i);
-			}
-		}
-		return result;
-	}
-
-	template<class T>
-	std::vector<msize> OrientedMatrixGraph<T>::get_degrees() const
-	{
-		std::vector<msize> result(dimension());
-
-		for (msize i = 0; i < dimension(); i++)
-		{
-			result[i] = get_degree(i);
-		}
-
-		return result;
-	}
-
-	template<class T>
-	msize OrientedMatrixGraph<T>::get_degree(msize vertex) const
-	{
-		assert(vertex < dimension());
-
-		msize result = 0;
-		for (msize i = 0; i < dimension(); i++)
-		{
-			if (_matrix.at(vertex, i) > 0)
-			{
-				result++;
-			}
-		}
-		return result;
 	}
 
 	template<class T>

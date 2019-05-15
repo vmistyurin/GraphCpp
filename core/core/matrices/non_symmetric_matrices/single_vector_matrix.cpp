@@ -73,6 +73,17 @@ void SingleVectorMatrix::reduce_element(msize index1, msize index2, mcontent dif
     _matrix[index1 * _internal_dimension + index2] = _matrix[index1 * _internal_dimension + index2] - difference;
 }
 
+void SingleVectorMatrix::add_string()
+{
+	SingleVectorMatrix copy(dimension() + 1);
+
+	for (auto[i, j] : *this)
+	{
+		copy.set(i, j, at(i, j));
+	}
+
+	*this = std::move(copy);
+}
 
 void SingleVectorMatrix::rearrange_with_allocate(const std::vector<msize>& new_nums)
 {

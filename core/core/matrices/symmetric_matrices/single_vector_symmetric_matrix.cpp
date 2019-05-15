@@ -82,6 +82,18 @@ void SingleVectorSymmetricMatrix::reduce_element(msize index1, msize index2, mco
     _matrix[index1 * _internal_dimension + index2] =  _matrix[index1 * _internal_dimension + index2] - difference;
 }
 
+void SingleVectorSymmetricMatrix::add_string()
+{
+	SingleVectorSymmetricMatrix copy(dimension() + 1);
+
+	for (auto[i, j] : *this)
+	{
+		copy.set(i, j, at(i, j));
+	}
+
+	*this = std::move(copy);
+}
+
 void SingleVectorSymmetricMatrix::rearrange_with_allocate(const std::vector<msize>& new_nums)
 {
     assert(new_nums.size() == dimension());
@@ -125,7 +137,7 @@ void SingleVectorSymmetricMatrix::delete_last_strings(msize count)
     }
 }
 
-SingleVectorSymmetricMatrix SingleVectorSymmetricMatrix::extract_matrix(const std::vector<msize>& rows)
+SingleVectorSymmetricMatrix SingleVectorSymmetricMatrix::extract_matrix(const std::vector<msize>& rows) const
 {
 	assert(!rows.empty());
 	assert(std::all_of(rows.cbegin(), rows.cend(), [&](auto vertex) { return vertex < dimension(); }));

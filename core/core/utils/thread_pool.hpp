@@ -16,17 +16,21 @@ namespace graphcpp
         
         std::queue<std::function<void()>> _tasks;
         std::vector<std::thread> _threads;
+
+		std::atomic<unsigned int> _working_threads = 0;
+		bool _waiting_for_stop = false;
+		std::promise<void> _stop_promise;
         
         void thread_work();
-        
+       
     public:
         ThreadPool(unsigned number_of_threads = std::thread::hardware_concurrency());
         ~ThreadPool();
-
-        static ThreadPool& shared();
         
         template<class FunctionType>
         void add_task(FunctionType&& task);
+
+		std::future<void> wait_for_stop();
     };
     
     template<class FunctionType>

@@ -56,6 +56,16 @@ void Matrix::reduce_element(msize index1, msize index2, mcontent difference)
 	_matrix[index1][index2] -= difference;
 }
 
+void Matrix::add_string()
+{
+	for (msize i = 0; i < _matrix.size(); i++)
+	{
+		_matrix[i].push_back(0);
+	}
+
+	_matrix.emplace_back(dimension() + 1);
+}
+
 void Matrix::rearrange_with_allocate(const std::vector<msize>& new_nums)
 {
 	Matrix result(dimension());

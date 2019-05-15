@@ -41,6 +41,14 @@ namespace
 
         return result;
     }
+
+	std::string small_random_graph_stats(const ReductionStats& stats)
+	{
+		auto result = std::string("Small random graphs sizes: ");
+		result.append(stdmap_to_string(stats.get_small_random_graphs_stats()));
+
+		return result;
+	}
 }
 
 ReductionStats::ReductionStats() :
@@ -62,30 +70,41 @@ msize ReductionStats::get_hanged_vertexes_counter() const
 
 void ReductionStats::register_calculated_tree(size_t tree_size)
 {
-    std::lock_guard lock(_calculated_trees_mutex);
-
-    _calculated_trees_sizes[tree_size]++;
+	_calculated_trees_sizes.perform_function([=](std::map<size_t, size_t>& map)
+	{
+		map[tree_size]++;
+	});
 }
 
-std::map<size_t, size_t> ReductionStats::get_calculated_trees_stats() const
+const std::map<size_t, size_t>& ReductionStats::get_calculated_trees_stats() const
 {
-    std::lock_guard lock(_calculated_trees_mutex);
-
-    return _calculated_trees_sizes;
+	return _calculated_trees_sizes.value();
 }
 
 void ReductionStats::register_small_graph(size_t dimension)
 {
-    std::lock_guard lock(_small_graphs_mutex);
-
-    _small_graphs[dimension]++;
+	_small_graphs.perform_function([=](std::map<size_t, size_t>& map)
+	{
+		map[dimension]++;
+	});
 }
 
-std::map<size_t, size_t> ReductionStats::get_small_graphs_stats() const
+const std::map<size_t, size_t>& ReductionStats::get_small_graphs_stats() const
 {
-    std::lock_guard lock(_small_graphs_mutex);
+	return _small_graphs.value();
+}
 
-    return _small_graphs;
+void ReductionStats::register_small_random_graph(size_t dimension)
+{
+	_small_random_graphs.perform_function([=](std::map<size_t, size_t>& map)
+	{
+		map[dimension]++;
+	});
+}
+
+const std::map<size_t, size_t>& ReductionStats::get_small_random_graphs_stats() const
+{
+	return _small_random_graphs.value();
 }
 
 std::ostream& graphcpp::flow_calculators::operator<< (std::ostream& stream, const ReductionStats& stats)
@@ -95,6 +114,7 @@ std::ostream& graphcpp::flow_calculators::operator<< (std::ostream& stream, cons
     stream << hanged_vertexes_stats(stats) << std::endl;
     stream << calculated_trees_stats(stats) << std::endl;
     stream << small_graph_stats(stats) << std::endl;
+	stream << small_random_graph_stats(stats) << std::endl;
 
     return stream;
 }

@@ -1,4 +1,4 @@
-#include "core/flow_calculators/algorithms.hpp"
+#pragma once
 
 #include <cassert>
 #include <queue>
@@ -8,16 +8,9 @@
 #include "core/graphs/non_oriented_graphs/non_oriented_graph_base.hpp"
 #include "core/graphs/oriented_graphs/oriented_matrix_graph.hpp"
 
-using namespace graphcpp;
-
-using MatrixType = SingleVectorMatrix;
-using SymmetricMatrixType = SingleVectorSymmetricMatrix;
-
-using GraphType = OrientedMatrixGraph<MatrixType>;
-
-namespace
+namespace graphcpp::flow_calculators::internal
 {
-	std::vector<msize> get_layers(const GraphBase& graph, msize start)
+	inline std::vector<msize> get_layers(const GraphBase& graph, msize start)
 	{
 		assert(start < graph.dimension());
 
@@ -44,15 +37,15 @@ namespace
 		return layers;
 	}
 
-	template<class GraphType>	
+	template<class GraphType>
 	GraphType get_layered_network(const GraphType& graph, const std::vector<msize>& layers, msize start)
 	{
 		assert(start < graph.dimension());
 		assert(layers.size() == graph.dimension());
 
 		GraphType result(graph);
-		
-		for (auto[i, j] : result)
+
+		for (auto [i, j] : result)
 		{
 			if (result.at(i, j) > 0 && layers[i] == layers[j] + 1)
 			{
@@ -63,10 +56,10 @@ namespace
 		return result;
 	}
 
-	void dfs(const GraphBase& graph, msize current, msize finish, std::vector<msize>& ancestors)
+	inline void dfs(const GraphBase& graph, msize current, msize finish, std::vector<msize>& ancestors)
 	{
 		assert(current < graph.dimension());
-		
+
 		for (msize i = 0; i < graph.dimension(); i++)
 		{
 			if (graph.at(current, i) > 0 && ancestors[i] == msize_undefined)
@@ -110,44 +103,49 @@ namespace
 	}
 }
 
-mcontent flow_calculators::Dinic_algorithm(const NonOrientedGraphBase& graph, msize source, msize sink)
+namespace graphcpp::flow_calculators
 {
-	assert(source != sink);
-	assert(std::max(source, sink) < graph.dimension());
-
-	mcontent flow = 0;
-
-	GraphType matrix_graph(graph);
-	auto layers = get_layers(matrix_graph, source);
-
-	while (layers[sink] != msize_undefined)
+	template<class NorGraphType>
+	mcontent Dinic_algorithm(const NorGraphType& graph, msize source, msize sink)
 	{
-		auto layered_network = get_layered_network<GraphType>(matrix_graph, layers, source);
+		using GraphType = OrientedMatrixGraph<SingleVectorMatrix>;
 
-		auto path = get_path(layered_network, source, sink);
-		while (!path.empty())
+		assert(source != sink);
+		assert(std::max(source, sink) < graph.dimension());
+
+		mcontent flow = 0;
+
+		GraphType matrix_graph(graph);
+		auto layers = internal::get_layers(matrix_graph, source);
+
+		while (layers[sink] != msize_undefined)
 		{
-			mcontent min_flow = std::numeric_limits<mcontent>::max();
+			auto layered_network = internal::get_layered_network<GraphType>(matrix_graph, layers, source);
 
-			for (msize i = 0; i < path.size() - 1; i++)
+			auto path = internal::get_path(layered_network, source, sink);
+			while (!path.empty())
 			{
-				min_flow = std::min(min_flow, layered_network.at(path[i], path[i + 1]));
+				mcontent min_flow = std::numeric_limits<mcontent>::max();
+
+				for (msize i = 0; i < path.size() - 1; i++)
+				{
+					min_flow = std::min(min_flow, layered_network.at(path[i], path[i + 1]));
+				}
+
+				for (msize i = 0; i < path.size() - 1; i++)
+				{
+					layered_network.set(path[i], path[i + 1], layered_network.at(path[i], path[i + 1]) - min_flow);
+					layered_network.set(path[i + 1], path[i], layered_network.at(path[i + 1], path[i]) + min_flow);
+
+					matrix_graph.set(path[i], path[i + 1], matrix_graph.at(path[i], path[i + 1]) - min_flow);
+					matrix_graph.set(path[i + 1], path[i], matrix_graph.at(path[i + 1], path[i]) + min_flow);
+				}
+
+				flow += min_flow;
+				path = internal::get_path(layered_network, source, sink);
 			}
-
-			for (msize i = 0; i < path.size() - 1; i++)
-			{
-				layered_network.set(path[i], path[i + 1], layered_network.at(path[i], path[i + 1]) - min_flow);
-				layered_network.set(path[i + 1], path[i], layered_network.at(path[i + 1], path[i]) + min_flow);
-
-
-				matrix_graph.set(path[i], path[i + 1], matrix_graph.at(path[i], path[i + 1]) - min_flow);
-				matrix_graph.set(path[i + 1], path[i], matrix_graph.at(path[i + 1], path[i]) + min_flow);
-			}
-
-			flow += min_flow;
-			path = get_path(layered_network, source, sink);
+			layers = internal::get_layers(matrix_graph, source);
 		}
-		layers = get_layers(matrix_graph, source);
+		return flow;
 	}
-	return flow;
 }

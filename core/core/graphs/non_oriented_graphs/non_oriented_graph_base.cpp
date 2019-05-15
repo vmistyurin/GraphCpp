@@ -1,6 +1,8 @@
 #include "core/graphs/non_oriented_graphs/non_oriented_graph_base.hpp"
 
+#include <cassert>
 #include <algorithm>
+#include <queue>
 
 using namespace graphcpp;
 

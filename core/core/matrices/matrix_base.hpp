@@ -18,6 +18,7 @@ namespace graphcpp
 		virtual mcontent at(msize index1, msize index2) const = 0;
 		virtual void set(msize index1, msize index2, mcontent value) = 0;
 		virtual void reduce_element(msize index1, msize index2, mcontent difference) = 0;
+		virtual void add_string() = 0;
 
 		virtual void rearrange_with_permutations(const std::vector<msize>& new_nums) = 0;
 		virtual void rearrange_with_allocate(const std::vector<msize>& new_nums) = 0;

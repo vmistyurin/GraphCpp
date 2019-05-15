@@ -1,17 +1,5 @@
 #pragma once
 
-#include "core/macroses.hpp"
-
-namespace graphcpp
-{
-    class NonOrientedGraphBase;
-}
-
-namespace graphcpp::flow_calculators
-{
-	mcontent Edmonds_Karp_algorithm(const NonOrientedGraphBase& graph, msize source, msize sink);
-
-	mcontent Dinic_algorithm(const NonOrientedGraphBase& graph, msize source, msize sink);
-
-	mcontent preflow_push_algorithm(const NonOrientedGraphBase& graph, msize source, msize sink);
-}
+#include "core/flow_calculators/algorithms/Edmonds_Karp_algorithm.hpp"
+#include "core/flow_calculators/algorithms/Dinic_algorithm.hpp"
+#include "core/flow_calculators/algorithms/preflow_push_algorithm.hpp"

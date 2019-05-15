@@ -19,12 +19,13 @@ namespace graphcpp
 		mcontent at(msize index1, msize index2) const override;
 		void set(msize index1, msize index2, mcontent value) override;
 		void reduce_element(msize index1, msize index2, mcontent difference) override;
+		void add_string() override;
 
 		void rearrange_with_allocate(const std::vector<msize>& new_nums) override;
 
 		void swap(msize str1, msize str2) override;
 		void delete_last_strings(msize count) override;
 
-		FullSymmetricMatrix extract_matrix(const std::vector<msize>& rows);
+		FullSymmetricMatrix extract_matrix(const std::vector<msize>& rows) const;
 	};
 }

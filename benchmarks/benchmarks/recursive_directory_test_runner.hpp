@@ -20,10 +20,10 @@ namespace graphcpp::bench
         RecursiveDirectoryTestRunner(fs::path path_to_tests, fs::path result_path, std::ostream& logger);
         
 		void run_tests(std::function<std::string(std::ifstream&&)> test_function, std::string_view test_name);
-        void print_check_result();
+        void print_check_result() const;
 
 	private:
-        std::list<fs::path> check_results(const fs::path& first_answers, const fs::path& second_answers);
+        std::list<fs::path> check_results(const fs::path& first_answers, const fs::path& second_answers) const;
 
         std::chrono::milliseconds run_single_test(const fs::path& path_to_test, const fs::path& result_path,
             const std::function<std::string(std::ifstream&&)>& test_function, unsigned int indent = 0);

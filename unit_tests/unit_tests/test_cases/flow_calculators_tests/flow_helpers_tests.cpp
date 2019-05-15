@@ -47,13 +47,9 @@ namespace graphcpp::testing
     {
         TypeParam graph({}, 1);
         
-        FullSymmetricMatrix expected_flows({
-            { 0 }
-        });
+		FullSymmetricMatrix expected_flows(1);
 
         auto flows = flow_calculators::calculate_for_small_graph<FullSymmetricMatrix>(graph);
-
-            std::cout << "123" << std::endl;
 
         EXPECT_EQ(flows, expected_flows);
     }

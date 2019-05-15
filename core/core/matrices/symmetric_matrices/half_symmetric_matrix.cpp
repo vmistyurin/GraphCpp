@@ -71,6 +71,16 @@ void HalfSymmetricMatrix::reduce_element(msize index1, msize index2, mcontent di
 	_matrix[index2 - 1][index1] -= difference;
 }
 
+void HalfSymmetricMatrix::add_string()
+{
+	for (msize i = 0; i < _matrix.size(); i++)
+	{
+		_matrix[i].push_back(0);
+	}
+
+	_matrix.emplace_back(1);
+}
+
 void HalfSymmetricMatrix::swap(msize str1, msize str2)
 {
 	MINMAX(str1, str2);
@@ -117,7 +127,7 @@ void HalfSymmetricMatrix::delete_last_strings(msize count)
 	}
 }
 
-HalfSymmetricMatrix HalfSymmetricMatrix::extract_matrix(const std::vector<msize>& rows)
+HalfSymmetricMatrix HalfSymmetricMatrix::extract_matrix(const std::vector<msize>& rows) const
 {
 	assert(!rows.empty());
 	assert(std::all_of(rows.cbegin(), rows.cend(), [&](auto vertex) { return vertex < dimension(); }));

@@ -8,14 +8,15 @@
 #include "core/flow_calculators/reductions/remove_hanged_vertexes_reduction.hpp"
 #include "core/flow_calculators/reductions/split_to_components_reduction.hpp"
 
-//#include "core/flow_calculators/random_graph_reductions/split_to_components.hpp"
+#include "core/flow_calculators/factorization.hpp"
+#include "core/flow_calculators/random_graph_reductions/split_to_components.hpp"
 
 namespace graphcpp::flow_calculators
 {
     #define MAKE_REDUCTOR(function_name, next_reductor) std::bind(function_name<SymMatrixType, NorGraphType>, std::placeholders::_1, std::placeholders::_2, next_reductor) 
 
     template<class NorGraphType, class SymMatrixType>
-    SymMatrixType reduction_use_algorithm(const NorGraphType& graph, single_flow_function flow_calc, ReductionStats* stats)
+    SymMatrixType reduction_use_algorithm(const NorGraphType& graph, single_flow_function_t<NorGraphType> flow_calc, ReductionStats* stats)
     {		
         using namespace graphcpp::flow_calculators::reductors;
         using reductor_type = std::function<SymMatrixType(NorGraphType, ReductionStats*)>;
@@ -30,19 +31,23 @@ namespace graphcpp::flow_calculators
 
     #undef MAKE_REDUCTOR
 
-    // #define MAKE_REDUCTOR(function_name, next_reductor) std::bind(function_name<SymMatrixType, RandomGraphType>, std::placeholders::_1, std::placeholders::_2, next_reductor) 
+    #define MAKE_REDUCTOR(function_name, next_reductor) std::bind(function_name<RandomGraphType>, std::placeholders::_1, std::placeholders::_2, next_reductor) 
+	class RandomGraphBase;
 
-    // template<class RandomGraphType, class SymMatrixType, 
-    //     class Enable = std::enable_if<std::is_base_of_v<RandomGraphBase, RandomGraphType>>
-    // >
-    // SymMatrixType reduction_use_algorithm(const RandomGraphType& graph, single_flow_function flow_calc, ReductionStats* stats)
-    // {
-    //     using namespace graphcpp::flow_calculators::reductors;
-    //     using reductor_type = std::function<SymMatrixType(RandomGraphType, ReductionStats*)>;
+    template<class RandomGraphType>
+	typename RandomGraphType::MatrixType reduction_use_algorithm_r(RandomGraphType random_graph, single_flow_function_t<typename RandomGraphType::GraphType> flow_calc, ReductionStats* stats, bool parallel)
+    {
+		using SymMatrixType = typename RandomGraphType::MatrixType;
 
-    //     return split_to_components()
+		const reductor_t<RandomGraphType> factorization = [=](RandomGraphType graph, ReductionStats* stats)
+		{
+			return factorize<RandomGraphType>(std::move(graph), flow_calc, parallel);
+		};
 
-    // }
+		//const reductor_t<RandomGraphType> hanged_vertexes_reduction = std::bind(random_graph_reductions::remove_hanged_vertexes<RandomGraphType>, std::placeholders::_1, std::placeholders::_2, factorization);
 
-    // #undef MAKE_REDUCTOR
+		return random_graph_reductions::split_to_components<RandomGraphType>(random_graph, stats, factorization);
+    }
+
+    #undef MAKE_REDUCTOR
 }

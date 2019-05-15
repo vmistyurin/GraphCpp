@@ -37,7 +37,8 @@ void RecursiveDirectoryTestRunner::run_tests(std::function<std::string(std::ifst
 {
     _logger << "Test " << test_name << " has started" << std::endl;
     
-    _runned_tests.emplace_back(test_name);
+	assert(std::find(_runned_tests.cbegin(), _runned_tests.cend(), test_name) == _runned_tests.cend());
+	_runned_tests.emplace_back(test_name);
     
     run_tests_in_directory_uncheked(_path_to_tests, _result_path / _runned_tests.back(), test_function, 0);
     
@@ -103,7 +104,7 @@ std::chrono::milliseconds RecursiveDirectoryTestRunner::run_single_test(const fs
 	return time;
 }
 
-std::list<fs::path> RecursiveDirectoryTestRunner::check_results(const fs::path& first_answers, const fs::path& second_answers)
+std::list<fs::path> RecursiveDirectoryTestRunner::check_results(const fs::path& first_answers, const fs::path& second_answers) const
 {
 	std::list<fs::path> result;
 
@@ -128,7 +129,7 @@ std::list<fs::path> RecursiveDirectoryTestRunner::check_results(const fs::path& 
 	return result;
 }
 
-void RecursiveDirectoryTestRunner::print_check_result()
+void RecursiveDirectoryTestRunner::print_check_result() const
 {
     if (_runned_tests.size() < 2)
     {
