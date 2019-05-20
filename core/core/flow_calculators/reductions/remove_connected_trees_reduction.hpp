@@ -1,6 +1,7 @@
 #pragma once
 
 #include <list>
+#include <optional>
 
 #include "core/macroses.hpp"
 #include "core/utils/numeric.hpp"
@@ -123,7 +124,7 @@ namespace graphcpp::flow_calculators::reductors
 
         if (auto small_graph_result = calculate_if_small_graph<SymMatrixType>(graph, stats); small_graph_result) 
         {
-             return small_graph_result.value();
+            return small_graph_result.value_or(SymMatrixType(0));
         }
 
         auto trees = graph.get_connected_trees();

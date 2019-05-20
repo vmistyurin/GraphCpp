@@ -34,7 +34,7 @@ namespace graphcpp::flow_calculators::random_graph_reductions
 	{
 		RETURN_IF(graph.dimension() > 3, std::nullopt);
 
-		if (stats != nullptr)
+        if (stats != nullptr)
 		{
 			stats->register_small_random_graph(graph.dimension());
 		}

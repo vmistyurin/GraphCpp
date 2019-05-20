@@ -23,11 +23,16 @@ namespace graphcpp::flow_calculators::random_graph_reductions
         const auto components = random_graph.graph().get_connected_components();
         for (const auto& component : components)
         {
+            if (stats != nullptr)
+            {
+                stats->register_disconnected_component(component.size());
+            }
+            
 			auto subgraph = random_graph.extract_subgraph(component);
 			typename RandomGraphType::MatrixType subgraph_flows;
-			if (auto sub_flows = calculate_if_small_graph<RandomGraphType::MatrixType>(subgraph, stats); sub_flows)
+			if (auto sub_flows = calculate_if_small_graph<typename RandomGraphType::MatrixType>(subgraph, stats); sub_flows)
             {
-				subgraph_flows = std::move(sub_flows.value());
+				subgraph_flows = std::move(sub_flows.value_or(typename RandomGraphType::MatrixType(1)));
             } 
 			else
 			{

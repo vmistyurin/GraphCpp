@@ -14,6 +14,9 @@ namespace graphcpp
 		explicit HalfSymmetricMatrix(msize dimension);
 		explicit HalfSymmetricMatrix(const std::vector<std::vector<mcontent>>& matrix);
 		explicit HalfSymmetricMatrix(const SymmetricMatrixBase& matrix);
+        
+        HalfSymmetricMatrix& operator+(const HalfSymmetricMatrix& rhs);
+        HalfSymmetricMatrix& operator*(double rhs);
 
 		msize dimension() const override;
 		mcontent at(msize index1, msize index2) const override;

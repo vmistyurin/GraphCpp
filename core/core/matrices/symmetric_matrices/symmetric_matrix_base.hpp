@@ -16,7 +16,7 @@ namespace graphcpp
 		bool operator!=(const SymmetricMatrixBase& rhs) const;
         SymmetricMatrixBase& operator+=(const SymmetricMatrixBase& rhs);
         SymmetricMatrixBase& operator*=(double rhs);
-
+        
 		void make_rearranged(const std::vector<msize>& new_nums, SymmetricMatrixBase& memory) const;
         void rearrange_with_permutations(const std::vector<msize>& new_nums) override;
 

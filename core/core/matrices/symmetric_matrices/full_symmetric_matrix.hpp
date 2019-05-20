@@ -15,6 +15,9 @@ namespace graphcpp
 		explicit FullSymmetricMatrix(const std::vector<std::vector<mcontent>>& matrix);
 		explicit FullSymmetricMatrix(const SymmetricMatrixBase& matrix);
 		
+        FullSymmetricMatrix& operator+(const FullSymmetricMatrix& rhs);
+        FullSymmetricMatrix& operator*(double rhs);
+
 		msize dimension() const override;
 		mcontent at(msize index1, msize index2) const override;
 		void set(msize index1, msize index2, mcontent value) override;

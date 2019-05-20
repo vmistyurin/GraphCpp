@@ -51,6 +51,28 @@ FullSymmetricMatrix::FullSymmetricMatrix(const SymmetricMatrixBase& matrix) :
 	}
 }
 
+FullSymmetricMatrix& FullSymmetricMatrix::operator+(const FullSymmetricMatrix& rhs)
+{
+    for (const auto[i, j] : *this)
+    {
+        set(i, j, at(i, j) + rhs.at(i, j));
+    }
+    
+    return *this;
+}
+
+FullSymmetricMatrix& FullSymmetricMatrix::operator*(double rhs)
+{
+    for (msize i = 0; i < _matrix.size(); i++)
+    {
+        for (msize j = 0; j < _matrix[i].size(); j++)
+        {
+            _matrix[i][j] *= rhs;
+        }
+    }
+    return *this;
+}
+
 msize FullSymmetricMatrix::dimension() const
 {
 	return _matrix.size();

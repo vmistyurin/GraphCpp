@@ -6,7 +6,7 @@
 namespace graphcpp
 {
 	template<class ValueType>
-	class SynchronizedValue
+	class SynchronizedValue final
 	{
 	private:
 		ValueType _value;

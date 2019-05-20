@@ -23,7 +23,7 @@ HalfSymmetricMatrix::HalfSymmetricMatrix(const std::vector<std::vector<mcontent>
 {
 	assert(check_symmetrical_matrix(matrix));
 
-	for(auto[i,j] : *this)
+	for(const auto[i, j] : *this)
 	{
 		set(i, j, matrix[i][j]);
 	}
@@ -36,6 +36,28 @@ HalfSymmetricMatrix::HalfSymmetricMatrix(const SymmetricMatrixBase& matrix) :
 	{
 		set(i, j, matrix.at(i, j));
 	}
+}
+
+HalfSymmetricMatrix& HalfSymmetricMatrix::operator+(const HalfSymmetricMatrix& rhs)
+{
+    for(const auto[i, j] : *this)
+    {
+        set(i, j, at(i, j) + rhs.at(i, j));
+    }
+    
+    return *this;
+}
+
+HalfSymmetricMatrix& HalfSymmetricMatrix::operator*(double rhs)
+{
+    for (msize i = 0; i < _matrix.size(); i++)
+    {
+        for (msize j = 0; j < _matrix[i].size(); j++)
+        {
+            _matrix[i][j] *= rhs;
+        }
+    }
+    return *this;
 }
 
 msize HalfSymmetricMatrix::dimension() const
@@ -137,7 +159,7 @@ HalfSymmetricMatrix HalfSymmetricMatrix::extract_matrix(const std::vector<msize>
 	{
 		for (msize j = 0; j < i; j++)
 		{
-			result.set(i, j, _matrix[rows[i]][rows[j]]);
+			result.set(i, j, at(rows[i], rows[j]));
 		}
 	}
 

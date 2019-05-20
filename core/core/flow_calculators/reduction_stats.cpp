@@ -107,6 +107,19 @@ const std::map<size_t, size_t>& ReductionStats::get_small_random_graphs_stats() 
 	return _small_random_graphs.value();
 }
 
+void ReductionStats::register_disconnected_component(size_t dimension)
+{
+    _disconnected_components.perform_function([=](std::map<size_t, size_t>& map)
+    {
+        map[dimension]++;
+    });
+}
+
+const std::map<size_t, size_t>& ReductionStats::get_disconnected_components_stats() const
+{
+    return _disconnected_components.value();
+}
+
 std::ostream& graphcpp::flow_calculators::operator<< (std::ostream& stream, const ReductionStats& stats)
 {
     stream << std::endl << "Reduction stats: " << std::endl;

@@ -18,7 +18,7 @@ namespace graphcpp
         std::vector<std::thread> _threads;
 
 		std::atomic<unsigned int> _working_threads = 0;
-		bool _waiting_for_stop = false;
+        std::atomic<bool> _waiting_for_stop = false;
 		std::promise<void> _stop_promise;
         
         void thread_work();

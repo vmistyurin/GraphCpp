@@ -180,7 +180,7 @@ namespace graphcpp::flow_calculators
 			return result;
         }
 
-        abort();
+        UNREACHABLE();
     }
 }
 

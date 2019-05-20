@@ -13,6 +13,7 @@ macro(set_named_compiler_options PROJECT)
         -Wall \
         -pthread \
         -pedantic \
+        -fvisibility=hidden \
       ")
     endif()
 endmacro()

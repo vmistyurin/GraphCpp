@@ -15,6 +15,8 @@
     ClassName(ClassName&&) = default; \
     ClassName& operator=(ClassName&&) = default;
 
+#define UNREACHABLE() std::abort()
+
 namespace graphcpp
 {
 	using msize = size_t;

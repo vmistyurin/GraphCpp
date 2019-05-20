@@ -7,6 +7,7 @@
 #include "core/utils/numeric.hpp"
 #include "core/edges/edge.hpp"
 #include "core/graphs/oriented_graphs/oriented_graph_base.hpp"
+#include "core/graphs/non_oriented_graphs/non_oriented_graph_base.hpp"
 
 namespace graphcpp
 {
@@ -30,7 +31,7 @@ namespace graphcpp
 		msize dimension() const override;
 		mcontent at(msize v1, msize v2) const override;
 		void set(msize v1, msize v2, mcontent value) override;
-		void add_vertex();
+		void add_vertex() override;
 
 		bool equal(const GraphBase& rhs) const override;
 

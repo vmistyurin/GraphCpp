@@ -10,7 +10,7 @@
 #include "core/flow_calculators/definitions.hpp"
 #include "core/flow_calculators/flow_helpers.hpp"
 #include "core/flow_calculators/factorization.hpp"
-#include "core/flow_calculators/reduction_stats.hpp"
+#include "core/flow_calculators/reduction_use_factorization.hpp"
 
 namespace graphcpp::bench
 {
@@ -39,7 +39,14 @@ namespace graphcpp::bench
 			auto random_graph = RandomGraphType::read_from_stream(input);
 
 			flow_calculators::ReductionStats stats;
-			const auto result = flow_calculators::reduction_use_algorithm_r<RandomGraphType>(std::move(random_graph), flow_calc, &stats, parallel);
+			const auto result = flow_calculators::reduction_use_factorization<RandomGraphType>(
+                std::move(random_graph),
+                flow_calc,
+                &stats,
+                parallel
+            );
+            
+            std::cout << stats << std::endl;
 
 			return result.to_string();
 		};

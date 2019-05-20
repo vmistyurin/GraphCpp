@@ -74,5 +74,6 @@ void ThreadPool::thread_work()
 std::future<void> ThreadPool::wait_for_stop()
 {
 	_waiting_for_stop = true;
+    _cv.notify_all();
 	return _stop_promise.get_future();
 }

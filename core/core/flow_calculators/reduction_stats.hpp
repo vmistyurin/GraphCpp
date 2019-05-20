@@ -17,6 +17,8 @@ namespace graphcpp::flow_calculators
 		SynchronizedValue<std::map<size_t, size_t>> _calculated_trees_sizes = SynchronizedValue(std::map<size_t, size_t>()); // size -> count
 		SynchronizedValue<std::map<size_t, size_t>> _small_graphs = SynchronizedValue(std::map<size_t, size_t>()); // size -> count
 		SynchronizedValue<std::map<size_t, size_t>> _small_random_graphs = SynchronizedValue(std::map<size_t, size_t>()); // size -> count
+        
+        SynchronizedValue<std::map<size_t, size_t>> _disconnected_components = SynchronizedValue(std::map<size_t, size_t>());
     
     public:
         ReductionStats();
@@ -32,6 +34,9 @@ namespace graphcpp::flow_calculators
 
 		void register_small_random_graph(size_t dimension);
 		const std::map<size_t, size_t>& get_small_random_graphs_stats() const;
+        
+        void register_disconnected_component(size_t dimension);
+        const std::map<size_t, size_t>& get_disconnected_components_stats() const;
 	};
 
     std::ostream& operator<< (std::ostream& stream, const ReductionStats& stats);

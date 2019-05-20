@@ -55,6 +55,28 @@ SingleVectorSymmetricMatrix::SingleVectorSymmetricMatrix(const SymmetricMatrixBa
 //     return *this;
 // }
 
+SingleVectorSymmetricMatrix& SingleVectorSymmetricMatrix::operator+(const SingleVectorSymmetricMatrix& rhs)
+{
+    assert(dimension() == rhs.dimension());
+    
+    for(size_t i = 0; i < _matrix.size(); i++)
+    {
+        _matrix[i] += rhs._matrix[i];
+    }
+    
+    return *this;
+}
+
+SingleVectorSymmetricMatrix& SingleVectorSymmetricMatrix::operator*(double rhs)
+{
+    for (msize i = 0; i < _matrix.size(); i++)
+    {
+        _matrix[i] *= rhs;
+    }
+    
+    return *this;
+}
+
 msize SingleVectorSymmetricMatrix::dimension() const
 {
     return _dimension;

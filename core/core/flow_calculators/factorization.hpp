@@ -5,8 +5,7 @@
 #include "core/flow_calculators/definitions.hpp"
 #include "core/flow_calculators/reduction_stats.hpp"
 #include "core/flow_calculators/flow_helpers.hpp"
-#include "core/flow_calculators/computations/single_threaded/single_thread_calculator.hpp"
-#include "core/flow_calculators/computations/multi_threaded/multi_thread_calculator.hpp"
+#include "core/flow_calculators/computations/calculator_maker.hpp"
 
 namespace graphcpp::flow_calculators::internal
 {
@@ -31,18 +30,18 @@ namespace graphcpp::flow_calculators::internal
         calc.calculate(random_graph.graph(), probability);
     }
 
-	template<class NorGraphType, class SymMatrixType>
-	std::unique_ptr<CalculatorBase<NorGraphType, SymMatrixType>> make_calculator(bool parallel, flow_func_t<SymMatrixType, NorGraphType> calc, msize dimension)
-	{
-		if (parallel) 
-		{
-			return std::make_unique<MultiThreadCalculator<NorGraphType, SymMatrixType>>(std::move(calc), dimension);
-		}
-		else 
-		{
-			return std::make_unique<SingleThreadCalculator<NorGraphType, SymMatrixType>>(std::move(calc), dimension);
-		}
-	}
+//    template<class NorGraphType, class SymMatrixType>
+//    std::unique_ptr<CalculatorBase<NorGraphType, SymMatrixType>> make_calculator(bool parallel, flow_func_t<SymMatrixType, NorGraphType> calc, msize dimension)
+//    {
+//        if (parallel)
+//        {
+//            return std::make_unique<MultiThreadCalculator<NorGraphType, SymMatrixType>>(std::move(calc), dimension);
+//        }
+//        else
+//        {
+//            return std::make_unique<SingleThreadCalculator<NorGraphType, SymMatrixType>>(std::move(calc), dimension);
+//        }
+//    }
 }
 
 namespace graphcpp::flow_calculators
@@ -50,7 +49,7 @@ namespace graphcpp::flow_calculators
     template<class RandomGraphType, class NorGraphType = typename RandomGraphType::GraphType, class SymMatrixType = typename RandomGraphType::MatrixType>
 	SymMatrixType factorize(RandomGraphType random_graph, flow_func_t<SymMatrixType, NorGraphType> calc, bool parallel)
     {
-		auto calculator = internal::make_calculator<NorGraphType, SymMatrixType>(parallel, std::move(calc), random_graph.dimension());
+		auto calculator = make_calculator<NorGraphType, SymMatrixType>(parallel, std::move(calc), random_graph.dimension());
 		internal::factorize_from(std::move(random_graph), 1, *calculator);
 		return calculator->get_result();
     } 
@@ -58,11 +57,11 @@ namespace graphcpp::flow_calculators
 	template<class RandomGraphType, class NorGraphType = typename RandomGraphType::GraphType, class SymMatrixType = typename RandomGraphType::MatrixType>
 	typename RandomGraphType::MatrixType factorize(RandomGraphType random_graph, single_flow_function_t<NorGraphType> calc, bool parallel)
 	{
-		flow_func_t<SymMatrixType, NorGraphType> matrix_of_flow = std::bind(matrix_of_flows<SymMatrixType, NorGraphType>, std::placeholders::_1, std::move(calc));
+        flow_func_t<SymMatrixType, NorGraphType> matrix_of_flows = std::bind(flow_calculators::matrix_of_flows<SymMatrixType, NorGraphType>, std::placeholders::_1, std::move(calc));
 
 		return factorize(
 			std::move(random_graph),
-			std::move(matrix_of_flow),
+			std::move(matrix_of_flows),
 			parallel
 		);
 	}

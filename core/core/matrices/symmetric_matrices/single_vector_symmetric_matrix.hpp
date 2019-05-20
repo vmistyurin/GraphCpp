@@ -19,6 +19,9 @@ namespace graphcpp
 
         SingleVectorSymmetricMatrix(const SingleVectorSymmetricMatrix& rhs) = default;
         SingleVectorSymmetricMatrix& operator=(const SingleVectorSymmetricMatrix& rhs) = default;
+        
+        SingleVectorSymmetricMatrix& operator+(const SingleVectorSymmetricMatrix& rhs);
+        SingleVectorSymmetricMatrix& operator*(double rhs);
 
         msize dimension() const override;
         mcontent at(msize index1, msize index2) const override;

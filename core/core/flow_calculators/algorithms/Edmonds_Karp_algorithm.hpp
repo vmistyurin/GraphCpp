@@ -27,7 +27,8 @@ namespace graphcpp::flow_calculators
 		while (wrapped_path)
 		{
 			Defer defer([&] { wrapped_path = get_random_path(graph, source, sink); });
-			const auto path = wrapped_path.value();
+            const auto path = wrapped_path.value_or(std::vector<msize>({}));
+			// wrapped_path.value();
 
 			auto min_flow = std::numeric_limits<mcontent>::max();
 			for (msize i = 0; i < path.size() - 1; i++)
