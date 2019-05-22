@@ -25,19 +25,25 @@ int main(int argc, char** argv)
         
 		single_flow_function_t<NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>> func = Edmonds_Karp_algorithm<NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>>;
 
+        tester.run_tests(
+            factorization<
+                RandomNonOrientedGraph<NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>, SingleVectorSymmetricMatrix>
+            >(func, true),
+            "Factorization Edmonds-Karp"
+        );
+        tester.run_tests(
+                         reduction_use_algorithm<
+                         RandomNonOrientedGraph<NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>, SingleVectorSymmetricMatrix>
+                         >(func, true),
+                         "Factorization with reductions Edmonds-Karp new"
+                         );
+        
 //        tester.run_tests(
-//            factorization<
+//            reduction_use_algorithm_r<
 //                RandomNonOrientedGraph<NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>, SingleVectorSymmetricMatrix>
 //            >(func, true),
-//            "Factorization Edmonds-Karp"
+//            "Factorization with reductions Edmonds-Karp"
 //        );
-
-		tester.run_tests(
-			reduction_use_algorithm<
-				RandomNonOrientedGraph<NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>, SingleVectorSymmetricMatrix>
-			>(func, true),
-			"Factorization with reductions Edmonds-Karp"
-		);
         
         tester.print_check_result();
     }

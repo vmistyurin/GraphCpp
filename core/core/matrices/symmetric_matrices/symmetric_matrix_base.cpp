@@ -72,6 +72,20 @@ void SymmetricMatrixBase::rearrange_with_permutations(const std::vector<msize>& 
     }
 }
 
+mcontent SymmetricMatrixBase::average() const
+{
+    mcontent result = 0;
+    
+    const auto den = dimension() * dimension() / 2;
+    for (const auto[i,j] : *this)
+    {
+        result += at(i, j) / den;
+    }
+    
+    return result;
+}
+
+
 SymmetricMatrixIterator SymmetricMatrixBase::begin() const
 {
 	return SymmetricMatrixIterator(dimension());

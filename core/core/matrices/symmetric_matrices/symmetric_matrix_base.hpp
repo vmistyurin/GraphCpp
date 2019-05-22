@@ -25,6 +25,8 @@ namespace graphcpp
 
 		template<class MatrixType>
 		MatrixType with_deleted_element(msize i, msize j) const;
+        
+        mcontent average() const;
 
 		SymmetricMatrixIterator begin() const;
 		SymmetricMatrixIterator end() const;

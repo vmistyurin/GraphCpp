@@ -33,11 +33,13 @@ namespace graphcpp::flow_calculators::random_graph_reductions
 			if (auto sub_flows = calculate_if_small_graph<typename RandomGraphType::MatrixType>(subgraph, stats); sub_flows)
             {
 				subgraph_flows = std::move(sub_flows.value_or(typename RandomGraphType::MatrixType(1)));
+                assert(subgraph_flows.dimension() == component.size());
             } 
 			else
 			{
 				subgraph_flows = next_reductor(std::move(subgraph), stats);
-			}
+                assert(subgraph_flows.dimension() == component.size());
+            }
 
 			assert(subgraph_flows.dimension() == component.size());
             

@@ -3,7 +3,7 @@
 #include <cassert>
 #include <optional>
 
-#include "core/utils/boost_future.hpp"
+//#include "core/utils/boost_future.hpp"
 #include "core/utils/defer.hpp"
 #include "core/edges/symmetric_edge.hpp"
 #include "core/flow_calculators/definitions.hpp"
@@ -35,7 +35,7 @@ namespace graphcpp::flow_calculators::internal
         class NorGraphType = typename RandomGraphType::GraphType,
         class SymMatrixType = typename RandomGraphType::MatrixType
     >
-    boost::future<SymMatrixType> reduction_use_factorization(
+    SymMatrixType reduction_use_factorization(
         RandomGraphType random_graph,
         flow_func_t<SymMatrixType, NorGraphType> flow_func,
         ReductionStats* stats
@@ -45,20 +45,20 @@ namespace graphcpp::flow_calculators::internal
         class NorGraphType = typename RandomGraphType::GraphType,
         class SymMatrixType = typename RandomGraphType::MatrixType
     >
-	boost::future<SymMatrixType> calculate_in_deleted_branch(
+	SymMatrixType calculate_in_deleted_branch(
         RandomGraphType random_graph,
         flow_func_t<SymMatrixType, NorGraphType> flow_func,
         ReductionStats* stats
     )
 	{
-        return reduction_use_factorization<RandomGraphType>(std::move(random_graph), std::move(flow_func), stats);
+        //return reduction_use_factorization<RandomGraphType>(std::move(random_graph), std::move(flow_func), stats);
 
-//        const reductor_t<RandomGraphType> factorization = [=](RandomGraphType graph, ReductionStats* stats)
-//        {
-//            return reduction_use_factorization<RandomGraphType>(std::move(random_graph), std::move(flow_func), stats).get();
-//        };
-//
-//        return random_graph_reductions::split_to_components<RandomGraphType>(random_graph, stats, factorization);
+        const reductor_t<RandomGraphType> factorization = [=](RandomGraphType graph, ReductionStats* stats)
+        {
+            return reduction_use_factorization<RandomGraphType>(std::move(graph), std::move(flow_func), stats);
+        };
+
+        return random_graph_reductions::split_to_components<RandomGraphType>(random_graph, stats, factorization);
 	}
     
     template<
@@ -66,7 +66,7 @@ namespace graphcpp::flow_calculators::internal
         class NorGraphType = typename RandomGraphType::GraphType,
         class SymMatrixType = typename RandomGraphType::MatrixType
     >
-    boost::future<SymMatrixType> calculate_in_reliable_branch(
+    SymMatrixType calculate_in_reliable_branch(
         RandomGraphType random_graph,
         flow_func_t<SymMatrixType, NorGraphType> flow_func,
         ReductionStats* stats
@@ -80,7 +80,7 @@ namespace graphcpp::flow_calculators::internal
         class NorGraphType, // = typename RandomGraphType::GraphType,
         class SymMatrixType // = typename RandomGraphType::MatrixType
     >
-    boost::future<SymMatrixType> reduction_use_factorization(
+    SymMatrixType reduction_use_factorization(
         RandomGraphType random_graph,
         flow_func_t<SymMatrixType, NorGraphType> flow_func,
         ReductionStats* stats
@@ -106,19 +106,21 @@ namespace graphcpp::flow_calculators::internal
                 stats
             );
             
-            return combine_futures<SymMatrixType>(
-                std::move(reliable_branch_result),
-                std::move(deleted_branch_result),
-                [=](auto&& reliable_branch_result, auto&& deleted_branch_result) {
-                    return reliable_branch_result * probability + deleted_branch_result * (1 - probability);
-                }
-            );
+            return reliable_branch_result * probability + deleted_branch_result * (1 - probability);
+            
+//            return combine_futures<SymMatrixType>(
+//                std::move(reliable_branch_result),
+//                std::move(deleted_branch_result),
+//                [=](auto&& reliable_branch_result, auto&& deleted_branch_result) {
+//                    return reliable_branch_result * probability + deleted_branch_result * (1 - probability);
+//                }
+//            );
         }
         
         auto action = [random_graph, flow_func, stats]() mutable {
             return reduction_use_algorithm<NorGraphType, SymMatrixType>(random_graph.graph(), flow_func, stats);
         };
-        return boost::async(std::move(action));
+        return action();
     }
 }
 
@@ -136,7 +138,7 @@ namespace graphcpp::flow_calculators
         bool parallel
     )
 	{
-        return internal::reduction_use_factorization(std::move(random_graph), std::move(flow_func), stats).get();
+        return internal::reduction_use_factorization(std::move(random_graph), std::move(flow_func), stats);
 	}
     
     template<

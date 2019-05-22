@@ -1,6 +1,7 @@
 #pragma once
 
 #include <mutex>
+#include <iostream>
 
 namespace graphcpp
 {
@@ -32,11 +33,15 @@ namespace graphcpp
     template<class SummableCompatibleType>
     void MultiThreadSummator<SummableType>::add(SummableCompatibleType&& addend, double probability)
     {
-        std::lock_guard lock(_add_mutex);
+        //std::lock_guard lock(_add_mutex);
 
+        _add_mutex.lock();
+        
         addend *= probability;
         _sum += addend;
         _probability += probability;
+        
+        _add_mutex.unlock();
     }
     
     template<class SummableType>

@@ -28,10 +28,12 @@ namespace graphcpp
 		virtual void delete_last_strings(msize count) = 0;
 		void delete_strings(const std::vector<msize>& strings);
 
+        mcontent average() const;
 		std::string to_string() const;
 
 		ABSTRACT_CLASS_OPERATIONS(MatrixBase)
 	}; 
 
     std::ostream& operator<<(std::ostream& stream, const MatrixBase& matrix);
+    
 }
