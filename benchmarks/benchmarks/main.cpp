@@ -16,7 +16,7 @@ int main(int argc, char** argv)
     std::cout << graphcpp::system_info() << std::endl;
 	std::cout << "Current_path: " << fs::current_path() << std::endl;
 
-    const fs::path path_to_tests = "../../../test_generators/random_graphs";
+    const fs::path path_to_tests = "../../test_generators/random_graphs";
     const fs::path result_path = "../answers";
 
     try
@@ -25,18 +25,19 @@ int main(int argc, char** argv)
         
 		single_flow_function_t<NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>> func = Edmonds_Karp_algorithm<NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>>;
 
+        //tester.run_tests(
+        //    factorization<
+        //        RandomNonOrientedGraph<NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>, SingleVectorSymmetricMatrix>
+        //    >(func, true),
+        //    "Factorization Edmonds-Karp"
+        //);
+
         tester.run_tests(
-            factorization<
-                RandomNonOrientedGraph<NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>, SingleVectorSymmetricMatrix>
+			reduction_use_algorithm<
+				RandomNonOrientedGraph<NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>, SingleVectorSymmetricMatrix>
             >(func, true),
-            "Factorization Edmonds-Karp"
+            "Factorization with reductions Edmonds-Karp new"
         );
-        tester.run_tests(
-                         reduction_use_algorithm<
-                         RandomNonOrientedGraph<NonOrientedMatrixGraph<SingleVectorSymmetricMatrix>, SingleVectorSymmetricMatrix>
-                         >(func, true),
-                         "Factorization with reductions Edmonds-Karp new"
-                         );
         
 //        tester.run_tests(
 //            reduction_use_algorithm_r<

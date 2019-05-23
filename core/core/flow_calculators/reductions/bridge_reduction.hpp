@@ -20,6 +20,11 @@ namespace graphcpp::flow_calculators::reductors
 
         auto [bridges, classes] = graph.get_bridges();
 
-        
+		if (stats != nullptr)
+		{
+			stats->register_bridges(bridges.size());
+		}
+
+		return next_reductor(std::move(graph), stats);
     }
 }
