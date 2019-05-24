@@ -47,7 +47,7 @@ namespace graphcpp::bench
                 parallel
             );
             
-            std::cout << stats << std::endl;
+//            std::cout << stats << std::endl;
 
 			return result.to_string();
 		};
@@ -69,8 +69,8 @@ namespace graphcpp::bench
             
             const auto result = flow_calculators::factorize(std::move(random_graph), reduction_use, parallel);
             
-            std::cout << stats << std::endl;
-            std::cout << "Result: " << result.average() << std::endl;
+//            std::cout << stats << std::endl;
+//            std::cout << "Result: " << result.average() << std::endl;
             
             return result.to_string();
         };

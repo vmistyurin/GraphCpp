@@ -38,4 +38,6 @@ namespace graphcpp
 
         ABSTRACT_CLASS_OPERATIONS(NonOrientedGraphBase)
 	};
+    
+    std::vector<msize> get_hinges(const NonOrientedGraphBase& graph);
 }

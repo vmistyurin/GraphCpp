@@ -35,6 +35,50 @@ namespace
 			}
 		}
 	}
+    
+    void dfs_hinge_edition(
+        const NonOrientedGraphBase& graph,
+        msize vertex,
+        msize ancestor,
+        std::vector<bool>& used,
+        std::vector<msize>& times,
+        std::vector<msize>& min_times,
+        std::vector<msize>& hinges,
+        msize& timer
+    )
+    {
+        used[vertex] = true;
+        times[vertex] = timer;
+        min_times[vertex] = timer++;
+        
+        msize children = 0;
+        
+        for (msize i = 0; i < graph.dimension(); i++)
+        {
+            if (graph.at(vertex, i) > 0 && i != ancestor)
+            {
+                if (used[i])
+                {
+                    min_times[vertex] = std::min(min_times[vertex], times[i]);
+                }
+                else
+                {
+                    dfs_hinge_edition(graph, i, vertex, used, times, min_times, hinges, timer);
+                    min_times[vertex] = std::min(min_times[vertex], min_times[i]);
+                    if (min_times[i] >= times[vertex] && ancestor != msize_undefined)
+                    {
+                        hinges.push_back(vertex);
+                    }
+                    children++;
+                }
+            }
+        }
+        
+        if (ancestor == msize_undefined && children > 1)
+        {
+            hinges.push_back(vertex);
+        }
+    }
 
 	void get_chain(const NonOrientedGraphBase& graph, msize vertex, std::vector<msize>& chain)
 	{
@@ -125,4 +169,25 @@ SymmetricMatrixIterator NonOrientedGraphBase::begin() const
 SymmetricMatrixIterator NonOrientedGraphBase::end() const
 {
 	return SymmetricMatrixIterator();
+}
+
+std::vector<msize> graphcpp::get_hinges(const NonOrientedGraphBase& graph)
+{
+    std::vector<msize> result;
+    
+    std::vector<bool> used(graph.dimension());
+    std::vector<msize> times(graph.dimension());
+    std::vector<msize> min_times(graph.dimension());
+    
+    msize timer = 0;
+    
+    for (msize i = 0; i < used.size(); i++)
+    {
+        if (!used[i])
+        {
+            dfs_hinge_edition(graph, i, msize_undefined, used, times, min_times, result, timer);
+        }
+    }
+    
+    return result;
 }

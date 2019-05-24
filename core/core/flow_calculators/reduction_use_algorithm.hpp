@@ -8,8 +8,8 @@
 #include "core/flow_calculators/reductions/remove_hanged_vertexes_reduction.hpp"
 #include "core/flow_calculators/reductions/split_to_components_reduction.hpp"
 #include "core/flow_calculators/reductions/bridge_reduction.hpp"
-#include "core/flow_calculators/reductions/hinge_reduction.hpp"
-#include "core/flow_calculators/reductions/chains_reductions.hpp"
+//#include "core/flow_calculators/reductions/hinge_reduction.hpp"
+//#include "core/flow_calculators/reductions/chains_reductions.hpp"
 
 namespace graphcpp::flow_calculators
 {
@@ -28,10 +28,10 @@ namespace graphcpp::flow_calculators
         const reductor_type matrix_of_flows = std::bind(std::move(flow_calc), std::placeholders::_1);
         const reductor_type reduce_connected_trees = MAKE_REDUCTOR(remove_connected_trees, matrix_of_flows);
 		const reductor_type bridge_reduction = MAKE_REDUCTOR(reductors::bridge_reduction, reduce_connected_trees);
-		const reductor_type hinge_reduction = MAKE_REDUCTOR(hinge_reductions, bridge_reduction);
-		const reductor_type chains_reduction = MAKE_REDUCTOR(chains_reductions, hinge_reduction);
-		const reductor_type reduce_hanged_vertexes = MAKE_REDUCTOR(remove_hanged_vertexes, chains_reduction);
-        const reductor_type check_trees = MAKE_REDUCTOR(calculate_if_tree, reduce_connected_trees);
+		//const reductor_type hinge_reduction = MAKE_REDUCTOR(hinge_reductions, bridge_reduction);
+		//const reductor_type chains_reduction = MAKE_REDUCTOR(chains_reductions, bridge_reduction);
+		const reductor_type reduce_hanged_vertexes = MAKE_REDUCTOR(remove_hanged_vertexes, bridge_reduction);
+        const reductor_type check_trees = MAKE_REDUCTOR(calculate_if_tree, reduce_hanged_vertexes);
         
         return split_to_components(graph, stats, check_trees);
     }

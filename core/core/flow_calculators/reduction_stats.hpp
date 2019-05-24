@@ -12,9 +12,9 @@ namespace graphcpp::flow_calculators
     class ReductionStats final
     {
     private:
-        std::atomic<size_t> _hanged_vertexes;
-		std::atomic<size_t> _bridges;
-		std::atomic<size_t> _hinges;
+        std::atomic<size_t> _hanged_vertexes = 0;
+		std::atomic<size_t> _bridges = 0;
+		std::atomic<size_t> _hinges = 0;
         
 		SynchronizedValue<std::map<size_t, size_t>> _calculated_trees_sizes = SynchronizedValue(std::map<size_t, size_t>()); // size -> count
 

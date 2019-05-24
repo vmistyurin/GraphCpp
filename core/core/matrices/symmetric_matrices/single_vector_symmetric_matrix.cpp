@@ -59,10 +59,21 @@ SingleVectorSymmetricMatrix& SingleVectorSymmetricMatrix::operator+(const Single
 {
     assert(dimension() == rhs.dimension());
     
-    for(size_t i = 0; i < _matrix.size(); i++)
+    if (_internal_dimension == rhs._internal_dimension)
     {
-        _matrix[i] += rhs._matrix[i];
+        for (size_t i = 0; i < _matrix.size(); i++)
+        {
+            _matrix[i] += rhs._matrix[i];
+        }
     }
+    else
+    {
+        for (const auto[i, j] : *this)
+        {
+            set(i, j, at(i, j) + rhs.at(i, j));
+        }
+    }
+
     
     return *this;
 }
